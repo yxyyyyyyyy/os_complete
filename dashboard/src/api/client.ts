@@ -1,0 +1,45 @@
+export interface RuntimeEvent {
+  id: string
+  task_id: string
+  agent_id?: string
+  type: string
+  source: string
+  timestamp: number
+  payload: Record<string, unknown>
+}
+
+export interface Agent {
+  id: string
+  role: string
+  state: string
+}
+
+export interface DAGNode {
+  id: string
+  role: string
+  dependencies: string[] | null
+}
+
+export interface Task {
+  task_id: string
+  status: string
+  agents: Agent[]
+  dag: DAGNode[]
+  events: RuntimeEvent[]
+}
+
+export async function runDemo(): Promise<{ task_id: string }> {
+  const response = await fetch('/api/demo/run', { method: 'POST' })
+  if (!response.ok) {
+    throw new Error(`demo run failed: ${response.status}`)
+  }
+  return response.json()
+}
+
+export async function getTasks(): Promise<Task[]> {
+  const response = await fetch('/api/tasks')
+  if (!response.ok) {
+    throw new Error(`tasks request failed: ${response.status}`)
+  }
+  return response.json()
+}
