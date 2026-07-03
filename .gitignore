@@ -7,6 +7,7 @@ run/
 bin/
 dist/
 coverage/
+.cache/
 *.out
 *.test
 
@@ -29,3 +30,6 @@ dashboard/dist/
 .env
 .env.*
 !.env.example
+
+# Local execution ledger
+.superpowers/
