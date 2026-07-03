@@ -1,0 +1,31 @@
+# Runtime data
+.aort-dev/
+var/
+run/
+
+# Build outputs
+bin/
+dist/
+coverage/
+*.out
+*.test
+
+# Frontend dependencies and build cache
+node_modules/
+dashboard/node_modules/
+dashboard/dist/
+.vite/
+
+# Logs and traces generated during local runs
+*.log
+*.jsonl
+
+# OS/editor noise
+.DS_Store
+*.swp
+*.tmp
+
+# Local environment files
+.env
+.env.*
+!.env.example
