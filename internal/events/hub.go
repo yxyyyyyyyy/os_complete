@@ -30,6 +30,8 @@ func New(eventType, taskID, agentID, source string, payload map[string]any) Even
 type Hub struct {
 	mu          sync.RWMutex
 	buffer      int
+	historySize int
+	history     []Event
 	subscribers map[chan Event]struct{}
 }
 
@@ -39,6 +41,7 @@ func NewHub(buffer int) *Hub {
 	}
 	return &Hub{
 		buffer:      buffer,
+		historySize: 256,
 		subscribers: make(map[chan Event]struct{}),
 	}
 }
@@ -47,6 +50,13 @@ func (h *Hub) Subscribe() (<-chan Event, func()) {
 	ch := make(chan Event, h.buffer)
 	h.mu.Lock()
 	h.subscribers[ch] = struct{}{}
+	for _, event := range h.history {
+		select {
+		case ch <- event:
+		default:
+			break
+		}
+	}
 	h.mu.Unlock()
 	cancel := func() {
 		h.mu.Lock()
@@ -60,14 +70,18 @@ func (h *Hub) Subscribe() (<-chan Event, func()) {
 }
 
 func (h *Hub) Publish(event Event) {
-	h.mu.RLock()
-	defer h.mu.RUnlock()
+	h.mu.Lock()
+	h.history = append(h.history, event)
+	if len(h.history) > h.historySize {
+		h.history = append([]Event(nil), h.history[len(h.history)-h.historySize:]...)
+	}
 	for ch := range h.subscribers {
 		select {
 		case ch <- event:
 		default:
 		}
 	}
+	h.mu.Unlock()
 }
 
 func (h *Hub) SubscriberCount() int {
