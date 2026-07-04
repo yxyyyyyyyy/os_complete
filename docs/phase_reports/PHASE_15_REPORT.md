@@ -59,15 +59,15 @@ GET /api/kernel/events
 ## 6. 验证命令
 
 ```bash
-GOCACHE=/Users/yxy/Documents/比赛/操作系统/.cache/go-build go test ./internal/kernel
-GOCACHE=/Users/yxy/Documents/比赛/操作系统/.cache/go-build go test ./internal/syscall -run TestGatewayToolExecReportsKernelExecObservation
-GOCACHE=/Users/yxy/Documents/比赛/操作系统/.cache/go-build go test ./internal/api -run TestKernelAPIsExposeObserverStatusAndExecEvents
+GOCACHE="$PWD/.cache/go-build" go test ./internal/kernel
+GOCACHE="$PWD/.cache/go-build" go test ./internal/syscall -run TestGatewayToolExecReportsKernelExecObservation
+GOCACHE="$PWD/.cache/go-build" go test ./internal/api -run TestKernelAPIsExposeObserverStatusAndExecEvents
 ```
 
 提交前还应运行全量验证：
 
 ```bash
-GOCACHE=/Users/yxy/Documents/比赛/操作系统/.cache/go-build go test ./...
+GOCACHE="$PWD/.cache/go-build" go test ./...
 cd dashboard && npm run test
 cd dashboard && npm run build
 scripts/run_experiments.sh 5

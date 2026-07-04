@@ -40,7 +40,7 @@ Worker 通过 syscall gateway 发布 topic 和 page ID。Blackboard 只保存 pa
 ## 6. 验证命令
 
 ```bash
-GOCACHE=/Users/yxy/Documents/比赛/操作系统/.cache/go-build go test ./internal/ipc ./internal/syscall ./internal/api
+GOCACHE="$PWD/.cache/go-build" go test ./internal/ipc ./internal/syscall ./internal/api
 npm run test
 ```
 

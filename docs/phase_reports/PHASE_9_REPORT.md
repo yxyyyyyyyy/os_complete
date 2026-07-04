@@ -42,7 +42,7 @@
 ## 6. 验证命令
 
 ```bash
-GOCACHE=/Users/yxy/Documents/比赛/操作系统/.cache/go-build go test ./internal/workspace ./internal/api
+GOCACHE="$PWD/.cache/go-build" go test ./internal/workspace ./internal/api
 curl -s -X POST http://127.0.0.1:8080/api/demo/fault/rmrf
 ```
 

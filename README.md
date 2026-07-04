@@ -41,6 +41,12 @@ npm install
 npm run dev
 ```
 
+## Evidence Modes
+
+- `real`: Evidence comes from the running Runtime or OS surface directly, such as real worker PIDs, UDS registration, syscall records, CVM stats, scheduler decisions, Linux cgroup v2 counters, or PSI files.
+- `degraded`: The Runtime is still running real code, but the local OS lacks a required capability or permission. Typical examples are macOS/non-root cgroup capsule fallback, `degraded-proxy` kernel exec evidence instead of eBPF, unavailable PSI files, and degraded-copy workspace rollback instead of overlayfs.
+- `simulation/mock`: The path is intentionally synthetic or mocked for repeatable local demos, such as the mock LLM provider or experiment modes that model unavailable OS capabilities. These paths must be labeled as simulation/mock and should not be presented as real openEuler evidence.
+
 ## Implemented Mechanisms
 
 - Real worker processes launched by `aortd`, with UDS registration and heartbeat.

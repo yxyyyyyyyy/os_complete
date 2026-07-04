@@ -34,7 +34,7 @@
 ## 6. 验证命令
 
 ```bash
-GOCACHE=/Users/yxy/Documents/比赛/操作系统/.cache/go-build go test ./internal/syscall ./internal/api
+GOCACHE="$PWD/.cache/go-build" go test ./internal/syscall ./internal/api
 ```
 
 ## 7. 验证结果

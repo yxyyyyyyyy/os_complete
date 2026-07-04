@@ -32,8 +32,8 @@
 ## 6. 验证命令
 
 ```bash
-GOCACHE=/Users/yxy/Documents/比赛/操作系统/.cache/go-build go test ./internal/experiment
-GOCACHE=/Users/yxy/Documents/比赛/操作系统/.cache/go-build go run ./cmd/aort-experiment --name all --runs 5 --out experiments/results
+GOCACHE="$PWD/.cache/go-build" go test ./internal/experiment
+GOCACHE="$PWD/.cache/go-build" go run ./cmd/aort-experiment --name all --runs 5 --out experiments/results
 ```
 
 ## 7. 验证结果

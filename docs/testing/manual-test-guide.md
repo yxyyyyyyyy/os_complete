@@ -1,10 +1,15 @@
 # AORT-R Manual Test Guide
 
+## Environment Note
+
+Use repository-relative commands so the guide works after cloning anywhere. On macOS, non-root Linux, or systems without cgroup v2/PSI support, `capsule`, `kernel`, and `pressure` evidence will explicitly report degraded modes. That is acceptable for local development; openEuler root smoke evidence should be collected with `scripts/check_openeuler_env.sh` and `scripts/smoke_openeuler.sh`.
+
 ## V1 Mock Demo
 
 ```bash
-GOCACHE=/Users/yxy/Documents/比赛/操作系统/.cache/go-build go test ./...
-GOCACHE=/Users/yxy/Documents/比赛/操作系统/.cache/go-build go run ./cmd/aortd --config configs/dev.yaml
+mkdir -p .cache/go-build
+GOCACHE="$PWD/.cache/go-build" go test ./...
+GOCACHE="$PWD/.cache/go-build" go run ./cmd/aortd --config configs/dev.yaml
 curl -s http://127.0.0.1:8080/api/health
 curl -s -X POST http://127.0.0.1:8080/api/demo/run
 curl -N --max-time 2 http://127.0.0.1:8080/api/events
@@ -39,8 +44,9 @@ Expected:
 ## Stage 1 Real Worker Demo
 
 ```bash
-GOCACHE=/Users/yxy/Documents/比赛/操作系统/.cache/go-build go test ./...
-GOCACHE=/Users/yxy/Documents/比赛/操作系统/.cache/go-build go run ./cmd/aortd --config configs/dev.yaml
+mkdir -p .cache/go-build
+GOCACHE="$PWD/.cache/go-build" go test ./...
+GOCACHE="$PWD/.cache/go-build" go run ./cmd/aortd --config configs/dev.yaml
 curl -s -X POST http://127.0.0.1:8080/api/demo/run
 sleep 3
 curl -s http://127.0.0.1:8080/api/agents
@@ -177,11 +183,12 @@ Local two-process simulation:
 
 ```bash
 rm -rf .aort-dev/checkpoints
-GOCACHE=/Users/yxy/Documents/比赛/操作系统/.cache/go-build go run ./cmd/aortd --config configs/dev.yaml
+mkdir -p .cache/go-build
+GOCACHE="$PWD/.cache/go-build" go run ./cmd/aortd --config configs/dev.yaml
 curl -s -X POST http://127.0.0.1:8080/api/demo/run
 curl -s http://127.0.0.1:8080/api/checkpoints
 # Stop aortd with Ctrl-C, then start it again with the same config/data_dir.
-GOCACHE=/Users/yxy/Documents/比赛/操作系统/.cache/go-build go run ./cmd/aortd --config configs/dev.yaml
+GOCACHE="$PWD/.cache/go-build" go run ./cmd/aortd --config configs/dev.yaml
 curl -s http://127.0.0.1:8080/api/recovery/status
 curl -s http://127.0.0.1:8080/api/tasks
 curl -N --max-time 2 http://127.0.0.1:8080/api/events
@@ -226,7 +233,8 @@ Expected:
 ## Experiment Check
 
 ```bash
-GOCACHE=/Users/yxy/Documents/比赛/操作系统/.cache/go-build go run ./cmd/aort-experiment --name all --runs 5 --out experiments/results
+mkdir -p .cache/go-build
+GOCACHE="$PWD/.cache/go-build" go run ./cmd/aort-experiment --name all --runs 5 --out experiments/results
 curl -s http://127.0.0.1:8080/api/experiments/results
 ls experiments/results
 ```

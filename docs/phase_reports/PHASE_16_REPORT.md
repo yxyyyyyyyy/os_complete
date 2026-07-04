@@ -54,14 +54,14 @@ GET /api/pressure/status
 ## 6. 验证命令
 
 ```bash
-GOCACHE=/Users/yxy/Documents/比赛/操作系统/.cache/go-build go test ./internal/pressure
-GOCACHE=/Users/yxy/Documents/比赛/操作系统/.cache/go-build go test ./internal/api -run 'TestPressureStatusEndpoint|TestSchedulerEventIncludesPressureSnapshot'
+GOCACHE="$PWD/.cache/go-build" go test ./internal/pressure
+GOCACHE="$PWD/.cache/go-build" go test ./internal/api -run 'TestPressureStatusEndpoint|TestSchedulerEventIncludesPressureSnapshot'
 ```
 
 提交前还应运行：
 
 ```bash
-GOCACHE=/Users/yxy/Documents/比赛/操作系统/.cache/go-build go test ./...
+GOCACHE="$PWD/.cache/go-build" go test ./...
 cd dashboard && npm run test
 cd dashboard && npm run build
 scripts/run_experiments.sh 5

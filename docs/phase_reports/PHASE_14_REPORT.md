@@ -55,15 +55,15 @@ GET /api/recovery/status
 ## 6. 验证命令
 
 ```bash
-GOCACHE=/Users/yxy/Documents/比赛/操作系统/.cache/go-build go test ./internal/checkpoint
-GOCACHE=/Users/yxy/Documents/比赛/操作系统/.cache/go-build go test ./internal/api -run TestServerStartupRecoversCheckpointState
+GOCACHE="$PWD/.cache/go-build" go test ./internal/checkpoint
+GOCACHE="$PWD/.cache/go-build" go test ./internal/api -run TestServerStartupRecoversCheckpointState
 cd dashboard && npm run test
 ```
 
 全量提交前还应运行：
 
 ```bash
-GOCACHE=/Users/yxy/Documents/比赛/操作系统/.cache/go-build go test ./...
+GOCACHE="$PWD/.cache/go-build" go test ./...
 cd dashboard && npm run build
 scripts/run_experiments.sh 5
 ```

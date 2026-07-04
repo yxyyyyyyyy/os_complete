@@ -11,8 +11,8 @@
 ## How To Test
 
 ```bash
-GOCACHE=/Users/yxy/Documents/比赛/操作系统/.cache/go-build go test ./...
-GOCACHE=/Users/yxy/Documents/比赛/操作系统/.cache/go-build go run ./cmd/aortd --config configs/dev.yaml
+GOCACHE="$PWD/.cache/go-build" go test ./...
+GOCACHE="$PWD/.cache/go-build" go run ./cmd/aortd --config configs/dev.yaml
 curl -s http://127.0.0.1:8080/api/health
 curl -s -X POST http://127.0.0.1:8080/api/demo/run
 curl -N --max-time 2 http://127.0.0.1:8080/api/events
