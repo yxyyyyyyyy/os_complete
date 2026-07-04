@@ -41,6 +41,17 @@ npm install
 npm run dev
 ```
 
+## Optional DeepSeek Env
+
+Real API credentials must stay outside Git. To prepare an openEuler host for a future DeepSeek provider, copy the example file and fill the key locally:
+
+```bash
+cp .env.example .env.local
+# edit .env.local and set DEEPSEEK_API_KEY
+```
+
+`.env.local` is ignored by Git. The current checked-in Runtime still uses the mock LLM provider; adding these environment variables does not make AORT-R call DeepSeek until a DeepSeek provider is implemented.
+
 ## Evidence Modes
 
 - `real`: Evidence comes from the running Runtime or OS surface directly, such as real worker PIDs, UDS registration, syscall records, CVM stats, scheduler decisions, Linux cgroup v2 counters, or PSI files.

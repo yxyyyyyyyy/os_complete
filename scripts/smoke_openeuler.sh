@@ -9,6 +9,12 @@ OUT_DIR="experiments/results/openeuler_smoke"
 mkdir -p "$OUT_DIR" .cache/go-build
 export GOCACHE="$PWD/.cache/go-build"
 
+if [ -f .env.local ]; then
+  set -a
+  . ./.env.local
+  set +a
+fi
+
 if ! command -v curl >/dev/null 2>&1; then
   echo "curl is required for openEuler smoke test" >&2
   exit 1
