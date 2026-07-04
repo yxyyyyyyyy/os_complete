@@ -17,6 +17,7 @@ import (
 	"aort-r/internal/demo"
 	"aort-r/internal/events"
 	"aort-r/internal/scheduler"
+	"aort-r/internal/supervisor"
 	syscallgw "aort-r/internal/syscall"
 	"aort-r/internal/trace"
 	"aort-r/internal/worker"
@@ -29,14 +30,15 @@ func NewServer(cfg config.Config) http.Handler {
 func NewServerWithEvents(cfg config.Config, hub *events.Hub) http.Handler {
 	sink := newEventSink(cfg, hub)
 	server := &Server{
-		cfg:       cfg,
-		hub:       hub,
-		sink:      sink,
-		demo:      demo.NewSoftwareDemoRunner(),
-		cvm:       cvm.NewStore(sink),
-		scheduler: scheduler.New(scheduler.PolicyTokenCFSPrefixAffinity),
-		tasks:     make(map[string]demo.Result),
-		workerCtx: context.Background(),
+		cfg:        cfg,
+		hub:        hub,
+		sink:       sink,
+		demo:       demo.NewSoftwareDemoRunner(),
+		cvm:        cvm.NewStore(sink),
+		scheduler:  scheduler.New(scheduler.PolicyTokenCFSPrefixAffinity),
+		supervisor: supervisor.NewManager(sink),
+		tasks:      make(map[string]demo.Result),
+		workerCtx:  context.Background(),
 	}
 	server.syscalls = syscallgw.NewGateway(syscallgw.Config{
 		CVM:           server.cvm,
@@ -56,6 +58,7 @@ type Server struct {
 	demo             *demo.Runner
 	cvm              *cvm.Store
 	scheduler        *scheduler.Scheduler
+	supervisor       *supervisor.Manager
 	syscalls         *syscallgw.Gateway
 	mux              *http.ServeMux
 	mu               sync.RWMutex
@@ -94,6 +97,8 @@ func (s *Server) routes() {
 		streamEvents(w, r, s.hub)
 	})
 	mux.HandleFunc("/api/demo/run", s.handleDemoRun)
+	mux.HandleFunc("/api/demo/fault/", s.handleDemoFault)
+	mux.HandleFunc("/api/faults", s.handleFaults)
 	mux.HandleFunc("/api/agents", s.handleAgents)
 	mux.HandleFunc("/api/agents/", s.handleAgentAction)
 	mux.HandleFunc("/api/context/pages", s.handleContextPages)
@@ -162,6 +167,31 @@ func (s *Server) handleDemoRun(w http.ResponseWriter, r *http.Request) {
 	writeJSON(w, http.StatusAccepted, map[string]string{"task_id": result.TaskID})
 }
 
+func (s *Server) handleDemoFault(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		w.Header().Set("Allow", http.MethodPost)
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	kind := strings.TrimPrefix(r.URL.Path, "/api/demo/fault/")
+	switch kind {
+	case "tool-timeout", "timeout":
+		record := s.runToolTimeoutFault(r.Context())
+		writeJSON(w, http.StatusAccepted, record)
+	default:
+		http.NotFound(w, r)
+	}
+}
+
+func (s *Server) handleFaults(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		w.Header().Set("Allow", http.MethodGet)
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	writeJSON(w, http.StatusOK, s.supervisor.Records())
+}
+
 func (s *Server) runDemo(ctx context.Context) (demo.Result, error) {
 	if s.registry == nil {
 		result, err := s.demo.Run(ctx)
@@ -210,6 +240,33 @@ func (s *Server) runDemo(ctx context.Context) (demo.Result, error) {
 		}
 	}
 	return result, nil
+}
+
+func (s *Server) runToolTimeoutFault(ctx context.Context) supervisor.Record {
+	taskID := fmt.Sprintf("fault-%d", time.Now().UnixNano())
+	agentID := taskID + "-agent"
+	response := s.syscalls.Handle(ctx, syscallgw.Request{
+		RequestID: taskID + "-tool-timeout",
+		TaskID:    taskID,
+		AgentID:   agentID,
+		Name:      "tool.exec",
+		Args: map[string]any{
+			"command":    "sleep",
+			"args":       []any{"1"},
+			"timeout_ms": 10,
+		},
+	})
+	return s.supervisor.Record(supervisor.Fault{
+		Type:           supervisor.FaultToolTimeout,
+		TaskID:         taskID,
+		AgentID:        agentID,
+		RecoveryAction: "tool process killed by timeout context",
+		Details: map[string]any{
+			"syscall":        "tool.exec",
+			"syscall_status": response.Status,
+			"error":          response.Error,
+		},
+	})
 }
 
 func (s *Server) seedContext(taskID string, agents []demo.Agent) {

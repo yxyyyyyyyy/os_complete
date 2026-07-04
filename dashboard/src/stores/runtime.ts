@@ -110,6 +110,7 @@ export function connectEvents() {
     'context.page.reused',
     'context.page.mounted',
     'context.materialized',
+    'supervisor.detected',
     'task.completed'
   ]
   for (const type of eventTypes) {
@@ -132,6 +133,7 @@ function addEvent(event: RuntimeEvent) {
   if (
     event.type.startsWith('agent.') ||
     event.type.startsWith('context.') ||
+    event.type.startsWith('supervisor.') ||
     event.type.startsWith('syscall.')
   ) {
     scheduleRefresh()
