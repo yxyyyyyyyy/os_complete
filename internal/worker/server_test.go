@@ -15,12 +15,7 @@ import (
 func TestUDSServerAcceptsRegisterMessage(t *testing.T) {
 	registry := NewRegistry(nil)
 	registry.CreateAgent("agent-planner", "Planner", "task-1")
-	dir, err := os.MkdirTemp("/private/tmp", "aortd-uds-test-*")
-	if err != nil {
-		t.Fatalf("MkdirTemp: %v", err)
-	}
-	defer os.RemoveAll(dir)
-	socketPath := filepath.Join(dir, "a.sock")
+	socketPath := shortSocketPath(t)
 	server := NewUDSServer(socketPath, registry)
 	if err := server.Start(); err != nil {
 		if strings.Contains(err.Error(), "operation not permitted") {
@@ -76,12 +71,7 @@ func TestUDSServerReturnsSyscallResponse(t *testing.T) {
 	registry := NewRegistry(nil)
 	registry.CreateAgent("agent-planner", "Planner", "task-1")
 	handler := &fakeSyscallHandler{}
-	dir, err := os.MkdirTemp("/private/tmp", "aortd-uds-test-*")
-	if err != nil {
-		t.Fatalf("MkdirTemp: %v", err)
-	}
-	defer os.RemoveAll(dir)
-	socketPath := filepath.Join(dir, "a.sock")
+	socketPath := shortSocketPath(t)
 	server := NewUDSServer(socketPath, registry, handler)
 	if err := server.Start(); err != nil {
 		if strings.Contains(err.Error(), "operation not permitted") {
@@ -118,4 +108,16 @@ func TestUDSServerReturnsSyscallResponse(t *testing.T) {
 	if handler.request.Name != "context.materialize" {
 		t.Fatalf("handler request = %#v", handler.request)
 	}
+}
+
+func shortSocketPath(t *testing.T) string {
+	t.Helper()
+	dir, err := os.MkdirTemp("", "aortd-uds-*")
+	if err != nil {
+		t.Fatalf("MkdirTemp: %v", err)
+	}
+	t.Cleanup(func() {
+		_ = os.RemoveAll(dir)
+	})
+	return filepath.Join(dir, "a.sock")
 }

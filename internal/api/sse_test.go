@@ -18,7 +18,7 @@ func TestEventsEndpointStreamsSSE(t *testing.T) {
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
-	req := httptest.NewRequestWithContext(ctx, http.MethodGet, "/api/events", nil)
+	req := httptest.NewRequest(http.MethodGet, "/api/events", nil).WithContext(ctx)
 	rec := httptest.NewRecorder()
 
 	done := make(chan struct{})

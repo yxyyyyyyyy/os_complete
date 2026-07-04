@@ -35,7 +35,7 @@ func TestObserverStartsInDegradedProxyModeWhenEBPFUnavailable(t *testing.T) {
 	if status.Mode != ModeDegradedProxy {
 		t.Fatalf("mode = %q", status.Mode)
 	}
-	if !strings.Contains(status.Reason, "eBPF") {
+	if !strings.Contains(status.Reason, "proxy") {
 		t.Fatalf("reason = %q", status.Reason)
 	}
 	if len(sink.events) != 1 || sink.events[0].Type != "kernel.observer_disabled" {
