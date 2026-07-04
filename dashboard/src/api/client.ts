@@ -54,6 +54,19 @@ export interface ContextStats {
   saved_tokens: number
 }
 
+export interface SchedulerDecision {
+  id: string
+  task_id: string
+  candidates: string[]
+  selected_agent: string
+  policy: string
+  reason: string
+  vruntime_before: Record<string, number>
+  vruntime_after: Record<string, number>
+  shared_pages: Record<string, number>
+  created_at: number
+}
+
 export async function runDemo(): Promise<{ task_id: string }> {
   const response = await fetch('/api/demo/run', { method: 'POST' })
   if (!response.ok) {
@@ -97,6 +110,14 @@ export async function getContextStats(): Promise<ContextStats> {
   const response = await fetch('/api/context/stats')
   if (!response.ok) {
     throw new Error(`context stats request failed: ${response.status}`)
+  }
+  return response.json()
+}
+
+export async function getSchedulerDecisions(): Promise<SchedulerDecision[]> {
+  const response = await fetch('/api/scheduler/decisions')
+  if (!response.ok) {
+    throw new Error(`scheduler decisions request failed: ${response.status}`)
   }
   return response.json()
 }

@@ -3,6 +3,7 @@ import {
   getAgents,
   getContextPages,
   getContextStats,
+  getSchedulerDecisions,
   getTasks,
   postAgentAction,
   runDemo,
@@ -10,6 +11,7 @@ import {
   type ContextPage,
   type ContextStats,
   type RuntimeEvent,
+  type SchedulerDecision,
   type Task
 } from '../api/client'
 
@@ -24,6 +26,7 @@ export const runtimeStore = reactive({
     saved_bytes: 0,
     saved_tokens: 0
   } as ContextStats,
+  schedulerDecisions: [] as SchedulerDecision[],
   selectedTaskID: '',
   loading: false,
   error: '',
@@ -36,6 +39,7 @@ let refreshTimer: number | undefined
 export async function refreshTasks() {
   runtimeStore.tasks = await getTasks()
   runtimeStore.agents = await getAgents()
+  runtimeStore.schedulerDecisions = await getSchedulerDecisions()
   await refreshContext()
   if (!runtimeStore.selectedTaskID && runtimeStore.tasks.length > 0) {
     runtimeStore.selectedTaskID = runtimeStore.tasks[0].task_id

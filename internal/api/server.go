@@ -16,6 +16,7 @@ import (
 	"aort-r/internal/cvm"
 	"aort-r/internal/demo"
 	"aort-r/internal/events"
+	"aort-r/internal/scheduler"
 	syscallgw "aort-r/internal/syscall"
 	"aort-r/internal/trace"
 	"aort-r/internal/worker"
@@ -33,6 +34,7 @@ func NewServerWithEvents(cfg config.Config, hub *events.Hub) http.Handler {
 		sink:      sink,
 		demo:      demo.NewSoftwareDemoRunner(),
 		cvm:       cvm.NewStore(sink),
+		scheduler: scheduler.New(scheduler.PolicyTokenCFSPrefixAffinity),
 		tasks:     make(map[string]demo.Result),
 		workerCtx: context.Background(),
 	}
@@ -53,6 +55,7 @@ type Server struct {
 	sink             *eventSink
 	demo             *demo.Runner
 	cvm              *cvm.Store
+	scheduler        *scheduler.Scheduler
 	syscalls         *syscallgw.Gateway
 	mux              *http.ServeMux
 	mu               sync.RWMutex
@@ -97,6 +100,8 @@ func (s *Server) routes() {
 	mux.HandleFunc("/api/context/stats", s.handleContextStats)
 	mux.HandleFunc("/api/context/agents/", s.handleContextAgent)
 	mux.HandleFunc("/api/syscalls", s.handleSyscalls)
+	mux.HandleFunc("/api/scheduler/decisions", s.handleSchedulerDecisions)
+	mux.HandleFunc("/api/scheduler/policy", s.handleSchedulerPolicy)
 	mux.HandleFunc("/api/tasks", s.handleTasks)
 	mux.HandleFunc("/api/tasks/", s.handleTaskSubresource)
 	s.mux = mux
@@ -188,12 +193,22 @@ func (s *Server) runDemo(ctx context.Context) (demo.Result, error) {
 	for _, spec := range specs {
 		agent := s.registry.CreateAgent(spec.AgentID, spec.Role, spec.TaskID)
 		result.Agents = append(result.Agents, agentToDemo(agent))
+	}
+	s.seedContext(result.TaskID, result.Agents)
+	pending := append([]worker.Spec(nil), specs...)
+	for len(pending) > 0 {
+		selected, decision, ok := s.scheduler.Select(taskID, s.schedulerCandidates(taskID, pending))
+		if !ok {
+			return demo.Result{}, fmt.Errorf("scheduler found no ready agents for %s", taskID)
+		}
+		s.publishSchedulerDecision(decision)
+		spec, nextPending := popSpec(pending, selected.AgentID)
+		pending = nextPending
 		if _, err := s.launcher.Start(s.workerCtx, spec); err != nil {
 			s.sink.Publish(events.New("agent.worker_start_failed", taskID, spec.AgentID, "runtime", map[string]any{"error": err.Error()}))
 			return demo.Result{}, err
 		}
 	}
-	s.seedContext(result.TaskID, result.Agents)
 	return result, nil
 }
 
@@ -329,6 +344,35 @@ func (s *Server) handleSyscalls(w http.ResponseWriter, r *http.Request) {
 	writeJSON(w, http.StatusOK, s.syscalls.Records())
 }
 
+func (s *Server) handleSchedulerDecisions(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		w.Header().Set("Allow", http.MethodGet)
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	writeJSON(w, http.StatusOK, s.scheduler.Decisions())
+}
+
+func (s *Server) handleSchedulerPolicy(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		w.Header().Set("Allow", http.MethodPost)
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	var body struct {
+		Policy string `json:"policy"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	if err := s.scheduler.SetPolicy(body.Policy); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	writeJSON(w, http.StatusOK, map[string]string{"policy": s.scheduler.Policy()})
+}
+
 func (s *Server) handleTaskSubresource(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		w.Header().Set("Allow", http.MethodGet)
@@ -349,6 +393,42 @@ func (s *Server) handleTaskSubresource(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	writeJSON(w, http.StatusOK, task.DAG)
+}
+
+func (s *Server) schedulerCandidates(taskID string, pending []worker.Spec) []avp.AVP {
+	candidates := make([]avp.AVP, 0, len(pending))
+	for _, spec := range pending {
+		agent, ok := s.registry.Get(spec.AgentID)
+		if !ok {
+			continue
+		}
+		agent.State = avp.StateReady
+		agent.PageTable = s.cvm.PageTable(spec.AgentID).PageIDs
+		candidates = append(candidates, agent)
+	}
+	return candidates
+}
+
+func (s *Server) publishSchedulerDecision(decision scheduler.DecisionLog) {
+	s.sink.Publish(events.New("scheduler.selected", decision.TaskID, decision.SelectedAgent, "scheduler", map[string]any{
+		"policy":          decision.Policy,
+		"decision_id":     decision.ID,
+		"decision_reason": decision.Reason,
+		"candidates":      decision.Candidates,
+		"shared_pages":    decision.SharedPages,
+		"vruntime_before": decision.VRuntimeBefore,
+	}))
+}
+
+func popSpec(specs []worker.Spec, agentID string) (worker.Spec, []worker.Spec) {
+	for index, spec := range specs {
+		if spec.AgentID == agentID {
+			next := append([]worker.Spec(nil), specs[:index]...)
+			next = append(next, specs[index+1:]...)
+			return spec, next
+		}
+	}
+	return specs[0], specs[1:]
 }
 
 func (s *Server) startWorkerRuntime() {

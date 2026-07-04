@@ -168,6 +168,11 @@ p {
   margin-bottom: 14px;
 }
 
+.subtle-text {
+  color: #63777c;
+  font-size: 13px;
+}
+
 .dag-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -188,6 +193,10 @@ p {
 }
 
 .table-wrap {
+  overflow: auto;
+}
+
+.inline-table {
   overflow: auto;
 }
 
