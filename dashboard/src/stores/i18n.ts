@@ -89,11 +89,15 @@ const messages = {
     },
     timeline: {
       title: '系统时间线',
-      desc: 'Runtime、syscall、supervisor 与上下文事件流。',
+      desc: 'Runtime、syscall、kernel、supervisor 与上下文事件流。',
       time: '时间',
       event: '事件',
       source: '来源',
-      owner: '归属'
+      owner: '归属',
+      kernelMode: 'Kernel 模式',
+      kernelProbe: '观测探针',
+      kernelEvents: 'Kernel 事件',
+      btf: 'BTF'
     },
     experiments: {
       title: '实验分析',
@@ -210,11 +214,15 @@ const messages = {
     },
     timeline: {
       title: 'System Timeline',
-      desc: 'Runtime, syscall, supervisor, and context event stream.',
+      desc: 'Runtime, syscall, kernel, supervisor, and context event stream.',
       time: 'Time',
       event: 'Event',
       source: 'Source',
-      owner: 'Owner'
+      owner: 'Owner',
+      kernelMode: 'Kernel Mode',
+      kernelProbe: 'Probe',
+      kernelEvents: 'Kernel Events',
+      btf: 'BTF'
     },
     experiments: {
       title: 'Experiment Analysis',

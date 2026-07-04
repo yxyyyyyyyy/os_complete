@@ -18,6 +18,7 @@
 - [x] `ipc.publish` and `ipc.poll` transfer CVM page IDs and track avoided copy bytes.
 - [x] `agent.spawn` records Reviewer-triggered Fixer creation through the syscall gateway.
 - [x] Timeline sees `syscall.started` and `syscall.finished`.
+- [x] Timeline sees `kernel.observer_disabled` and `kernel.exec` in honest degraded-proxy mode.
 - [x] Timeline sees `ipc.published`, `ipc.polled`, `llm.called`, `agent.spawn.requested`, and `agent.spawned`.
 - [x] Scheduler supports FIFO, token-CFS, and token-CFS-prefix-affinity.
 - [x] Dashboard Overview, AVP, Context, Timeline, and Experiments pages use real APIs.
@@ -38,6 +39,8 @@
 - [x] openEuler-oriented cgroup v2 design with graceful degraded mode.
 - [x] IPC Blackboard API: `GET /api/ipc/metrics`, `GET /api/ipc/topics`.
 - [x] LLM Router abstraction with mock provider and llama.cpp timing parser.
+- [x] Kernel Observer API: `GET /api/kernel/status`, `GET /api/kernel/events`.
+- [x] Kernel exec evidence uses explicit `degraded-proxy` mode and `syscall-gateway-proxy` probe when true eBPF is unavailable.
 - [x] Checkpoint evidence API and `checkpoint.created` timeline event.
 - [x] Lightweight checkpoint startup recovery with `checkpoint.recovered` and `runtime.recovered` timeline events.
 - [x] Degraded-copy workspace rollback with `workspace.created`, `workspace.rmrf`, and `workspace.rollback` events.
@@ -49,6 +52,6 @@
 
 - [ ] Real overlayfs mount/commit path on openEuler root VM.
 - [ ] Supervisor retry policy beyond timeout fault recording.
-- [ ] eBPF execve observer.
+- [ ] True `sched_process_exec` eBPF attachment on openEuler root VM.
 - [ ] Durable CVM page-content and overlay upper-layer checkpointing.
 - [ ] PSI display.

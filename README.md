@@ -22,6 +22,8 @@ sleep 3
 curl -s http://127.0.0.1:8080/api/agents
 curl -s http://127.0.0.1:8080/api/syscalls
 curl -s http://127.0.0.1:8080/api/ipc/metrics
+curl -s http://127.0.0.1:8080/api/kernel/status
+curl -s http://127.0.0.1:8080/api/kernel/events
 curl -s http://127.0.0.1:8080/api/checkpoints
 curl -s http://127.0.0.1:8080/api/recovery/status
 curl -s -X POST http://127.0.0.1:8080/api/demo/fault/rmrf
@@ -43,6 +45,7 @@ npm run dev
 - Per-Agent cgroup capsule manager with real Linux cgroup v2 support and degraded mode on macOS/non-root environments.
 - CVM page store with sha256 page ids, per-agent page tables, context materialization, and saved token/byte metrics.
 - Agent syscall gateway for `context.materialize`, `context.write_delta`, `llm.call`, `tool.exec`, `ipc.publish`, `ipc.poll`, `agent.spawn`, and `agent.report`, with audit records and SSE timeline events.
+- Kernel observer lane for `kernel.exec` evidence. Current checked-in implementation uses explicit `degraded-proxy` mode through syscall-gateway exec observations unless a future openEuler eBPF attachment is enabled.
 - Page-reference IPC Blackboard with avoided-copy byte metrics and per-subscriber polling.
 - FIFO, token-CFS, and token-CFS-prefix-affinity scheduler policies with DecisionLog API.
 - Supervisor fault record path with a runnable `tool.exec` timeout injection.
@@ -51,7 +54,7 @@ npm run dev
 - Startup checkpoint recovery report at `/api/recovery/status`, with `checkpoint.recovered` and `runtime.recovered` timeline evidence.
 - LLM Router interface with mock provider, fallback routing, and llama.cpp timing/cache usage parser.
 - E1/E2/E3 experiment runner producing JSON and CSV under `experiments/results/`.
-- Vue dashboard pages for Overview, AVP/Capsule, Context, Timeline, and Experiments.
+- Vue dashboard pages for Overview, AVP/Capsule, Context, Timeline with kernel lane evidence, and Experiments.
 
 ## Experiments
 
@@ -75,6 +78,6 @@ See [docs/deployment_openeuler.md](docs/deployment_openeuler.md) for deployment 
 
 ## Known Limits
 
-- Real overlayfs mount/commit and eBPF kernel timeline are planned enhancement targets; degraded-copy workspace rollback and lightweight checkpoint startup recovery are implemented and test-covered.
+- Real overlayfs mount/commit and true eBPF attachment are planned enhancement targets; degraded-copy workspace rollback, lightweight checkpoint startup recovery, and honest degraded-proxy kernel exec evidence are implemented and test-covered.
 - Current checked-in LLM path uses the mock provider; DeepSeek relay and llama.cpp local providers should be configured outside Git with credentials/model paths.
 - Experiments are marked as real, degraded-real, or degraded-simulation according to the available local OS/runtime evidence.

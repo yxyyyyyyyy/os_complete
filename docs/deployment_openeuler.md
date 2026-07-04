@@ -23,8 +23,10 @@ Expected checks:
 - cgroup v2 is mounted at `/sys/fs/cgroup`.
 - `cgroup.controllers` is readable.
 - overlayfs is listed in `/proc/filesystems` when available.
+- Kernel BTF is available at `/sys/kernel/btf/vmlinux` when true eBPF attachment is desired.
+- bpffs exists at `/sys/fs/bpf` when true eBPF attachment is desired.
 
-Missing root, overlayfs, or cgroup v2 does not stop the local demo; it changes OS-backed modules to degraded mode.
+Missing root, overlayfs, cgroup v2, BTF, or bpffs does not stop the local demo; it changes OS-backed modules to degraded mode.
 
 ## Start Runtime
 
@@ -40,6 +42,8 @@ curl -s -X POST http://127.0.0.1:8080/api/demo/run
 curl -s http://127.0.0.1:8080/api/agents
 curl -s http://127.0.0.1:8080/api/syscalls
 curl -s http://127.0.0.1:8080/api/ipc/metrics
+curl -s http://127.0.0.1:8080/api/kernel/status
+curl -s http://127.0.0.1:8080/api/kernel/events
 curl -s http://127.0.0.1:8080/api/checkpoints
 curl -s http://127.0.0.1:8080/api/recovery/status
 ```
@@ -130,10 +134,11 @@ Outputs:
 | Workspace rollback | `POST /api/demo/fault/rmrf`, `workspace.rollback`, `base_intact` |
 | Checkpoint evidence | `/api/checkpoints`, `checkpoint.created` timeline events |
 | Daemon recovery | `deploy/systemd/aortd.service`, `scripts/demo-daemonkill.sh`, `/api/recovery/status`, `runtime.recovered` |
+| Kernel observability | `/api/kernel/status`, `/api/kernel/events`, `kernel.observer_disabled`, `kernel.exec` |
 
 ## Known Limits
 
 - Workspace rollback is implemented in degraded-copy mode and proves that an Agent workspace can be destroyed and restored from a base snapshot without touching the base. Real overlayfs mount/commit is the next openEuler-root enhancement.
 - Checkpoint recovery is lightweight in this iteration: AVP state, scheduler vruntime, and CVM page references are restored into the runtime index; durable CVM page contents and overlay upper-layer snapshots are the next enhancement.
-- eBPF observer is planned as an enhancement; the current timeline is application/syscall/runtime level.
+- Kernel observer currently uses `degraded-proxy` mode: it records exec evidence from the syscall gateway and labels the probe as `syscall-gateway-proxy`. True `sched_process_exec` eBPF attachment is the next openEuler-root enhancement.
 - DeepSeek and llama.cpp providers are represented by the `llm.Router` interface and mock provider in this repository; real provider credentials and local model paths should be configured outside Git.

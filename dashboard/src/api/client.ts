@@ -107,6 +107,33 @@ export interface RecoveryStatus {
   recovered_tasks: RecoveredTask[]
 }
 
+export interface KernelStatus {
+  enabled: boolean
+  mode: string
+  probe: string
+  reason: string
+  btf_available: boolean
+  bpffs_ready: boolean
+  event_count: number
+}
+
+export interface KernelEvent {
+  id: string
+  type: string
+  source: string
+  task_id: string
+  agent_id: string
+  pid: number
+  command: string
+  args: string[]
+  cgroup_path?: string
+  workspace?: string
+  status: string
+  mode: string
+  probe: string
+  timestamp: number
+}
+
 export interface E1SchedulerResult {
   experiment: string
   policy: string
@@ -222,6 +249,22 @@ export async function getRecoveryStatus(): Promise<RecoveryStatus> {
   const response = await fetch('/api/recovery/status')
   if (!response.ok) {
     throw new Error(`recovery status request failed: ${response.status}`)
+  }
+  return response.json()
+}
+
+export async function getKernelStatus(): Promise<KernelStatus> {
+  const response = await fetch('/api/kernel/status')
+  if (!response.ok) {
+    throw new Error(`kernel status request failed: ${response.status}`)
+  }
+  return response.json()
+}
+
+export async function getKernelEvents(): Promise<KernelEvent[]> {
+  const response = await fetch('/api/kernel/events')
+  if (!response.ok) {
+    throw new Error(`kernel events request failed: ${response.status}`)
   }
   return response.json()
 }

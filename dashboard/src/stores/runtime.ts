@@ -4,6 +4,8 @@ import {
   getContextPages,
   getContextStats,
   getExperimentResults,
+  getKernelEvents,
+  getKernelStatus,
   getIPCMetrics,
   getIPCTopics,
   getRecoveryStatus,
@@ -17,6 +19,8 @@ import {
   type ExperimentResults,
   type IPCMetric,
   type IPCTopics,
+  type KernelEvent,
+  type KernelStatus,
   type RecoveryStatus,
   type RuntimeEvent,
   type SchedulerDecision,
@@ -42,6 +46,16 @@ export const runtimeStore = reactive({
   } as IPCMetric,
   ipcTopics: {} as IPCTopics,
   schedulerDecisions: [] as SchedulerDecision[],
+  kernelStatus: {
+    enabled: false,
+    mode: 'degraded-proxy',
+    probe: 'syscall-gateway-proxy',
+    reason: '',
+    btf_available: false,
+    bpffs_ready: false,
+    event_count: 0
+  } as KernelStatus,
+  kernelEvents: [] as KernelEvent[],
   recoveryStatus: {
     mode: 'checkpoint-light',
     degraded: true,
@@ -78,6 +92,8 @@ export async function refreshTasks() {
   runtimeStore.tasks = await getTasks()
   runtimeStore.agents = await getAgents()
   runtimeStore.schedulerDecisions = await getSchedulerDecisions()
+  runtimeStore.kernelStatus = await getKernelStatus()
+  runtimeStore.kernelEvents = await getKernelEvents()
   runtimeStore.recoveryStatus = await getRecoveryStatus()
   runtimeStore.experimentResults = await getExperimentResults()
   await refreshContext()
@@ -161,6 +177,8 @@ export function connectEvents() {
     'checkpoint.recovered',
     'runtime.recovered',
     'runtime.recovery_failed',
+    'kernel.observer_disabled',
+    'kernel.exec',
     'workspace.snapshot.created',
     'workspace.created',
     'workspace.rmrf',
@@ -192,6 +210,7 @@ function addEvent(event: RuntimeEvent) {
     event.type.startsWith('llm.') ||
     event.type.startsWith('checkpoint.') ||
     event.type.startsWith('runtime.') ||
+    event.type.startsWith('kernel.') ||
     event.type.startsWith('workspace.') ||
     event.type.startsWith('supervisor.') ||
     event.type.startsWith('syscall.')

@@ -84,6 +84,36 @@ func TestGatewayToolExecTimeoutIsAudited(t *testing.T) {
 	}
 }
 
+func TestGatewayToolExecReportsKernelExecObservation(t *testing.T) {
+	var observed ExecObservation
+	gateway := NewGateway(Config{
+		WorkspaceRoot: t.TempDir(),
+		ExecObserver: func(event ExecObservation) {
+			observed = event
+		},
+	})
+
+	response := gateway.Handle(context.Background(), Request{
+		RequestID: "exec-1",
+		AgentID:   "agent-1",
+		TaskID:    "task-1",
+		Name:      "tool.exec",
+		Args: map[string]any{
+			"command": "pwd",
+		},
+	})
+
+	if response.Status != StatusOK {
+		t.Fatalf("status = %s error=%s", response.Status, response.Error)
+	}
+	if observed.TaskID != "task-1" || observed.AgentID != "agent-1" || observed.Command != "pwd" {
+		t.Fatalf("observed = %#v", observed)
+	}
+	if observed.PID == 0 || observed.Workspace == "" || observed.Status != StatusOK {
+		t.Fatalf("observed = %#v", observed)
+	}
+}
+
 func TestGatewayRejectsToolExecOutsideWorkspace(t *testing.T) {
 	gateway := NewGateway(Config{WorkspaceRoot: t.TempDir()})
 

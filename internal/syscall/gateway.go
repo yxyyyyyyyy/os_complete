@@ -81,6 +81,17 @@ type SpawnResult struct {
 	State   string `json:"state"`
 }
 
+type ExecObservation struct {
+	TaskID     string
+	AgentID    string
+	PID        int
+	Command    string
+	Args       []string
+	CgroupPath string
+	Workspace  string
+	Status     string
+}
+
 type Config struct {
 	CVM           *cvm.Store
 	IPC           *ipc.Blackboard
@@ -90,6 +101,7 @@ type Config struct {
 	ToolTimeout   time.Duration
 	Reporter      func(Report)
 	Spawner       func(SpawnRequest) (SpawnResult, error)
+	ExecObserver  func(ExecObservation)
 }
 
 type Gateway struct {
@@ -102,6 +114,7 @@ type Gateway struct {
 	toolTimeout   time.Duration
 	reporter      func(Report)
 	spawner       func(SpawnRequest) (SpawnResult, error)
+	execObserver  func(ExecObservation)
 	records       []Record
 }
 
@@ -123,6 +136,7 @@ func NewGateway(cfg Config) *Gateway {
 		toolTimeout:   timeout,
 		reporter:      cfg.Reporter,
 		spawner:       cfg.Spawner,
+		execObserver:  cfg.ExecObserver,
 	}
 }
 
@@ -387,6 +401,10 @@ func (g *Gateway) toolExec(ctx context.Context, req Request) Response {
 	cmd.Stdout = &stdout
 	cmd.Stderr = &stderr
 	err = cmd.Run()
+	pid := 0
+	if cmd.Process != nil {
+		pid = cmd.Process.Pid
+	}
 	payload := map[string]any{
 		"command":   command,
 		"args":      args,
@@ -397,13 +415,31 @@ func (g *Gateway) toolExec(ctx context.Context, req Request) Response {
 	}
 	if toolCtx.Err() == context.DeadlineExceeded {
 		payload["exit_code"] = -1
+		g.observeExec(req, pid, command, args, cwd, StatusTimeout)
 		return Response{RequestID: req.RequestID, Status: StatusTimeout, Error: "tool timeout", Payload: payload}
 	}
 	if err != nil {
 		payload["exit_code"] = exitCode(err)
+		g.observeExec(req, pid, command, args, cwd, StatusError)
 		return Response{RequestID: req.RequestID, Status: StatusError, Error: err.Error(), Payload: payload}
 	}
+	g.observeExec(req, pid, command, args, cwd, StatusOK)
 	return Response{RequestID: req.RequestID, Status: StatusOK, Payload: payload}
+}
+
+func (g *Gateway) observeExec(req Request, pid int, command string, args []string, workspace string, status string) {
+	if g.execObserver == nil {
+		return
+	}
+	g.execObserver(ExecObservation{
+		TaskID:    req.TaskID,
+		AgentID:   req.AgentID,
+		PID:       pid,
+		Command:   command,
+		Args:      append([]string(nil), args...),
+		Workspace: workspace,
+		Status:    status,
+	})
 }
 
 func (g *Gateway) agentReport(req Request) Response {

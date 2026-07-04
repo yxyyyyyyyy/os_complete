@@ -34,6 +34,18 @@ else
   echo "WARN: overlayfs not detected; workspace rollback should use degraded-copy mode"
 fi
 
+if [ -f /sys/kernel/btf/vmlinux ]; then
+  echo "kernel BTF: available"
+else
+  echo "WARN: /sys/kernel/btf/vmlinux not found; kernel observer will use degraded-proxy mode"
+fi
+
+if [ -d /sys/fs/bpf ]; then
+  echo "bpffs: available"
+else
+  echo "WARN: /sys/fs/bpf not found; eBPF attachment is unavailable"
+fi
+
 if [ "$(id -u)" -eq 0 ]; then
   echo "root: yes"
 else

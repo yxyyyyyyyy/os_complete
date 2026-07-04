@@ -20,6 +20,7 @@ import (
 	"aort-r/internal/events"
 	"aort-r/internal/experiment"
 	"aort-r/internal/ipc"
+	"aort-r/internal/kernel"
 	"aort-r/internal/llm"
 	"aort-r/internal/scheduler"
 	"aort-r/internal/supervisor"
@@ -45,6 +46,7 @@ func NewServerWithEvents(cfg config.Config, hub *events.Hub) http.Handler {
 		demo:       demo.NewSoftwareDemoRunner(),
 		cvm:        cvm.NewStore(sink),
 		ipc:        ipc.NewBlackboard(),
+		kernel:     kernel.NewObserver(kernel.Config{Sink: sink}),
 		checkpoint: checkpoint.NewStore(filepath.Join(cfg.DataDir, "checkpoints")),
 		workspace:  workspace.NewManager(workspace.Config{Root: filepath.Join(cfg.DataDir, "workspaces"), Sink: sink}),
 		scheduler:  scheduler.New(scheduler.PolicyTokenCFSPrefixAffinity),
@@ -60,7 +62,9 @@ func NewServerWithEvents(cfg config.Config, hub *events.Hub) http.Handler {
 		WorkspaceRoot: filepath.Join(cfg.DataDir, "workspaces"),
 		Reporter:      server.handleAgentReport,
 		Spawner:       server.spawnAgent,
+		ExecObserver:  server.observeKernelExec,
 	})
+	_ = server.kernel.Start(context.Background())
 	server.startWorkerRuntime()
 	server.recoverFromCheckpoints()
 	server.routes()
@@ -74,6 +78,7 @@ type Server struct {
 	demo             *demo.Runner
 	cvm              *cvm.Store
 	ipc              *ipc.Blackboard
+	kernel           *kernel.Observer
 	checkpoint       *checkpoint.Store
 	workspace        *workspace.Manager
 	scheduler        *scheduler.Scheduler
@@ -126,6 +131,8 @@ func (s *Server) routes() {
 	mux.HandleFunc("/api/context/agents/", s.handleContextAgent)
 	mux.HandleFunc("/api/ipc/metrics", s.handleIPCMetrics)
 	mux.HandleFunc("/api/ipc/topics", s.handleIPCTopics)
+	mux.HandleFunc("/api/kernel/status", s.handleKernelStatus)
+	mux.HandleFunc("/api/kernel/events", s.handleKernelEvents)
 	mux.HandleFunc("/api/checkpoints", s.handleCheckpoints)
 	mux.HandleFunc("/api/recovery/status", s.handleRecoveryStatus)
 	mux.HandleFunc("/api/syscalls", s.handleSyscalls)
@@ -338,6 +345,16 @@ func (s *Server) runDemoRuntimeEvidence(ctx context.Context, result demo.Result)
 		Name:      "llm.call",
 		Args: map[string]any{
 			"role": "planner",
+		},
+	})
+	s.syscalls.Handle(ctx, syscallgw.Request{
+		RequestID: result.TaskID + "-tool-exec",
+		TaskID:    result.TaskID,
+		AgentID:   plannerID,
+		Name:      "tool.exec",
+		Args: map[string]any{
+			"command":    "pwd",
+			"timeout_ms": 1000,
 		},
 	})
 	s.syscalls.Handle(ctx, syscallgw.Request{
@@ -590,6 +607,24 @@ func (s *Server) handleIPCTopics(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	writeJSON(w, http.StatusOK, s.ipc.Topics())
+}
+
+func (s *Server) handleKernelStatus(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		w.Header().Set("Allow", http.MethodGet)
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	writeJSON(w, http.StatusOK, s.kernel.Status())
+}
+
+func (s *Server) handleKernelEvents(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		w.Header().Set("Allow", http.MethodGet)
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	writeJSON(w, http.StatusOK, s.kernel.Events())
 }
 
 func (s *Server) handleCheckpoints(w http.ResponseWriter, r *http.Request) {
@@ -912,6 +947,18 @@ func (s *Server) handleAgentReport(report syscallgw.Report) {
 		TaskID:  report.TaskID,
 		Status:  report.Status,
 		Payload: report.Payload,
+	})
+}
+
+func (s *Server) observeKernelExec(observation syscallgw.ExecObservation) {
+	s.kernel.ObserveExec(kernel.ExecObservation{
+		TaskID:    observation.TaskID,
+		AgentID:   observation.AgentID,
+		PID:       observation.PID,
+		Command:   observation.Command,
+		Args:      observation.Args,
+		Workspace: observation.Workspace,
+		Status:    observation.Status,
 	})
 }
 

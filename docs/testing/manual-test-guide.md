@@ -32,7 +32,7 @@ Expected:
 - AVP page lists real Agent IDs, state, PID, cgroup path/mode, memory, PIDs, and capsule controls.
 - Context page lists CVM pages, ref counts, saved bytes, and saved tokens.
 - Context page also lists IPC topic/page references and avoided-copy bytes.
-- Timeline shows runtime, syscall, IPC, LLM, spawn, checkpoint, and supervisor events.
+- Timeline shows runtime, syscall, kernel, IPC, LLM, spawn, checkpoint, and supervisor events.
 - Experiments page shows E1 scheduler bars, E2 fault isolation table, and E3 context plus IPC metrics.
 
 ## Stage 1 Real Worker Demo
@@ -44,6 +44,8 @@ curl -s -X POST http://127.0.0.1:8080/api/demo/run
 sleep 3
 curl -s http://127.0.0.1:8080/api/agents
 curl -s http://127.0.0.1:8080/api/syscalls
+curl -s http://127.0.0.1:8080/api/kernel/status
+curl -s http://127.0.0.1:8080/api/kernel/events
 curl -s http://127.0.0.1:8080/api/ipc/metrics
 curl -s http://127.0.0.1:8080/api/ipc/topics
 curl -s http://127.0.0.1:8080/api/checkpoints
@@ -58,12 +60,14 @@ Expected:
 - `/api/demo/run` starts Planner, Coder, and Tester worker processes.
 - `/api/agents` returns non-zero `pid` values.
 - `/api/syscalls` contains `context.materialize`, `llm.call`, `ipc.publish`, `ipc.poll`, `agent.spawn`, `tool.exec`, `context.write_delta`, and `agent.report`.
+- `/api/kernel/status` returns `mode=degraded-proxy` unless a future true eBPF attachment is enabled.
+- `/api/kernel/events` contains `kernel.exec` records after `tool.exec` runs.
 - `/api/ipc/metrics` reports positive `avoided_copy_bytes`.
 - `/api/checkpoints` contains a `runtime-state` snapshot.
 - `/api/recovery/status` returns `checkpoint-light` recovery metadata.
 - `/api/scheduler/decisions` contains `token-cfs-prefix-affinity` decisions.
 - `/api/context/stats` reports positive `saved_bytes` and `saved_tokens`.
-- SSE contains `agent.registered`, `scheduler.selected`, `syscall.started`, `syscall.finished`, `llm.called`, `ipc.published`, `ipc.polled`, `agent.spawned`, `checkpoint.created`, and `agent.report`.
+- SSE contains `agent.registered`, `scheduler.selected`, `syscall.started`, `syscall.finished`, `kernel.observer_disabled`, `kernel.exec`, `llm.called`, `ipc.published`, `ipc.polled`, `agent.spawned`, `checkpoint.created`, and `agent.report`.
 
 Heartbeat lost check:
 
@@ -113,6 +117,22 @@ Expected:
 
 - `tool.exec` records include `duration_ms`, `status`, `input_size`, and `output_size`.
 - Timeline contains paired `syscall.started` and `syscall.finished` events for each worker syscall.
+
+## Kernel Observer Check
+
+```bash
+curl -s -X POST http://127.0.0.1:8080/api/demo/run
+curl -s http://127.0.0.1:8080/api/kernel/status
+curl -s http://127.0.0.1:8080/api/kernel/events
+curl -N --max-time 2 http://127.0.0.1:8080/api/events
+```
+
+Expected:
+
+- `/api/kernel/status` reports `probe=syscall-gateway-proxy` and `mode=degraded-proxy` on macOS/non-root environments.
+- `/api/kernel/events` contains `kernel.exec` with command, args, PID, workspace, status, mode, and probe.
+- SSE contains `kernel.observer_disabled` and `kernel.exec`.
+- Dashboard Timeline shows Kernel Mode, Probe, Kernel Events, and BTF metrics.
 
 ## IPC, LLM, Spawn, and Checkpoint Check
 
@@ -201,4 +221,4 @@ Expected:
 
 ## Later Iterations
 
-- Remaining V2/V3 extensions: real overlayfs mount/commit, richer Supervisor retry policies, eBPF timeline, durable CVM page-content checkpointing, PSI, and openKylin/OpenHarmony smoke tests.
+- Remaining V2/V3 extensions: real overlayfs mount/commit, richer Supervisor retry policies, true `sched_process_exec` eBPF attachment, durable CVM page-content checkpointing, PSI, and openKylin/OpenHarmony smoke tests.
