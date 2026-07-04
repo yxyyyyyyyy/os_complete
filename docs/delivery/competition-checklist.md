@@ -1,5 +1,16 @@
 # AORT-R Competition Checklist
 
+## Current Degraded-Real Evidence Matrix
+
+| 能力 | 状态 | 证据位置 | 备注 |
+| -- | -- | ---- | -- |
+| worker PID | degraded smoke passed | `experiments/results/openeuler_smoke/agents.json` | `agents.json` 中包含真实 worker PID；汇总也见 `manual_smoke_summary.json`。 |
+| syscall | degraded smoke passed | `experiments/results/openeuler_smoke/syscalls.json` | syscall gateway 有 21 条记录。 |
+| CVM | degraded smoke passed | `experiments/results/openeuler_smoke/context_stats.json` | CVM API 返回 page / shared / saved metrics。 |
+| scheduler | degraded smoke passed | `experiments/results/openeuler_smoke/scheduler_decisions.json` | scheduler decision API 返回 token-CFS-prefix-affinity 决策。 |
+| fault | degraded smoke passed | `experiments/results/openeuler_smoke/fault_tool_timeout.json` | tool-timeout fault 返回 `202`，状态 `RECOVERED`。 |
+| cgroup real | degraded smoke passed; real cgroup v2 pending | `experiments/results/openeuler_smoke/agent_summary.json` | 当前 `capsule_mode=degraded`，`cgroup_path=degraded://...`，不是 `/sys/fs/cgroup/...`。下一步必须换 `cgroup2fs` 环境重新 smoke。 |
+
 ## Minimum Runnable Evidence
 
 | 状态 | 检查项 | 证据位置 |
@@ -9,9 +20,9 @@
 | [x] | Worker registration uses Unix Domain Socket. | `experiments/results/openeuler_smoke/agents.json` and `aortd.log` |
 | [x] | Worker heartbeat is tracked by `aortd`. | `experiments/results/openeuler_smoke/agents.json` |
 | [x] | Heartbeat timeout marks an Agent as `FAILED`. | `docs/testing/manual-test-guide.md` heartbeat lost check |
-| [x] | Each Agent has a cgroup path; macOS/non-root returns degraded paths. | `experiments/results/openeuler_smoke/agent_summary.json` |
-| [x] | `memory_current`, `pids_current`, and `cpu_stat` are exposed when cgroup v2 is available. | `experiments/results/openeuler_smoke/agent_summary.json` |
-| [x] | `freeze`, `unfreeze`, and `kill` Agent APIs exist. | `experiments/results/openeuler_smoke/freeze.json`, `unfreeze.json`, `kill.json` |
+| [x] | Each Agent has a cgroup path; current smoke returns honest degraded paths. | `experiments/results/openeuler_smoke/agent_summary.json` |
+| [ ] | Real cgroup v2 `memory.current`, `pids.current`, and `cpu.stat` evidence. | `experiments/results/openeuler_smoke/agent_summary.json` shows degraded; real cgroup v2 pending |
+| [x] | `freeze`, `unfreeze`, and `kill` Agent APIs exist; current degraded smoke returns `409` for freeze/unfreeze and `200` for kill. | `experiments/results/openeuler_smoke/freeze.json`, `unfreeze.json`, `kill.json` |
 | [x] | CVM page store and per-agent page table exist. | `experiments/results/openeuler_smoke/context_stats.json` |
 | [x] | Shared context pages increase ref counts and saved byte/token metrics. | `experiments/results/openeuler_smoke/context_stats.json` |
 | [x] | `context.materialize` is served through the syscall gateway. | `experiments/results/openeuler_smoke/syscalls.json` |

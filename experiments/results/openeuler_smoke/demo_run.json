@@ -1,0 +1,5 @@
+{
+  "status": "unavailable_from_manual_run",
+  "http_status": "202",
+  "note": "manual_smoke_summary.json recorded HTTP 202, but the raw curl body was not preserved in the first committed evidence set."
+}

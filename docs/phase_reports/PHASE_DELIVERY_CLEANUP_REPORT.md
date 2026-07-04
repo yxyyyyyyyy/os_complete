@@ -9,7 +9,7 @@
 | `bash -n scripts/*.sh` 是否通过 | 已通过。 |
 | `docs/testing/manual-test-guide.md` 是否清除本机路径 | 已清除，未发现指定本机路径残留。 |
 | README 是否重新排版 | 已重新排版，标题、段落、列表和代码块均保持正常 Markdown 结构。 |
-| PHASE_15 是否仍是 pending | 是，`docs/phase_reports/PHASE_15_OPEN_EULER_SMOKE_REPORT.md` 保持 `mode=pending`。 |
+| PHASE_15 状态 | 已由后续 PHASE_16 同步为 `mode=degraded-real`。 |
 
 ## 命令记录
 
@@ -37,9 +37,11 @@ GOCACHE="$PWD/.cache/go-build" go test ./...
 bash -n scripts/*.sh
 ```
 
-## 当前还缺的 openEuler real 证据
+## 当前 openEuler 证据状态
 
-当前没有真实 openEuler 24.03 LTS / Linux root / cgroup v2 实机运行输出，因此以下文件仍待在 openEuler 上生成，不能作为 real 证据：
+当前已有一次 openEuler 24.03 LTS / Linux root degraded-real smoke 输出，但仍缺
+unified cgroup v2 的 `capsule_mode=real` 满血证据。以下文件记录 degraded-real
+证据，不能作为 cgroup v2 real 成功证据：
 
 - `experiments/results/openeuler_smoke/env_check.txt`
 - `experiments/results/openeuler_smoke/agents.json`
@@ -54,4 +56,16 @@ openEuler 实机运行入口：
 ```bash
 bash scripts/check_openeuler_env.sh
 bash scripts/smoke_openeuler.sh
+```
+
+下一次 real cgroup v2 smoke 之前必须确认：
+
+```bash
+stat -fc %T /sys/fs/cgroup
+```
+
+输出为：
+
+```text
+cgroup2fs
 ```

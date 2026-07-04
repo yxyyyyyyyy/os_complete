@@ -1,19 +1,23 @@
 # PHASE_15_OPEN_EULER_SMOKE_REPORT
 
-mode=partial-real-openeuler
+mode=degraded-real
 
-本报告记录 AORT-R 在一台公网 openEuler 24.03 LTS 服务器上的真实验证结果。
+本报告记录 AORT-R 在一台公网 openEuler 24.03 LTS / 类 openEuler 环境服务器上的
+真实验证结果。
 本次没有伪造 cgroup v2 证据：服务器当前不是统一 cgroup v2 挂载，因此正式
 `scripts/smoke_openeuler.sh` 在环境门槛处失败；随后执行了手动 degraded API
 smoke，用于证明 Runtime 可启动、可运行 demo、可输出调度/CVM/syscall/fault
 证据。
+
+当前结论：已经完成一次 degraded-real smoke；`go test` 通过，API smoke 通过，
+但尚未获得 `capsule_mode=real` 的 cgroup v2 满血证据。
 
 ## 执行环境
 
 | 项目 | 结果 |
 | --- | --- |
 | 服务器目录 | `/root/aort-r-smoke-git` |
-| Git commit | `383ae93` |
+| Git commit | degraded smoke 运行于 `383ae93`，证据已同步至后续交付提交 |
 | openEuler 版本 | `openEuler 24.03 (LTS)` |
 | kernel 版本 | `6.6.0-112.0.0.104.oe2403.x86_64` |
 | 是否 root | 是，`uid=0(root)` |
@@ -61,18 +65,26 @@ Runtime 在 openEuler/root/Go 1.22.12 上可编译测试通过，并能在 cgrou
 | `kill` | `200` | `kill.json` |
 | `/api/demo/fault/tool-timeout` | `202`，`TOOL_TIMEOUT` recovered | `fault_tool_timeout.json` |
 
+`health.json` 与 `demo_run.json` 在当前证据集中是 placeholder，内容明确标记为
+`unavailable_from_manual_run`；对应 HTTP 状态以 `manual_smoke_summary.json`
+为准，不补写伪造 API body。
+
 ## 关键样例
 
 ### Agent
 
 ```json
 {
+  "mode": "degraded-real",
+  "real_cgroup_v2": false,
   "agent_id": "task-1783176060469225965-reviewer",
   "pid": 7619,
   "capsule_mode": "degraded",
   "cgroup_path": "degraded://task-1783176060469225965-reviewer",
   "memory_current": 0,
-  "pids_current": 0
+  "pids_current": 0,
+  "freeze": "409",
+  "unfreeze": "409"
 }
 ```
 
@@ -123,12 +135,26 @@ Runtime 在 openEuler/root/Go 1.22.12 上可编译测试通过，并能在 cgrou
 | LLM provider | `mock` | 当前默认使用 mock provider，不把外部 LLM API key 写入仓库。 |
 | checkpoint recovery | `checkpoint-light` | 当前恢复 AVP 表、scheduler vruntime 和 CVM page references；page content durable backing 仍是后续工作。 |
 
-## 下一步最该做的 3 件事
+## 下一步 real smoke 要求
 
 1. 准备真正启用 unified cgroup v2 的 openEuler 24.03 环境，要求
    `stat -fc %T /sys/fs/cgroup` 输出 `cgroup2fs`，并且 root 可写
    `/sys/fs/cgroup/aort.slice`。
-2. 在该环境重新执行 `bash scripts/smoke_openeuler.sh`，目标是生成 real
+2. 在该环境先执行 `bash scripts/check_openeuler_env.sh`，确认没有 cgroup v2
+   failure。
+3. 再执行 `bash scripts/smoke_openeuler.sh`，目标是生成 real
    `memory.current`、`pids.current`、`freeze/unfreeze=2xx` 证据。
-3. 保留当前 degraded 证据作为对照组，再补一组 cgroup v2 real 证据，用于答辩中
+4. 保留当前 degraded 证据作为对照组，再补一组 cgroup v2 real 证据，用于答辩中
    区分“环境不满足导致降级”和“Runtime 真实 OS 控制能力”。
+
+必须满足：
+
+```bash
+stat -fc %T /sys/fs/cgroup
+```
+
+输出：
+
+```text
+cgroup2fs
+```

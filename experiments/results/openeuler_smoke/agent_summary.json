@@ -1,8 +1,13 @@
 {
+  "mode": "degraded-real",
+  "real_cgroup_v2": false,
   "agent_id": "task-1783176060469225965-reviewer",
   "pid": 7619,
   "capsule_mode": "degraded",
   "cgroup_path": "degraded://task-1783176060469225965-reviewer",
   "memory_current": 0,
-  "pids_current": 0
+  "pids_current": 0,
+  "freeze": "409",
+  "unfreeze": "409",
+  "kill": "200"
 }

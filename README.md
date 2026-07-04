@@ -132,6 +132,40 @@ bash scripts/smoke_openeuler.sh
 
 Smoke outputs are written to `experiments/results/openeuler_smoke/`.
 
+## 当前 Smoke 状态
+
+当前已完成一次 degraded-real smoke：
+
+- Go test 通过
+- API smoke 通过
+- syscall / CVM / scheduler / fault API 有响应
+- 当前服务器 cgroup capsule 为 degraded
+- 尚未获得 `capsule_mode=real` 的 cgroup v2 证据
+
+当前证据位于 `experiments/results/openeuler_smoke/`。其中
+`manual_smoke_summary.json` 记录了 HTTP 状态汇总，`agent_summary.json`
+明确标记：
+
+```json
+{
+  "mode": "degraded-real",
+  "capsule_mode": "degraded",
+  "real_cgroup_v2": false
+}
+```
+
+下一步 real 验证要求：
+
+```bash
+stat -fc %T /sys/fs/cgroup
+# 必须输出 cgroup2fs
+
+bash scripts/check_openeuler_env.sh
+bash scripts/smoke_openeuler.sh
+```
+
+不要把当前 degraded smoke 解释为 cgroup v2 real 证据。
+
 ## openEuler Notes
 
 Use `configs/openeuler-dev.yaml` when running in an openEuler VM with root
