@@ -25,10 +25,35 @@ func TestPrepareWritesCgroupFiles(t *testing.T) {
 	if runtime.Mode != ModeReal {
 		t.Fatalf("mode = %s", runtime.Mode)
 	}
+	if runtime.CgroupPath != filepath.Join(root, "agent-1") {
+		t.Fatalf("cgroup path = %s", runtime.CgroupPath)
+	}
 	assertFileContains(t, filepath.Join(runtime.CgroupPath, "memory.max"), "256M")
 	assertFileContains(t, filepath.Join(runtime.CgroupPath, "pids.max"), "64")
 	assertFileContains(t, filepath.Join(runtime.CgroupPath, "cpu.max"), "100000 100000")
 	assertFileContains(t, filepath.Join(runtime.CgroupPath, "cgroup.procs"), "12345")
+}
+
+func TestStatsReadRealCgroupFiles(t *testing.T) {
+	root := t.TempDir()
+	mgr := NewManager(Config{Root: root, ForceReal: true, AllowDegraded: false})
+	runtime, err := mgr.Prepare("agent-1", 12345)
+	if err != nil {
+		t.Fatalf("Prepare: %v", err)
+	}
+	writeFile(t, filepath.Join(runtime.CgroupPath, "memory.current"), "18350080\n")
+	writeFile(t, filepath.Join(runtime.CgroupPath, "pids.current"), "2\n")
+	writeFile(t, filepath.Join(runtime.CgroupPath, "cpu.stat"), "usage_usec 123456\nuser_usec 1000\n")
+	writeFile(t, filepath.Join(runtime.CgroupPath, "cgroup.events"), "populated 1\nfrozen 1\n")
+	writeFile(t, filepath.Join(runtime.CgroupPath, "cgroup.freeze"), "1\n")
+
+	stats := mgr.Stats("agent-1")
+	if stats.Mode != ModeReal || stats.MemoryCurrent != 18350080 || stats.PidsCurrent != 2 {
+		t.Fatalf("stats = %#v", stats)
+	}
+	if stats.CPUStat["usage_usec"] != 123456 || stats.Events["populated"] != 1 || !stats.Frozen {
+		t.Fatalf("stats maps/frozen = %#v", stats)
+	}
 }
 
 func TestFreezeAndUnfreezeWriteCgroupFreeze(t *testing.T) {
@@ -70,5 +95,12 @@ func assertFileContains(t *testing.T, path string, want string) {
 	}
 	if strings.TrimSpace(string(data)) != want {
 		t.Fatalf("%s = %q want %q", path, strings.TrimSpace(string(data)), want)
+	}
+}
+
+func writeFile(t *testing.T, path string, value string) {
+	t.Helper()
+	if err := os.WriteFile(path, []byte(value), 0o644); err != nil {
+		t.Fatalf("WriteFile(%s): %v", path, err)
 	}
 }

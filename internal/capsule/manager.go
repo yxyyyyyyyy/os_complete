@@ -38,6 +38,7 @@ type Stats struct {
 	PidsCurrent   int64             `json:"pids_current"`
 	CPUStat       map[string]uint64 `json:"cpu_stat"`
 	Events        map[string]uint64 `json:"events"`
+	Frozen        bool              `json:"frozen"`
 	Mode          string            `json:"capsule_mode"`
 	Error         string            `json:"error,omitempty"`
 }
@@ -82,7 +83,7 @@ func (m *Manager) Prepare(agentID string, pid int) (Runtime, error) {
 		return Runtime{}, err
 	}
 
-	path := filepath.Join(m.cfg.Root, "agent-"+safeName(agentID))
+	path := filepath.Join(m.cfg.Root, safeName(agentID))
 	if err := os.MkdirAll(path, 0o755); err != nil {
 		return Runtime{}, err
 	}
@@ -126,6 +127,7 @@ func (m *Manager) Stats(agentID string) Stats {
 		PidsCurrent:   readInt(filepath.Join(rt.CgroupPath, "pids.current")),
 		CPUStat:       readKV(filepath.Join(rt.CgroupPath, "cpu.stat")),
 		Events:        readKV(filepath.Join(rt.CgroupPath, "cgroup.events")),
+		Frozen:        readInt(filepath.Join(rt.CgroupPath, "cgroup.freeze")) == 1,
 		Mode:          rt.Mode,
 	}
 }
@@ -150,6 +152,24 @@ func (m *Manager) Kill(agentID string) error {
 	}
 	time.Sleep(500 * time.Millisecond)
 	_ = syscall.Kill(pid, syscall.SIGKILL)
+	return nil
+}
+
+func (m *Manager) Destroy(agentID string) error {
+	rt, ok := m.Runtime(agentID)
+	if !ok {
+		return fmt.Errorf("agent %q has no capsule", agentID)
+	}
+	m.mu.Lock()
+	delete(m.runtimes, agentID)
+	delete(m.pids, agentID)
+	m.mu.Unlock()
+	if rt.Mode != ModeReal {
+		return nil
+	}
+	if err := os.Remove(rt.CgroupPath); err != nil && !os.IsNotExist(err) {
+		return fmt.Errorf("destroy cgroup: %w", err)
+	}
 	return nil
 }
 

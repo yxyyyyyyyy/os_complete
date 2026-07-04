@@ -129,6 +129,8 @@ func (s *Server) routes() {
 	mux.HandleFunc("/api/faults", s.handleFaults)
 	mux.HandleFunc("/api/agents", s.handleAgents)
 	mux.HandleFunc("/api/agents/", s.handleAgentAction)
+	mux.HandleFunc("/api/capsules", s.handleCapsules)
+	mux.HandleFunc("/api/capsules/", s.handleCapsuleSubresource)
 	mux.HandleFunc("/api/context/pages", s.handleContextPages)
 	mux.HandleFunc("/api/context/stats", s.handleContextStats)
 	mux.HandleFunc("/api/context/agents/", s.handleContextAgent)
@@ -563,6 +565,145 @@ func (s *Server) handleAgentAction(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	writeJSON(w, http.StatusOK, map[string]string{"status": "ok", "action": action})
+}
+
+type capsuleEvidence struct {
+	AgentID       string            `json:"agent_id"`
+	TaskID        string            `json:"task_id,omitempty"`
+	Role          string            `json:"role,omitempty"`
+	PID           int               `json:"pid"`
+	EvidenceMode  string            `json:"evidence_mode"`
+	RealCgroupV2  bool              `json:"real_cgroup_v2"`
+	CapsuleMode   string            `json:"capsule_mode"`
+	CgroupPath    string            `json:"cgroup_path"`
+	MemoryCurrent int64             `json:"memory_current"`
+	PidsCurrent   int64             `json:"pids_current"`
+	CPUStat       map[string]uint64 `json:"cpu_stat"`
+	Events        map[string]uint64 `json:"events"`
+	Frozen        bool              `json:"frozen"`
+	Error         string            `json:"error,omitempty"`
+}
+
+func (s *Server) handleCapsules(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/api/capsules" {
+		http.NotFound(w, r)
+		return
+	}
+	if r.Method != http.MethodGet {
+		w.Header().Set("Allow", http.MethodGet)
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	if s.registry == nil || s.capsules == nil {
+		http.Error(w, "capsule runtime is not enabled", http.StatusServiceUnavailable)
+		return
+	}
+	agents := s.registry.List()
+	out := make([]capsuleEvidence, 0, len(agents))
+	for _, agent := range agents {
+		out = append(out, s.capsuleEvidence(agent))
+	}
+	writeJSON(w, http.StatusOK, out)
+}
+
+func (s *Server) handleCapsuleSubresource(w http.ResponseWriter, r *http.Request) {
+	rest := strings.TrimPrefix(r.URL.Path, "/api/capsules/")
+	agentID, action, hasAction := strings.Cut(rest, "/")
+	if agentID == "" {
+		http.NotFound(w, r)
+		return
+	}
+	if !hasAction {
+		if r.Method != http.MethodGet {
+			w.Header().Set("Allow", http.MethodGet)
+			http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+			return
+		}
+		if s.registry == nil || s.capsules == nil {
+			http.Error(w, "capsule runtime is not enabled", http.StatusServiceUnavailable)
+			return
+		}
+		agent, ok := s.registry.Get(agentID)
+		if !ok {
+			http.NotFound(w, r)
+			return
+		}
+		writeJSON(w, http.StatusOK, s.capsuleEvidence(agent))
+		return
+	}
+	if r.Method != http.MethodPost {
+		w.Header().Set("Allow", http.MethodPost)
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	s.handleCapsuleAction(w, agentID, action)
+}
+
+func (s *Server) handleCapsuleAction(w http.ResponseWriter, agentID, action string) {
+	if s.capsules == nil {
+		http.Error(w, "capsule runtime is not enabled", http.StatusServiceUnavailable)
+		return
+	}
+	var err error
+	switch action {
+	case "freeze":
+		err = s.capsules.Freeze(agentID)
+	case "unfreeze":
+		err = s.capsules.Unfreeze(agentID)
+	case "kill":
+		err = s.capsules.Kill(agentID)
+		if err == nil && s.registry != nil {
+			s.registry.SetState(agentID, avp.StateKilled)
+		}
+	default:
+		http.NotFound(w, nil)
+		return
+	}
+	if err != nil {
+		writeJSON(w, http.StatusConflict, map[string]string{"status": "error", "error": err.Error()})
+		return
+	}
+	if s.registry != nil {
+		if agent, ok := s.registry.Get(agentID); ok {
+			s.sink.Publish(events.New("capsule."+action, agent.TaskID, agent.AgentID, "runtime", map[string]any{"action": action}))
+		}
+	}
+	writeJSON(w, http.StatusOK, map[string]string{"status": "ok", "action": action})
+}
+
+func (s *Server) capsuleEvidence(agent avp.AVP) capsuleEvidence {
+	stats := capsule.Stats{Mode: capsule.ModeDegraded, Error: "capsule runtime is not enabled"}
+	runtimePath := agent.CgroupPath
+	if s.capsules != nil {
+		stats = s.capsules.Stats(agent.AgentID)
+		if runtime, ok := s.capsules.Runtime(agent.AgentID); ok {
+			runtimePath = runtime.CgroupPath
+		}
+	}
+	mode := stats.Mode
+	if mode == "" {
+		mode = agent.CapsuleMode
+	}
+	evidenceMode := "degraded"
+	if mode == capsule.ModeReal {
+		evidenceMode = "real"
+	}
+	return capsuleEvidence{
+		AgentID:       agent.AgentID,
+		TaskID:        agent.TaskID,
+		Role:          agent.Role,
+		PID:           agent.PID,
+		EvidenceMode:  evidenceMode,
+		RealCgroupV2:  mode == capsule.ModeReal,
+		CapsuleMode:   mode,
+		CgroupPath:    runtimePath,
+		MemoryCurrent: stats.MemoryCurrent,
+		PidsCurrent:   stats.PidsCurrent,
+		CPUStat:       stats.CPUStat,
+		Events:        stats.Events,
+		Frozen:        stats.Frozen,
+		Error:         stats.Error,
+	}
 }
 
 func (s *Server) handleContextPages(w http.ResponseWriter, r *http.Request) {
