@@ -133,6 +133,7 @@ Expected:
 
 ```bash
 curl -s -X POST http://127.0.0.1:8080/api/demo/fault/tool-timeout
+curl -s -X POST http://127.0.0.1:8080/api/demo/fault/rmrf
 curl -s http://127.0.0.1:8080/api/faults
 curl -s http://127.0.0.1:8080/api/syscalls
 ```
@@ -141,7 +142,8 @@ Expected:
 
 - Fault response has `type=TOOL_TIMEOUT` and `status=RECOVERED`.
 - `/api/syscalls` contains a `tool.exec` record with `status=TIMEOUT`.
-- SSE contains `supervisor.detected`.
+- The rmrf response has `type=WORKSPACE_ROLLBACK`, `workspace_mode=degraded-copy`, `rollback_success=true`, and `base_intact=true`.
+- SSE contains `supervisor.detected`, `workspace.created`, `workspace.rmrf`, and `workspace.rollback`.
 
 ## Experiment Check
 
@@ -159,4 +161,4 @@ Expected:
 
 ## Later Iterations
 
-- Remaining V2/V3 extensions: overlayfs rollback, richer Supervisor retry policies, eBPF timeline, full daemon checkpoint recovery, PSI, and systemd deployment.
+- Remaining V2/V3 extensions: real overlayfs mount/commit, richer Supervisor retry policies, eBPF timeline, full daemon checkpoint recovery, PSI, and systemd deployment.

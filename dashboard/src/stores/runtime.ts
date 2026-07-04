@@ -146,6 +146,10 @@ export function connectEvents() {
     'llm.called',
     'agent.spawn.requested',
     'agent.spawned',
+    'workspace.snapshot.created',
+    'workspace.created',
+    'workspace.rmrf',
+    'workspace.rollback',
     'supervisor.detected',
     'task.completed'
   ]
@@ -171,6 +175,7 @@ function addEvent(event: RuntimeEvent) {
     event.type.startsWith('context.') ||
     event.type.startsWith('ipc.') ||
     event.type.startsWith('llm.') ||
+    event.type.startsWith('workspace.') ||
     event.type.startsWith('supervisor.') ||
     event.type.startsWith('syscall.')
   ) {

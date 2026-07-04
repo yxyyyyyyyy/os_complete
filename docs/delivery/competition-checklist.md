@@ -22,6 +22,7 @@
 - [x] Scheduler supports FIFO, token-CFS, and token-CFS-prefix-affinity.
 - [x] Dashboard Overview, AVP, Context, Timeline, and Experiments pages use real APIs.
 - [x] Tool timeout fault demo exists at `POST /api/demo/fault/tool-timeout`.
+- [x] Workspace rmrf rollback demo exists at `POST /api/demo/fault/rmrf`.
 - [x] Lightweight checkpoint snapshots are exposed through `GET /api/checkpoints`.
 - [x] Experiment JSON/CSV files exist under `experiments/results/`.
 
@@ -37,11 +38,12 @@
 - [x] IPC Blackboard API: `GET /api/ipc/metrics`, `GET /api/ipc/topics`.
 - [x] LLM Router abstraction with mock provider and llama.cpp timing parser.
 - [x] Checkpoint evidence API and `checkpoint.created` timeline event.
+- [x] Degraded-copy workspace rollback with `workspace.created`, `workspace.rmrf`, and `workspace.rollback` events.
 - [x] openEuler deployment guide and runnable helper scripts.
 
 ## Remaining Enhancement Targets
 
-- [ ] overlayfs workspace commit/rollback.
+- [ ] Real overlayfs mount/commit path on openEuler root VM.
 - [ ] Supervisor retry policy beyond timeout fault recording.
 - [ ] eBPF execve observer.
 - [ ] systemd deployment.

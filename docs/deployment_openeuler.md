@@ -76,10 +76,11 @@ Outputs:
 | Unified syscall abstraction | `/api/syscalls`, `tool.exec`, `llm.call`, `agent.spawn` |
 | Dynamic task generation | `agent.spawn.requested`, `agent.spawned` timeline events |
 | Fault isolation | `POST /api/demo/fault/tool-timeout`, `/api/faults`, E2 results |
+| Workspace rollback | `POST /api/demo/fault/rmrf`, `workspace.rollback`, `base_intact` |
 | Checkpoint evidence | `/api/checkpoints`, `checkpoint.created` timeline events |
 
 ## Known Limits
 
-- Full overlayfs commit/rollback is not yet integrated into tool execution; current workspace isolation uses per-Agent workspace directories and degraded rollback evidence.
+- Workspace rollback is implemented in degraded-copy mode and proves that an Agent workspace can be destroyed and restored from a base snapshot without touching the base. Real overlayfs mount/commit is the next openEuler-root enhancement.
 - eBPF observer is planned as an enhancement; the current timeline is application/syscall/runtime level.
 - DeepSeek and llama.cpp providers are represented by the `llm.Router` interface and mock provider in this repository; real provider credentials and local model paths should be configured outside Git.

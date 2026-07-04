@@ -33,3 +33,27 @@ func TestToolTimeoutFaultEndpointRecordsFaultAndSyscall(t *testing.T) {
 		t.Fatalf("syscalls status=%d body=%s", syscallsRec.Code, syscallsRec.Body.String())
 	}
 }
+
+func TestWorkspaceRMFaultRollsBackAgentWorkspace(t *testing.T) {
+	srv := NewServer(config.Config{HTTPAddr: "127.0.0.1:8080", Mode: "mock", DataDir: t.TempDir()})
+
+	faultReq := httptest.NewRequest(http.MethodPost, "/api/demo/fault/rmrf", nil)
+	faultRec := httptest.NewRecorder()
+	srv.ServeHTTP(faultRec, faultReq)
+	if faultRec.Code != http.StatusAccepted || !strings.Contains(faultRec.Body.String(), "WORKSPACE_ROLLBACK") {
+		t.Fatalf("fault status=%d body=%s", faultRec.Code, faultRec.Body.String())
+	}
+	if !strings.Contains(faultRec.Body.String(), `"rollback_success":true`) {
+		t.Fatalf("rollback evidence missing: %s", faultRec.Body.String())
+	}
+	if !strings.Contains(faultRec.Body.String(), `"workspace_mode":"degraded-copy"`) {
+		t.Fatalf("workspace mode missing: %s", faultRec.Body.String())
+	}
+
+	faultsReq := httptest.NewRequest(http.MethodGet, "/api/faults", nil)
+	faultsRec := httptest.NewRecorder()
+	srv.ServeHTTP(faultsRec, faultsReq)
+	if faultsRec.Code != http.StatusOK || !strings.Contains(faultsRec.Body.String(), "WORKSPACE_ROLLBACK") {
+		t.Fatalf("faults status=%d body=%s", faultsRec.Code, faultsRec.Body.String())
+	}
+}

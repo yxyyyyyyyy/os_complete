@@ -26,6 +26,7 @@ import (
 	syscallgw "aort-r/internal/syscall"
 	"aort-r/internal/trace"
 	"aort-r/internal/worker"
+	"aort-r/internal/workspace"
 )
 
 func NewServer(cfg config.Config) http.Handler {
@@ -45,6 +46,7 @@ func NewServerWithEvents(cfg config.Config, hub *events.Hub) http.Handler {
 		cvm:        cvm.NewStore(sink),
 		ipc:        ipc.NewBlackboard(),
 		checkpoint: checkpoint.NewStore(filepath.Join(cfg.DataDir, "checkpoints")),
+		workspace:  workspace.NewManager(workspace.Config{Root: filepath.Join(cfg.DataDir, "workspaces"), Sink: sink}),
 		scheduler:  scheduler.New(scheduler.PolicyTokenCFSPrefixAffinity),
 		supervisor: supervisor.NewManager(sink),
 		tasks:      make(map[string]demo.Result),
@@ -72,6 +74,7 @@ type Server struct {
 	cvm              *cvm.Store
 	ipc              *ipc.Blackboard
 	checkpoint       *checkpoint.Store
+	workspace        *workspace.Manager
 	scheduler        *scheduler.Scheduler
 	supervisor       *supervisor.Manager
 	syscalls         *syscallgw.Gateway
@@ -196,6 +199,9 @@ func (s *Server) handleDemoFault(w http.ResponseWriter, r *http.Request) {
 	switch kind {
 	case "tool-timeout", "timeout":
 		record := s.runToolTimeoutFault(r.Context())
+		writeJSON(w, http.StatusAccepted, record)
+	case "rmrf", "workspace-rmrf":
+		record := s.runWorkspaceRMFault()
 		writeJSON(w, http.StatusAccepted, record)
 	default:
 		http.NotFound(w, r)
@@ -406,6 +412,39 @@ func (s *Server) runToolTimeoutFault(ctx context.Context) supervisor.Record {
 			"syscall_status": response.Status,
 			"error":          response.Error,
 		},
+	})
+}
+
+func (s *Server) runWorkspaceRMFault() supervisor.Record {
+	taskID := fmt.Sprintf("fault-%d", time.Now().UnixNano())
+	agentID := taskID + "-agent"
+	_, snapshotErr := s.workspace.CreateBaseSnapshot(taskID, map[string]string{
+		"README.md":      "# AORT-R fault fixture\n",
+		"src/service.go": "package src\n\nfunc Stable() string { return \"base\" }\n",
+	})
+	result, rollbackErr := s.workspace.InjectRMAndRollback(taskID, agentID)
+	details := map[string]any{
+		"workspace_mode":   result.Mode,
+		"rollback_success": result.RollbackSuccess,
+		"base_intact":      result.BaseIntact,
+		"removed_entries":  result.RemovedEntries,
+		"workspace_path":   result.WorkspacePath,
+		"base_path":        result.BasePath,
+	}
+	var recoveryAction string
+	if snapshotErr != nil {
+		details["snapshot_error"] = snapshotErr.Error()
+	} else if rollbackErr != nil {
+		details["rollback_error"] = rollbackErr.Error()
+	} else {
+		recoveryAction = "agent workspace removed and restored from base snapshot"
+	}
+	return s.supervisor.Record(supervisor.Fault{
+		Type:           supervisor.FaultWorkspaceRollback,
+		TaskID:         taskID,
+		AgentID:        agentID,
+		RecoveryAction: recoveryAction,
+		Details:        details,
 	})
 }
 
