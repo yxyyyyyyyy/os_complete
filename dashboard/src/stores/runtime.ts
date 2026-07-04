@@ -8,6 +8,7 @@ import {
   getKernelStatus,
   getIPCMetrics,
   getIPCTopics,
+  getPressureStatus,
   getRecoveryStatus,
   getSchedulerDecisions,
   getTasks,
@@ -21,6 +22,7 @@ import {
   type IPCTopics,
   type KernelEvent,
   type KernelStatus,
+  type PressureStatus,
   type RecoveryStatus,
   type RuntimeEvent,
   type SchedulerDecision,
@@ -56,6 +58,26 @@ export const runtimeStore = reactive({
     event_count: 0
   } as KernelStatus,
   kernelEvents: [] as KernelEvent[],
+  pressureStatus: {
+    mode: 'degraded',
+    degraded: true,
+    reason: '',
+    cpu: {
+      some: { kind: 'some', avg10: 0, avg60: 0, avg300: 0, total: 0 },
+      full: { kind: 'full', avg10: 0, avg60: 0, avg300: 0, total: 0 }
+    },
+    memory: {
+      some: { kind: 'some', avg10: 0, avg60: 0, avg300: 0, total: 0 },
+      full: { kind: 'full', avg10: 0, avg60: 0, avg300: 0, total: 0 }
+    },
+    io: {
+      some: { kind: 'some', avg10: 0, avg60: 0, avg300: 0, total: 0 },
+      full: { kind: 'full', avg10: 0, avg60: 0, avg300: 0, total: 0 }
+    },
+    throttle: false,
+    throttle_reason: '',
+    sampled_at: 0
+  } as PressureStatus,
   recoveryStatus: {
     mode: 'checkpoint-light',
     degraded: true,
@@ -94,6 +116,7 @@ export async function refreshTasks() {
   runtimeStore.schedulerDecisions = await getSchedulerDecisions()
   runtimeStore.kernelStatus = await getKernelStatus()
   runtimeStore.kernelEvents = await getKernelEvents()
+  runtimeStore.pressureStatus = await getPressureStatus()
   runtimeStore.recoveryStatus = await getRecoveryStatus()
   runtimeStore.experimentResults = await getExperimentResults()
   await refreshContext()
@@ -163,6 +186,8 @@ export function connectEvents() {
     'agent.heartbeat_lost',
     'agent.state_changed',
     'scheduler.selected',
+    'scheduler.pressure_throttle',
+    'pressure.sampled',
     'syscall.started',
     'syscall.finished',
     'context.page.created',
@@ -211,6 +236,8 @@ function addEvent(event: RuntimeEvent) {
     event.type.startsWith('checkpoint.') ||
     event.type.startsWith('runtime.') ||
     event.type.startsWith('kernel.') ||
+    event.type.startsWith('pressure.') ||
+    event.type.startsWith('scheduler.') ||
     event.type.startsWith('workspace.') ||
     event.type.startsWith('supervisor.') ||
     event.type.startsWith('syscall.')

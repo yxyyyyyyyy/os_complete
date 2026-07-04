@@ -21,6 +21,8 @@
 - [x] Timeline sees `kernel.observer_disabled` and `kernel.exec` in honest degraded-proxy mode.
 - [x] Timeline sees `ipc.published`, `ipc.polled`, `llm.called`, `agent.spawn.requested`, and `agent.spawned`.
 - [x] Scheduler supports FIFO, token-CFS, and token-CFS-prefix-affinity.
+- [x] Pressure monitor exposes PSI/degraded status through `GET /api/pressure/status`.
+- [x] Scheduler timeline events include pressure mode/throttle/avg10 evidence.
 - [x] Dashboard Overview, AVP, Context, Timeline, and Experiments pages use real APIs.
 - [x] Tool timeout fault demo exists at `POST /api/demo/fault/tool-timeout`.
 - [x] Workspace rmrf rollback demo exists at `POST /api/demo/fault/rmrf`.
@@ -32,6 +34,7 @@
 
 - [x] Scheduler DecisionLog API: `GET /api/scheduler/decisions`.
 - [x] Scheduler policy API: `POST /api/scheduler/policy`.
+- [x] PSI pressure-aware scheduling evidence: `pressure.sampled`, `scheduler.pressure_throttle`, and `pressure_*` scheduler fields.
 - [x] E1 scheduler experiment.
 - [x] E2 fault isolation experiment.
 - [x] E3 context sharing and IPC avoided-copy experiment.
@@ -54,4 +57,3 @@
 - [ ] Supervisor retry policy beyond timeout fault recording.
 - [ ] True `sched_process_exec` eBPF attachment on openEuler root VM.
 - [ ] Durable CVM page-content and overlay upper-layer checkpointing.
-- [ ] PSI display.

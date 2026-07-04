@@ -23,6 +23,7 @@ Expected checks:
 - cgroup v2 is mounted at `/sys/fs/cgroup`.
 - `cgroup.controllers` is readable.
 - overlayfs is listed in `/proc/filesystems` when available.
+- PSI files exist under `/proc/pressure` or cgroup pressure files when pressure-aware scheduling evidence is desired.
 - Kernel BTF is available at `/sys/kernel/btf/vmlinux` when true eBPF attachment is desired.
 - bpffs exists at `/sys/fs/bpf` when true eBPF attachment is desired.
 
@@ -44,6 +45,7 @@ curl -s http://127.0.0.1:8080/api/syscalls
 curl -s http://127.0.0.1:8080/api/ipc/metrics
 curl -s http://127.0.0.1:8080/api/kernel/status
 curl -s http://127.0.0.1:8080/api/kernel/events
+curl -s http://127.0.0.1:8080/api/pressure/status
 curl -s http://127.0.0.1:8080/api/checkpoints
 curl -s http://127.0.0.1:8080/api/recovery/status
 ```
@@ -135,6 +137,7 @@ Outputs:
 | Checkpoint evidence | `/api/checkpoints`, `checkpoint.created` timeline events |
 | Daemon recovery | `deploy/systemd/aortd.service`, `scripts/demo-daemonkill.sh`, `/api/recovery/status`, `runtime.recovered` |
 | Kernel observability | `/api/kernel/status`, `/api/kernel/events`, `kernel.observer_disabled`, `kernel.exec` |
+| Pressure-aware scheduling | `/api/pressure/status`, `pressure.sampled`, scheduler event `pressure_*` fields |
 
 ## Known Limits
 

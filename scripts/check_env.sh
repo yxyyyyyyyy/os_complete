@@ -34,6 +34,12 @@ else
   echo "WARN: overlayfs not detected; workspace rollback should use degraded-copy mode"
 fi
 
+if [ -d /proc/pressure ]; then
+  echo "PSI: available"
+else
+  echo "WARN: /proc/pressure not found; pressure monitor will use degraded mode"
+fi
+
 if [ -f /sys/kernel/btf/vmlinux ]; then
   echo "kernel BTF: available"
 else

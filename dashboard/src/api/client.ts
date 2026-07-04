@@ -134,6 +134,31 @@ export interface KernelEvent {
   timestamp: number
 }
 
+export interface PressureLine {
+  kind: string
+  avg10: number
+  avg60: number
+  avg300: number
+  total: number
+}
+
+export interface PressureResource {
+  some: PressureLine
+  full: PressureLine
+}
+
+export interface PressureStatus {
+  mode: string
+  degraded: boolean
+  reason?: string
+  cpu: PressureResource
+  memory: PressureResource
+  io: PressureResource
+  throttle: boolean
+  throttle_reason?: string
+  sampled_at: number
+}
+
 export interface E1SchedulerResult {
   experiment: string
   policy: string
@@ -265,6 +290,14 @@ export async function getKernelEvents(): Promise<KernelEvent[]> {
   const response = await fetch('/api/kernel/events')
   if (!response.ok) {
     throw new Error(`kernel events request failed: ${response.status}`)
+  }
+  return response.json()
+}
+
+export async function getPressureStatus(): Promise<PressureStatus> {
+  const response = await fetch('/api/pressure/status')
+  if (!response.ok) {
+    throw new Error(`pressure status request failed: ${response.status}`)
   }
   return response.json()
 }

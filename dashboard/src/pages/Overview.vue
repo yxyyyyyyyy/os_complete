@@ -77,6 +77,25 @@ const recentRecoveredTasks = computed(() => runtimeStore.recoveryStatus.recovere
       </div>
     </section>
 
+    <section class="section-block pressure-panel">
+      <div class="section-title">
+        <h2>{{ t.overview.pressure }}</h2>
+        <span class="status-badge" :data-state="runtimeStore.pressureStatus.throttle ? 'FAILED' : 'COMPLETED'">
+          {{ runtimeStore.pressureStatus.throttle ? t.overview.yes : t.overview.no }}
+        </span>
+      </div>
+      <div class="metrics-grid compact-metrics">
+        <MetricCard :label="t.overview.pressureMode" :value="runtimeStore.pressureStatus.mode" />
+        <MetricCard :label="t.overview.throttle" :value="runtimeStore.pressureStatus.throttle ? t.overview.yes : t.overview.no" />
+        <MetricCard :label="t.overview.cpuAvg10" :value="runtimeStore.pressureStatus.cpu.some.avg10.toFixed(2)" />
+        <MetricCard :label="t.overview.memoryAvg10" :value="runtimeStore.pressureStatus.memory.some.avg10.toFixed(2)" />
+        <MetricCard :label="t.overview.ioAvg10" :value="runtimeStore.pressureStatus.io.some.avg10.toFixed(2)" />
+      </div>
+      <div v-if="runtimeStore.pressureStatus.reason || runtimeStore.pressureStatus.throttle_reason" class="recovery-note">
+        {{ runtimeStore.pressureStatus.throttle_reason || runtimeStore.pressureStatus.reason }}
+      </div>
+    </section>
+
     <section v-if="task()" class="section-block">
       <div class="section-title">
         <h2>{{ t.overview.dag }} · {{ task()?.task_id }}</h2>

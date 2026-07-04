@@ -29,6 +29,7 @@ npm run dev
 Expected:
 
 - Overview shows task count, event count, SSE state, and DAG nodes.
+- Overview also shows Checkpoint Recovery and System Pressure evidence panels.
 - AVP page lists real Agent IDs, state, PID, cgroup path/mode, memory, PIDs, and capsule controls.
 - Context page lists CVM pages, ref counts, saved bytes, and saved tokens.
 - Context page also lists IPC topic/page references and avoided-copy bytes.
@@ -46,6 +47,7 @@ curl -s http://127.0.0.1:8080/api/agents
 curl -s http://127.0.0.1:8080/api/syscalls
 curl -s http://127.0.0.1:8080/api/kernel/status
 curl -s http://127.0.0.1:8080/api/kernel/events
+curl -s http://127.0.0.1:8080/api/pressure/status
 curl -s http://127.0.0.1:8080/api/ipc/metrics
 curl -s http://127.0.0.1:8080/api/ipc/topics
 curl -s http://127.0.0.1:8080/api/checkpoints
@@ -62,12 +64,13 @@ Expected:
 - `/api/syscalls` contains `context.materialize`, `llm.call`, `ipc.publish`, `ipc.poll`, `agent.spawn`, `tool.exec`, `context.write_delta`, and `agent.report`.
 - `/api/kernel/status` returns `mode=degraded-proxy` unless a future true eBPF attachment is enabled.
 - `/api/kernel/events` contains `kernel.exec` records after `tool.exec` runs.
+- `/api/pressure/status` returns Linux PSI metrics or degraded mode when PSI is unavailable.
 - `/api/ipc/metrics` reports positive `avoided_copy_bytes`.
 - `/api/checkpoints` contains a `runtime-state` snapshot.
 - `/api/recovery/status` returns `checkpoint-light` recovery metadata.
 - `/api/scheduler/decisions` contains `token-cfs-prefix-affinity` decisions.
 - `/api/context/stats` reports positive `saved_bytes` and `saved_tokens`.
-- SSE contains `agent.registered`, `scheduler.selected`, `syscall.started`, `syscall.finished`, `kernel.observer_disabled`, `kernel.exec`, `llm.called`, `ipc.published`, `ipc.polled`, `agent.spawned`, `checkpoint.created`, and `agent.report`.
+- SSE contains `agent.registered`, `scheduler.selected`, `pressure.sampled`, `syscall.started`, `syscall.finished`, `kernel.observer_disabled`, `kernel.exec`, `llm.called`, `ipc.published`, `ipc.polled`, `agent.spawned`, `checkpoint.created`, and `agent.report`.
 
 Heartbeat lost check:
 
@@ -133,6 +136,21 @@ Expected:
 - `/api/kernel/events` contains `kernel.exec` with command, args, PID, workspace, status, mode, and probe.
 - SSE contains `kernel.observer_disabled` and `kernel.exec`.
 - Dashboard Timeline shows Kernel Mode, Probe, Kernel Events, and BTF metrics.
+
+## PSI Pressure Check
+
+```bash
+curl -s -X POST http://127.0.0.1:8080/api/demo/run
+curl -s http://127.0.0.1:8080/api/pressure/status
+curl -N --max-time 2 http://127.0.0.1:8080/api/events
+```
+
+Expected:
+
+- `/api/pressure/status` reports `mode=psi` on Linux with PSI files, or `mode=degraded` with an explicit reason on unsupported systems.
+- The response includes CPU, memory, IO avg10/avg60/avg300 fields and `throttle`.
+- `scheduler.selected` events include `pressure_mode`, `pressure_throttle`, and avg10 fields.
+- Dashboard Overview shows the System Pressure panel.
 
 ## IPC, LLM, Spawn, and Checkpoint Check
 
@@ -221,4 +239,4 @@ Expected:
 
 ## Later Iterations
 
-- Remaining V2/V3 extensions: real overlayfs mount/commit, richer Supervisor retry policies, true `sched_process_exec` eBPF attachment, durable CVM page-content checkpointing, PSI, and openKylin/OpenHarmony smoke tests.
+- Remaining V2/V3 extensions: real overlayfs mount/commit, richer Supervisor retry policies, true `sched_process_exec` eBPF attachment, durable CVM page-content checkpointing, and openKylin/OpenHarmony smoke tests.

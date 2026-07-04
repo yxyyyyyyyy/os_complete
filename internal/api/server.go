@@ -22,6 +22,7 @@ import (
 	"aort-r/internal/ipc"
 	"aort-r/internal/kernel"
 	"aort-r/internal/llm"
+	"aort-r/internal/pressure"
 	"aort-r/internal/scheduler"
 	"aort-r/internal/supervisor"
 	syscallgw "aort-r/internal/syscall"
@@ -47,6 +48,7 @@ func NewServerWithEvents(cfg config.Config, hub *events.Hub) http.Handler {
 		cvm:        cvm.NewStore(sink),
 		ipc:        ipc.NewBlackboard(),
 		kernel:     kernel.NewObserver(kernel.Config{Sink: sink}),
+		pressure:   pressure.NewMonitor(pressure.Config{}),
 		checkpoint: checkpoint.NewStore(filepath.Join(cfg.DataDir, "checkpoints")),
 		workspace:  workspace.NewManager(workspace.Config{Root: filepath.Join(cfg.DataDir, "workspaces"), Sink: sink}),
 		scheduler:  scheduler.New(scheduler.PolicyTokenCFSPrefixAffinity),
@@ -79,6 +81,7 @@ type Server struct {
 	cvm              *cvm.Store
 	ipc              *ipc.Blackboard
 	kernel           *kernel.Observer
+	pressure         *pressure.Monitor
 	checkpoint       *checkpoint.Store
 	workspace        *workspace.Manager
 	scheduler        *scheduler.Scheduler
@@ -133,6 +136,7 @@ func (s *Server) routes() {
 	mux.HandleFunc("/api/ipc/topics", s.handleIPCTopics)
 	mux.HandleFunc("/api/kernel/status", s.handleKernelStatus)
 	mux.HandleFunc("/api/kernel/events", s.handleKernelEvents)
+	mux.HandleFunc("/api/pressure/status", s.handlePressureStatus)
 	mux.HandleFunc("/api/checkpoints", s.handleCheckpoints)
 	mux.HandleFunc("/api/recovery/status", s.handleRecoveryStatus)
 	mux.HandleFunc("/api/syscalls", s.handleSyscalls)
@@ -237,6 +241,9 @@ func (s *Server) runDemo(ctx context.Context) (demo.Result, error) {
 		s.runDemoRuntimeEvidence(ctx, result)
 		s.saveCheckpoint(result, 1)
 		for _, event := range result.Events {
+			if event.Type == "scheduler.selected" {
+				event.Payload = s.withPressurePayload(event.Payload)
+			}
 			s.sink.Publish(event)
 		}
 		return result, nil
@@ -627,6 +634,17 @@ func (s *Server) handleKernelEvents(w http.ResponseWriter, r *http.Request) {
 	writeJSON(w, http.StatusOK, s.kernel.Events())
 }
 
+func (s *Server) handlePressureStatus(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		w.Header().Set("Allow", http.MethodGet)
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	status := s.pressure.Sample()
+	s.sink.Publish(events.New("pressure.sampled", "", "", "runtime", pressurePayload(status)))
+	writeJSON(w, http.StatusOK, status)
+}
+
 func (s *Server) handleCheckpoints(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		w.Header().Set("Allow", http.MethodGet)
@@ -763,14 +781,61 @@ func (s *Server) schedulerCandidates(taskID string, pending []worker.Spec) []avp
 }
 
 func (s *Server) publishSchedulerDecision(decision scheduler.DecisionLog) {
-	s.sink.Publish(events.New("scheduler.selected", decision.TaskID, decision.SelectedAgent, "scheduler", map[string]any{
-		"policy":          decision.Policy,
-		"decision_id":     decision.ID,
-		"decision_reason": decision.Reason,
-		"candidates":      decision.Candidates,
-		"shared_pages":    decision.SharedPages,
-		"vruntime_before": decision.VRuntimeBefore,
-	}))
+	status := s.pressure.Sample()
+	payload := map[string]any{
+		"policy":                decision.Policy,
+		"decision_id":           decision.ID,
+		"decision_reason":       decision.Reason,
+		"candidates":            decision.Candidates,
+		"shared_pages":          decision.SharedPages,
+		"vruntime_before":       decision.VRuntimeBefore,
+		"pressure_mode":         status.Mode,
+		"pressure_degraded":     status.Degraded,
+		"pressure_throttle":     status.Throttle,
+		"pressure_reason":       status.ThrottleReason,
+		"pressure_cpu_avg10":    status.CPU.Some.Avg10,
+		"pressure_memory_avg10": status.Memory.Some.Avg10,
+		"pressure_io_avg10":     status.IO.Some.Avg10,
+	}
+	s.sink.Publish(events.New("pressure.sampled", decision.TaskID, decision.SelectedAgent, "runtime", pressurePayload(status)))
+	if status.Throttle {
+		s.sink.Publish(events.New("scheduler.pressure_throttle", decision.TaskID, decision.SelectedAgent, "scheduler", payload))
+	}
+	s.sink.Publish(events.New("scheduler.selected", decision.TaskID, decision.SelectedAgent, "scheduler", payload))
+}
+
+func pressurePayload(status pressure.Status) map[string]any {
+	return map[string]any{
+		"mode":            status.Mode,
+		"degraded":        status.Degraded,
+		"reason":          status.Reason,
+		"throttle":        status.Throttle,
+		"throttle_reason": status.ThrottleReason,
+		"cpu_avg10":       status.CPU.Some.Avg10,
+		"memory_avg10":    status.Memory.Some.Avg10,
+		"io_avg10":        status.IO.Some.Avg10,
+		"sampled_at":      status.SampledAt,
+	}
+}
+
+func (s *Server) withPressurePayload(payload map[string]any) map[string]any {
+	if payload == nil {
+		payload = map[string]any{}
+	}
+	status := s.pressure.Sample()
+	for key, value := range map[string]any{
+		"pressure_mode":         status.Mode,
+		"pressure_degraded":     status.Degraded,
+		"pressure_throttle":     status.Throttle,
+		"pressure_reason":       status.ThrottleReason,
+		"pressure_cpu_avg10":    status.CPU.Some.Avg10,
+		"pressure_memory_avg10": status.Memory.Some.Avg10,
+		"pressure_io_avg10":     status.IO.Some.Avg10,
+	} {
+		payload[key] = value
+	}
+	s.sink.Publish(events.New("pressure.sampled", "", "", "runtime", pressurePayload(status)))
+	return payload
 }
 
 func popSpec(specs []worker.Spec, agentID string) (worker.Spec, []worker.Spec) {

@@ -319,6 +319,12 @@ p {
     linear-gradient(90deg, rgb(83 255 177 / 10%), transparent);
 }
 
+.pressure-panel {
+  background:
+    linear-gradient(120deg, rgb(51 38 18 / 88%), rgb(13 24 38 / 86%)),
+    linear-gradient(90deg, rgb(255 210 92 / 12%), transparent);
+}
+
 .recovery-note {
   border-left: 3px solid #54ffb7;
   color: #a8c6d2;

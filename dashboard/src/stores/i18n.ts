@@ -54,7 +54,15 @@ const messages = {
       pageRefs: '页表引用',
       degraded: '降级',
       full: '完整',
-      noRecovery: '暂无恢复记录'
+      noRecovery: '暂无恢复记录',
+      pressure: '系统压力',
+      pressureMode: '压力模式',
+      throttle: '限流',
+      cpuAvg10: 'CPU avg10',
+      memoryAvg10: '内存 avg10',
+      ioAvg10: 'IO avg10',
+      yes: '是',
+      no: '否'
     },
     avp: {
       title: 'AVP 与 Capsule',
@@ -179,7 +187,15 @@ const messages = {
       pageRefs: 'Page References',
       degraded: 'Degraded',
       full: 'Full',
-      noRecovery: 'No recovery records yet'
+      noRecovery: 'No recovery records yet',
+      pressure: 'System Pressure',
+      pressureMode: 'Pressure Mode',
+      throttle: 'Throttle',
+      cpuAvg10: 'CPU avg10',
+      memoryAvg10: 'Memory avg10',
+      ioAvg10: 'IO avg10',
+      yes: 'Yes',
+      no: 'No'
     },
     avp: {
       title: 'AVP & Capsule',
