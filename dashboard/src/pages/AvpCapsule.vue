@@ -2,6 +2,7 @@
 import StatusBadge from '../components/StatusBadge.vue'
 import { runAgentAction, runtimeStore } from '../stores/runtime'
 import type { Agent } from '../api/client'
+import { t } from '../stores/i18n'
 
 function agentID(agent: Agent): string {
   return agent.agent_id ?? agent.id ?? ''
@@ -12,8 +13,9 @@ function agentID(agent: Agent): string {
   <section class="page-band">
     <div class="page-heading">
       <div>
-        <h1>AVP & Capsule</h1>
-        <p>Agent process state, cgroup capsule evidence, and runtime controls.</p>
+        <span class="eyebrow">Agent Virtual Process</span>
+        <h1>{{ t.avp.title }}</h1>
+        <p>{{ t.avp.desc }}</p>
       </div>
     </div>
 
@@ -23,15 +25,15 @@ function agentID(agent: Agent): string {
       <table>
         <thead>
           <tr>
-            <th>Agent</th>
-            <th>Role</th>
-            <th>State</th>
-            <th>PID</th>
-            <th>Capsule</th>
-            <th>Memory</th>
-            <th>PIDs</th>
-            <th>Retry</th>
-            <th>Actions</th>
+            <th>{{ t.common.agent }}</th>
+            <th>{{ t.common.role }}</th>
+            <th>{{ t.common.state }}</th>
+            <th>{{ t.avp.pid }}</th>
+            <th>{{ t.avp.capsule }}</th>
+            <th>{{ t.avp.memory }}</th>
+            <th>{{ t.avp.pids }}</th>
+            <th>{{ t.avp.retry }}</th>
+            <th>{{ t.common.actions }}</th>
           </tr>
         </thead>
         <tbody>
@@ -45,9 +47,9 @@ function agentID(agent: Agent): string {
             <td>{{ agent.pids_current ?? 0 }}</td>
             <td>{{ agent.retry_count ?? 0 }}</td>
             <td class="action-row">
-              <button class="icon-button" title="Freeze Agent" @click="runAgentAction(agentID(agent), 'freeze')">F</button>
-              <button class="icon-button" title="Unfreeze Agent" @click="runAgentAction(agentID(agent), 'unfreeze')">U</button>
-              <button class="icon-button danger" title="Kill Agent" @click="runAgentAction(agentID(agent), 'kill')">K</button>
+              <button class="icon-button" :title="t.avp.freeze" @click="runAgentAction(agentID(agent), 'freeze')">F</button>
+              <button class="icon-button" :title="t.avp.unfreeze" @click="runAgentAction(agentID(agent), 'unfreeze')">U</button>
+              <button class="icon-button danger" :title="t.avp.kill" @click="runAgentAction(agentID(agent), 'kill')">K</button>
             </td>
           </tr>
         </tbody>
