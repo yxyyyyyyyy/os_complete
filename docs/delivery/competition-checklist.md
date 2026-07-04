@@ -13,11 +13,16 @@
 - [x] CVM page store and per-agent page table exist.
 - [x] Shared context pages increase ref counts and saved byte/token metrics.
 - [x] `context.materialize` is served through the syscall gateway.
+- [x] `llm.call` is served through the syscall gateway with mock provider usage metrics.
 - [x] Worker requests `tool.exec` through the syscall gateway.
+- [x] `ipc.publish` and `ipc.poll` transfer CVM page IDs and track avoided copy bytes.
+- [x] `agent.spawn` records Reviewer-triggered Fixer creation through the syscall gateway.
 - [x] Timeline sees `syscall.started` and `syscall.finished`.
+- [x] Timeline sees `ipc.published`, `ipc.polled`, `llm.called`, `agent.spawn.requested`, and `agent.spawned`.
 - [x] Scheduler supports FIFO, token-CFS, and token-CFS-prefix-affinity.
 - [x] Dashboard Overview, AVP, Context, Timeline, and Experiments pages use real APIs.
 - [x] Tool timeout fault demo exists at `POST /api/demo/fault/tool-timeout`.
+- [x] Lightweight checkpoint snapshots are exposed through `GET /api/checkpoints`.
 - [x] Experiment JSON/CSV files exist under `experiments/results/`.
 
 ## High-Score Evidence Present
@@ -26,16 +31,18 @@
 - [x] Scheduler policy API: `POST /api/scheduler/policy`.
 - [x] E1 scheduler experiment.
 - [x] E2 fault isolation experiment.
-- [x] E3 context sharing experiment.
+- [x] E3 context sharing and IPC avoided-copy experiment.
 - [x] Dashboard experiments visualization.
 - [x] openEuler-oriented cgroup v2 design with graceful degraded mode.
+- [x] IPC Blackboard API: `GET /api/ipc/metrics`, `GET /api/ipc/topics`.
+- [x] LLM Router abstraction with mock provider and llama.cpp timing parser.
+- [x] Checkpoint evidence API and `checkpoint.created` timeline event.
+- [x] openEuler deployment guide and runnable helper scripts.
 
 ## Remaining Enhancement Targets
 
-- [ ] IPC Blackboard with page-id publish/poll.
 - [ ] overlayfs workspace commit/rollback.
-- [ ] Supervisor retry and dynamic Fixer spawn.
+- [ ] Supervisor retry policy beyond timeout fault recording.
 - [ ] eBPF execve observer.
-- [ ] checkpoint recovery.
 - [ ] systemd deployment.
 - [ ] PSI display.

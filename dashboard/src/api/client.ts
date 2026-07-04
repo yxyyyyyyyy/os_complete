@@ -54,6 +54,25 @@ export interface ContextStats {
   saved_tokens: number
 }
 
+export interface IPCMetric {
+  topic?: string
+  total_messages: number
+  delivered_messages: number
+  topic_depth: number
+  avoided_copy_bytes: number
+}
+
+export interface IPCMessage {
+  id: string
+  topic: string
+  publisher: string
+  page_id: string
+  size_bytes: number
+  created_at: number
+}
+
+export type IPCTopics = Record<string, IPCMessage[]>
+
 export interface SchedulerDecision {
   id: string
   task_id: string
@@ -97,6 +116,7 @@ export interface E3ContextResult {
   unique_page_tokens: number
   saved_tokens: number
   saved_bytes: number
+  ipc_avoided_copy_bytes: number
   materialize_time_ms: number
 }
 
@@ -149,6 +169,22 @@ export async function getContextStats(): Promise<ContextStats> {
   const response = await fetch('/api/context/stats')
   if (!response.ok) {
     throw new Error(`context stats request failed: ${response.status}`)
+  }
+  return response.json()
+}
+
+export async function getIPCMetrics(): Promise<IPCMetric> {
+  const response = await fetch('/api/ipc/metrics')
+  if (!response.ok) {
+    throw new Error(`ipc metrics request failed: ${response.status}`)
+  }
+  return response.json()
+}
+
+export async function getIPCTopics(): Promise<IPCTopics> {
+  const response = await fetch('/api/ipc/topics')
+  if (!response.ok) {
+    throw new Error(`ipc topics request failed: ${response.status}`)
   }
   return response.json()
 }

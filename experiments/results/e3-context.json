@@ -4,7 +4,8 @@
   "runs": 5,
   "total_prompt_tokens": 720,
   "unique_page_tokens": 122,
-  "saved_tokens": 588,
-  "saved_bytes": 2394,
+  "saved_tokens": 663,
+  "saved_bytes": 2739,
+  "ipc_avoided_copy_bytes": 115,
   "materialize_time_ms": 1
 }

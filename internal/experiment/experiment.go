@@ -11,6 +11,7 @@ import (
 
 	"aort-r/internal/avp"
 	"aort-r/internal/cvm"
+	"aort-r/internal/ipc"
 	"aort-r/internal/scheduler"
 )
 
@@ -37,14 +38,15 @@ type E2FaultResult struct {
 }
 
 type E3ContextResult struct {
-	Experiment        string `json:"experiment"`
-	Mode              string `json:"mode"`
-	Runs              int    `json:"runs"`
-	TotalPromptTokens int64  `json:"total_prompt_tokens"`
-	UniquePageTokens  int64  `json:"unique_page_tokens"`
-	SavedTokens       int64  `json:"saved_tokens"`
-	SavedBytes        int64  `json:"saved_bytes"`
-	MaterializeTimeMS int64  `json:"materialize_time_ms"`
+	Experiment          string `json:"experiment"`
+	Mode                string `json:"mode"`
+	Runs                int    `json:"runs"`
+	TotalPromptTokens   int64  `json:"total_prompt_tokens"`
+	UniquePageTokens    int64  `json:"unique_page_tokens"`
+	SavedTokens         int64  `json:"saved_tokens"`
+	SavedBytes          int64  `json:"saved_bytes"`
+	IPCAvoidedCopyBytes int64  `json:"ipc_avoided_copy_bytes"`
+	MaterializeTimeMS   int64  `json:"materialize_time_ms"`
 }
 
 func RunE1Scheduler(runs int) []E1SchedulerResult {
@@ -125,6 +127,7 @@ func RunE3ContextSharing(runs int) E3ContextResult {
 		runs = 5
 	}
 	store := cvm.NewStore(nil)
+	board := ipc.NewBlackboard()
 	system, _ := store.CreatePage(cvm.KindSystem, "system: shared AORT-R software engineering policy\n")
 	project, _ := store.CreatePage(cvm.KindProject, "project: Todo API repository context with routes, storage, and tests\n")
 	task, _ := store.CreatePage(cvm.KindTask, "task: implement, test, review, and fix the Todo API\n")
@@ -137,7 +140,19 @@ func RunE3ContextSharing(runs int) E3ContextResult {
 			_ = store.MountPage(agentID, system.ID)
 			_ = store.MountPage(agentID, project.ID)
 			_ = store.MountPage(agentID, task.ID)
-			_, _ = store.WriteDelta(agentID, fmt.Sprintf("%s private delta %d\n", agent, run))
+			delta, _ := store.WriteDelta(agentID, fmt.Sprintf("%s private delta %d\n", agent, run))
+			if agent == "tester" {
+				board.Publish(ipc.PublishRequest{
+					Topic:     "review.feedback",
+					Publisher: agentID,
+					PageID:    delta.ID,
+					SizeBytes: delta.Bytes,
+				})
+				messages, _ := board.Poll("review.feedback", fmt.Sprintf("fixer-%d", run))
+				for _, message := range messages {
+					_ = store.MountPage(fmt.Sprintf("fixer-%d", run), message.PageID)
+				}
+			}
 			content, _ := store.Materialize(agentID)
 			totalPromptTokens += int64(estimateTokens(content))
 		}
@@ -152,14 +167,15 @@ func RunE3ContextSharing(runs int) E3ContextResult {
 	}
 	stats := store.Stats()
 	return E3ContextResult{
-		Experiment:        "e3-context-ipc",
-		Mode:              "cvm-page-sharing",
-		Runs:              runs,
-		TotalPromptTokens: totalPromptTokens,
-		UniquePageTokens:  uniqueTokens,
-		SavedTokens:       stats.SavedTokens,
-		SavedBytes:        stats.SavedBytes,
-		MaterializeTimeMS: elapsed,
+		Experiment:          "e3-context-ipc",
+		Mode:                "cvm-page-sharing",
+		Runs:                runs,
+		TotalPromptTokens:   totalPromptTokens,
+		UniquePageTokens:    uniqueTokens,
+		SavedTokens:         stats.SavedTokens,
+		SavedBytes:          stats.SavedBytes,
+		IPCAvoidedCopyBytes: int64(board.Metrics().AvoidedCopyBytes),
+		MaterializeTimeMS:   elapsed,
 	}
 }
 
@@ -227,7 +243,7 @@ func E2CSV(results []E2FaultResult) [][]string {
 
 func E3CSV(result E3ContextResult) [][]string {
 	return [][]string{
-		{"experiment", "mode", "runs", "total_prompt_tokens", "unique_page_tokens", "saved_tokens", "saved_bytes", "materialize_time_ms"},
+		{"experiment", "mode", "runs", "total_prompt_tokens", "unique_page_tokens", "saved_tokens", "saved_bytes", "ipc_avoided_copy_bytes", "materialize_time_ms"},
 		{
 			result.Experiment,
 			result.Mode,
@@ -236,6 +252,7 @@ func E3CSV(result E3ContextResult) [][]string {
 			strconv.FormatInt(result.UniquePageTokens, 10),
 			strconv.FormatInt(result.SavedTokens, 10),
 			strconv.FormatInt(result.SavedBytes, 10),
+			strconv.FormatInt(result.IPCAvoidedCopyBytes, 10),
 			strconv.FormatInt(result.MaterializeTimeMS, 10),
 		},
 	}

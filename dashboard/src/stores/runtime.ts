@@ -4,6 +4,8 @@ import {
   getContextPages,
   getContextStats,
   getExperimentResults,
+  getIPCMetrics,
+  getIPCTopics,
   getSchedulerDecisions,
   getTasks,
   postAgentAction,
@@ -12,6 +14,8 @@ import {
   type ContextPage,
   type ContextStats,
   type ExperimentResults,
+  type IPCMetric,
+  type IPCTopics,
   type RuntimeEvent,
   type SchedulerDecision,
   type Task
@@ -28,6 +32,13 @@ export const runtimeStore = reactive({
     saved_bytes: 0,
     saved_tokens: 0
   } as ContextStats,
+  ipcMetrics: {
+    total_messages: 0,
+    delivered_messages: 0,
+    topic_depth: 0,
+    avoided_copy_bytes: 0
+  } as IPCMetric,
+  ipcTopics: {} as IPCTopics,
   schedulerDecisions: [] as SchedulerDecision[],
   experimentResults: {
     e1_scheduler: [],
@@ -40,6 +51,7 @@ export const runtimeStore = reactive({
       unique_page_tokens: 0,
       saved_tokens: 0,
       saved_bytes: 0,
+      ipc_avoided_copy_bytes: 0,
       materialize_time_ms: 0
     }
   } as ExperimentResults,
@@ -81,6 +93,8 @@ export async function runAgentAction(agentID: string, action: 'freeze' | 'unfree
 export async function refreshContext() {
   runtimeStore.contextPages = await getContextPages()
   runtimeStore.contextStats = await getContextStats()
+  runtimeStore.ipcMetrics = await getIPCMetrics()
+  runtimeStore.ipcTopics = await getIPCTopics()
 }
 
 export async function startDemo() {
@@ -127,6 +141,11 @@ export function connectEvents() {
     'context.page.reused',
     'context.page.mounted',
     'context.materialized',
+    'ipc.published',
+    'ipc.polled',
+    'llm.called',
+    'agent.spawn.requested',
+    'agent.spawned',
     'supervisor.detected',
     'task.completed'
   ]
@@ -150,6 +169,8 @@ function addEvent(event: RuntimeEvent) {
   if (
     event.type.startsWith('agent.') ||
     event.type.startsWith('context.') ||
+    event.type.startsWith('ipc.') ||
+    event.type.startsWith('llm.') ||
     event.type.startsWith('supervisor.') ||
     event.type.startsWith('syscall.')
   ) {

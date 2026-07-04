@@ -13,11 +13,14 @@ import (
 
 	"aort-r/internal/avp"
 	"aort-r/internal/capsule"
+	"aort-r/internal/checkpoint"
 	"aort-r/internal/config"
 	"aort-r/internal/cvm"
 	"aort-r/internal/demo"
 	"aort-r/internal/events"
 	"aort-r/internal/experiment"
+	"aort-r/internal/ipc"
+	"aort-r/internal/llm"
 	"aort-r/internal/scheduler"
 	"aort-r/internal/supervisor"
 	syscallgw "aort-r/internal/syscall"
@@ -30,6 +33,9 @@ func NewServer(cfg config.Config) http.Handler {
 }
 
 func NewServerWithEvents(cfg config.Config, hub *events.Hub) http.Handler {
+	if cfg.DataDir == "" {
+		cfg.DataDir = ".aort-dev"
+	}
 	sink := newEventSink(cfg, hub)
 	server := &Server{
 		cfg:        cfg,
@@ -37,6 +43,8 @@ func NewServerWithEvents(cfg config.Config, hub *events.Hub) http.Handler {
 		sink:       sink,
 		demo:       demo.NewSoftwareDemoRunner(),
 		cvm:        cvm.NewStore(sink),
+		ipc:        ipc.NewBlackboard(),
+		checkpoint: checkpoint.NewStore(filepath.Join(cfg.DataDir, "checkpoints")),
 		scheduler:  scheduler.New(scheduler.PolicyTokenCFSPrefixAffinity),
 		supervisor: supervisor.NewManager(sink),
 		tasks:      make(map[string]demo.Result),
@@ -44,9 +52,12 @@ func NewServerWithEvents(cfg config.Config, hub *events.Hub) http.Handler {
 	}
 	server.syscalls = syscallgw.NewGateway(syscallgw.Config{
 		CVM:           server.cvm,
+		IPC:           server.ipc,
+		LLM:           newLLMRouter(),
 		Sink:          server.sink,
 		WorkspaceRoot: filepath.Join(cfg.DataDir, "workspaces"),
 		Reporter:      server.handleAgentReport,
+		Spawner:       server.spawnAgent,
 	})
 	server.startWorkerRuntime()
 	server.routes()
@@ -59,6 +70,8 @@ type Server struct {
 	sink             *eventSink
 	demo             *demo.Runner
 	cvm              *cvm.Store
+	ipc              *ipc.Blackboard
+	checkpoint       *checkpoint.Store
 	scheduler        *scheduler.Scheduler
 	supervisor       *supervisor.Manager
 	syscalls         *syscallgw.Gateway
@@ -106,6 +119,9 @@ func (s *Server) routes() {
 	mux.HandleFunc("/api/context/pages", s.handleContextPages)
 	mux.HandleFunc("/api/context/stats", s.handleContextStats)
 	mux.HandleFunc("/api/context/agents/", s.handleContextAgent)
+	mux.HandleFunc("/api/ipc/metrics", s.handleIPCMetrics)
+	mux.HandleFunc("/api/ipc/topics", s.handleIPCTopics)
+	mux.HandleFunc("/api/checkpoints", s.handleCheckpoints)
 	mux.HandleFunc("/api/syscalls", s.handleSyscalls)
 	mux.HandleFunc("/api/scheduler/decisions", s.handleSchedulerDecisions)
 	mux.HandleFunc("/api/scheduler/policy", s.handleSchedulerPolicy)
@@ -202,6 +218,8 @@ func (s *Server) runDemo(ctx context.Context) (demo.Result, error) {
 			return demo.Result{}, err
 		}
 		s.seedContext(result.TaskID, result.Agents)
+		s.runDemoRuntimeEvidence(ctx, result)
+		s.saveCheckpoint(result, 1)
 		for _, event := range result.Events {
 			s.sink.Publish(event)
 		}
@@ -215,6 +233,7 @@ func (s *Server) runDemo(ctx context.Context) (demo.Result, error) {
 			{ID: "planner", Role: "Planner"},
 			{ID: "coder", Role: "Coder", Dependencies: []string{"planner"}},
 			{ID: "tester", Role: "Tester", Dependencies: []string{"coder"}},
+			{ID: "reviewer", Role: "Reviewer", Dependencies: []string{"tester"}},
 		},
 	}
 	s.sink.Publish(events.New("task.created", taskID, "", "runtime", map[string]any{"mode": "worker"}))
@@ -222,12 +241,15 @@ func (s *Server) runDemo(ctx context.Context) (demo.Result, error) {
 		{AgentID: taskID + "-planner", Role: "Planner", TaskID: taskID},
 		{AgentID: taskID + "-coder", Role: "Coder", TaskID: taskID},
 		{AgentID: taskID + "-tester", Role: "Tester", TaskID: taskID},
+		{AgentID: taskID + "-reviewer", Role: "Reviewer", TaskID: taskID},
 	}
 	for _, spec := range specs {
 		agent := s.registry.CreateAgent(spec.AgentID, spec.Role, spec.TaskID)
 		result.Agents = append(result.Agents, agentToDemo(agent))
 	}
 	s.seedContext(result.TaskID, result.Agents)
+	s.runDemoRuntimeEvidence(ctx, result)
+	s.saveCheckpoint(result, 1)
 	pending := append([]worker.Spec(nil), specs...)
 	for len(pending) > 0 {
 		selected, decision, ok := s.scheduler.Select(taskID, s.schedulerCandidates(taskID, pending))
@@ -243,6 +265,121 @@ func (s *Server) runDemo(ctx context.Context) (demo.Result, error) {
 		}
 	}
 	return result, nil
+}
+
+func (s *Server) saveCheckpoint(result demo.Result, sequence int) {
+	agents := make([]avp.AVP, 0, len(result.Agents))
+	if s.registry != nil {
+		agents = s.registry.ListByTask(result.TaskID)
+	} else {
+		for _, agent := range result.Agents {
+			agents = append(agents, avp.AVP{
+				AgentID:    agent.ID,
+				TaskID:     result.TaskID,
+				Role:       agent.Role,
+				State:      avp.AgentState(agent.State),
+				PID:        agent.PID,
+				CgroupPath: agent.CgroupPath,
+				LastSeen:   agent.LastSeen,
+			})
+		}
+	}
+	pageTables := make(map[string][]string, len(agents))
+	vruntime := make(map[string]uint64, len(agents))
+	for _, agent := range agents {
+		pageTables[agent.AgentID] = s.cvm.PageTable(agent.AgentID).PageIDs
+		vruntime[agent.AgentID] = agent.VRuntime
+	}
+	snapshot := checkpoint.Snapshot{
+		TaskID:            result.TaskID,
+		Sequence:          sequence,
+		Agents:            agents,
+		PageTables:        pageTables,
+		SchedulerVRuntime: vruntime,
+		Mode:              "runtime-state",
+	}
+	if err := s.checkpoint.Save(snapshot); err != nil {
+		s.sink.Publish(events.New("checkpoint.failed", result.TaskID, "", "runtime", map[string]any{"error": err.Error()}))
+		return
+	}
+	s.sink.Publish(events.New("checkpoint.created", result.TaskID, "", "runtime", map[string]any{
+		"sequence":    sequence,
+		"mode":        snapshot.Mode,
+		"agent_count": len(snapshot.Agents),
+	}))
+}
+
+func (s *Server) runDemoRuntimeEvidence(ctx context.Context, result demo.Result) {
+	plannerID := agentIDForRole(result.Agents, "planner", "planner-1")
+	reviewerID := agentIDForRole(result.Agents, "reviewer", result.TaskID+"-reviewer")
+	fixerID := agentIDForRole(result.Agents, "fixer", result.TaskID+"-fixer")
+	if s.registry != nil {
+		if _, ok := s.registry.Get(reviewerID); !ok {
+			s.registry.CreateAgent(reviewerID, "Reviewer", result.TaskID)
+		}
+	}
+	reviewPage, err := s.cvm.WriteDelta(reviewerID, "Reviewer feedback: go test failed, spawn Fixer and pass review feedback by page reference.\n")
+	if err != nil {
+		return
+	}
+	s.syscalls.Handle(ctx, syscallgw.Request{
+		RequestID: result.TaskID + "-llm-call",
+		TaskID:    result.TaskID,
+		AgentID:   plannerID,
+		Name:      "llm.call",
+		Args: map[string]any{
+			"role": "planner",
+		},
+	})
+	s.syscalls.Handle(ctx, syscallgw.Request{
+		RequestID: result.TaskID + "-ipc-publish",
+		TaskID:    result.TaskID,
+		AgentID:   reviewerID,
+		Name:      "ipc.publish",
+		Args: map[string]any{
+			"topic":      "review.feedback",
+			"page_id":    reviewPage.ID,
+			"size_bytes": reviewPage.Bytes,
+		},
+	})
+	s.syscalls.Handle(ctx, syscallgw.Request{
+		RequestID: result.TaskID + "-agent-spawn",
+		TaskID:    result.TaskID,
+		AgentID:   reviewerID,
+		Name:      "agent.spawn",
+		Args: map[string]any{
+			"agent_id":     fixerID,
+			"role":         "fixer",
+			"reason":       "tester reported a failing go test",
+			"dependencies": []any{reviewerID},
+		},
+	})
+	s.syscalls.Handle(ctx, syscallgw.Request{
+		RequestID: result.TaskID + "-ipc-poll",
+		TaskID:    result.TaskID,
+		AgentID:   fixerID,
+		Name:      "ipc.poll",
+		Args: map[string]any{
+			"topic": "review.feedback",
+		},
+	})
+}
+
+func agentIDForRole(agents []demo.Agent, roleNeedle, fallback string) string {
+	for _, agent := range agents {
+		if strings.Contains(strings.ToLower(agent.Role), roleNeedle) {
+			return agent.ID
+		}
+	}
+	return fallback
+}
+
+func newLLMRouter() *llm.Router {
+	router := llm.NewRouter()
+	router.Register("mock", llm.NewMockProvider("mock"))
+	router.SetDefault("mock")
+	router.SetFallback("mock")
+	return router
 }
 
 func (s *Server) runToolTimeoutFault(ctx context.Context) supervisor.Record {
@@ -393,6 +530,38 @@ func (s *Server) handleContextAgent(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	writeJSON(w, http.StatusOK, s.cvm.PageTable(agentID))
+}
+
+func (s *Server) handleIPCMetrics(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		w.Header().Set("Allow", http.MethodGet)
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	writeJSON(w, http.StatusOK, s.ipc.Metrics())
+}
+
+func (s *Server) handleIPCTopics(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		w.Header().Set("Allow", http.MethodGet)
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	writeJSON(w, http.StatusOK, s.ipc.Topics())
+}
+
+func (s *Server) handleCheckpoints(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		w.Header().Set("Allow", http.MethodGet)
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	snapshots, err := s.checkpoint.List()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	writeJSON(w, http.StatusOK, snapshots)
 }
 
 func (s *Server) handleSyscalls(w http.ResponseWriter, r *http.Request) {
@@ -574,6 +743,32 @@ func (s *Server) handleAgentReport(report syscallgw.Report) {
 		Status:  report.Status,
 		Payload: report.Payload,
 	})
+}
+
+func (s *Server) spawnAgent(req syscallgw.SpawnRequest) (syscallgw.SpawnResult, error) {
+	agentID := req.AgentID
+	if agentID == "" {
+		agentID = fmt.Sprintf("%s-%s-%d", req.TaskID, strings.ToLower(req.Role), time.Now().UnixNano())
+	}
+	state := string(avp.StateCreated)
+	if s.registry != nil {
+		agent := s.registry.CreateAgent(agentID, req.Role, req.TaskID)
+		agent.Dependencies = append([]string(nil), req.Dependencies...)
+		state = string(agent.State)
+	}
+	if req.ParentAgentID != "" {
+		for _, pageID := range s.cvm.PageTable(req.ParentAgentID).PageIDs {
+			_ = s.cvm.MountPage(agentID, pageID)
+		}
+	}
+	s.mu.Lock()
+	if task, ok := s.tasks[req.TaskID]; ok {
+		task.Agents = append(task.Agents, demo.Agent{ID: agentID, Role: req.Role, State: state})
+		task.DAG = append(task.DAG, demo.DAGNode{ID: agentID, Role: req.Role, Dependencies: req.Dependencies})
+		s.tasks[req.TaskID] = task
+	}
+	s.mu.Unlock()
+	return syscallgw.SpawnResult{AgentID: agentID, Role: req.Role, TaskID: req.TaskID, State: state}, nil
 }
 
 type workerSyscallAdapter struct {

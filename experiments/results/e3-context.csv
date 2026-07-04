@@ -1,2 +1,2 @@
-experiment,mode,runs,total_prompt_tokens,unique_page_tokens,saved_tokens,saved_bytes,materialize_time_ms
-e3-context-ipc,cvm-page-sharing,5,720,122,588,2394,1
+experiment,mode,runs,total_prompt_tokens,unique_page_tokens,saved_tokens,saved_bytes,ipc_avoided_copy_bytes,materialize_time_ms
+e3-context-ipc,cvm-page-sharing,5,720,122,663,2739,115,1

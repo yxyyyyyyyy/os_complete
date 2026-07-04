@@ -80,7 +80,7 @@ function barWidth(value: number): string {
         <MetricCard :label="t.experiments.fullCopyTokens" :value="runtimeStore.experimentResults.e3_context.total_prompt_tokens" />
         <MetricCard :label="t.experiments.uniqueTokens" :value="runtimeStore.experimentResults.e3_context.unique_page_tokens" />
         <MetricCard :label="t.context.savedTokens" :value="runtimeStore.experimentResults.e3_context.saved_tokens" />
-        <MetricCard :label="t.context.savedBytes" :value="runtimeStore.experimentResults.e3_context.saved_bytes" />
+        <MetricCard :label="t.context.ipcAvoidedBytes" :value="runtimeStore.experimentResults.e3_context.ipc_avoided_copy_bytes" />
       </div>
     </section>
   </section>

@@ -97,6 +97,51 @@ func TestContextAPIShowsPagesStatsAndPageTable(t *testing.T) {
 	}
 }
 
+func TestDemoRunProducesIPCEvidence(t *testing.T) {
+	srv := NewServer(config.Config{HTTPAddr: "127.0.0.1:8080", Mode: "mock"})
+	runReq := httptest.NewRequest(http.MethodPost, "/api/demo/run", nil)
+	runRec := httptest.NewRecorder()
+	srv.ServeHTTP(runRec, runReq)
+
+	syscallsReq := httptest.NewRequest(http.MethodGet, "/api/syscalls", nil)
+	syscallsRec := httptest.NewRecorder()
+	srv.ServeHTTP(syscallsRec, syscallsReq)
+	if syscallsRec.Code != http.StatusOK || !strings.Contains(syscallsRec.Body.String(), "ipc.publish") || !strings.Contains(syscallsRec.Body.String(), "ipc.poll") {
+		t.Fatalf("syscalls status=%d body=%s", syscallsRec.Code, syscallsRec.Body.String())
+	}
+
+	metricsReq := httptest.NewRequest(http.MethodGet, "/api/ipc/metrics", nil)
+	metricsRec := httptest.NewRecorder()
+	srv.ServeHTTP(metricsRec, metricsReq)
+	if metricsRec.Code != http.StatusOK || !strings.Contains(metricsRec.Body.String(), "avoided_copy_bytes") {
+		t.Fatalf("metrics status=%d body=%s", metricsRec.Code, metricsRec.Body.String())
+	}
+
+	topicsReq := httptest.NewRequest(http.MethodGet, "/api/ipc/topics", nil)
+	topicsRec := httptest.NewRecorder()
+	srv.ServeHTTP(topicsRec, topicsReq)
+	if topicsRec.Code != http.StatusOK || !strings.Contains(topicsRec.Body.String(), "review.feedback") {
+		t.Fatalf("topics status=%d body=%s", topicsRec.Code, topicsRec.Body.String())
+	}
+}
+
+func TestDemoRunCreatesCheckpointEvidence(t *testing.T) {
+	srv := NewServer(config.Config{HTTPAddr: "127.0.0.1:8080", Mode: "mock", DataDir: t.TempDir()})
+	runReq := httptest.NewRequest(http.MethodPost, "/api/demo/run", nil)
+	runRec := httptest.NewRecorder()
+	srv.ServeHTTP(runRec, runReq)
+
+	checkpointReq := httptest.NewRequest(http.MethodGet, "/api/checkpoints", nil)
+	checkpointRec := httptest.NewRecorder()
+	srv.ServeHTTP(checkpointRec, checkpointReq)
+	if checkpointRec.Code != http.StatusOK || !strings.Contains(checkpointRec.Body.String(), "runtime-state") {
+		t.Fatalf("checkpoints status=%d body=%s", checkpointRec.Code, checkpointRec.Body.String())
+	}
+	if !strings.Contains(checkpointRec.Body.String(), "planner-1") {
+		t.Fatalf("checkpoint missing agents: %s", checkpointRec.Body.String())
+	}
+}
+
 func TestDemoRunPublishesEventsToHub(t *testing.T) {
 	hub := events.NewHub(32)
 	ch, cancel := hub.Subscribe()

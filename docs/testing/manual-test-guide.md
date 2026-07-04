@@ -31,8 +31,9 @@ Expected:
 - Overview shows task count, event count, SSE state, and DAG nodes.
 - AVP page lists real Agent IDs, state, PID, cgroup path/mode, memory, PIDs, and capsule controls.
 - Context page lists CVM pages, ref counts, saved bytes, and saved tokens.
-- Timeline shows runtime events.
-- Experiments page shows E1 scheduler bars, E2 fault isolation table, and E3 context sharing metrics.
+- Context page also lists IPC topic/page references and avoided-copy bytes.
+- Timeline shows runtime, syscall, IPC, LLM, spawn, checkpoint, and supervisor events.
+- Experiments page shows E1 scheduler bars, E2 fault isolation table, and E3 context plus IPC metrics.
 
 ## Stage 1 Real Worker Demo
 
@@ -43,6 +44,9 @@ curl -s -X POST http://127.0.0.1:8080/api/demo/run
 sleep 3
 curl -s http://127.0.0.1:8080/api/agents
 curl -s http://127.0.0.1:8080/api/syscalls
+curl -s http://127.0.0.1:8080/api/ipc/metrics
+curl -s http://127.0.0.1:8080/api/ipc/topics
+curl -s http://127.0.0.1:8080/api/checkpoints
 curl -s http://127.0.0.1:8080/api/scheduler/decisions
 curl -s http://127.0.0.1:8080/api/context/stats
 curl -N --max-time 2 http://127.0.0.1:8080/api/events
@@ -52,10 +56,12 @@ Expected:
 
 - `/api/demo/run` starts Planner, Coder, and Tester worker processes.
 - `/api/agents` returns non-zero `pid` values.
-- `/api/syscalls` contains `context.materialize`, `tool.exec`, `context.write_delta`, and `agent.report`.
+- `/api/syscalls` contains `context.materialize`, `llm.call`, `ipc.publish`, `ipc.poll`, `agent.spawn`, `tool.exec`, `context.write_delta`, and `agent.report`.
+- `/api/ipc/metrics` reports positive `avoided_copy_bytes`.
+- `/api/checkpoints` contains a `runtime-state` snapshot.
 - `/api/scheduler/decisions` contains `token-cfs-prefix-affinity` decisions.
 - `/api/context/stats` reports positive `saved_bytes` and `saved_tokens`.
-- SSE contains `agent.registered`, `scheduler.selected`, `syscall.started`, `syscall.finished`, and `agent.report`.
+- SSE contains `agent.registered`, `scheduler.selected`, `syscall.started`, `syscall.finished`, `llm.called`, `ipc.published`, `ipc.polled`, `agent.spawned`, `checkpoint.created`, and `agent.report`.
 
 Heartbeat lost check:
 
@@ -106,6 +112,23 @@ Expected:
 - `tool.exec` records include `duration_ms`, `status`, `input_size`, and `output_size`.
 - Timeline contains paired `syscall.started` and `syscall.finished` events for each worker syscall.
 
+## IPC, LLM, Spawn, and Checkpoint Check
+
+```bash
+curl -s -X POST http://127.0.0.1:8080/api/demo/run
+curl -s http://127.0.0.1:8080/api/syscalls
+curl -s http://127.0.0.1:8080/api/ipc/metrics
+curl -s http://127.0.0.1:8080/api/ipc/topics
+curl -s http://127.0.0.1:8080/api/checkpoints
+```
+
+Expected:
+
+- `/api/syscalls` includes `llm.call`, `ipc.publish`, `ipc.poll`, and `agent.spawn`.
+- `/api/ipc/topics` contains `review.feedback` with page IDs, not copied content.
+- `/api/ipc/metrics` has positive `avoided_copy_bytes`.
+- `/api/checkpoints` contains AVP and page table state for the demo task.
+
 ## Fault Injection Check
 
 ```bash
@@ -132,8 +155,8 @@ Expected:
 
 - `experiments/results/e1-scheduler.json` compares FIFO, token-CFS, and token-CFS-prefix-affinity.
 - `experiments/results/e2-fault.json` compares no-capsule and per-agent-capsule modes.
-- `experiments/results/e3-context.json` reports positive `saved_tokens` and `saved_bytes`.
+- `experiments/results/e3-context.json` reports positive `saved_tokens`, `saved_bytes`, and `ipc_avoided_copy_bytes`.
 
 ## Later Iterations
 
-- Remaining V2/V3 extensions: IPC blackboard, overlayfs rollback, richer Supervisor retry/spawn flows, eBPF timeline, checkpoint recovery, PSI, and systemd deployment.
+- Remaining V2/V3 extensions: overlayfs rollback, richer Supervisor retry policies, eBPF timeline, full daemon checkpoint recovery, PSI, and systemd deployment.

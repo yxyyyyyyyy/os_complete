@@ -47,6 +47,9 @@ func TestRunE3ContextSharingShowsSavedTokensAndBytes(t *testing.T) {
 	if result.SavedTokens <= 0 || result.SavedBytes <= 0 {
 		t.Fatalf("expected positive savings: %#v", result)
 	}
+	if result.IPCAvoidedCopyBytes <= 0 {
+		t.Fatalf("expected IPC avoided copy bytes: %#v", result)
+	}
 	if result.MaterializeTimeMS <= 0 {
 		t.Fatalf("expected materialize timing: %#v", result)
 	}

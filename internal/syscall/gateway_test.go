@@ -7,6 +7,8 @@ import (
 
 	"aort-r/internal/cvm"
 	"aort-r/internal/events"
+	"aort-r/internal/ipc"
+	"aort-r/internal/llm"
 )
 
 type recordingSink struct {
@@ -98,4 +100,136 @@ func TestGatewayRejectsToolExecOutsideWorkspace(t *testing.T) {
 	if response.Status != StatusDenied {
 		t.Fatalf("status = %s error=%s", response.Status, response.Error)
 	}
+}
+
+func TestGatewayPublishesAndPollsPageReferenceIPC(t *testing.T) {
+	store := cvm.NewStore(nil)
+	page, err := store.CreatePage(cvm.KindDelta, "review feedback content")
+	if err != nil {
+		t.Fatalf("CreatePage: %v", err)
+	}
+	sink := &recordingSink{}
+	gateway := NewGateway(Config{CVM: store, Sink: sink, IPC: ipc.NewBlackboard(), WorkspaceRoot: t.TempDir()})
+
+	publish := gateway.Handle(context.Background(), Request{
+		RequestID: "pub-1",
+		AgentID:   "reviewer-1",
+		TaskID:    "task-1",
+		Name:      "ipc.publish",
+		Args: map[string]any{
+			"topic":      "review.feedback",
+			"page_id":    page.ID,
+			"size_bytes": page.Bytes,
+		},
+	})
+	if publish.Status != StatusOK {
+		t.Fatalf("publish status=%s error=%s", publish.Status, publish.Error)
+	}
+	if publish.Payload["avoided_copy_bytes"] != page.Bytes {
+		t.Fatalf("publish payload = %#v", publish.Payload)
+	}
+
+	poll := gateway.Handle(context.Background(), Request{
+		RequestID: "poll-1",
+		AgentID:   "fixer-1",
+		TaskID:    "task-1",
+		Name:      "ipc.poll",
+		Args: map[string]any{
+			"topic": "review.feedback",
+		},
+	})
+	if poll.Status != StatusOK {
+		t.Fatalf("poll status=%s error=%s", poll.Status, poll.Error)
+	}
+	pageIDs, ok := poll.Payload["page_ids"].([]string)
+	if !ok || len(pageIDs) != 1 || pageIDs[0] != page.ID {
+		t.Fatalf("poll payload = %#v", poll.Payload)
+	}
+	table := store.PageTable("fixer-1")
+	if len(table.PageIDs) != 1 || table.PageIDs[0] != page.ID {
+		t.Fatalf("fixer page table = %#v", table)
+	}
+	if !containsEventType(sink.events, "ipc.published") || !containsEventType(sink.events, "ipc.polled") {
+		t.Fatalf("expected IPC events, got %#v", sink.events)
+	}
+}
+
+func TestGatewayAgentSpawnCallsRuntimeSpawner(t *testing.T) {
+	var spawned SpawnRequest
+	sink := &recordingSink{}
+	gateway := NewGateway(Config{
+		Sink:          sink,
+		WorkspaceRoot: t.TempDir(),
+		Spawner: func(req SpawnRequest) (SpawnResult, error) {
+			spawned = req
+			return SpawnResult{AgentID: "fixer-1", Role: req.Role, TaskID: req.TaskID, State: "CREATED"}, nil
+		},
+	})
+
+	response := gateway.Handle(context.Background(), Request{
+		RequestID: "spawn-1",
+		AgentID:   "reviewer-1",
+		TaskID:    "task-1",
+		Name:      "agent.spawn",
+		Args: map[string]any{
+			"agent_id":     "fixer-1",
+			"role":         "fixer",
+			"reason":       "tester failed",
+			"dependencies": []any{"reviewer-1"},
+		},
+	})
+
+	if response.Status != StatusOK {
+		t.Fatalf("status=%s error=%s", response.Status, response.Error)
+	}
+	if spawned.AgentID != "fixer-1" || spawned.ParentAgentID != "reviewer-1" || spawned.Role != "fixer" || spawned.Reason != "tester failed" {
+		t.Fatalf("spawned = %#v", spawned)
+	}
+	if response.Payload["agent_id"] != "fixer-1" {
+		t.Fatalf("payload = %#v", response.Payload)
+	}
+	if !containsEventType(sink.events, "agent.spawn.requested") || !containsEventType(sink.events, "agent.spawned") {
+		t.Fatalf("expected spawn events, got %#v", sink.events)
+	}
+}
+
+func TestGatewayLLMCallUsesRouterAndAuditsUsage(t *testing.T) {
+	router := llm.NewRouter()
+	router.Register("mock", llm.NewMockProvider("mock"))
+	router.SetDefault("mock")
+	sink := &recordingSink{}
+	gateway := NewGateway(Config{LLM: router, Sink: sink, WorkspaceRoot: t.TempDir()})
+
+	response := gateway.Handle(context.Background(), Request{
+		RequestID: "llm-1",
+		AgentID:   "planner-1",
+		TaskID:    "task-1",
+		Name:      "llm.call",
+		Args: map[string]any{
+			"prompt": "plan the task",
+		},
+	})
+
+	if response.Status != StatusOK {
+		t.Fatalf("status=%s error=%s", response.Status, response.Error)
+	}
+	if response.Payload["provider"] != "mock" {
+		t.Fatalf("payload = %#v", response.Payload)
+	}
+	usage, ok := response.Payload["usage"].(map[string]any)
+	if !ok || usage["prompt_tokens"] == 0 {
+		t.Fatalf("usage payload = %#v", response.Payload["usage"])
+	}
+	if !containsEventType(sink.events, "llm.called") {
+		t.Fatalf("expected llm.called event, got %#v", sink.events)
+	}
+}
+
+func containsEventType(events []events.Event, eventType string) bool {
+	for _, event := range events {
+		if event.Type == eventType {
+			return true
+		}
+	}
+	return false
 }

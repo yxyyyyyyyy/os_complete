@@ -15,6 +15,8 @@ import (
 
 	"aort-r/internal/cvm"
 	"aort-r/internal/events"
+	"aort-r/internal/ipc"
+	"aort-r/internal/llm"
 )
 
 const (
@@ -63,21 +65,43 @@ type Report struct {
 	Payload map[string]any
 }
 
+type SpawnRequest struct {
+	AgentID       string
+	TaskID        string
+	ParentAgentID string
+	Role          string
+	Reason        string
+	Dependencies  []string
+}
+
+type SpawnResult struct {
+	AgentID string `json:"agent_id"`
+	Role    string `json:"role"`
+	TaskID  string `json:"task_id"`
+	State   string `json:"state"`
+}
+
 type Config struct {
 	CVM           *cvm.Store
+	IPC           *ipc.Blackboard
+	LLM           *llm.Router
 	Sink          EventSink
 	WorkspaceRoot string
 	ToolTimeout   time.Duration
 	Reporter      func(Report)
+	Spawner       func(SpawnRequest) (SpawnResult, error)
 }
 
 type Gateway struct {
 	mu            sync.RWMutex
 	cvm           *cvm.Store
+	ipc           *ipc.Blackboard
+	llm           *llm.Router
 	sink          EventSink
 	workspaceRoot string
 	toolTimeout   time.Duration
 	reporter      func(Report)
+	spawner       func(SpawnRequest) (SpawnResult, error)
 	records       []Record
 }
 
@@ -92,10 +116,13 @@ func NewGateway(cfg Config) *Gateway {
 	}
 	return &Gateway{
 		cvm:           cfg.CVM,
+		ipc:           cfg.IPC,
+		llm:           cfg.LLM,
 		sink:          cfg.Sink,
 		workspaceRoot: root,
 		toolTimeout:   timeout,
 		reporter:      cfg.Reporter,
+		spawner:       cfg.Spawner,
 	}
 }
 
@@ -159,13 +186,64 @@ func (g *Gateway) execute(ctx context.Context, req Request) Response {
 		return g.contextMaterialize(req)
 	case "context.write_delta":
 		return g.contextWriteDelta(req)
+	case "ipc.publish":
+		return g.ipcPublish(req)
+	case "ipc.poll":
+		return g.ipcPoll(req)
+	case "llm.call":
+		return g.llmCall(ctx, req)
 	case "tool.exec":
 		return g.toolExec(ctx, req)
+	case "agent.spawn":
+		return g.agentSpawn(req)
 	case "agent.report":
 		return g.agentReport(req)
 	default:
 		return Response{RequestID: req.RequestID, Status: StatusDenied, Error: "unsupported syscall " + req.Name}
 	}
+}
+
+func (g *Gateway) llmCall(ctx context.Context, req Request) Response {
+	if g.llm == nil {
+		return Response{RequestID: req.RequestID, Status: StatusError, Error: "llm router is not configured"}
+	}
+	prompt, _ := stringArg(req.Args, "prompt")
+	if prompt == "" && g.cvm != nil {
+		content, err := g.cvm.Materialize(req.AgentID)
+		if err != nil {
+			return Response{RequestID: req.RequestID, Status: StatusError, Error: err.Error()}
+		}
+		prompt = content
+	}
+	if prompt == "" {
+		return Response{RequestID: req.RequestID, Status: StatusDenied, Error: "prompt is required"}
+	}
+	provider, _ := stringArg(req.Args, "provider")
+	role, _ := stringArg(req.Args, "role")
+	resp, usage, err := g.llm.Complete(ctx, llm.Request{
+		AgentID:  req.AgentID,
+		Role:     role,
+		Provider: provider,
+		Prompt:   prompt,
+	})
+	if err != nil {
+		return Response{RequestID: req.RequestID, Status: StatusError, Error: err.Error()}
+	}
+	payload := map[string]any{
+		"text":          resp.Text,
+		"provider":      resp.Provider,
+		"fallback_from": resp.FallbackFrom,
+		"usage":         usagePayload(usage),
+	}
+	g.publish("llm.called", req, map[string]any{
+		"provider":      resp.Provider,
+		"fallback_from": resp.FallbackFrom,
+		"prompt_tokens": usage.PromptTokens,
+		"cached_tokens": usage.CachedTokens,
+		"ttft_ms":       usage.TTFTMS,
+		"mode":          usage.Mode,
+	})
+	return Response{RequestID: req.RequestID, Status: StatusOK, Payload: payload}
 }
 
 func (g *Gateway) contextMaterialize(req Request) Response {
@@ -200,6 +278,80 @@ func (g *Gateway) contextWriteDelta(req Request) Response {
 		return Response{RequestID: req.RequestID, Status: StatusError, Error: err.Error()}
 	}
 	return Response{RequestID: req.RequestID, Status: StatusOK, Payload: map[string]any{"page_id": page.ID, "bytes": page.Bytes, "tokens": page.TokenCount}}
+}
+
+func (g *Gateway) ipcPublish(req Request) Response {
+	if g.ipc == nil {
+		return Response{RequestID: req.RequestID, Status: StatusError, Error: "ipc blackboard is not configured"}
+	}
+	topic, ok := stringArg(req.Args, "topic")
+	if !ok || topic == "" {
+		return Response{RequestID: req.RequestID, Status: StatusDenied, Error: "topic is required"}
+	}
+	pageID, ok := stringArg(req.Args, "page_id")
+	if !ok || pageID == "" {
+		return Response{RequestID: req.RequestID, Status: StatusDenied, Error: "page_id is required"}
+	}
+	sizeBytes := intArg(req.Args, "size_bytes")
+	if g.cvm != nil {
+		page, exists := g.cvm.Page(pageID)
+		if !exists {
+			return Response{RequestID: req.RequestID, Status: StatusDenied, Error: "unknown page_id " + pageID}
+		}
+		if sizeBytes <= 0 {
+			sizeBytes = page.Bytes
+		}
+	}
+	metric := g.ipc.Publish(ipc.PublishRequest{
+		Topic:     topic,
+		Publisher: req.AgentID,
+		PageID:    pageID,
+		SizeBytes: sizeBytes,
+	})
+	g.publish("ipc.published", req, map[string]any{
+		"topic":              topic,
+		"page_id":            pageID,
+		"avoided_copy_bytes": metric.AvoidedCopyBytes,
+		"topic_depth":        metric.TopicDepth,
+	})
+	return Response{RequestID: req.RequestID, Status: StatusOK, Payload: map[string]any{
+		"topic":              topic,
+		"page_id":            pageID,
+		"avoided_copy_bytes": metric.AvoidedCopyBytes,
+		"topic_depth":        metric.TopicDepth,
+	}}
+}
+
+func (g *Gateway) ipcPoll(req Request) Response {
+	if g.ipc == nil {
+		return Response{RequestID: req.RequestID, Status: StatusError, Error: "ipc blackboard is not configured"}
+	}
+	topic, ok := stringArg(req.Args, "topic")
+	if !ok || topic == "" {
+		return Response{RequestID: req.RequestID, Status: StatusDenied, Error: "topic is required"}
+	}
+	messages, metric := g.ipc.Poll(topic, req.AgentID)
+	pageIDs := make([]string, 0, len(messages))
+	for _, message := range messages {
+		pageIDs = append(pageIDs, message.PageID)
+		if g.cvm != nil {
+			if err := g.cvm.MountPage(req.AgentID, message.PageID); err != nil {
+				return Response{RequestID: req.RequestID, Status: StatusError, Error: err.Error()}
+			}
+		}
+	}
+	g.publish("ipc.polled", req, map[string]any{
+		"topic":              topic,
+		"page_ids":           pageIDs,
+		"delivered_messages": metric.DeliveredMessages,
+		"avoided_copy_bytes": metric.AvoidedCopyBytes,
+	})
+	return Response{RequestID: req.RequestID, Status: StatusOK, Payload: map[string]any{
+		"topic":              topic,
+		"page_ids":           pageIDs,
+		"delivered_messages": metric.DeliveredMessages,
+		"avoided_copy_bytes": metric.AvoidedCopyBytes,
+	}}
 }
 
 func (g *Gateway) toolExec(ctx context.Context, req Request) Response {
@@ -263,6 +415,50 @@ func (g *Gateway) agentReport(req Request) Response {
 		g.reporter(Report{AgentID: req.AgentID, TaskID: req.TaskID, Status: status, Payload: req.Args})
 	}
 	return Response{RequestID: req.RequestID, Status: StatusOK, Payload: map[string]any{"status": status}}
+}
+
+func (g *Gateway) agentSpawn(req Request) Response {
+	if g.spawner == nil {
+		return Response{RequestID: req.RequestID, Status: StatusError, Error: "agent spawner is not configured"}
+	}
+	role, ok := stringArg(req.Args, "role")
+	if !ok || role == "" {
+		return Response{RequestID: req.RequestID, Status: StatusDenied, Error: "role is required"}
+	}
+	agentID, _ := stringArg(req.Args, "agent_id")
+	reason, _ := stringArg(req.Args, "reason")
+	deps := stringSliceArg(req.Args, "dependencies")
+	spawnReq := SpawnRequest{
+		AgentID:       agentID,
+		TaskID:        req.TaskID,
+		ParentAgentID: req.AgentID,
+		Role:          role,
+		Reason:        reason,
+		Dependencies:  deps,
+	}
+	g.publish("agent.spawn.requested", req, map[string]any{
+		"agent_id":     agentID,
+		"role":         role,
+		"reason":       reason,
+		"dependencies": deps,
+	})
+	result, err := g.spawner(spawnReq)
+	if err != nil {
+		return Response{RequestID: req.RequestID, Status: StatusError, Error: err.Error()}
+	}
+	g.publish("agent.spawned", req, map[string]any{
+		"agent_id":        result.AgentID,
+		"role":            result.Role,
+		"state":           result.State,
+		"parent_agent_id": req.AgentID,
+		"reason":          reason,
+	})
+	return Response{RequestID: req.RequestID, Status: StatusOK, Payload: map[string]any{
+		"agent_id": result.AgentID,
+		"role":     result.Role,
+		"task_id":  result.TaskID,
+		"state":    result.State,
+	}}
 }
 
 func (g *Gateway) workspaceForAgent(agentID string) (string, error) {
@@ -383,4 +579,16 @@ func estimateTokens(content string) int {
 		return 1
 	}
 	return tokens
+}
+
+func usagePayload(usage llm.Usage) map[string]any {
+	return map[string]any{
+		"prompt_tokens":     usage.PromptTokens,
+		"completion_tokens": usage.CompletionTokens,
+		"cached_tokens":     usage.CachedTokens,
+		"prompt_ms":         usage.PromptMS,
+		"ttft_ms":           usage.TTFTMS,
+		"total_ms":          usage.TotalMS,
+		"mode":              usage.Mode,
+	}
 }
