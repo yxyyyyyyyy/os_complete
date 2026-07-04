@@ -1,0 +1,22 @@
+[
+  {
+    "experiment": "e2-fault-isolation",
+    "mode": "no-capsule",
+    "runs": 5,
+    "affected_agents": 3,
+    "recovery_time_ms": 0,
+    "task_success": false,
+    "rollback_success": false,
+    "fault_count": 15
+  },
+  {
+    "experiment": "e2-fault-isolation",
+    "mode": "per-agent-capsule",
+    "runs": 5,
+    "affected_agents": 1,
+    "recovery_time_ms": 120,
+    "task_success": true,
+    "rollback_success": true,
+    "fault_count": 15
+  }
+]

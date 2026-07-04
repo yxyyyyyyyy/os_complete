@@ -1,0 +1,10 @@
+{
+  "experiment": "e3-context-ipc",
+  "mode": "cvm-page-sharing",
+  "runs": 5,
+  "total_prompt_tokens": 720,
+  "unique_page_tokens": 122,
+  "saved_tokens": 588,
+  "saved_bytes": 2394,
+  "materialize_time_ms": 1
+}

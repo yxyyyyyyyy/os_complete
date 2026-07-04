@@ -3,6 +3,7 @@ import {
   getAgents,
   getContextPages,
   getContextStats,
+  getExperimentResults,
   getSchedulerDecisions,
   getTasks,
   postAgentAction,
@@ -10,6 +11,7 @@ import {
   type Agent,
   type ContextPage,
   type ContextStats,
+  type ExperimentResults,
   type RuntimeEvent,
   type SchedulerDecision,
   type Task
@@ -27,6 +29,20 @@ export const runtimeStore = reactive({
     saved_tokens: 0
   } as ContextStats,
   schedulerDecisions: [] as SchedulerDecision[],
+  experimentResults: {
+    e1_scheduler: [],
+    e2_fault: [],
+    e3_context: {
+      experiment: '',
+      mode: '',
+      runs: 0,
+      total_prompt_tokens: 0,
+      unique_page_tokens: 0,
+      saved_tokens: 0,
+      saved_bytes: 0,
+      materialize_time_ms: 0
+    }
+  } as ExperimentResults,
   selectedTaskID: '',
   loading: false,
   error: '',
@@ -40,6 +56,7 @@ export async function refreshTasks() {
   runtimeStore.tasks = await getTasks()
   runtimeStore.agents = await getAgents()
   runtimeStore.schedulerDecisions = await getSchedulerDecisions()
+  runtimeStore.experimentResults = await getExperimentResults()
   await refreshContext()
   if (!runtimeStore.selectedTaskID && runtimeStore.tasks.length > 0) {
     runtimeStore.selectedTaskID = runtimeStore.tasks[0].task_id

@@ -192,6 +192,37 @@ p {
   font-size: 13px;
 }
 
+.bar-list {
+  display: grid;
+  gap: 10px;
+}
+
+.bar-row {
+  display: grid;
+  grid-template-columns: minmax(170px, 220px) minmax(120px, 1fr) 90px;
+  align-items: center;
+  gap: 12px;
+}
+
+.bar-label,
+.bar-value {
+  color: #294247;
+  font-size: 13px;
+}
+
+.bar-track {
+  height: 12px;
+  border-radius: 6px;
+  background: #e2e9eb;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  border-radius: 6px;
+  background: #26756f;
+}
+
 .table-wrap {
   overflow: auto;
 }
@@ -331,6 +362,11 @@ th {
 
   .metrics-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .bar-row {
+    grid-template-columns: 1fr;
+    gap: 6px;
   }
 
   .timeline-row {

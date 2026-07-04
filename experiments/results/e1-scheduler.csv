@@ -1,0 +1,4 @@
+experiment,policy,mode,runs,total_time_ms,avg_wait_time_ms,jain_fairness,decision_count
+e1-scheduler,fifo,degraded-simulation,5,2800,166,0.9138,15
+e1-scheduler,token-cfs,degraded-simulation,5,2575,166,0.9138,15
+e1-scheduler,token-cfs-prefix-affinity,degraded-simulation,5,2350,166,0.9138,15

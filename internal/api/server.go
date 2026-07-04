@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
 	"path/filepath"
 	"strings"
 	"sync"
@@ -16,6 +17,7 @@ import (
 	"aort-r/internal/cvm"
 	"aort-r/internal/demo"
 	"aort-r/internal/events"
+	"aort-r/internal/experiment"
 	"aort-r/internal/scheduler"
 	"aort-r/internal/supervisor"
 	syscallgw "aort-r/internal/syscall"
@@ -107,6 +109,7 @@ func (s *Server) routes() {
 	mux.HandleFunc("/api/syscalls", s.handleSyscalls)
 	mux.HandleFunc("/api/scheduler/decisions", s.handleSchedulerDecisions)
 	mux.HandleFunc("/api/scheduler/policy", s.handleSchedulerPolicy)
+	mux.HandleFunc("/api/experiments/results", s.handleExperimentResults)
 	mux.HandleFunc("/api/tasks", s.handleTasks)
 	mux.HandleFunc("/api/tasks/", s.handleTaskSubresource)
 	s.mux = mux
@@ -430,6 +433,15 @@ func (s *Server) handleSchedulerPolicy(w http.ResponseWriter, r *http.Request) {
 	writeJSON(w, http.StatusOK, map[string]string{"policy": s.scheduler.Policy()})
 }
 
+func (s *Server) handleExperimentResults(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		w.Header().Set("Allow", http.MethodGet)
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	writeJSON(w, http.StatusOK, loadExperimentResults())
+}
+
 func (s *Server) handleTaskSubresource(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		w.Header().Set("Allow", http.MethodGet)
@@ -450,6 +462,35 @@ func (s *Server) handleTaskSubresource(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	writeJSON(w, http.StatusOK, task.DAG)
+}
+
+type experimentResultsResponse struct {
+	E1Scheduler []experiment.E1SchedulerResult `json:"e1_scheduler"`
+	E2Fault     []experiment.E2FaultResult     `json:"e2_fault"`
+	E3Context   experiment.E3ContextResult     `json:"e3_context"`
+}
+
+func loadExperimentResults() experimentResultsResponse {
+	base := filepath.Join("experiments", "results")
+	response := experimentResultsResponse{}
+	if !readJSON(filepath.Join(base, "e1-scheduler.json"), &response.E1Scheduler) {
+		response.E1Scheduler = experiment.RunE1Scheduler(5)
+	}
+	if !readJSON(filepath.Join(base, "e2-fault.json"), &response.E2Fault) {
+		response.E2Fault = experiment.RunE2FaultIsolation(5)
+	}
+	if !readJSON(filepath.Join(base, "e3-context.json"), &response.E3Context) {
+		response.E3Context = experiment.RunE3ContextSharing(5)
+	}
+	return response
+}
+
+func readJSON(path string, target any) bool {
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return false
+	}
+	return json.Unmarshal(data, target) == nil
 }
 
 func (s *Server) schedulerCandidates(taskID string, pending []worker.Spec) []avp.AVP {

@@ -67,6 +67,45 @@ export interface SchedulerDecision {
   created_at: number
 }
 
+export interface E1SchedulerResult {
+  experiment: string
+  policy: string
+  mode: string
+  runs: number
+  total_time_ms: number
+  avg_wait_time_ms: number
+  jain_fairness: number
+  decision_count: number
+}
+
+export interface E2FaultResult {
+  experiment: string
+  mode: string
+  runs: number
+  affected_agents: number
+  recovery_time_ms: number
+  task_success: boolean
+  rollback_success: boolean
+  fault_count: number
+}
+
+export interface E3ContextResult {
+  experiment: string
+  mode: string
+  runs: number
+  total_prompt_tokens: number
+  unique_page_tokens: number
+  saved_tokens: number
+  saved_bytes: number
+  materialize_time_ms: number
+}
+
+export interface ExperimentResults {
+  e1_scheduler: E1SchedulerResult[]
+  e2_fault: E2FaultResult[]
+  e3_context: E3ContextResult
+}
+
 export async function runDemo(): Promise<{ task_id: string }> {
   const response = await fetch('/api/demo/run', { method: 'POST' })
   if (!response.ok) {
@@ -118,6 +157,14 @@ export async function getSchedulerDecisions(): Promise<SchedulerDecision[]> {
   const response = await fetch('/api/scheduler/decisions')
   if (!response.ok) {
     throw new Error(`scheduler decisions request failed: ${response.status}`)
+  }
+  return response.json()
+}
+
+export async function getExperimentResults(): Promise<ExperimentResults> {
+  const response = await fetch('/api/experiments/results')
+  if (!response.ok) {
+    throw new Error(`experiment results request failed: ${response.status}`)
   }
   return response.json()
 }

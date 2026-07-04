@@ -1,0 +1,32 @@
+[
+  {
+    "experiment": "e1-scheduler",
+    "policy": "fifo",
+    "mode": "degraded-simulation",
+    "runs": 5,
+    "total_time_ms": 2800,
+    "avg_wait_time_ms": 166,
+    "jain_fairness": 0.9137529137529138,
+    "decision_count": 15
+  },
+  {
+    "experiment": "e1-scheduler",
+    "policy": "token-cfs",
+    "mode": "degraded-simulation",
+    "runs": 5,
+    "total_time_ms": 2575,
+    "avg_wait_time_ms": 166,
+    "jain_fairness": 0.9137529137529138,
+    "decision_count": 15
+  },
+  {
+    "experiment": "e1-scheduler",
+    "policy": "token-cfs-prefix-affinity",
+    "mode": "degraded-simulation",
+    "runs": 5,
+    "total_time_ms": 2350,
+    "avg_wait_time_ms": 166,
+    "jain_fairness": 0.9137529137529138,
+    "decision_count": 15
+  }
+]
