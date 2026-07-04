@@ -1,0 +1,101 @@
+[
+  {
+    "id": "20260704224100.470485617",
+    "task_id": "task-1783176060469225965",
+    "candidates": [
+      "task-1783176060469225965-planner",
+      "task-1783176060469225965-coder",
+      "task-1783176060469225965-tester",
+      "task-1783176060469225965-reviewer"
+    ],
+    "selected_agent": "task-1783176060469225965-planner",
+    "policy": "token-cfs-prefix-affinity",
+    "reason": "lowest vruntime; no previous prefix group",
+    "vruntime_before": {
+      "task-1783176060469225965-coder": 0,
+      "task-1783176060469225965-planner": 0,
+      "task-1783176060469225965-reviewer": 0,
+      "task-1783176060469225965-tester": 0
+    },
+    "vruntime_after": {
+      "task-1783176060469225965-coder": 0,
+      "task-1783176060469225965-planner": 0,
+      "task-1783176060469225965-reviewer": 0,
+      "task-1783176060469225965-tester": 0
+    },
+    "shared_pages": {},
+    "created_at": 1783176060470
+  },
+  {
+    "id": "20260704224100.470623857",
+    "task_id": "task-1783176060469225965",
+    "candidates": [
+      "task-1783176060469225965-coder",
+      "task-1783176060469225965-tester",
+      "task-1783176060469225965-reviewer"
+    ],
+    "selected_agent": "task-1783176060469225965-coder",
+    "policy": "token-cfs-prefix-affinity",
+    "reason": "lowest vruntime; no affinity candidate within threshold",
+    "vruntime_before": {
+      "task-1783176060469225965-coder": 0,
+      "task-1783176060469225965-reviewer": 0,
+      "task-1783176060469225965-tester": 0
+    },
+    "vruntime_after": {
+      "task-1783176060469225965-coder": 0,
+      "task-1783176060469225965-reviewer": 0,
+      "task-1783176060469225965-tester": 0
+    },
+    "shared_pages": {
+      "task-1783176060469225965-coder": 3,
+      "task-1783176060469225965-reviewer": 3,
+      "task-1783176060469225965-tester": 3
+    },
+    "created_at": 1783176060470
+  },
+  {
+    "id": "20260704224100.471399390",
+    "task_id": "task-1783176060469225965",
+    "candidates": [
+      "task-1783176060469225965-tester",
+      "task-1783176060469225965-reviewer"
+    ],
+    "selected_agent": "task-1783176060469225965-tester",
+    "policy": "token-cfs-prefix-affinity",
+    "reason": "lowest vruntime; no affinity candidate within threshold",
+    "vruntime_before": {
+      "task-1783176060469225965-reviewer": 0,
+      "task-1783176060469225965-tester": 0
+    },
+    "vruntime_after": {
+      "task-1783176060469225965-reviewer": 0,
+      "task-1783176060469225965-tester": 0
+    },
+    "shared_pages": {
+      "task-1783176060469225965-reviewer": 3,
+      "task-1783176060469225965-tester": 3
+    },
+    "created_at": 1783176060471
+  },
+  {
+    "id": "20260704224100.472112912",
+    "task_id": "task-1783176060469225965",
+    "candidates": [
+      "task-1783176060469225965-reviewer"
+    ],
+    "selected_agent": "task-1783176060469225965-reviewer",
+    "policy": "token-cfs-prefix-affinity",
+    "reason": "lowest vruntime; no affinity candidate within threshold",
+    "vruntime_before": {
+      "task-1783176060469225965-reviewer": 0
+    },
+    "vruntime_after": {
+      "task-1783176060469225965-reviewer": 0
+    },
+    "shared_pages": {
+      "task-1783176060469225965-reviewer": 3
+    },
+    "created_at": 1783176060472
+  }
+]

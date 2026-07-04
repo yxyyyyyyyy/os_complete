@@ -1,0 +1,23 @@
+{
+  "agents": "200",
+  "context_stats": "200",
+  "demo_run": "202",
+  "env_check": "1",
+  "fault_tool_timeout": "202",
+  "freeze": "409",
+  "go_test": "0",
+  "health": "200",
+  "kill": "200",
+  "scheduler_decisions": "200",
+  "smoke_openeuler": "1",
+  "syscalls": "200",
+  "unfreeze": "409",
+  "agent": {
+    "agent_id": "task-1783176060469225965-reviewer",
+    "pid": 7619,
+    "capsule_mode": "degraded",
+    "cgroup_path": "degraded://task-1783176060469225965-reviewer",
+    "memory_current": 0,
+    "pids_current": 0
+  }
+}

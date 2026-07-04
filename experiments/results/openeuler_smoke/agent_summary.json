@@ -1,0 +1,8 @@
+{
+  "agent_id": "task-1783176060469225965-reviewer",
+  "pid": 7619,
+  "capsule_mode": "degraded",
+  "cgroup_path": "degraded://task-1783176060469225965-reviewer",
+  "memory_current": 0,
+  "pids_current": 0
+}

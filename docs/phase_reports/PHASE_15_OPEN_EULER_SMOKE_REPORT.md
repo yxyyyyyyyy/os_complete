@@ -1,91 +1,134 @@
 # PHASE_15_OPEN_EULER_SMOKE_REPORT
 
-mode=pending
+mode=partial-real-openeuler
 
-本报告用于记录 AORT-R 在 openEuler 24.03 LTS / Linux root / cgroup v2
-环境下的 smoke test 证据。
+本报告记录 AORT-R 在一台公网 openEuler 24.03 LTS 服务器上的真实验证结果。
+本次没有伪造 cgroup v2 证据：服务器当前不是统一 cgroup v2 挂载，因此正式
+`scripts/smoke_openeuler.sh` 在环境门槛处失败；随后执行了手动 degraded API
+smoke，用于证明 Runtime 可启动、可运行 demo、可输出调度/CVM/syscall/fault
+证据。
 
-当前仓库尚未包含真实 openEuler smoke 输出，因此本文件是待运行模板。
-未运行，不得作为 real 证据。
+## 执行环境
 
-## 脚本与输出位置
-
-| 项目 | 路径 |
+| 项目 | 结果 |
 | --- | --- |
-| 环境检查脚本 | `scripts/check_openeuler_env.sh` |
-| smoke 脚本 | `scripts/smoke_openeuler.sh` |
-| smoke 输出目录 | `experiments/results/openeuler_smoke/` |
+| 服务器目录 | `/root/aort-r-smoke-git` |
+| Git commit | `383ae93` |
+| openEuler 版本 | `openEuler 24.03 (LTS)` |
+| kernel 版本 | `6.6.0-112.0.0.104.oe2403.x86_64` |
+| 是否 root | 是，`uid=0(root)` |
+| Go 工具链 | `go version go1.22.12 linux/amd64` |
+| 证据目录 | `experiments/results/openeuler_smoke/` |
 
-运行命令：
+## 脚本结果
 
-```bash
-bash scripts/check_openeuler_env.sh
-bash scripts/smoke_openeuler.sh
+| 命令 | 结果 | 证据 |
+| --- | --- | --- |
+| `bash scripts/check_openeuler_env.sh` | 失败，`failures=3 warnings=4` | `experiments/results/openeuler_smoke/env_check.txt` |
+| `go test ./...` | 通过 | `experiments/results/openeuler_smoke/go_test.txt` |
+| `bash scripts/smoke_openeuler.sh` | 失败，停在 cgroup v2 环境检查 | `experiments/results/openeuler_smoke/smoke_openeuler.log` |
+| 手动 degraded API smoke | 完成 | `experiments/results/openeuler_smoke/manual_smoke_summary.json` |
+
+## cgroup / OS 证据
+
+| 项目 | 结果 |
+| --- | --- |
+| `/sys/fs/cgroup` 类型 | `tmpfs` |
+| 期望类型 | `cgroup2fs` |
+| `/sys/fs/cgroup` 是否可写 | 否 |
+| `/sys/fs/cgroup/aort.slice` | 创建失败 |
+| cgroup v2 是否 real | 否 |
+| cgroup_path 示例 | `degraded://task-1783176060469225965-reviewer` |
+| memory.current 示例 | 无 real cgroup 文件；degraded 汇总为 `0` |
+| pids.current 示例 | 无 real cgroup 文件；degraded 汇总为 `0` |
+
+因此，本次不能宣称 real cgroup v2 isolation 已在该服务器通过。当前能证明的是：
+Runtime 在 openEuler/root/Go 1.22.12 上可编译测试通过，并能在 cgroup v2 缺失
+时进入 degraded capsule 运行。
+
+## API Smoke 结果
+
+| API / 行为 | HTTP / 结果 | 证据 |
+| --- | --- | --- |
+| `/api/health` | `200` | `manual_smoke_summary.json` |
+| `/api/demo/run` | `202` | `manual_smoke_summary.json` |
+| `/api/agents` | `200`，存在真实 worker PID | `agents.json`, `agent_summary.json` |
+| `/api/context/stats` | `200` | `context_stats.json` |
+| `/api/syscalls` | `200`，共 21 条 syscall record | `syscalls.json` |
+| `/api/scheduler/decisions` | `200`，共 4 条调度决策 | `scheduler_decisions.json` |
+| `freeze` | `409`，degraded capsule 不支持 cgroup freeze | `freeze.json` |
+| `unfreeze` | `409`，degraded capsule 不支持 cgroup unfreeze | `unfreeze.json` |
+| `kill` | `200` | `kill.json` |
+| `/api/demo/fault/tool-timeout` | `202`，`TOOL_TIMEOUT` recovered | `fault_tool_timeout.json` |
+
+## 关键样例
+
+### Agent
+
+```json
+{
+  "agent_id": "task-1783176060469225965-reviewer",
+  "pid": 7619,
+  "capsule_mode": "degraded",
+  "cgroup_path": "degraded://task-1783176060469225965-reviewer",
+  "memory_current": 0,
+  "pids_current": 0
+}
 ```
 
-## 当前状态
+### CVM
 
-| 项目 | 状态 |
-| --- | --- |
-| openEuler 实机 smoke | 未运行 |
-| 当前报告模式 | `pending` |
-| 当前是否有 `experiments/results/openeuler_smoke/` 输出 | 无 |
-| 当前未运行原因 | 当前工作环境不是 openEuler 24.03 LTS / Linux root / cgroup v2 实机 |
-| 是否声明 cgroup real | 否，等待 openEuler root 证据 |
-| 是否声明 eBPF real | 否，本阶段不做 eBPF |
-| 是否声明 overlayfs real | 否，本阶段不做 overlayfs |
+```json
+{
+  "total_pages": 12,
+  "shared_pages": 12,
+  "saved_bytes": 968,
+  "saved_tokens": 237
+}
+```
 
-## 需要提交的 JSON/文本证据清单
+### Scheduler
 
-| 证据 | 文件 |
-| --- | --- |
-| `env_check.txt` | `experiments/results/openeuler_smoke/env_check.txt` |
-| `agents.json` | `experiments/results/openeuler_smoke/agents.json` |
-| `agent_summary.json` | `experiments/results/openeuler_smoke/agent_summary.json` |
-| `syscalls.json` | `experiments/results/openeuler_smoke/syscalls.json` |
-| `context_stats.json` | `experiments/results/openeuler_smoke/context_stats.json` |
-| `scheduler_decisions.json` | `experiments/results/openeuler_smoke/scheduler_decisions.json` |
-| `fault_tool_timeout.json` | `experiments/results/openeuler_smoke/fault_tool_timeout.json` |
-| HTTP health | `experiments/results/openeuler_smoke/health.json` |
-| demo run 结果 | `experiments/results/openeuler_smoke/demo_run.json` |
-| smoke 汇总 | `experiments/results/openeuler_smoke/smoke_summary.json` |
-| aortd 日志 | `experiments/results/openeuler_smoke/aortd.log` |
-| Go 测试输出 | `experiments/results/openeuler_smoke/go_test.txt` |
+```json
+{
+  "selected_agent": "task-1783176060469225965-coder",
+  "policy": "token-cfs-prefix-affinity",
+  "reason": "lowest vruntime; no affinity candidate within threshold",
+  "shared_pages": {
+    "task-1783176060469225965-coder": 3,
+    "task-1783176060469225965-reviewer": 3,
+    "task-1783176060469225965-tester": 3
+  }
+}
+```
 
-## openEuler 实机结果摘要
+### Fault
 
-| 项目 | 结果 | 证据来源 |
-| --- | --- | --- |
-| openEuler 版本 | 待运行后填写 | `env_check.txt` 中 `/etc/os-release` |
-| kernel 版本 | 待运行后填写 | `env_check.txt` 中 `uname -a` |
-| 是否 root | 待运行后填写 | `env_check.txt` 中 `id` |
-| cgroup v2 是否 real | 待运行后填写 | `env_check.txt` 中 `stat -fc %T /sys/fs/cgroup`，期望 `cgroup2fs` |
-| cgroup_path 示例 | 待运行后填写 | `agent_summary.json` 的 `cgroup_path` |
-| memory.current 示例 | 待运行后填写 | `cgroup_memory_current.txt` 或 `agent_summary.json` 的 `memory_current` |
-| pids.current 示例 | 待运行后填写 | `cgroup_pids_current.txt` 或 `agent_summary.json` 的 `pids_current` |
-| freeze/unfreeze/kill 是否成功 | 待运行后填写 | `freeze.status`、`unfreeze.status`、`kill.status` |
-| demo/run 是否启动真实 worker | 待运行后填写 | `agents.json` 中至少一个 Agent 的 `pid` 非 0 |
-| syscall 是否真实记录 | 待运行后填写 | `syscalls.json` |
-| CVM stats 示例 | 待运行后填写 | `context_stats.json` |
-| scheduler decision 示例 | 待运行后填写 | `scheduler_decisions.json` |
-| tool-timeout fault 示例 | 待运行后填写 | `fault_tool_timeout.status` 与 `fault_tool_timeout.json` |
+```json
+{
+  "type": "TOOL_TIMEOUT",
+  "status": "RECOVERED",
+  "recovery_action": "tool process killed by timeout context"
+}
+```
 
 ## 当前 degraded 项
 
 | 模块 | 当前状态 | 说明 |
 | --- | --- | --- |
+| capsule / cgroup isolation | `degraded` | 服务器未提供 `/sys/fs/cgroup` 的 `cgroup2fs` 统一挂载。 |
+| freeze / unfreeze | `degraded` | 因无 cgroup v2，接口返回 `409`，错误原因已记录。 |
 | workspace isolation | `degraded-copy` | 当前 smoke 只验证复制回滚证据，不实现真实 overlayfs mount/commit。 |
 | kernel observer | `degraded-proxy` | 当前通过 syscall gateway 的 exec observation 形成 `kernel.exec` 证据，不做 eBPF attach。 |
-| LLM provider | `mock` | 当前默认使用 mock provider，不接入真实外部 LLM 凭据。 |
+| LLM provider | `mock` | 当前默认使用 mock provider，不把外部 LLM API key 写入仓库。 |
 | checkpoint recovery | `checkpoint-light` | 当前恢复 AVP 表、scheduler vruntime 和 CVM page references；page content durable backing 仍是后续工作。 |
 
-## 下一步如何在 openEuler 上运行
+## 下一步最该做的 3 件事
 
-1. 在 openEuler 24.03 LTS VM/物理机中以 root 登录，确认 cgroup v2 已挂载。
-2. 在仓库根目录执行 `bash scripts/check_openeuler_env.sh`，修复所有 `[FAIL]` 项。
-3. 执行 `bash scripts/smoke_openeuler.sh`，确认输出目录生成上述证据文件。
-4. 将 `agents.json`、`agent_summary.json`、`syscalls.json`、
-   `context_stats.json`、`scheduler_decisions.json`、
-   `fault_tool_timeout.json`、`env_check.txt` 的关键内容填入
-   “openEuler 实机结果摘要”。
-5. 若 `capsule_mode=degraded`，优先检查 `/sys/fs/cgroup` 是否为 `cgroup2fs`、是否 root、`/sys/fs/cgroup/aort.slice` 是否可写。
+1. 准备真正启用 unified cgroup v2 的 openEuler 24.03 环境，要求
+   `stat -fc %T /sys/fs/cgroup` 输出 `cgroup2fs`，并且 root 可写
+   `/sys/fs/cgroup/aort.slice`。
+2. 在该环境重新执行 `bash scripts/smoke_openeuler.sh`，目标是生成 real
+   `memory.current`、`pids.current`、`freeze/unfreeze=2xx` 证据。
+3. 保留当前 degraded 证据作为对照组，再补一组 cgroup v2 real 证据，用于答辩中
+   区分“环境不满足导致降级”和“Runtime 真实 OS 控制能力”。
