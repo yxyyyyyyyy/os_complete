@@ -99,6 +99,24 @@ export const runtimeStore = reactive({
       saved_bytes: 0,
       ipc_avoided_copy_bytes: 0,
       materialize_time_ms: 0
+    },
+    e1_real_scheduler: [],
+    e2_real_fault: [],
+    e3_real_context: [],
+    e4_real_ipc: [],
+    e5_end_to_end: {
+      experiment: '',
+      demo: '',
+      evidence_mode: '',
+      wall_time_ms: 0,
+      agents: 0,
+      syscalls: 0,
+      tool_exec: 0,
+      ipc_messages: 0,
+      context_saved_tokens: 0,
+      fault_recovered: false,
+      final_success: false,
+      throughput_score: 0
     }
   } as ExperimentResults,
   selectedTaskID: '',

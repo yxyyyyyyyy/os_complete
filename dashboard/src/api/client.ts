@@ -193,10 +193,86 @@ export interface E3ContextResult {
   materialize_time_ms: number
 }
 
+export interface E1RealSchedulerResult {
+  experiment: string
+  policy: string
+  evidence_mode: string
+  task_count: number
+  agent_count: number
+  wall_time_ms: number
+  p50_latency_ms: number
+  p95_latency_ms: number
+  throughput_tasks_per_sec: number
+  avg_wait_time_ms: number
+  context_saved_tokens: number
+  context_reuse_rate: number
+  scheduler_decision_count: number
+}
+
+export interface E2RealFaultResult {
+  experiment: string
+  fault_type: string
+  evidence_mode: string
+  failed_agent: string
+  affected_agents: number
+  total_agents: number
+  recovery_action: string
+  recovery_time_ms: number
+  system_survived: boolean
+  cascade_failure: boolean
+  supervisor_fault_id: string
+}
+
+export interface E3RealContextResult {
+  experiment: string
+  mode: string
+  evidence_mode: string
+  agent_count: number
+  baseline_tokens: number
+  actual_materialized_tokens: number
+  saved_tokens: number
+  saved_bytes: number
+  shared_pages: number
+  private_pages: number
+  summary_pages: number
+  reuse_rate: number
+}
+
+export interface E4RealIPCResult {
+  experiment: string
+  mode: string
+  evidence_mode: string
+  message_count: number
+  payload_bytes_baseline: number
+  payload_bytes_actual: number
+  avoided_copy_bytes: number
+  avg_poll_latency_ms: number
+}
+
+export interface E5EndToEndResult {
+  experiment: string
+  demo: string
+  evidence_mode: string
+  wall_time_ms: number
+  agents: number
+  syscalls: number
+  tool_exec: number
+  ipc_messages: number
+  context_saved_tokens: number
+  fault_recovered: boolean
+  final_success: boolean
+  throughput_score: number
+}
+
 export interface ExperimentResults {
   e1_scheduler: E1SchedulerResult[]
   e2_fault: E2FaultResult[]
   e3_context: E3ContextResult
+  e1_real_scheduler: E1RealSchedulerResult[]
+  e2_real_fault: E2RealFaultResult[]
+  e3_real_context: E3RealContextResult[]
+  e4_real_ipc: E4RealIPCResult[]
+  e5_end_to_end: E5EndToEndResult
 }
 
 export async function runDemo(): Promise<{ task_id: string }> {

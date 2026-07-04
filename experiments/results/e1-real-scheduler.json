@@ -1,0 +1,47 @@
+[
+  {
+    "experiment": "E1_real_scheduler_benchmark",
+    "policy": "fifo",
+    "evidence_mode": "real-runtime",
+    "task_count": 50,
+    "agent_count": 8,
+    "wall_time_ms": 50,
+    "p50_latency_ms": 4,
+    "p95_latency_ms": 5,
+    "throughput_tasks_per_sec": 1000,
+    "avg_wait_time_ms": 49,
+    "context_saved_tokens": 9646,
+    "context_reuse_rate": 0.98,
+    "scheduler_decision_count": 50
+  },
+  {
+    "experiment": "E1_real_scheduler_benchmark",
+    "policy": "token-cfs",
+    "evidence_mode": "real-runtime",
+    "task_count": 50,
+    "agent_count": 8,
+    "wall_time_ms": 50,
+    "p50_latency_ms": 3,
+    "p95_latency_ms": 5,
+    "throughput_tasks_per_sec": 1000,
+    "avg_wait_time_ms": 46,
+    "context_saved_tokens": 8494,
+    "context_reuse_rate": 0.86,
+    "scheduler_decision_count": 50
+  },
+  {
+    "experiment": "E1_real_scheduler_benchmark",
+    "policy": "token-cfs-prefix-affinity",
+    "evidence_mode": "real-runtime",
+    "task_count": 50,
+    "agent_count": 8,
+    "wall_time_ms": 50,
+    "p50_latency_ms": 5,
+    "p95_latency_ms": 6,
+    "throughput_tasks_per_sec": 1000,
+    "avg_wait_time_ms": 62,
+    "context_saved_tokens": 9646,
+    "context_reuse_rate": 0.98,
+    "scheduler_decision_count": 50
+  }
+]

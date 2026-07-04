@@ -1,0 +1,44 @@
+[
+  {
+    "experiment": "E3_context_reuse",
+    "mode": "baseline",
+    "evidence_mode": "real-runtime",
+    "agent_count": 8,
+    "baseline_tokens": 36000,
+    "actual_materialized_tokens": 36000,
+    "saved_tokens": 0,
+    "saved_bytes": 0,
+    "shared_pages": 0,
+    "private_pages": 40,
+    "summary_pages": 0,
+    "reuse_rate": 0
+  },
+  {
+    "experiment": "E3_context_reuse",
+    "mode": "cvm",
+    "evidence_mode": "real-runtime",
+    "agent_count": 8,
+    "baseline_tokens": 36000,
+    "actual_materialized_tokens": 9608,
+    "saved_tokens": 6475,
+    "saved_bytes": 25900,
+    "shared_pages": 43,
+    "private_pages": 40,
+    "summary_pages": 0,
+    "reuse_rate": 0.1798611111111111
+  },
+  {
+    "experiment": "E3_context_reuse",
+    "mode": "cvm-summary",
+    "evidence_mode": "real-runtime",
+    "agent_count": 8,
+    "baseline_tokens": 36000,
+    "actual_materialized_tokens": 7760,
+    "saved_tokens": 10955,
+    "saved_bytes": 43820,
+    "shared_pages": 11,
+    "private_pages": 0,
+    "summary_pages": 8,
+    "reuse_rate": 0.30430555555555555
+  }
+]

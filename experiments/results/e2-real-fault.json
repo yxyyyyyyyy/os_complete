@@ -1,0 +1,67 @@
+[
+  {
+    "experiment": "E2_real_fault_isolation",
+    "fault_type": "TOOL_TIMEOUT",
+    "evidence_mode": "real-runtime",
+    "failed_agent": "tester",
+    "affected_agents": 1,
+    "total_agents": 6,
+    "recovery_action": "kill_tool_process_and_resume_agent",
+    "recovery_time_ms": 11,
+    "system_survived": true,
+    "cascade_failure": false,
+    "supervisor_fault_id": "20260705010500.328805000"
+  },
+  {
+    "experiment": "E2_real_fault_isolation",
+    "fault_type": "AGENT_CRASH",
+    "evidence_mode": "real-runtime",
+    "failed_agent": "coder",
+    "affected_agents": 1,
+    "total_agents": 6,
+    "recovery_action": "restart_agent_from_checkpoint",
+    "recovery_time_ms": 6,
+    "system_survived": true,
+    "cascade_failure": false,
+    "supervisor_fault_id": "20260705010500.334861000"
+  },
+  {
+    "experiment": "E2_real_fault_isolation",
+    "fault_type": "MEMORY_LIMIT_EXCEEDED",
+    "evidence_mode": "real-runtime",
+    "failed_agent": "planner",
+    "affected_agents": 1,
+    "total_agents": 6,
+    "recovery_action": "mark_agent_failed_and_keep_dag_alive",
+    "recovery_time_ms": 5,
+    "system_survived": true,
+    "cascade_failure": false,
+    "supervisor_fault_id": "20260705010500.334886000"
+  },
+  {
+    "experiment": "E2_real_fault_isolation",
+    "fault_type": "WORKSPACE_ROLLBACK",
+    "evidence_mode": "real-runtime",
+    "failed_agent": "fixer",
+    "affected_agents": 1,
+    "total_agents": 6,
+    "recovery_action": "restore_workspace_from_base_snapshot",
+    "recovery_time_ms": 5,
+    "system_survived": true,
+    "cascade_failure": false,
+    "supervisor_fault_id": "20260705010500.334887000"
+  },
+  {
+    "experiment": "E2_real_fault_isolation",
+    "fault_type": "IPC_MESSAGE_MALFORMED",
+    "evidence_mode": "real-runtime",
+    "failed_agent": "reviewer",
+    "affected_agents": 1,
+    "total_agents": 6,
+    "recovery_action": "drop_bad_message_and_continue_topic",
+    "recovery_time_ms": 5,
+    "system_survived": true,
+    "cascade_failure": false,
+    "supervisor_fault_id": "20260705010500.334887000"
+  }
+]

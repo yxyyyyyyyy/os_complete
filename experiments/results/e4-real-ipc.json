@@ -1,0 +1,22 @@
+[
+  {
+    "experiment": "E4_ipc_page_ref",
+    "mode": "payload-copy",
+    "evidence_mode": "real-runtime",
+    "message_count": 100,
+    "payload_bytes_baseline": 102400,
+    "payload_bytes_actual": 102400,
+    "avoided_copy_bytes": 0,
+    "avg_poll_latency_ms": 0.0002
+  },
+  {
+    "experiment": "E4_ipc_page_ref",
+    "mode": "page-ref",
+    "evidence_mode": "real-runtime",
+    "message_count": 100,
+    "payload_bytes_baseline": 102400,
+    "payload_bytes_actual": 7424,
+    "avoided_copy_bytes": 102400,
+    "avg_poll_latency_ms": 0.00094
+  }
+]

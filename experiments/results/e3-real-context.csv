@@ -1,0 +1,4 @@
+experiment,mode,evidence_mode,agent_count,baseline_tokens,actual_materialized_tokens,saved_tokens,saved_bytes,shared_pages,private_pages,summary_pages,reuse_rate
+E3_context_reuse,baseline,real-runtime,8,36000,36000,0,0,0,40,0,0.0000
+E3_context_reuse,cvm,real-runtime,8,36000,9608,6475,25900,43,40,0,0.1799
+E3_context_reuse,cvm-summary,real-runtime,8,36000,7760,10955,43820,11,0,8,0.3043

@@ -1,0 +1,3 @@
+experiment,mode,evidence_mode,message_count,payload_bytes_baseline,payload_bytes_actual,avoided_copy_bytes,avg_poll_latency_ms
+E4_ipc_page_ref,payload-copy,real-runtime,100,102400,102400,0,0.0002
+E4_ipc_page_ref,page-ref,real-runtime,100,102400,7424,102400,0.0009

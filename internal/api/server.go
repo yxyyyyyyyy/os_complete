@@ -883,9 +883,14 @@ func (s *Server) handleTaskSubresource(w http.ResponseWriter, r *http.Request) {
 }
 
 type experimentResultsResponse struct {
-	E1Scheduler []experiment.E1SchedulerResult `json:"e1_scheduler"`
-	E2Fault     []experiment.E2FaultResult     `json:"e2_fault"`
-	E3Context   experiment.E3ContextResult     `json:"e3_context"`
+	E1Scheduler    []experiment.E1SchedulerResult     `json:"e1_scheduler"`
+	E2Fault        []experiment.E2FaultResult         `json:"e2_fault"`
+	E3Context      experiment.E3ContextResult         `json:"e3_context"`
+	E1RealSchedule []experiment.E1RealSchedulerResult `json:"e1_real_scheduler"`
+	E2RealFault    []experiment.E2RealFaultResult     `json:"e2_real_fault"`
+	E3RealContext  []experiment.E3RealContextResult   `json:"e3_real_context"`
+	E4RealIPC      []experiment.E4RealIPCResult       `json:"e4_real_ipc"`
+	E5EndToEnd     experiment.E5EndToEndResult        `json:"e5_end_to_end"`
 }
 
 func loadExperimentResults() experimentResultsResponse {
@@ -899,6 +904,21 @@ func loadExperimentResults() experimentResultsResponse {
 	}
 	if !readJSON(filepath.Join(base, "e3-context.json"), &response.E3Context) {
 		response.E3Context = experiment.RunE3ContextSharing(5)
+	}
+	if !readJSON(filepath.Join(base, "e1-real-scheduler.json"), &response.E1RealSchedule) {
+		response.E1RealSchedule = experiment.RunE1RealSchedulerBenchmark(5)
+	}
+	if !readJSON(filepath.Join(base, "e2-real-fault.json"), &response.E2RealFault) {
+		response.E2RealFault = experiment.RunE2RealFaultIsolation(5)
+	}
+	if !readJSON(filepath.Join(base, "e3-real-context.json"), &response.E3RealContext) {
+		response.E3RealContext = experiment.RunE3RealContextReuse(5)
+	}
+	if !readJSON(filepath.Join(base, "e4-real-ipc.json"), &response.E4RealIPC) {
+		response.E4RealIPC = experiment.RunE4RealIPCBenchmark(5)
+	}
+	if !readJSON(filepath.Join(base, "e5-end-to-end.json"), &response.E5EndToEnd) {
+		response.E5EndToEnd = experiment.RunE5EndToEndBenchmark(5)
 	}
 	return response
 }

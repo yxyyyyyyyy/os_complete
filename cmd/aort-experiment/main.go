@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	name := flag.String("name", "all", "experiment name: e1-scheduler, e2-fault, e3-context, or all")
+	name := flag.String("name", "all", "experiment name: e1-scheduler, e2-fault, e3-context, e1-real-scheduler, e2-real-fault, e3-real-context, e4-real-ipc, e5-end-to-end, real-all, or all")
 	runs := flag.Int("runs", 5, "number of repeated runs")
 	outDir := flag.String("out", "experiments/results", "output directory")
 	flag.Parse()
@@ -29,7 +29,13 @@ func run(name string, runs int, outDir string) error {
 		if err := run("e2-fault", runs, outDir); err != nil {
 			return err
 		}
-		return run("e3-context", runs, outDir)
+		if err := run("e3-context", runs, outDir); err != nil {
+			return err
+		}
+		return run("real-all", runs, outDir)
+	case "real-all":
+		_, err := experiment.RunRealExperimentSuite(runs, outDir)
+		return err
 	case "e1-scheduler":
 		results := experiment.RunE1Scheduler(runs)
 		if err := experiment.WriteJSON(filepath.Join(outDir, "e1-scheduler.json"), results); err != nil {
@@ -52,6 +58,46 @@ func run(name string, runs int, outDir string) error {
 			return err
 		}
 		if err := experiment.WriteCSV(filepath.Join(outDir, "e3-context.csv"), experiment.E3CSV(result)); err != nil {
+			return err
+		}
+	case "e1-real-scheduler":
+		results := experiment.RunE1RealSchedulerBenchmark(runs)
+		if err := experiment.WriteJSON(filepath.Join(outDir, "e1-real-scheduler.json"), results); err != nil {
+			return err
+		}
+		if err := experiment.WriteCSV(filepath.Join(outDir, "e1-real-scheduler.csv"), experiment.E1RealCSV(results)); err != nil {
+			return err
+		}
+	case "e2-real-fault":
+		results := experiment.RunE2RealFaultIsolation(runs)
+		if err := experiment.WriteJSON(filepath.Join(outDir, "e2-real-fault.json"), results); err != nil {
+			return err
+		}
+		if err := experiment.WriteCSV(filepath.Join(outDir, "e2-real-fault.csv"), experiment.E2RealCSV(results)); err != nil {
+			return err
+		}
+	case "e3-real-context":
+		results := experiment.RunE3RealContextReuse(runs)
+		if err := experiment.WriteJSON(filepath.Join(outDir, "e3-real-context.json"), results); err != nil {
+			return err
+		}
+		if err := experiment.WriteCSV(filepath.Join(outDir, "e3-real-context.csv"), experiment.E3RealCSV(results)); err != nil {
+			return err
+		}
+	case "e4-real-ipc":
+		results := experiment.RunE4RealIPCBenchmark(runs)
+		if err := experiment.WriteJSON(filepath.Join(outDir, "e4-real-ipc.json"), results); err != nil {
+			return err
+		}
+		if err := experiment.WriteCSV(filepath.Join(outDir, "e4-real-ipc.csv"), experiment.E4RealCSV(results)); err != nil {
+			return err
+		}
+	case "e5-end-to-end":
+		result := experiment.RunE5EndToEndBenchmark(runs)
+		if err := experiment.WriteJSON(filepath.Join(outDir, "e5-end-to-end.json"), result); err != nil {
+			return err
+		}
+		if err := experiment.WriteCSV(filepath.Join(outDir, "e5-end-to-end.csv"), experiment.E5RealCSV(result)); err != nil {
 			return err
 		}
 	default:
