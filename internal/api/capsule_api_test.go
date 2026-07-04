@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"os"
+	"path/filepath"
 	"strings"
 	"testing"
 
@@ -20,7 +22,7 @@ func TestCapsulesEndpointReturnsEvidenceModeAndStats(t *testing.T) {
 		t.Fatalf("server type = %T", srv)
 	}
 	server.registry = worker.NewRegistry(server.sink)
-	server.capsules = capsule.NewManager(capsule.Config{AllowDegraded: true})
+	server.capsules = degradedCapsuleManager(t)
 	server.registry.CreateAgent("agent-capsule", "Coder", "task-1")
 	rt, err := server.capsules.Prepare("agent-capsule", 0)
 	if err != nil {
@@ -61,7 +63,7 @@ func TestCapsuleDetailAndActionsUseCapsuleRoutes(t *testing.T) {
 	srv := NewServer(config.Config{HTTPAddr: "127.0.0.1:8080", Mode: "mock", DataDir: t.TempDir()})
 	server := srv.(*Server)
 	server.registry = worker.NewRegistry(server.sink)
-	server.capsules = capsule.NewManager(capsule.Config{AllowDegraded: true})
+	server.capsules = degradedCapsuleManager(t)
 	server.registry.CreateAgent("agent-capsule", "Coder", "task-1")
 	rt, err := server.capsules.Prepare("agent-capsule", 0)
 	if err != nil {
@@ -82,4 +84,17 @@ func TestCapsuleDetailAndActionsUseCapsuleRoutes(t *testing.T) {
 	if freezeRec.Code != http.StatusConflict || !strings.Contains(freezeRec.Body.String(), "capsule degraded") {
 		t.Fatalf("freeze status=%d body=%s", freezeRec.Code, freezeRec.Body.String())
 	}
+}
+
+func degradedCapsuleManager(t *testing.T) *capsule.Manager {
+	t.Helper()
+	root := filepath.Join(t.TempDir(), "not-a-cgroup-dir")
+	if err := os.WriteFile(root, []byte("file, not directory\n"), 0o644); err != nil {
+		t.Fatalf("WriteFile(%s): %v", root, err)
+	}
+	return capsule.NewManager(capsule.Config{
+		Root:          root,
+		ForceReal:     true,
+		AllowDegraded: true,
+	})
 }

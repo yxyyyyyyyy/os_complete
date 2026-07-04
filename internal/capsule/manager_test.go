@@ -91,7 +91,9 @@ func TestFreezeAndUnfreezeWriteCgroupFreeze(t *testing.T) {
 }
 
 func TestPrepareReturnsDegradedWhenUnavailable(t *testing.T) {
-	mgr := NewManager(Config{Root: "/definitely/not/a/cgroup", AllowDegraded: true})
+	root := filepath.Join(t.TempDir(), "not-a-cgroup-dir")
+	writeFile(t, root, "file, not directory\n")
+	mgr := NewManager(Config{Root: root, ForceReal: true, AllowDegraded: true})
 	runtime, err := mgr.Prepare("agent-1", 12345)
 	if err != nil {
 		t.Fatalf("Prepare: %v", err)
