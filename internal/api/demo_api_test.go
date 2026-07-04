@@ -52,6 +52,23 @@ func TestTaskAPIListsDemoTaskAndDAG(t *testing.T) {
 	}
 }
 
+func TestAgentsEndpointReturnsDemoAgents(t *testing.T) {
+	srv := NewServer(config.Config{HTTPAddr: "127.0.0.1:8080", Mode: "mock"})
+	runReq := httptest.NewRequest(http.MethodPost, "/api/demo/run", nil)
+	runRec := httptest.NewRecorder()
+	srv.ServeHTTP(runRec, runReq)
+
+	agentsReq := httptest.NewRequest(http.MethodGet, "/api/agents", nil)
+	agentsRec := httptest.NewRecorder()
+	srv.ServeHTTP(agentsRec, agentsReq)
+	if agentsRec.Code != http.StatusOK {
+		t.Fatalf("status = %d body=%s", agentsRec.Code, agentsRec.Body.String())
+	}
+	if !strings.Contains(agentsRec.Body.String(), "planner") {
+		t.Fatalf("body = %s", agentsRec.Body.String())
+	}
+}
+
 func TestDemoRunPublishesEventsToHub(t *testing.T) {
 	hub := events.NewHub(32)
 	ch, cancel := hub.Subscribe()

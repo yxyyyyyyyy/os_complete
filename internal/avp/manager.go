@@ -3,11 +3,12 @@ package avp
 import (
 	"fmt"
 	"sync"
+	"time"
 )
 
 type Manager struct {
-	mu      sync.RWMutex
-	nextID  int
+	mu     sync.RWMutex
+	nextID int
 	agents map[string]AVP
 }
 
@@ -25,8 +26,11 @@ func (m *Manager) Create(taskID, role string, deps []string) AVP {
 		TaskID:       taskID,
 		Role:         role,
 		State:        StateCreated,
+		Priority:     100,
 		Weight:       100,
 		Dependencies: append([]string(nil), deps...),
+		CreatedAt:    time.Now().UnixMilli(),
+		UpdatedAt:    time.Now().UnixMilli(),
 	}
 	m.agents[agentID] = agent
 	return agent
@@ -60,6 +64,7 @@ func (m *Manager) Transition(agentID string, next AgentState) error {
 		return fmt.Errorf("invalid transition %s -> %s", agent.State, next)
 	}
 	agent.State = next
+	agent.UpdatedAt = time.Now().UnixMilli()
 	m.agents[agentID] = agent
 	return nil
 }

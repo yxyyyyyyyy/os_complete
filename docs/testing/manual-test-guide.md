@@ -34,6 +34,37 @@ Expected:
 - Timeline shows runtime events.
 - Experiments page states that experiment metrics arrive in V3.
 
+## Stage 1 Real Worker Demo
+
+```bash
+GOCACHE=/Users/yxy/Documents/比赛/操作系统/.cache/go-build go test ./...
+GOCACHE=/Users/yxy/Documents/比赛/操作系统/.cache/go-build go run ./cmd/aortd --config configs/dev.yaml
+curl -s -X POST http://127.0.0.1:8080/api/demo/run
+curl -s http://127.0.0.1:8080/api/agents
+curl -N --max-time 2 http://127.0.0.1:8080/api/events
+```
+
+Expected:
+
+- `/api/demo/run` starts Planner, Coder, and Tester worker processes.
+- `/api/agents` returns non-zero `pid` values.
+- SSE contains `agent.registered`, `agent.state_changed`, and `agent.report`.
+
+Heartbeat lost check:
+
+```bash
+curl -s http://127.0.0.1:8080/api/agents
+kill -INT <one_worker_pid>
+sleep 7
+curl -s http://127.0.0.1:8080/api/agents
+curl -N --max-time 2 http://127.0.0.1:8080/api/events
+```
+
+Expected:
+
+- The killed worker changes to `FAILED`.
+- SSE contains `agent.heartbeat_lost`.
+
 ## Later Iterations
 
 - V2 adds cgroup, overlayfs, CVM, syscall gateway, scheduler, IPC, and fault injection tests.

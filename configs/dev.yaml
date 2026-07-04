@@ -1,3 +1,6 @@
 http_addr: 127.0.0.1:8080
 mode: mock
 data_dir: .aort-dev
+socket_path: .aort-dev/aortd.sock
+worker_command: go run ./cmd/aort-worker
+heartbeat_timeout_ms: 6000

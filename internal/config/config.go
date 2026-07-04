@@ -8,16 +8,20 @@ import (
 )
 
 type Config struct {
-	HTTPAddr string
-	Mode     string
-	DataDir  string
+	HTTPAddr           string
+	Mode               string
+	DataDir            string
+	SocketPath         string
+	WorkerCommand      string
+	HeartbeatTimeoutMS int
 }
 
 func Load(path string) (Config, error) {
 	cfg := Config{
-		HTTPAddr: "127.0.0.1:8080",
-		Mode:     "mock",
-		DataDir:  ".aort-dev",
+		HTTPAddr:           "127.0.0.1:8080",
+		Mode:               "mock",
+		DataDir:            ".aort-dev",
+		HeartbeatTimeoutMS: 6000,
 	}
 	file, err := os.Open(path)
 	if err != nil {
@@ -43,6 +47,16 @@ func Load(path string) (Config, error) {
 			cfg.Mode = value
 		case "data_dir":
 			cfg.DataDir = value
+		case "socket_path":
+			cfg.SocketPath = value
+		case "worker_command":
+			cfg.WorkerCommand = value
+		case "heartbeat_timeout_ms":
+			var timeout int
+			if _, err := fmt.Sscanf(value, "%d", &timeout); err != nil {
+				return Config{}, fmt.Errorf("invalid heartbeat_timeout_ms %q", value)
+			}
+			cfg.HeartbeatTimeoutMS = timeout
 		default:
 			return Config{}, fmt.Errorf("unknown config key %q", strings.TrimSpace(key))
 		}
