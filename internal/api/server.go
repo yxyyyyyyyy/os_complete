@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"aort-r/internal/avp"
+	"aort-r/internal/capsule"
 	"aort-r/internal/config"
 	"aort-r/internal/demo"
 	"aort-r/internal/events"
@@ -45,6 +46,7 @@ type Server struct {
 	mu               sync.RWMutex
 	tasks            map[string]demo.Result
 	registry         *worker.Registry
+	capsules         *capsule.Manager
 	uds              *worker.UDSServer
 	launcher         worker.Launcher
 	heartbeatTimeout time.Duration
@@ -78,6 +80,7 @@ func (s *Server) routes() {
 	})
 	mux.HandleFunc("/api/demo/run", s.handleDemoRun)
 	mux.HandleFunc("/api/agents", s.handleAgents)
+	mux.HandleFunc("/api/agents/", s.handleAgentAction)
 	mux.HandleFunc("/api/tasks", s.handleTasks)
 	mux.HandleFunc("/api/tasks/", s.handleTaskSubresource)
 	s.mux = mux
@@ -199,7 +202,7 @@ func (s *Server) handleAgents(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if s.registry != nil {
-		writeJSON(w, http.StatusOK, s.registry.List())
+		writeJSON(w, http.StatusOK, s.enrichedAgents(s.registry.List()))
 		return
 	}
 	s.mu.RLock()
@@ -209,6 +212,49 @@ func (s *Server) handleAgents(w http.ResponseWriter, r *http.Request) {
 	}
 	s.mu.RUnlock()
 	writeJSON(w, http.StatusOK, agents)
+}
+
+func (s *Server) handleAgentAction(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		w.Header().Set("Allow", http.MethodPost)
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	rest := strings.TrimPrefix(r.URL.Path, "/api/agents/")
+	agentID, action, ok := strings.Cut(rest, "/")
+	if !ok || agentID == "" {
+		http.NotFound(w, r)
+		return
+	}
+	if s.capsules == nil {
+		http.Error(w, "capsule runtime is not enabled", http.StatusServiceUnavailable)
+		return
+	}
+	var err error
+	switch action {
+	case "freeze":
+		err = s.capsules.Freeze(agentID)
+	case "unfreeze":
+		err = s.capsules.Unfreeze(agentID)
+	case "kill":
+		err = s.capsules.Kill(agentID)
+		if err == nil && s.registry != nil {
+			s.registry.SetState(agentID, avp.StateKilled)
+		}
+	default:
+		http.NotFound(w, r)
+		return
+	}
+	if err != nil {
+		writeJSON(w, http.StatusConflict, map[string]string{"status": "error", "error": err.Error()})
+		return
+	}
+	if s.registry != nil {
+		if agent, ok := s.registry.Get(agentID); ok {
+			s.sink.Publish(events.New("agent."+action, agent.TaskID, agent.AgentID, "runtime", map[string]any{"action": action}))
+		}
+	}
+	writeJSON(w, http.StatusOK, map[string]string{"status": "ok", "action": action})
 }
 
 func (s *Server) handleTaskSubresource(w http.ResponseWriter, r *http.Request) {
@@ -238,6 +284,18 @@ func (s *Server) startWorkerRuntime() {
 		return
 	}
 	s.registry = worker.NewRegistry(s.sink)
+	s.capsules = capsule.NewManager(capsule.Config{
+		Root:          s.cfg.CgroupRoot,
+		AllowDegraded: true,
+	})
+	s.registry.SetOnRegister(func(agent avp.AVP) {
+		runtime, err := s.capsules.Prepare(agent.AgentID, agent.PID)
+		if err != nil {
+			s.sink.Publish(events.New("agent.capsule_failed", agent.TaskID, agent.AgentID, "runtime", map[string]any{"error": err.Error()}))
+			return
+		}
+		s.registry.SetCapsule(agent.AgentID, runtime.CgroupPath, runtime.Mode)
+	})
 	s.launcher = worker.Launcher{Command: s.cfg.WorkerCommand, SocketPath: s.cfg.SocketPath}
 	if s.cfg.HeartbeatTimeoutMS <= 0 {
 		s.cfg.HeartbeatTimeoutMS = 6000
@@ -272,8 +330,30 @@ func (s *Server) agentsForTask(task demo.Result) []demo.Agent {
 	}
 	agents := s.registry.ListByTask(task.TaskID)
 	out := make([]demo.Agent, 0, len(agents))
-	for _, agent := range agents {
+	for _, agent := range s.enrichedAgents(agents) {
 		out = append(out, agentToDemo(agent))
+	}
+	return out
+}
+
+func (s *Server) enrichedAgents(agents []avp.AVP) []avp.AVP {
+	if s.capsules == nil {
+		return agents
+	}
+	out := make([]avp.AVP, 0, len(agents))
+	for _, agent := range agents {
+		stats := s.capsules.Stats(agent.AgentID)
+		agent.CapsuleMode = stats.Mode
+		agent.MemoryCurrent = stats.MemoryCurrent
+		agent.PidsCurrent = stats.PidsCurrent
+		agent.CPUStat = stats.CPUStat
+		if runtime, ok := s.capsules.Runtime(agent.AgentID); ok {
+			agent.CgroupPath = runtime.CgroupPath
+			if agent.CapsuleMode == "" {
+				agent.CapsuleMode = runtime.Mode
+			}
+		}
+		out = append(out, agent)
 	}
 	return out
 }

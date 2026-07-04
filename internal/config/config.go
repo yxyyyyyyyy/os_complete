@@ -14,6 +14,7 @@ type Config struct {
 	SocketPath         string
 	WorkerCommand      string
 	HeartbeatTimeoutMS int
+	CgroupRoot         string
 }
 
 func Load(path string) (Config, error) {
@@ -57,6 +58,8 @@ func Load(path string) (Config, error) {
 				return Config{}, fmt.Errorf("invalid heartbeat_timeout_ms %q", value)
 			}
 			cfg.HeartbeatTimeoutMS = timeout
+		case "cgroup_root":
+			cfg.CgroupRoot = value
 		default:
 			return Config{}, fmt.Errorf("unknown config key %q", strings.TrimSpace(key))
 		}

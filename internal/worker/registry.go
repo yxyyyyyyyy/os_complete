@@ -13,9 +13,10 @@ type EventSink interface {
 }
 
 type Registry struct {
-	mu     sync.RWMutex
-	agents map[string]avp.AVP
-	sink   EventSink
+	mu         sync.RWMutex
+	agents     map[string]avp.AVP
+	sink       EventSink
+	onRegister func(avp.AVP)
 }
 
 func NewRegistry(sink EventSink) *Registry {
@@ -84,6 +85,33 @@ func (r *Registry) ListByTask(taskID string) []avp.AVP {
 	return agents
 }
 
+func (r *Registry) SetOnRegister(fn func(avp.AVP)) {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	r.onRegister = fn
+}
+
+func (r *Registry) SetCapsule(agentID, cgroupPath, mode string) {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	agent := r.agents[agentID]
+	agent.CgroupPath = cgroupPath
+	agent.CapsuleMode = mode
+	agent.UpdatedAt = time.Now().UnixMilli()
+	r.agents[agentID] = agent
+	r.publishLocked("agent.capsule_attached", agent, map[string]any{"cgroup_path": cgroupPath, "mode": mode})
+}
+
+func (r *Registry) SetState(agentID string, state avp.AgentState) {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	agent := r.agents[agentID]
+	agent.State = state
+	agent.UpdatedAt = time.Now().UnixMilli()
+	r.agents[agentID] = agent
+	r.publishLocked("agent.state_changed", agent, map[string]any{"state": string(state)})
+}
+
 func (r *Registry) MarkHeartbeatLost(now time.Time, timeout time.Duration) []avp.AVP {
 	r.mu.Lock()
 	defer r.mu.Unlock()
@@ -115,7 +143,6 @@ func (r *Registry) MarkLastSeenForTest(agentID string, lastSeen time.Time) {
 
 func (r *Registry) register(message Message) {
 	r.mu.Lock()
-	defer r.mu.Unlock()
 	agent := r.agentForMessageLocked(message)
 	now := time.Now().UnixMilli()
 	agent.PID = message.PID
@@ -125,6 +152,11 @@ func (r *Registry) register(message Message) {
 	r.agents[agent.AgentID] = agent
 	r.publishLocked("agent.registered", agent, map[string]any{"pid": message.PID})
 	r.publishLocked("agent.state_changed", agent, map[string]any{"state": string(agent.State)})
+	onRegister := r.onRegister
+	r.mu.Unlock()
+	if onRegister != nil {
+		onRegister(agent)
+	}
 }
 
 func (r *Registry) heartbeat(message Message) {

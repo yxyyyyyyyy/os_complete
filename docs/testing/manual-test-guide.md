@@ -65,6 +65,28 @@ Expected:
 - The killed worker changes to `FAILED`.
 - SSE contains `agent.heartbeat_lost`.
 
+Capsule check:
+
+```bash
+curl -s http://127.0.0.1:8080/api/agents
+curl -s -X POST http://127.0.0.1:8080/api/agents/<agent_id>/freeze
+curl -s -X POST http://127.0.0.1:8080/api/agents/<agent_id>/unfreeze
+curl -s -X POST http://127.0.0.1:8080/api/agents/<agent_id>/kill
+```
+
+Expected on openEuler/Linux with cgroup v2:
+
+- `capsule_mode` is `real`.
+- `cgroup_path` is under `/sys/fs/cgroup/aort.slice/`.
+- `memory_current` and `pids_current` are populated.
+- freeze/unfreeze/kill return `{"status":"ok"}`.
+
+Expected on macOS or non-cgroup environments:
+
+- `capsule_mode` is `degraded`.
+- freeze/unfreeze return a structured error explaining why cgroup v2 is unavailable.
+- Runtime remains usable and does not panic.
+
 ## Later Iterations
 
 - V2 adds cgroup, overlayfs, CVM, syscall gateway, scheduler, IPC, and fault injection tests.

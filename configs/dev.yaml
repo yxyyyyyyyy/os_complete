@@ -4,3 +4,4 @@ data_dir: .aort-dev
 socket_path: .aort-dev/aortd.sock
 worker_command: go run ./cmd/aort-worker
 heartbeat_timeout_ms: 6000
+cgroup_root: /sys/fs/cgroup/aort.slice

@@ -1,0 +1,216 @@
+package capsule
+
+import (
+	"fmt"
+	"os"
+	"path/filepath"
+	"runtime"
+	"strconv"
+	"strings"
+	"sync"
+	"syscall"
+	"time"
+)
+
+const (
+	ModeReal     = "real"
+	ModeDegraded = "degraded"
+)
+
+type Config struct {
+	Root          string
+	ForceReal     bool
+	AllowDegraded bool
+	MemoryMax     string
+	PidsMax       string
+	CPUMax        string
+}
+
+type Runtime struct {
+	AgentID    string `json:"agent_id"`
+	CgroupPath string `json:"cgroup_path"`
+	Mode       string `json:"capsule_mode"`
+	Error      string `json:"error,omitempty"`
+}
+
+type Stats struct {
+	MemoryCurrent int64             `json:"memory_current"`
+	PidsCurrent   int64             `json:"pids_current"`
+	CPUStat       map[string]uint64 `json:"cpu_stat"`
+	Events        map[string]uint64 `json:"events"`
+	Mode          string            `json:"capsule_mode"`
+	Error         string            `json:"error,omitempty"`
+}
+
+type Manager struct {
+	mu       sync.RWMutex
+	cfg      Config
+	runtimes map[string]Runtime
+	pids     map[string]int
+}
+
+func NewManager(cfg Config) *Manager {
+	if cfg.Root == "" {
+		cfg.Root = "/sys/fs/cgroup/aort.slice"
+	}
+	if cfg.MemoryMax == "" {
+		cfg.MemoryMax = "256M"
+	}
+	if cfg.PidsMax == "" {
+		cfg.PidsMax = "64"
+	}
+	if cfg.CPUMax == "" {
+		cfg.CPUMax = "100000 100000"
+	}
+	return &Manager{
+		cfg:      cfg,
+		runtimes: make(map[string]Runtime),
+		pids:     make(map[string]int),
+	}
+}
+
+func (m *Manager) Prepare(agentID string, pid int) (Runtime, error) {
+	if err := m.available(); err != nil {
+		if m.cfg.AllowDegraded {
+			rt := Runtime{AgentID: agentID, CgroupPath: "degraded://" + safeName(agentID), Mode: ModeDegraded, Error: err.Error()}
+			m.mu.Lock()
+			m.runtimes[agentID] = rt
+			m.pids[agentID] = pid
+			m.mu.Unlock()
+			return rt, nil
+		}
+		return Runtime{}, err
+	}
+
+	path := filepath.Join(m.cfg.Root, "agent-"+safeName(agentID))
+	if err := os.MkdirAll(path, 0o755); err != nil {
+		return Runtime{}, err
+	}
+	files := map[string]string{
+		"memory.max":   m.cfg.MemoryMax,
+		"pids.max":     m.cfg.PidsMax,
+		"cpu.max":      m.cfg.CPUMax,
+		"cgroup.procs": strconv.Itoa(pid),
+	}
+	for name, value := range files {
+		if err := os.WriteFile(filepath.Join(path, name), []byte(value+"\n"), 0o644); err != nil {
+			return Runtime{}, fmt.Errorf("write %s: %w", name, err)
+		}
+	}
+
+	rt := Runtime{AgentID: agentID, CgroupPath: path, Mode: ModeReal}
+	m.mu.Lock()
+	m.runtimes[agentID] = rt
+	m.pids[agentID] = pid
+	m.mu.Unlock()
+	return rt, nil
+}
+
+func (m *Manager) Runtime(agentID string) (Runtime, bool) {
+	m.mu.RLock()
+	defer m.mu.RUnlock()
+	rt, ok := m.runtimes[agentID]
+	return rt, ok
+}
+
+func (m *Manager) Stats(agentID string) Stats {
+	rt, ok := m.Runtime(agentID)
+	if !ok {
+		return Stats{Mode: ModeDegraded, Error: "capsule not prepared"}
+	}
+	if rt.Mode != ModeReal {
+		return Stats{Mode: rt.Mode, Error: rt.Error}
+	}
+	return Stats{
+		MemoryCurrent: readInt(filepath.Join(rt.CgroupPath, "memory.current")),
+		PidsCurrent:   readInt(filepath.Join(rt.CgroupPath, "pids.current")),
+		CPUStat:       readKV(filepath.Join(rt.CgroupPath, "cpu.stat")),
+		Events:        readKV(filepath.Join(rt.CgroupPath, "cgroup.events")),
+		Mode:          rt.Mode,
+	}
+}
+
+func (m *Manager) Freeze(agentID string) error {
+	return m.writeFreeze(agentID, "1")
+}
+
+func (m *Manager) Unfreeze(agentID string) error {
+	return m.writeFreeze(agentID, "0")
+}
+
+func (m *Manager) Kill(agentID string) error {
+	m.mu.RLock()
+	pid := m.pids[agentID]
+	m.mu.RUnlock()
+	if pid == 0 {
+		return fmt.Errorf("agent %q has no pid", agentID)
+	}
+	if err := syscall.Kill(pid, syscall.SIGTERM); err != nil && err != syscall.ESRCH {
+		return err
+	}
+	time.Sleep(500 * time.Millisecond)
+	_ = syscall.Kill(pid, syscall.SIGKILL)
+	return nil
+}
+
+func (m *Manager) writeFreeze(agentID string, value string) error {
+	rt, ok := m.Runtime(agentID)
+	if !ok {
+		return fmt.Errorf("agent %q has no capsule", agentID)
+	}
+	if rt.Mode != ModeReal {
+		return fmt.Errorf("capsule degraded: %s", rt.Error)
+	}
+	return os.WriteFile(filepath.Join(rt.CgroupPath, "cgroup.freeze"), []byte(value+"\n"), 0o644)
+}
+
+func (m *Manager) available() error {
+	if m.cfg.ForceReal {
+		return nil
+	}
+	if runtime.GOOS != "linux" {
+		return fmt.Errorf("cgroup v2 requires linux, got %s", runtime.GOOS)
+	}
+	if _, err := os.Stat("/sys/fs/cgroup/cgroup.controllers"); err != nil {
+		return fmt.Errorf("cgroup v2 unavailable: %w", err)
+	}
+	if err := os.MkdirAll(m.cfg.Root, 0o755); err != nil {
+		return fmt.Errorf("cannot create cgroup root: %w", err)
+	}
+	return nil
+}
+
+func safeName(value string) string {
+	return strings.NewReplacer("/", "_", ":", "_", " ", "_").Replace(value)
+}
+
+func readInt(path string) int64 {
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return 0
+	}
+	value, err := strconv.ParseInt(strings.TrimSpace(string(data)), 10, 64)
+	if err != nil {
+		return 0
+	}
+	return value
+}
+
+func readKV(path string) map[string]uint64 {
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return map[string]uint64{}
+	}
+	out := make(map[string]uint64)
+	for _, line := range strings.Split(string(data), "\n") {
+		fields := strings.Fields(line)
+		if len(fields) != 2 {
+			continue
+		}
+		value, err := strconv.ParseUint(fields[1], 10, 64)
+		if err == nil {
+			out[fields[0]] = value
+		}
+	}
+	return out
+}
