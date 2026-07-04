@@ -9,8 +9,9 @@ Core claim:
 ## Quick Start
 
 ```bash
-GOCACHE=/Users/yxy/Documents/比赛/操作系统/.cache/go-build go test ./...
-GOCACHE=/Users/yxy/Documents/比赛/操作系统/.cache/go-build go run ./cmd/aortd --config configs/dev.yaml
+mkdir -p .cache/go-build
+GOCACHE="$PWD/.cache/go-build" go test ./...
+GOCACHE="$PWD/.cache/go-build" go run ./cmd/aortd --config configs/dev.yaml
 ```
 
 In another terminal:
@@ -61,7 +62,7 @@ npm run dev
 ## Experiments
 
 ```bash
-GOCACHE=/Users/yxy/Documents/比赛/操作系统/.cache/go-build go run ./cmd/aort-experiment --name all --runs 5 --out experiments/results
+GOCACHE="$PWD/.cache/go-build" go run ./cmd/aort-experiment --name all --runs 5 --out experiments/results
 curl -s http://127.0.0.1:8080/api/experiments/results
 ```
 
@@ -71,6 +72,17 @@ Outputs:
 - `experiments/results/e2-fault.json`
 - `experiments/results/e3-context.json`
 - Matching CSV files for each experiment.
+
+## openEuler Smoke Test
+
+Run these commands on openEuler 24.03 LTS with Linux root permission and cgroup v2 mounted:
+
+```bash
+bash scripts/check_openeuler_env.sh
+bash scripts/smoke_openeuler.sh
+```
+
+Smoke outputs are written to `experiments/results/openeuler_smoke/`.
 
 ## openEuler Notes
 
