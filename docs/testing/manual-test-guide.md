@@ -2,7 +2,18 @@
 
 ## Environment Note
 
-Use repository-relative commands so the guide works after cloning anywhere. On macOS, non-root Linux, or systems without cgroup v2/PSI support, `capsule`, `kernel`, and `pressure` evidence will explicitly report degraded modes. That is acceptable for local development; openEuler root smoke evidence should be collected with `scripts/check_openeuler_env.sh` and `scripts/smoke_openeuler.sh`.
+Use repository-relative commands so the guide works after cloning anywhere.
+
+On macOS, non-root Linux, or systems without cgroup v2/PSI support, `capsule`,
+`kernel`, and `pressure` evidence will explicitly report degraded modes. That
+is acceptable for local development.
+
+openEuler root smoke evidence should be collected with:
+
+```bash
+bash scripts/check_openeuler_env.sh
+bash scripts/smoke_openeuler.sh
+```
 
 ## V1 Mock Demo
 
@@ -76,7 +87,10 @@ Expected:
 - `/api/recovery/status` returns `checkpoint-light` recovery metadata.
 - `/api/scheduler/decisions` contains `token-cfs-prefix-affinity` decisions.
 - `/api/context/stats` reports positive `saved_bytes` and `saved_tokens`.
-- SSE contains `agent.registered`, `scheduler.selected`, `pressure.sampled`, `syscall.started`, `syscall.finished`, `kernel.observer_disabled`, `kernel.exec`, `llm.called`, `ipc.published`, `ipc.polled`, `agent.spawned`, `checkpoint.created`, and `agent.report`.
+- SSE contains `agent.registered`, `scheduler.selected`, `pressure.sampled`,
+  `syscall.started`, `syscall.finished`, `kernel.observer_disabled`,
+  `kernel.exec`, `llm.called`, `ipc.published`, `ipc.polled`, `agent.spawned`,
+  `checkpoint.created`, and `agent.report`.
 
 Heartbeat lost check:
 
@@ -247,4 +261,6 @@ Expected:
 
 ## Later Iterations
 
-- Remaining V2/V3 extensions: real overlayfs mount/commit, richer Supervisor retry policies, true `sched_process_exec` eBPF attachment, durable CVM page-content checkpointing, and openKylin/OpenHarmony smoke tests.
+- Remaining V2/V3 extensions: real overlayfs mount/commit, richer Supervisor
+  retry policies, true `sched_process_exec` eBPF attachment, durable CVM
+  page-content checkpointing, and openKylin/OpenHarmony smoke tests.
