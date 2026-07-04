@@ -1,8 +1,7 @@
 {
   "evidence_mode": "real",
-  "real_cgroup_v2": true,
-  "agent_id": "task-1783187945630244755-tester",
-  "pid": 8164,
+  "os": "openEuler 24.03 LTS",
+  "cgroup_fs": "cgroup2fs",
   "capsule_mode": "real",
   "cgroup_path": "/sys/fs/cgroup/aort.slice/task-1783187945630244755-tester",
   "memory_current": 8192,
@@ -21,8 +20,6 @@
     "frozen": 0,
     "populated": 1
   },
-  "frozen": false,
-  "error": "",
   "freeze": "200",
   "unfreeze": "200",
   "kill": "200"

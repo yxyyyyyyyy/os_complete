@@ -1,4 +1,1 @@
-{
-  "error": "capsule degraded: cgroup v2 unavailable: stat /sys/fs/cgroup/cgroup.controllers: no such file or directory",
-  "status": "error"
-}
+{"action":"unfreeze","status":"ok"}
