@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"path/filepath"
 	"strings"
 	"testing"
 	"time"
@@ -139,6 +140,60 @@ func TestDemoRunCreatesCheckpointEvidence(t *testing.T) {
 	}
 	if !strings.Contains(checkpointRec.Body.String(), "planner-1") {
 		t.Fatalf("checkpoint missing agents: %s", checkpointRec.Body.String())
+	}
+}
+
+func TestServerStartupRecoversCheckpointState(t *testing.T) {
+	dataDir := t.TempDir()
+	first := NewServer(config.Config{HTTPAddr: "127.0.0.1:8080", Mode: "mock", DataDir: dataDir})
+	runReq := httptest.NewRequest(http.MethodPost, "/api/demo/run", nil)
+	runRec := httptest.NewRecorder()
+	first.ServeHTTP(runRec, runReq)
+	if runRec.Code != http.StatusAccepted {
+		t.Fatalf("run status=%d body=%s", runRec.Code, runRec.Body.String())
+	}
+
+	secondHub := events.NewHub(32)
+	eventCh, cancel := secondHub.Subscribe()
+	defer cancel()
+	second := NewServerWithEvents(config.Config{
+		HTTPAddr:      "127.0.0.1:8080",
+		Mode:          "mock",
+		DataDir:       dataDir,
+		SocketPath:    filepath.Join(dataDir, "aortd.sock"),
+		WorkerCommand: "unused-for-recovery-test",
+	}, secondHub)
+
+	recoveryReq := httptest.NewRequest(http.MethodGet, "/api/recovery/status", nil)
+	recoveryRec := httptest.NewRecorder()
+	second.ServeHTTP(recoveryRec, recoveryReq)
+	if recoveryRec.Code != http.StatusOK || !strings.Contains(recoveryRec.Body.String(), "checkpoint-light") {
+		t.Fatalf("recovery status=%d body=%s", recoveryRec.Code, recoveryRec.Body.String())
+	}
+	if !strings.Contains(recoveryRec.Body.String(), "task-1") || !strings.Contains(recoveryRec.Body.String(), "planner-1") {
+		t.Fatalf("recovery missing task or agent: %s", recoveryRec.Body.String())
+	}
+
+	tasksReq := httptest.NewRequest(http.MethodGet, "/api/tasks", nil)
+	tasksRec := httptest.NewRecorder()
+	second.ServeHTTP(tasksRec, tasksReq)
+	if tasksRec.Code != http.StatusOK || !strings.Contains(tasksRec.Body.String(), "task-1") {
+		t.Fatalf("tasks status=%d body=%s", tasksRec.Code, tasksRec.Body.String())
+	}
+	if strings.Contains(tasksRec.Body.String(), `"agents":[]`) {
+		t.Fatalf("recovered task lost agents in worker registry mode: %s", tasksRec.Body.String())
+	}
+
+	deadline := time.After(time.Second)
+	for {
+		select {
+		case event := <-eventCh:
+			if event.Type == "runtime.recovered" {
+				return
+			}
+		case <-deadline:
+			t.Fatalf("did not receive runtime.recovered")
+		}
 	}
 }
 

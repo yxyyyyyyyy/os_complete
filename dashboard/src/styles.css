@@ -305,6 +305,29 @@ p {
   line-height: 1;
 }
 
+.compact-metrics .metric-card {
+  min-height: 82px;
+}
+
+.compact-metrics .metric-card strong {
+  font-size: 20px;
+}
+
+.recovery-panel {
+  background:
+    linear-gradient(120deg, rgb(17 48 59 / 88%), rgb(13 24 38 / 86%)),
+    linear-gradient(90deg, rgb(83 255 177 / 10%), transparent);
+}
+
+.recovery-note {
+  border-left: 3px solid #54ffb7;
+  color: #a8c6d2;
+  background: rgb(12 36 42 / 68%);
+  padding: 10px 12px;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
 .section-block,
 .table-wrap,
 .empty-state,

@@ -62,6 +62,7 @@ func NewServerWithEvents(cfg config.Config, hub *events.Hub) http.Handler {
 		Spawner:       server.spawnAgent,
 	})
 	server.startWorkerRuntime()
+	server.recoverFromCheckpoints()
 	server.routes()
 	return server
 }
@@ -87,6 +88,7 @@ type Server struct {
 	launcher         worker.Launcher
 	heartbeatTimeout time.Duration
 	workerCtx        context.Context
+	recovery         checkpoint.RecoveryReport
 }
 
 func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -125,6 +127,7 @@ func (s *Server) routes() {
 	mux.HandleFunc("/api/ipc/metrics", s.handleIPCMetrics)
 	mux.HandleFunc("/api/ipc/topics", s.handleIPCTopics)
 	mux.HandleFunc("/api/checkpoints", s.handleCheckpoints)
+	mux.HandleFunc("/api/recovery/status", s.handleRecoveryStatus)
 	mux.HandleFunc("/api/syscalls", s.handleSyscalls)
 	mux.HandleFunc("/api/scheduler/decisions", s.handleSchedulerDecisions)
 	mux.HandleFunc("/api/scheduler/policy", s.handleSchedulerPolicy)
@@ -603,6 +606,15 @@ func (s *Server) handleCheckpoints(w http.ResponseWriter, r *http.Request) {
 	writeJSON(w, http.StatusOK, snapshots)
 }
 
+func (s *Server) handleRecoveryStatus(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		w.Header().Set("Allow", http.MethodGet)
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	writeJSON(w, http.StatusOK, s.recovery)
+}
+
 func (s *Server) handleSyscalls(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		w.Header().Set("Allow", http.MethodGet)
@@ -735,6 +747,125 @@ func popSpec(specs []worker.Spec, agentID string) (worker.Spec, []worker.Spec) {
 		}
 	}
 	return specs[0], specs[1:]
+}
+
+func (s *Server) recoverFromCheckpoints() {
+	report, err := s.checkpoint.RecoverAll()
+	if err != nil {
+		s.recovery = checkpoint.RecoveryReport{
+			Mode:           "checkpoint-light",
+			Degraded:       true,
+			Reason:         err.Error(),
+			RecoveredAt:    time.Now().UnixMilli(),
+			RecoveredTasks: []checkpoint.RecoveredTask{},
+		}
+		s.sink.Publish(events.New("runtime.recovery_failed", "", "", "runtime", map[string]any{"error": err.Error()}))
+		return
+	}
+	s.recovery = report
+	if report.TaskCount == 0 {
+		return
+	}
+	snapshots, err := s.checkpoint.List()
+	if err != nil {
+		s.sink.Publish(events.New("runtime.recovery_failed", "", "", "runtime", map[string]any{"error": err.Error()}))
+		return
+	}
+	latest := latestSnapshotsByTask(snapshots)
+	s.mu.Lock()
+	for _, recovered := range report.RecoveredTasks {
+		if snapshot, ok := latest[recovered.TaskID]; ok {
+			s.tasks[recovered.TaskID] = taskFromSnapshot(snapshot, recovered.Status)
+			s.recoverRegistryAgents(snapshot)
+		}
+	}
+	s.mu.Unlock()
+	for _, recovered := range report.RecoveredTasks {
+		s.sink.Publish(events.New("checkpoint.recovered", recovered.TaskID, "", "runtime", map[string]any{
+			"sequence":         recovered.Sequence,
+			"status":           recovered.Status,
+			"agent_count":      recovered.AgentCount,
+			"ready_agents":     recovered.ReadyAgents,
+			"completed_agents": recovered.CompletedAgents,
+			"page_table_refs":  recovered.PageTableRefs,
+			"mode":             report.Mode,
+			"degraded":         report.Degraded,
+		}))
+	}
+	s.sink.Publish(events.New("runtime.recovered", "", "", "runtime", map[string]any{
+		"mode":       report.Mode,
+		"degraded":   report.Degraded,
+		"task_count": report.TaskCount,
+		"reason":     report.Reason,
+	}))
+}
+
+func latestSnapshotsByTask(snapshots []checkpoint.Snapshot) map[string]checkpoint.Snapshot {
+	latest := make(map[string]checkpoint.Snapshot)
+	for _, snapshot := range snapshots {
+		if snapshot.TaskID == "" {
+			continue
+		}
+		latest[snapshot.TaskID] = snapshot
+	}
+	return latest
+}
+
+func taskFromSnapshot(snapshot checkpoint.Snapshot, status string) demo.Result {
+	if status == "" {
+		status = "recovered"
+	}
+	result := demo.Result{
+		TaskID: snapshot.TaskID,
+		Status: status,
+		Agents: make([]demo.Agent, 0, len(snapshot.Agents)),
+		DAG:    make([]demo.DAGNode, 0, len(snapshot.Agents)),
+		Events: []events.Event{
+			events.New("checkpoint.recovered", snapshot.TaskID, "", "runtime", map[string]any{
+				"sequence": snapshot.Sequence,
+				"mode":     snapshot.Mode,
+			}),
+		},
+	}
+	for _, agent := range snapshot.Agents {
+		state := agent.State
+		if !isRecoveredTerminal(state) {
+			state = avp.StateReady
+		}
+		result.Agents = append(result.Agents, demo.Agent{
+			ID:         agent.AgentID,
+			Role:       agent.Role,
+			State:      string(state),
+			PID:        agent.PID,
+			LastSeen:   agent.LastSeen,
+			CgroupPath: agent.CgroupPath,
+		})
+		result.DAG = append(result.DAG, demo.DAGNode{
+			ID:           agent.AgentID,
+			Role:         agent.Role,
+			Dependencies: append([]string(nil), agent.Dependencies...),
+		})
+	}
+	return result
+}
+
+func (s *Server) recoverRegistryAgents(snapshot checkpoint.Snapshot) {
+	if s.registry == nil {
+		return
+	}
+	for _, agent := range snapshot.Agents {
+		restored := agent
+		state := agent.State
+		if !isRecoveredTerminal(state) {
+			state = avp.StateReady
+		}
+		restored.State = state
+		s.registry.RestoreAgent(restored)
+	}
+}
+
+func isRecoveredTerminal(state avp.AgentState) bool {
+	return state == avp.StateCompleted || state == avp.StateFailed || state == avp.StateKilled
 }
 
 func (s *Server) startWorkerRuntime() {

@@ -47,6 +47,7 @@ curl -s http://127.0.0.1:8080/api/syscalls
 curl -s http://127.0.0.1:8080/api/ipc/metrics
 curl -s http://127.0.0.1:8080/api/ipc/topics
 curl -s http://127.0.0.1:8080/api/checkpoints
+curl -s http://127.0.0.1:8080/api/recovery/status
 curl -s http://127.0.0.1:8080/api/scheduler/decisions
 curl -s http://127.0.0.1:8080/api/context/stats
 curl -N --max-time 2 http://127.0.0.1:8080/api/events
@@ -59,6 +60,7 @@ Expected:
 - `/api/syscalls` contains `context.materialize`, `llm.call`, `ipc.publish`, `ipc.poll`, `agent.spawn`, `tool.exec`, `context.write_delta`, and `agent.report`.
 - `/api/ipc/metrics` reports positive `avoided_copy_bytes`.
 - `/api/checkpoints` contains a `runtime-state` snapshot.
+- `/api/recovery/status` returns `checkpoint-light` recovery metadata.
 - `/api/scheduler/decisions` contains `token-cfs-prefix-affinity` decisions.
 - `/api/context/stats` reports positive `saved_bytes` and `saved_tokens`.
 - SSE contains `agent.registered`, `scheduler.selected`, `syscall.started`, `syscall.finished`, `llm.called`, `ipc.published`, `ipc.polled`, `agent.spawned`, `checkpoint.created`, and `agent.report`.
@@ -120,6 +122,7 @@ curl -s http://127.0.0.1:8080/api/syscalls
 curl -s http://127.0.0.1:8080/api/ipc/metrics
 curl -s http://127.0.0.1:8080/api/ipc/topics
 curl -s http://127.0.0.1:8080/api/checkpoints
+curl -s http://127.0.0.1:8080/api/recovery/status
 ```
 
 Expected:
@@ -128,6 +131,43 @@ Expected:
 - `/api/ipc/topics` contains `review.feedback` with page IDs, not copied content.
 - `/api/ipc/metrics` has positive `avoided_copy_bytes`.
 - `/api/checkpoints` contains AVP and page table state for the demo task.
+- `/api/recovery/status` exposes startup recovery mode, recovered task count, ready agents, completed agents, page table references, and scheduler vruntime.
+
+## Checkpoint Startup Recovery Check
+
+Local two-process simulation:
+
+```bash
+rm -rf .aort-dev/checkpoints
+GOCACHE=/Users/yxy/Documents/比赛/操作系统/.cache/go-build go run ./cmd/aortd --config configs/dev.yaml
+curl -s -X POST http://127.0.0.1:8080/api/demo/run
+curl -s http://127.0.0.1:8080/api/checkpoints
+# Stop aortd with Ctrl-C, then start it again with the same config/data_dir.
+GOCACHE=/Users/yxy/Documents/比赛/操作系统/.cache/go-build go run ./cmd/aortd --config configs/dev.yaml
+curl -s http://127.0.0.1:8080/api/recovery/status
+curl -s http://127.0.0.1:8080/api/tasks
+curl -N --max-time 2 http://127.0.0.1:8080/api/events
+```
+
+Expected:
+
+- `/api/recovery/status` has `mode=checkpoint-light`, `task_count>=1`, and `degraded=true`.
+- `/api/tasks` contains the task restored from checkpoint.
+- SSE contains `checkpoint.recovered` and `runtime.recovered`.
+
+openEuler systemd daemonkill demo:
+
+```bash
+sudo systemctl restart aortd
+curl -s -X POST http://127.0.0.1:8080/api/demo/run
+scripts/demo-daemonkill.sh
+```
+
+Expected:
+
+- `systemctl status aortd` shows the daemon was restarted.
+- The script prints `/api/recovery/status` and `/api/tasks` evidence after restart.
+- Dashboard Overview shows the Checkpoint Recovery panel, and Timeline shows recovery events.
 
 ## Fault Injection Check
 
@@ -161,4 +201,4 @@ Expected:
 
 ## Later Iterations
 
-- Remaining V2/V3 extensions: real overlayfs mount/commit, richer Supervisor retry policies, eBPF timeline, full daemon checkpoint recovery, PSI, and systemd deployment.
+- Remaining V2/V3 extensions: real overlayfs mount/commit, richer Supervisor retry policies, eBPF timeline, durable CVM page-content checkpointing, PSI, and openKylin/OpenHarmony smoke tests.

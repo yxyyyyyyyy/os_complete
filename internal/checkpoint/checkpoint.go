@@ -23,6 +23,27 @@ type Snapshot struct {
 	CreatedAt         int64               `json:"created_at"`
 }
 
+type RecoveryReport struct {
+	Mode           string          `json:"mode"`
+	Degraded       bool            `json:"degraded"`
+	Reason         string          `json:"reason"`
+	TaskCount      int             `json:"task_count"`
+	RecoveredAt    int64           `json:"recovered_at"`
+	RecoveredTasks []RecoveredTask `json:"recovered_tasks"`
+}
+
+type RecoveredTask struct {
+	TaskID            string            `json:"task_id"`
+	Sequence          int               `json:"sequence"`
+	Status            string            `json:"status"`
+	AgentCount        int               `json:"agent_count"`
+	CompletedAgents   []string          `json:"completed_agents"`
+	ReadyAgents       []string          `json:"ready_agents"`
+	PageTableRefs     int               `json:"page_table_refs"`
+	SchedulerVRuntime map[string]uint64 `json:"scheduler_vruntime"`
+	CreatedAt         int64             `json:"created_at"`
+}
+
 type Store struct {
 	root string
 }
@@ -99,6 +120,31 @@ func (s *Store) List() ([]Snapshot, error) {
 	return snapshots, nil
 }
 
+func (s *Store) RecoverAll() (RecoveryReport, error) {
+	snapshots, err := s.List()
+	if err != nil {
+		return RecoveryReport{}, err
+	}
+	report := RecoveryReport{
+		Mode:           "checkpoint-light",
+		Degraded:       true,
+		Reason:         "restored AVP table, scheduler vruntime, and CVM page references; page contents require the live CVM store or future durable page backing",
+		RecoveredAt:    time.Now().UnixMilli(),
+		RecoveredTasks: []RecoveredTask{},
+	}
+	latest := latestByTask(snapshots)
+	taskIDs := make([]string, 0, len(latest))
+	for taskID := range latest {
+		taskIDs = append(taskIDs, taskID)
+	}
+	sort.Strings(taskIDs)
+	for _, taskID := range taskIDs {
+		report.RecoveredTasks = append(report.RecoveredTasks, summarizeRecovery(latest[taskID]))
+	}
+	report.TaskCount = len(report.RecoveredTasks)
+	return report, nil
+}
+
 func (s *Store) listTask(taskID string) ([]Snapshot, error) {
 	dir := filepath.Join(s.root, safeName(taskID))
 	entries, err := os.ReadDir(dir)
@@ -145,6 +191,61 @@ func sortSnapshots(snapshots []Snapshot) {
 		}
 		return snapshots[i].CreatedAt < snapshots[j].CreatedAt
 	})
+}
+
+func latestByTask(snapshots []Snapshot) map[string]Snapshot {
+	latest := make(map[string]Snapshot)
+	for _, snapshot := range snapshots {
+		if snapshot.TaskID == "" {
+			continue
+		}
+		latest[snapshot.TaskID] = snapshot
+	}
+	return latest
+}
+
+func summarizeRecovery(snapshot Snapshot) RecoveredTask {
+	task := RecoveredTask{
+		TaskID:            snapshot.TaskID,
+		Sequence:          snapshot.Sequence,
+		Status:            "completed",
+		AgentCount:        len(snapshot.Agents),
+		CompletedAgents:   []string{},
+		ReadyAgents:       []string{},
+		SchedulerVRuntime: copyVRuntime(snapshot.SchedulerVRuntime),
+		CreatedAt:         snapshot.CreatedAt,
+	}
+	for agentID, pageIDs := range snapshot.PageTables {
+		if agentID == "" {
+			continue
+		}
+		task.PageTableRefs += len(pageIDs)
+	}
+	for _, agent := range snapshot.Agents {
+		if isTerminal(agent.State) {
+			if agent.State == avp.StateCompleted {
+				task.CompletedAgents = append(task.CompletedAgents, agent.AgentID)
+			}
+			continue
+		}
+		task.Status = "recovered"
+		task.ReadyAgents = append(task.ReadyAgents, agent.AgentID)
+	}
+	sort.Strings(task.CompletedAgents)
+	sort.Strings(task.ReadyAgents)
+	return task
+}
+
+func copyVRuntime(input map[string]uint64) map[string]uint64 {
+	out := make(map[string]uint64, len(input))
+	for agentID, vruntime := range input {
+		out[agentID] = vruntime
+	}
+	return out
+}
+
+func isTerminal(state avp.AgentState) bool {
+	return state == avp.StateCompleted || state == avp.StateFailed || state == avp.StateKilled
 }
 
 func safeName(value string) string {

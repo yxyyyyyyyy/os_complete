@@ -6,6 +6,7 @@ import {
   getExperimentResults,
   getIPCMetrics,
   getIPCTopics,
+  getRecoveryStatus,
   getSchedulerDecisions,
   getTasks,
   postAgentAction,
@@ -16,6 +17,7 @@ import {
   type ExperimentResults,
   type IPCMetric,
   type IPCTopics,
+  type RecoveryStatus,
   type RuntimeEvent,
   type SchedulerDecision,
   type Task
@@ -40,6 +42,14 @@ export const runtimeStore = reactive({
   } as IPCMetric,
   ipcTopics: {} as IPCTopics,
   schedulerDecisions: [] as SchedulerDecision[],
+  recoveryStatus: {
+    mode: 'checkpoint-light',
+    degraded: true,
+    reason: '',
+    task_count: 0,
+    recovered_at: 0,
+    recovered_tasks: []
+  } as RecoveryStatus,
   experimentResults: {
     e1_scheduler: [],
     e2_fault: [],
@@ -68,6 +78,7 @@ export async function refreshTasks() {
   runtimeStore.tasks = await getTasks()
   runtimeStore.agents = await getAgents()
   runtimeStore.schedulerDecisions = await getSchedulerDecisions()
+  runtimeStore.recoveryStatus = await getRecoveryStatus()
   runtimeStore.experimentResults = await getExperimentResults()
   await refreshContext()
   if (!runtimeStore.selectedTaskID && runtimeStore.tasks.length > 0) {
@@ -130,6 +141,7 @@ export function connectEvents() {
     'task.created',
     'agent.created',
     'agent.registered',
+    'agent.recovered',
     'agent.report',
     'agent.capsule_attached',
     'agent.heartbeat_lost',
@@ -146,6 +158,9 @@ export function connectEvents() {
     'llm.called',
     'agent.spawn.requested',
     'agent.spawned',
+    'checkpoint.recovered',
+    'runtime.recovered',
+    'runtime.recovery_failed',
     'workspace.snapshot.created',
     'workspace.created',
     'workspace.rmrf',
@@ -175,6 +190,8 @@ function addEvent(event: RuntimeEvent) {
     event.type.startsWith('context.') ||
     event.type.startsWith('ipc.') ||
     event.type.startsWith('llm.') ||
+    event.type.startsWith('checkpoint.') ||
+    event.type.startsWith('runtime.') ||
     event.type.startsWith('workspace.') ||
     event.type.startsWith('supervisor.') ||
     event.type.startsWith('syscall.')

@@ -7,6 +7,7 @@ import { t } from '../stores/i18n'
 
 const task = selectedTask
 const recentDecisions = computed(() => runtimeStore.schedulerDecisions.slice(-6).reverse())
+const recentRecoveredTasks = computed(() => runtimeStore.recoveryStatus.recovered_tasks.slice(-4).reverse())
 </script>
 
 <template>
@@ -30,6 +31,51 @@ const recentDecisions = computed(() => runtimeStore.schedulerDecisions.slice(-6)
       <MetricCard :label="t.overview.sse" :value="runtimeStore.connected ? 'online' : 'offline'" />
       <MetricCard :label="t.overview.runtimeMode" value="mock" />
     </div>
+
+    <section class="section-block recovery-panel">
+      <div class="section-title">
+        <h2>{{ t.overview.recovery }}</h2>
+        <span class="status-badge" :data-state="runtimeStore.recoveryStatus.degraded ? 'FAILED' : 'COMPLETED'">
+          {{ runtimeStore.recoveryStatus.degraded ? t.overview.degraded : t.overview.full }}
+        </span>
+      </div>
+      <div class="metrics-grid compact-metrics">
+        <MetricCard :label="t.overview.recoveryMode" :value="runtimeStore.recoveryStatus.mode || 'checkpoint-light'" />
+        <MetricCard :label="t.overview.recoveredTasks" :value="runtimeStore.recoveryStatus.task_count" />
+        <MetricCard
+          :label="t.overview.readyAgents"
+          :value="runtimeStore.recoveryStatus.recovered_tasks.reduce((sum, item) => sum + item.ready_agents.length, 0)"
+        />
+        <MetricCard
+          :label="t.overview.pageRefs"
+          :value="runtimeStore.recoveryStatus.recovered_tasks.reduce((sum, item) => sum + item.page_table_refs, 0)"
+        />
+      </div>
+      <div v-if="runtimeStore.recoveryStatus.reason" class="recovery-note">
+        {{ runtimeStore.recoveryStatus.reason }}
+      </div>
+      <div class="inline-table">
+        <table v-if="recentRecoveredTasks.length > 0">
+          <thead>
+            <tr>
+              <th>{{ t.common.task }}</th>
+              <th>{{ t.common.state }}</th>
+              <th>{{ t.common.agent }}</th>
+              <th>{{ t.overview.pageRefs }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="item in recentRecoveredTasks" :key="`${item.task_id}-${item.sequence}`">
+              <td class="mono-cell">{{ item.task_id }}</td>
+              <td>{{ item.status }}</td>
+              <td>{{ item.agent_count }}</td>
+              <td>{{ item.page_table_refs }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div v-else class="empty-state">{{ t.overview.noRecovery }}</div>
+      </div>
+    </section>
 
     <section v-if="task()" class="section-block">
       <div class="section-title">

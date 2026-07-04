@@ -24,6 +24,7 @@
 - [x] Tool timeout fault demo exists at `POST /api/demo/fault/tool-timeout`.
 - [x] Workspace rmrf rollback demo exists at `POST /api/demo/fault/rmrf`.
 - [x] Lightweight checkpoint snapshots are exposed through `GET /api/checkpoints`.
+- [x] Startup recovery report is exposed through `GET /api/recovery/status`.
 - [x] Experiment JSON/CSV files exist under `experiments/results/`.
 
 ## High-Score Evidence Present
@@ -38,7 +39,10 @@
 - [x] IPC Blackboard API: `GET /api/ipc/metrics`, `GET /api/ipc/topics`.
 - [x] LLM Router abstraction with mock provider and llama.cpp timing parser.
 - [x] Checkpoint evidence API and `checkpoint.created` timeline event.
+- [x] Lightweight checkpoint startup recovery with `checkpoint.recovered` and `runtime.recovered` timeline events.
 - [x] Degraded-copy workspace rollback with `workspace.created`, `workspace.rmrf`, and `workspace.rollback` events.
+- [x] Reference systemd unit at `deploy/systemd/aortd.service`.
+- [x] daemonkill recovery demo script at `scripts/demo-daemonkill.sh`.
 - [x] openEuler deployment guide and runnable helper scripts.
 
 ## Remaining Enhancement Targets
@@ -46,5 +50,5 @@
 - [ ] Real overlayfs mount/commit path on openEuler root VM.
 - [ ] Supervisor retry policy beyond timeout fault recording.
 - [ ] eBPF execve observer.
-- [ ] systemd deployment.
+- [ ] Durable CVM page-content and overlay upper-layer checkpointing.
 - [ ] PSI display.

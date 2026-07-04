@@ -23,6 +23,7 @@ curl -s http://127.0.0.1:8080/api/agents
 curl -s http://127.0.0.1:8080/api/syscalls
 curl -s http://127.0.0.1:8080/api/ipc/metrics
 curl -s http://127.0.0.1:8080/api/checkpoints
+curl -s http://127.0.0.1:8080/api/recovery/status
 curl -s -X POST http://127.0.0.1:8080/api/demo/fault/rmrf
 curl -s http://127.0.0.1:8080/api/scheduler/decisions
 curl -s http://127.0.0.1:8080/api/context/stats
@@ -47,6 +48,7 @@ npm run dev
 - Supervisor fault record path with a runnable `tool.exec` timeout injection.
 - Workspace isolation fault demo with degraded-copy rollback evidence for `rm -rf` style failures.
 - Lightweight checkpoint store for AVP state, CVM page table references, scheduler vruntime, and trace offset evidence.
+- Startup checkpoint recovery report at `/api/recovery/status`, with `checkpoint.recovered` and `runtime.recovered` timeline evidence.
 - LLM Router interface with mock provider, fallback routing, and llama.cpp timing/cache usage parser.
 - E1/E2/E3 experiment runner producing JSON and CSV under `experiments/results/`.
 - Vue dashboard pages for Overview, AVP/Capsule, Context, Timeline, and Experiments.
@@ -69,10 +71,10 @@ Outputs:
 
 Use `configs/openeuler-dev.yaml` when running in an openEuler VM with root permission and cgroup v2 mounted. On non-Linux machines the capsule layer intentionally returns `capsule_mode=degraded`, while the runtime, syscall gateway, scheduler, CVM, IPC, checkpoint, fault injection, and dashboard remain usable.
 
-See [docs/deployment_openeuler.md](docs/deployment_openeuler.md) for deployment checks and scripts.
+See [docs/deployment_openeuler.md](docs/deployment_openeuler.md) for deployment checks, systemd service setup, and scripts.
 
 ## Known Limits
 
-- Real overlayfs mount/commit and eBPF kernel timeline are planned enhancement targets; degraded-copy workspace rollback is implemented and test-covered.
+- Real overlayfs mount/commit and eBPF kernel timeline are planned enhancement targets; degraded-copy workspace rollback and lightweight checkpoint startup recovery are implemented and test-covered.
 - Current checked-in LLM path uses the mock provider; DeepSeek relay and llama.cpp local providers should be configured outside Git with credentials/model paths.
 - Experiments are marked as real, degraded-real, or degraded-simulation according to the available local OS/runtime evidence.

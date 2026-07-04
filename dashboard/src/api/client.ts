@@ -86,6 +86,27 @@ export interface SchedulerDecision {
   created_at: number
 }
 
+export interface RecoveredTask {
+  task_id: string
+  sequence: number
+  status: string
+  agent_count: number
+  completed_agents: string[]
+  ready_agents: string[]
+  page_table_refs: number
+  scheduler_vruntime: Record<string, number>
+  created_at: number
+}
+
+export interface RecoveryStatus {
+  mode: string
+  degraded: boolean
+  reason: string
+  task_count: number
+  recovered_at: number
+  recovered_tasks: RecoveredTask[]
+}
+
 export interface E1SchedulerResult {
   experiment: string
   policy: string
@@ -193,6 +214,14 @@ export async function getSchedulerDecisions(): Promise<SchedulerDecision[]> {
   const response = await fetch('/api/scheduler/decisions')
   if (!response.ok) {
     throw new Error(`scheduler decisions request failed: ${response.status}`)
+  }
+  return response.json()
+}
+
+export async function getRecoveryStatus(): Promise<RecoveryStatus> {
+  const response = await fetch('/api/recovery/status')
+  if (!response.ok) {
+    throw new Error(`recovery status request failed: ${response.status}`)
   }
   return response.json()
 }

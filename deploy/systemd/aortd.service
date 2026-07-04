@@ -1,0 +1,26 @@
+[Unit]
+Description=AORT-R Agent Runtime Daemon
+Documentation=https://github.com/yxyyyyyyyy/os_complete
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=aort
+Group=aort
+WorkingDirectory=/opt/aort-r
+ExecStart=/usr/local/bin/aortd --config /etc/aort-r/config.yaml
+Restart=always
+RestartSec=2s
+TimeoutStopSec=10s
+KillSignal=SIGINT
+NoNewPrivileges=true
+ProtectSystem=full
+ProtectHome=true
+ReadWritePaths=/var/lib/aort /run/aort
+RuntimeDirectory=aort
+StateDirectory=aort
+Environment=AORT_ENV=openeuler
+
+[Install]
+WantedBy=multi-user.target

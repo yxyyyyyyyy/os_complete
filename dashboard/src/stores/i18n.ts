@@ -46,7 +46,15 @@ const messages = {
       runtimeMode: '运行模式',
       dag: '任务 DAG',
       scheduler: '调度决策',
-      root: '根节点'
+      root: '根节点',
+      recovery: 'Checkpoint 恢复',
+      recoveryMode: '恢复模式',
+      recoveredTasks: '恢复任务',
+      readyAgents: '可续跑 Agent',
+      pageRefs: '页表引用',
+      degraded: '降级',
+      full: '完整',
+      noRecovery: '暂无恢复记录'
     },
     avp: {
       title: 'AVP 与 Capsule',
@@ -159,7 +167,15 @@ const messages = {
       runtimeMode: 'Runtime Mode',
       dag: 'Task DAG',
       scheduler: 'Scheduler Decisions',
-      root: 'root'
+      root: 'root',
+      recovery: 'Checkpoint Recovery',
+      recoveryMode: 'Recovery Mode',
+      recoveredTasks: 'Recovered Tasks',
+      readyAgents: 'Resumable Agents',
+      pageRefs: 'Page References',
+      degraded: 'Degraded',
+      full: 'Full',
+      noRecovery: 'No recovery records yet'
     },
     avp: {
       title: 'AVP & Capsule',

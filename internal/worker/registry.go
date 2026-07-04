@@ -112,6 +112,29 @@ func (r *Registry) SetState(agentID string, state avp.AgentState) {
 	r.publishLocked("agent.state_changed", agent, map[string]any{"state": string(state)})
 }
 
+func (r *Registry) RestoreAgent(agent avp.AVP) {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	now := time.Now().UnixMilli()
+	if agent.CreatedAt == 0 {
+		agent.CreatedAt = now
+	}
+	if agent.UpdatedAt == 0 {
+		agent.UpdatedAt = now
+	}
+	if agent.Priority == 0 {
+		agent.Priority = 100
+	}
+	if agent.Weight == 0 {
+		agent.Weight = 100
+	}
+	r.agents[agent.AgentID] = agent
+	r.publishLocked("agent.recovered", agent, map[string]any{
+		"state":    string(agent.State),
+		"vruntime": agent.VRuntime,
+	})
+}
+
 func (r *Registry) MarkHeartbeatLost(now time.Time, timeout time.Duration) []avp.AVP {
 	r.mu.Lock()
 	defer r.mu.Unlock()

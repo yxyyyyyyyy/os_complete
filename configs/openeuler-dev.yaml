@@ -1,0 +1,7 @@
+http_addr: 127.0.0.1:8080
+mode: openeuler
+data_dir: /var/lib/aort
+socket_path: /run/aort/aortd.sock
+worker_command: /usr/local/bin/aort-worker
+heartbeat_timeout_ms: 6000
+cgroup_root: /sys/fs/cgroup/aort.slice
