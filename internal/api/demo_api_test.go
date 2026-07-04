@@ -69,6 +69,34 @@ func TestAgentsEndpointReturnsDemoAgents(t *testing.T) {
 	}
 }
 
+func TestContextAPIShowsPagesStatsAndPageTable(t *testing.T) {
+	srv := NewServer(config.Config{HTTPAddr: "127.0.0.1:8080", Mode: "mock"})
+	runReq := httptest.NewRequest(http.MethodPost, "/api/demo/run", nil)
+	runRec := httptest.NewRecorder()
+	srv.ServeHTTP(runRec, runReq)
+
+	pagesReq := httptest.NewRequest(http.MethodGet, "/api/context/pages", nil)
+	pagesRec := httptest.NewRecorder()
+	srv.ServeHTTP(pagesRec, pagesReq)
+	if pagesRec.Code != http.StatusOK || !strings.Contains(pagesRec.Body.String(), "project") {
+		t.Fatalf("pages status=%d body=%s", pagesRec.Code, pagesRec.Body.String())
+	}
+
+	statsReq := httptest.NewRequest(http.MethodGet, "/api/context/stats", nil)
+	statsRec := httptest.NewRecorder()
+	srv.ServeHTTP(statsRec, statsReq)
+	if statsRec.Code != http.StatusOK || !strings.Contains(statsRec.Body.String(), "saved_tokens") {
+		t.Fatalf("stats status=%d body=%s", statsRec.Code, statsRec.Body.String())
+	}
+
+	tableReq := httptest.NewRequest(http.MethodGet, "/api/context/agents/planner-1/pagetable", nil)
+	tableRec := httptest.NewRecorder()
+	srv.ServeHTTP(tableRec, tableReq)
+	if tableRec.Code != http.StatusOK || !strings.Contains(tableRec.Body.String(), "planner-1") {
+		t.Fatalf("pagetable status=%d body=%s", tableRec.Code, tableRec.Body.String())
+	}
+}
+
 func TestDemoRunPublishesEventsToHub(t *testing.T) {
 	hub := events.NewHub(32)
 	ch, cancel := hub.Subscribe()

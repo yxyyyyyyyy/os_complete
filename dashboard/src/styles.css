@@ -254,6 +254,10 @@ th {
   font-weight: 700;
 }
 
+.mono-cell {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+}
+
 .empty-state {
   color: #52676d;
   padding: 18px;

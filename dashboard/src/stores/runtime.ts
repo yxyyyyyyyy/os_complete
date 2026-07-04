@@ -1,9 +1,25 @@
 import { reactive } from 'vue'
-import { getTasks, runDemo, type RuntimeEvent, type Task } from '../api/client'
+import {
+  getContextPages,
+  getContextStats,
+  getTasks,
+  runDemo,
+  type ContextPage,
+  type ContextStats,
+  type RuntimeEvent,
+  type Task
+} from '../api/client'
 
 export const runtimeStore = reactive({
   tasks: [] as Task[],
   events: [] as RuntimeEvent[],
+  contextPages: [] as ContextPage[],
+  contextStats: {
+    total_pages: 0,
+    shared_pages: 0,
+    saved_bytes: 0,
+    saved_tokens: 0
+  } as ContextStats,
   selectedTaskID: '',
   loading: false,
   error: '',
@@ -14,6 +30,7 @@ let eventSource: EventSource | null = null
 
 export async function refreshTasks() {
   runtimeStore.tasks = await getTasks()
+  await refreshContext()
   if (!runtimeStore.selectedTaskID && runtimeStore.tasks.length > 0) {
     runtimeStore.selectedTaskID = runtimeStore.tasks[0].task_id
   }
@@ -22,6 +39,11 @@ export async function refreshTasks() {
       addEvent(event)
     }
   }
+}
+
+export async function refreshContext() {
+  runtimeStore.contextPages = await getContextPages()
+  runtimeStore.contextStats = await getContextStats()
 }
 
 export async function startDemo() {

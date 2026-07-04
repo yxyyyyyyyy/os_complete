@@ -28,6 +28,23 @@ export interface Task {
   events: RuntimeEvent[]
 }
 
+export interface ContextPage {
+  id: string
+  kind: string
+  content: string
+  bytes: number
+  token_count: number
+  ref_count: number
+  created_at: number
+}
+
+export interface ContextStats {
+  total_pages: number
+  shared_pages: number
+  saved_bytes: number
+  saved_tokens: number
+}
+
 export async function runDemo(): Promise<{ task_id: string }> {
   const response = await fetch('/api/demo/run', { method: 'POST' })
   if (!response.ok) {
@@ -40,6 +57,22 @@ export async function getTasks(): Promise<Task[]> {
   const response = await fetch('/api/tasks')
   if (!response.ok) {
     throw new Error(`tasks request failed: ${response.status}`)
+  }
+  return response.json()
+}
+
+export async function getContextPages(): Promise<ContextPage[]> {
+  const response = await fetch('/api/context/pages')
+  if (!response.ok) {
+    throw new Error(`context pages request failed: ${response.status}`)
+  }
+  return response.json()
+}
+
+export async function getContextStats(): Promise<ContextStats> {
+  const response = await fetch('/api/context/stats')
+  if (!response.ok) {
+    throw new Error(`context stats request failed: ${response.status}`)
   }
   return response.json()
 }

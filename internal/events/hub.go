@@ -36,8 +36,8 @@ type Hub struct {
 }
 
 func NewHub(buffer int) *Hub {
-	if buffer <= 0 {
-		buffer = 1
+	if buffer < 256 {
+		buffer = 256
 	}
 	return &Hub{
 		buffer:      buffer,

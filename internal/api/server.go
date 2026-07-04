@@ -13,6 +13,7 @@ import (
 	"aort-r/internal/avp"
 	"aort-r/internal/capsule"
 	"aort-r/internal/config"
+	"aort-r/internal/cvm"
 	"aort-r/internal/demo"
 	"aort-r/internal/events"
 	"aort-r/internal/trace"
@@ -29,6 +30,7 @@ func NewServerWithEvents(cfg config.Config, hub *events.Hub) http.Handler {
 		hub:       hub,
 		sink:      newEventSink(cfg, hub),
 		demo:      demo.NewSoftwareDemoRunner(),
+		cvm:       cvm.NewStore(newEventSink(cfg, hub)),
 		tasks:     make(map[string]demo.Result),
 		workerCtx: context.Background(),
 	}
@@ -42,6 +44,7 @@ type Server struct {
 	hub              *events.Hub
 	sink             *eventSink
 	demo             *demo.Runner
+	cvm              *cvm.Store
 	mux              *http.ServeMux
 	mu               sync.RWMutex
 	tasks            map[string]demo.Result
@@ -81,6 +84,9 @@ func (s *Server) routes() {
 	mux.HandleFunc("/api/demo/run", s.handleDemoRun)
 	mux.HandleFunc("/api/agents", s.handleAgents)
 	mux.HandleFunc("/api/agents/", s.handleAgentAction)
+	mux.HandleFunc("/api/context/pages", s.handleContextPages)
+	mux.HandleFunc("/api/context/stats", s.handleContextStats)
+	mux.HandleFunc("/api/context/agents/", s.handleContextAgent)
 	mux.HandleFunc("/api/tasks", s.handleTasks)
 	mux.HandleFunc("/api/tasks/", s.handleTaskSubresource)
 	s.mux = mux
@@ -147,6 +153,7 @@ func (s *Server) runDemo(ctx context.Context) (demo.Result, error) {
 		if err != nil {
 			return demo.Result{}, err
 		}
+		s.seedContext(result.TaskID, result.Agents)
 		for _, event := range result.Events {
 			s.sink.Publish(event)
 		}
@@ -176,7 +183,20 @@ func (s *Server) runDemo(ctx context.Context) (demo.Result, error) {
 			return demo.Result{}, err
 		}
 	}
+	s.seedContext(result.TaskID, result.Agents)
 	return result, nil
+}
+
+func (s *Server) seedContext(taskID string, agents []demo.Agent) {
+	system, _ := s.cvm.CreatePage(cvm.KindSystem, "You are an AORT-R software engineering agent.\n")
+	project, _ := s.cvm.CreatePage(cvm.KindProject, "Project: implement a Todo Web API with create, list, and complete operations.\n")
+	task, _ := s.cvm.CreatePage(cvm.KindTask, "Task: produce code, tests, review feedback, and fixes through runtime syscalls.\n")
+	for _, agent := range agents {
+		_ = s.cvm.MountPage(agent.ID, system.ID)
+		_ = s.cvm.MountPage(agent.ID, project.ID)
+		_ = s.cvm.MountPage(agent.ID, task.ID)
+		_, _ = s.cvm.WriteDelta(agent.ID, "Agent "+agent.Role+" private scratch for "+taskID+".\n")
+	}
 }
 
 func (s *Server) handleTasks(w http.ResponseWriter, r *http.Request) {
@@ -255,6 +275,39 @@ func (s *Server) handleAgentAction(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	writeJSON(w, http.StatusOK, map[string]string{"status": "ok", "action": action})
+}
+
+func (s *Server) handleContextPages(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		w.Header().Set("Allow", http.MethodGet)
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	writeJSON(w, http.StatusOK, s.cvm.Pages())
+}
+
+func (s *Server) handleContextStats(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		w.Header().Set("Allow", http.MethodGet)
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	writeJSON(w, http.StatusOK, s.cvm.Stats())
+}
+
+func (s *Server) handleContextAgent(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		w.Header().Set("Allow", http.MethodGet)
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	rest := strings.TrimPrefix(r.URL.Path, "/api/context/agents/")
+	agentID, subresource, ok := strings.Cut(rest, "/")
+	if !ok || subresource != "pagetable" {
+		http.NotFound(w, r)
+		return
+	}
+	writeJSON(w, http.StatusOK, s.cvm.PageTable(agentID))
 }
 
 func (s *Server) handleTaskSubresource(w http.ResponseWriter, r *http.Request) {

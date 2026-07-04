@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { selectedTask } from '../stores/runtime'
-
-const task = selectedTask
+import MetricCard from '../components/MetricCard.vue'
+import { runtimeStore } from '../stores/runtime'
 </script>
 
 <template>
@@ -9,28 +8,33 @@ const task = selectedTask
     <div class="page-heading">
       <div>
         <h1>Context Memory</h1>
-        <p>V1 displays materialization events. V2 replaces this with CVM page tables.</p>
+        <p>CVM pages, reference counts, and deduplication savings.</p>
       </div>
+    </div>
+    <div class="metrics-grid">
+      <MetricCard label="Total Pages" :value="runtimeStore.contextStats.total_pages" />
+      <MetricCard label="Shared Pages" :value="runtimeStore.contextStats.shared_pages" />
+      <MetricCard label="Saved Bytes" :value="runtimeStore.contextStats.saved_bytes" />
+      <MetricCard label="Saved Tokens" :value="runtimeStore.contextStats.saved_tokens" />
     </div>
     <div class="table-wrap">
       <table>
         <thead>
           <tr>
-            <th>Event</th>
-            <th>Agent</th>
-            <th>Syscall</th>
-            <th>Exit</th>
+            <th>Page</th>
+            <th>Kind</th>
+            <th>Bytes</th>
+            <th>Tokens</th>
+            <th>Refs</th>
           </tr>
         </thead>
         <tbody>
-          <tr
-            v-for="event in (task()?.events || []).filter((item) => item.type === 'syscall.finished')"
-            :key="event.id"
-          >
-            <td>{{ event.id }}</td>
-            <td>{{ event.agent_id }}</td>
-            <td>{{ event.payload.name }}</td>
-            <td>{{ event.payload.exit_code }}</td>
+          <tr v-for="page in runtimeStore.contextPages" :key="page.id">
+            <td class="mono-cell">{{ page.id.slice(0, 16) }}</td>
+            <td>{{ page.kind }}</td>
+            <td>{{ page.bytes }}</td>
+            <td>{{ page.token_count }}</td>
+            <td>{{ page.ref_count }}</td>
           </tr>
         </tbody>
       </table>
