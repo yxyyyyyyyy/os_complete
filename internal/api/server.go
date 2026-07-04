@@ -90,6 +90,7 @@ type Server struct {
 	mux              *http.ServeMux
 	mu               sync.RWMutex
 	tasks            map[string]demo.Result
+	softwareReal     *softwareRealDemoResult
 	registry         *worker.Registry
 	capsules         *capsule.Manager
 	uds              *worker.UDSServer
@@ -125,6 +126,9 @@ func (s *Server) routes() {
 		streamEvents(w, r, s.hub)
 	})
 	mux.HandleFunc("/api/demo/run", s.handleDemoRun)
+	mux.HandleFunc("/api/demo/software-real/run", s.handleSoftwareRealDemoRun)
+	mux.HandleFunc("/api/demo/software-real/status", s.handleSoftwareRealDemoStatus)
+	mux.HandleFunc("/api/demo/software-real/result", s.handleSoftwareRealDemoResult)
 	mux.HandleFunc("/api/demo/fault/", s.handleDemoFault)
 	mux.HandleFunc("/api/faults", s.handleFaults)
 	mux.HandleFunc("/api/agents", s.handleAgents)
