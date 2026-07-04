@@ -1,0 +1,8 @@
+{
+  "evidence_mode": "real",
+  "cgroup_fs": "cgroup2fs",
+  "memory_limit_enforced": true,
+  "pids_limit_enforced": true,
+  "cpu_quota_observable": true,
+  "success": true
+}

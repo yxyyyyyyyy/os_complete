@@ -1,0 +1,12 @@
+{
+  "evidence_mode": "real",
+  "cgroup_path": "/sys/fs/cgroup/aort.slice/aort-limit-pids-12625",
+  "pids.max": "12",
+  "pids.current": "1",
+  "started_processes": 11,
+  "fork_errors": [
+    "[Errno 11] Resource temporarily unavailable"
+  ],
+  "pids.events": "max 2\n",
+  "enforced": true
+}

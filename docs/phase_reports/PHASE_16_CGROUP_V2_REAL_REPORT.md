@@ -24,6 +24,19 @@ AORT-R real cgroup v2 capsule：
 }
 ```
 
+新增多 Agent 和资源限制验证也已通过：
+
+```json
+{
+  "multi_agent_capsules": 4,
+  "freeze_unfreeze": true,
+  "kill_other_agents_unaffected": true,
+  "memory_limit_enforced": true,
+  "pids_limit_enforced": true,
+  "cpu_quota_observable": true
+}
+```
+
 旧 degraded evidence 只作为历史记录和对照组，不代表当前状态。
 
 ## 证据位置
@@ -36,11 +49,21 @@ AORT-R real cgroup v2 capsule：
 | go test 输出 | `experiments/results/openeuler_smoke/go_test_cgroupv2_7d939c2.txt` |
 | smoke 输出 | `experiments/results/openeuler_smoke/smoke_cgroupv2_7d939c2.log` |
 | 证据包 | `experiments/results/openeuler_smoke/aort-r-openeuler-7d939c2-cgroupv2-real-evidence.tgz` |
+| 多 Agent capsule | `experiments/results/openeuler_cgroupv2_multi/multi_agent_capsules.json` |
+| freeze/unfreeze | `experiments/results/openeuler_cgroupv2_multi/multi_agent_freeze_unfreeze.json` |
+| kill 隔离 | `experiments/results/openeuler_cgroupv2_multi/multi_agent_kill_recovery.json` |
+| 多 Agent 总结 | `experiments/results/openeuler_cgroupv2_multi/multi_agent_summary.json` |
+| memory.max 生效 | `experiments/results/openeuler_cgroupv2_limits/memory_limit_enforced.json` |
+| pids.max 生效 | `experiments/results/openeuler_cgroupv2_limits/pids_limit_enforced.json` |
+| cpu.max/cpu.stat | `experiments/results/openeuler_cgroupv2_limits/cpu_quota_stat.json` |
+| limits 总结 | `experiments/results/openeuler_cgroupv2_limits/limit_summary.json` |
 
 ## 当前 real 模块
 
 - Worker Process：真实 worker PID。
 - Cgroup Capsule：真实 cgroup v2，`capsule_mode=real`。
+- Resource Limits：`memory.max` 触发 OOM kill，`pids.max` 触发 fork failure，
+  `cpu.max` 可通过 `cpu.stat` 观测 throttle。
 - Syscall Gateway：真实 Runtime syscall record。
 - Scheduler：真实 token-CFS-prefix-affinity decision log。
 - CVM：真实 Runtime page store / saved bytes / saved tokens。

@@ -1,0 +1,23 @@
+ok  	aort-r/cmd/aort-experiment	0.027s
+?   	aort-r/cmd/aort-worker	[no test files]
+?   	aort-r/cmd/aortd	[no test files]
+ok  	aort-r/internal/api	0.106s
+ok  	aort-r/internal/avp	0.001s
+ok  	aort-r/internal/capsule	0.002s
+ok  	aort-r/internal/checkpoint	0.002s
+ok  	aort-r/internal/config	0.001s
+ok  	aort-r/internal/cvm	0.001s
+ok  	aort-r/internal/dag	0.001s
+ok  	aort-r/internal/demo	0.001s
+ok  	aort-r/internal/events	0.001s
+ok  	aort-r/internal/experiment	0.027s
+ok  	aort-r/internal/ipc	0.001s
+ok  	aort-r/internal/kernel	0.001s
+ok  	aort-r/internal/llm	0.001s
+ok  	aort-r/internal/pressure	0.001s
+ok  	aort-r/internal/scheduler	0.001s
+ok  	aort-r/internal/supervisor	0.005s
+ok  	aort-r/internal/syscall	0.014s
+ok  	aort-r/internal/trace	0.001s
+ok  	aort-r/internal/worker	0.012s
+ok  	aort-r/internal/workspace	0.002s

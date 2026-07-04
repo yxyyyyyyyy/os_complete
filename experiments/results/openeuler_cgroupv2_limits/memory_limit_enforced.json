@@ -1,0 +1,26 @@
+{
+  "evidence_mode": "real",
+  "cgroup_path": "/sys/fs/cgroup/aort.slice/aort-limit-memory-12625",
+  "memory.max": "20971520",
+  "memory.current": "0",
+  "exit_code": 137,
+  "memory.events_before": {
+    "low": 0,
+    "high": 0,
+    "max": 0,
+    "oom": 0,
+    "oom_kill": 0,
+    "oom_group_kill": 0
+  },
+  "memory.events_after": {
+    "low": 0,
+    "high": 0,
+    "max": 43,
+    "oom": 1,
+    "oom_kill": 1,
+    "oom_group_kill": 0
+  },
+  "oom_delta": 1,
+  "oom_kill_delta": 1,
+  "enforced": true
+}

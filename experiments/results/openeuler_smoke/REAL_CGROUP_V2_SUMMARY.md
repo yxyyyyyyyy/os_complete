@@ -28,5 +28,16 @@ Primary files:
 - `smoke_cgroupv2_7d939c2.log`
 - `aort-r-openeuler-7d939c2-cgroupv2-real-evidence.tgz`
 
+Additional current evidence:
+
+- `../openeuler_cgroupv2_multi/multi_agent_capsules.json`
+- `../openeuler_cgroupv2_multi/multi_agent_freeze_unfreeze.json`
+- `../openeuler_cgroupv2_multi/multi_agent_kill_recovery.json`
+- `../openeuler_cgroupv2_multi/multi_agent_summary.json`
+- `../openeuler_cgroupv2_limits/memory_limit_enforced.json`
+- `../openeuler_cgroupv2_limits/pids_limit_enforced.json`
+- `../openeuler_cgroupv2_limits/cpu_quota_stat.json`
+- `../openeuler_cgroupv2_limits/limit_summary.json`
+
 Historical degraded files in this directory are retained as before/after
 evidence only. They do not describe the current cgroup v2 state.
