@@ -1,2 +1,2 @@
 experiment,demo,evidence_mode,wall_time_ms,agents,syscalls,tool_exec,ipc_messages,context_saved_tokens,fault_recovered,final_success,throughput_score
-E5_end_to_end,software-real,real-runtime,22,6,11,3,1,175,true,true,500.0000
+E5_end_to_end,software-real,real-runtime,12,6,11,3,1,175,true,true,916.6667

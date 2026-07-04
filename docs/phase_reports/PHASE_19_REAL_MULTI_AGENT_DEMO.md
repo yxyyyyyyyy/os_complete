@@ -58,7 +58,7 @@ experiments/results/e5-end-to-end.csv
   "experiment": "E5_end_to_end",
   "demo": "software-real",
   "evidence_mode": "real-runtime",
-  "wall_time_ms": 22,
+  "wall_time_ms": 12,
   "agents": 6,
   "syscalls": 11,
   "tool_exec": 3,
@@ -72,6 +72,9 @@ experiments/results/e5-end-to-end.csv
 ## 当前边界
 
 - `real-runtime` 表示真实经过 AORT-R Runtime 内部机制。
+- 当前 E5 JSON/CSV 已在远程 openEuler 24.03 LTS 上通过
+  `go run ./cmd/aort-experiment --name all --runs 5 --out experiments/results`
+  重新生成。
 - 本报告不代表 real cgroup v2 已通过；openEuler cgroup v2 状态以
   `PHASE_16_OPEN_EULER_REAL_CGROUP_REPORT.md` 为准。
 - 当前 E5 使用本地 shell tool.exec 和 Runtime supervisor fault record；后续可接入

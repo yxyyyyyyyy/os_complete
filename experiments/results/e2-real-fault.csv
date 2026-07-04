@@ -1,6 +1,6 @@
 experiment,fault_type,evidence_mode,failed_agent,affected_agents,total_agents,recovery_action,recovery_time_ms,system_survived,cascade_failure,supervisor_fault_id
-E2_real_fault_isolation,TOOL_TIMEOUT,real-runtime,tester,1,6,kill_tool_process_and_resume_agent,11,true,false,20260705010500.328805000
-E2_real_fault_isolation,AGENT_CRASH,real-runtime,coder,1,6,restart_agent_from_checkpoint,6,true,false,20260705010500.334861000
-E2_real_fault_isolation,MEMORY_LIMIT_EXCEEDED,real-runtime,planner,1,6,mark_agent_failed_and_keep_dag_alive,5,true,false,20260705010500.334886000
-E2_real_fault_isolation,WORKSPACE_ROLLBACK,real-runtime,fixer,1,6,restore_workspace_from_base_snapshot,5,true,false,20260705010500.334887000
-E2_real_fault_isolation,IPC_MESSAGE_MALFORMED,real-runtime,reviewer,1,6,drop_bad_message_and_continue_topic,5,true,false,20260705010500.334887000
+E2_real_fault_isolation,TOOL_TIMEOUT,real-runtime,tester,1,6,kill_tool_process_and_resume_agent,10,true,false,20260705011726.424166041
+E2_real_fault_isolation,AGENT_CRASH,real-runtime,coder,1,6,restart_agent_from_checkpoint,1,true,false,20260705011726.425239756
+E2_real_fault_isolation,MEMORY_LIMIT_EXCEEDED,real-runtime,planner,1,6,mark_agent_failed_and_keep_dag_alive,5,true,false,20260705011726.425243926
+E2_real_fault_isolation,WORKSPACE_ROLLBACK,real-runtime,fixer,1,6,restore_workspace_from_base_snapshot,5,true,false,20260705011726.425245456
+E2_real_fault_isolation,IPC_MESSAGE_MALFORMED,real-runtime,reviewer,1,6,drop_bad_message_and_continue_topic,5,true,false,20260705011726.425246525

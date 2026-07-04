@@ -7,10 +7,10 @@
     "affected_agents": 1,
     "total_agents": 6,
     "recovery_action": "kill_tool_process_and_resume_agent",
-    "recovery_time_ms": 11,
+    "recovery_time_ms": 10,
     "system_survived": true,
     "cascade_failure": false,
-    "supervisor_fault_id": "20260705010500.328805000"
+    "supervisor_fault_id": "20260705011726.424166041"
   },
   {
     "experiment": "E2_real_fault_isolation",
@@ -20,10 +20,10 @@
     "affected_agents": 1,
     "total_agents": 6,
     "recovery_action": "restart_agent_from_checkpoint",
-    "recovery_time_ms": 6,
+    "recovery_time_ms": 1,
     "system_survived": true,
     "cascade_failure": false,
-    "supervisor_fault_id": "20260705010500.334861000"
+    "supervisor_fault_id": "20260705011726.425239756"
   },
   {
     "experiment": "E2_real_fault_isolation",
@@ -36,7 +36,7 @@
     "recovery_time_ms": 5,
     "system_survived": true,
     "cascade_failure": false,
-    "supervisor_fault_id": "20260705010500.334886000"
+    "supervisor_fault_id": "20260705011726.425243926"
   },
   {
     "experiment": "E2_real_fault_isolation",
@@ -49,7 +49,7 @@
     "recovery_time_ms": 5,
     "system_survived": true,
     "cascade_failure": false,
-    "supervisor_fault_id": "20260705010500.334887000"
+    "supervisor_fault_id": "20260705011726.425245456"
   },
   {
     "experiment": "E2_real_fault_isolation",
@@ -62,6 +62,6 @@
     "recovery_time_ms": 5,
     "system_survived": true,
     "cascade_failure": false,
-    "supervisor_fault_id": "20260705010500.334887000"
+    "supervisor_fault_id": "20260705011726.425246525"
   }
 ]
