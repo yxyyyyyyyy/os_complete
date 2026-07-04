@@ -34,6 +34,23 @@ func TestPrepareWritesCgroupFiles(t *testing.T) {
 	assertFileContains(t, filepath.Join(runtime.CgroupPath, "cgroup.procs"), "12345")
 }
 
+func TestPrepareEnablesParentSubtreeControllers(t *testing.T) {
+	root := t.TempDir()
+	writeFile(t, filepath.Join(root, "cgroup.controllers"), "cpu memory pids io\n")
+	writeFile(t, filepath.Join(root, "cgroup.subtree_control"), "\n")
+	mgr := NewManager(Config{
+		Root:          root,
+		ForceReal:     true,
+		AllowDegraded: false,
+	})
+
+	if _, err := mgr.Prepare("agent-1", 12345); err != nil {
+		t.Fatalf("Prepare: %v", err)
+	}
+
+	assertFileContains(t, filepath.Join(root, "cgroup.subtree_control"), "+cpu +memory +pids")
+}
+
 func TestStatsReadRealCgroupFiles(t *testing.T) {
 	root := t.TempDir()
 	mgr := NewManager(Config{Root: root, ForceReal: true, AllowDegraded: false})

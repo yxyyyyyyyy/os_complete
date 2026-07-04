@@ -72,20 +72,16 @@ func NewManager(cfg Config) *Manager {
 
 func (m *Manager) Prepare(agentID string, pid int) (Runtime, error) {
 	if err := m.available(); err != nil {
-		if m.cfg.AllowDegraded {
-			rt := Runtime{AgentID: agentID, CgroupPath: "degraded://" + safeName(agentID), Mode: ModeDegraded, Error: err.Error()}
-			m.mu.Lock()
-			m.runtimes[agentID] = rt
-			m.pids[agentID] = pid
-			m.mu.Unlock()
-			return rt, nil
-		}
-		return Runtime{}, err
+		return m.degradedOrError(agentID, pid, err)
+	}
+
+	if err := enableSubtreeControllers(m.cfg.Root, []string{"cpu", "memory", "pids"}); err != nil {
+		return m.degradedOrError(agentID, pid, fmt.Errorf("enable cgroup subtree controllers: %w", err))
 	}
 
 	path := filepath.Join(m.cfg.Root, safeName(agentID))
 	if err := os.MkdirAll(path, 0o755); err != nil {
-		return Runtime{}, err
+		return m.degradedOrError(agentID, pid, fmt.Errorf("create cgroup: %w", err))
 	}
 	files := map[string]string{
 		"memory.max":   m.cfg.MemoryMax,
@@ -95,11 +91,23 @@ func (m *Manager) Prepare(agentID string, pid int) (Runtime, error) {
 	}
 	for name, value := range files {
 		if err := os.WriteFile(filepath.Join(path, name), []byte(value+"\n"), 0o644); err != nil {
-			return Runtime{}, fmt.Errorf("write %s: %w", name, err)
+			return m.degradedOrError(agentID, pid, fmt.Errorf("write %s: %w", name, err))
 		}
 	}
 
 	rt := Runtime{AgentID: agentID, CgroupPath: path, Mode: ModeReal}
+	m.mu.Lock()
+	m.runtimes[agentID] = rt
+	m.pids[agentID] = pid
+	m.mu.Unlock()
+	return rt, nil
+}
+
+func (m *Manager) degradedOrError(agentID string, pid int, err error) (Runtime, error) {
+	if !m.cfg.AllowDegraded {
+		return Runtime{}, err
+	}
+	rt := Runtime{AgentID: agentID, CgroupPath: "degraded://" + safeName(agentID), Mode: ModeDegraded, Error: err.Error()}
 	m.mu.Lock()
 	m.runtimes[agentID] = rt
 	m.pids[agentID] = pid
@@ -196,6 +204,42 @@ func (m *Manager) available() error {
 	}
 	if err := os.MkdirAll(m.cfg.Root, 0o755); err != nil {
 		return fmt.Errorf("cannot create cgroup root: %w", err)
+	}
+	return nil
+}
+
+func enableSubtreeControllers(root string, wanted []string) error {
+	controllersPath := filepath.Join(root, "cgroup.controllers")
+	subtreePath := filepath.Join(root, "cgroup.subtree_control")
+	controllersData, err := os.ReadFile(controllersPath)
+	if err != nil {
+		if os.IsNotExist(err) {
+			return nil
+		}
+		return fmt.Errorf("read %s: %w", controllersPath, err)
+	}
+	if _, err := os.Stat(subtreePath); err != nil {
+		if os.IsNotExist(err) {
+			return nil
+		}
+		return fmt.Errorf("stat %s: %w", subtreePath, err)
+	}
+
+	available := map[string]bool{}
+	for _, controller := range strings.Fields(string(controllersData)) {
+		available[controller] = true
+	}
+	commands := make([]string, 0, len(wanted))
+	for _, controller := range wanted {
+		if available[controller] {
+			commands = append(commands, "+"+controller)
+		}
+	}
+	if len(commands) == 0 {
+		return nil
+	}
+	if err := os.WriteFile(subtreePath, []byte(strings.Join(commands, " ")+"\n"), 0o644); err != nil {
+		return fmt.Errorf("write %s: %w", subtreePath, err)
 	}
 	return nil
 }
