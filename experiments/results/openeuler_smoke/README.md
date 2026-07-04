@@ -1,32 +1,38 @@
 # openEuler Smoke Evidence
 
-This directory records the degraded-real smoke evidence captured on an
-openEuler 24.03 LTS server.
+This directory now contains both historical degraded-real smoke evidence and
+the latest real cgroup v2 evidence captured on openEuler 24.03 LTS.
 
-The run is real for Go tests and Runtime APIs, but it is not real cgroup v2
-evidence. The server reported `/sys/fs/cgroup` as `tmpfs`, not `cgroup2fs`, so
-the capsule layer correctly fell back to `capsule_mode=degraded`.
+Latest status:
+
+```json
+{
+  "evidence_mode": "real",
+  "cgroup_fs": "cgroup2fs",
+  "capsule_mode": "real",
+  "real_cgroup_v2": true
+}
+```
+
+Older degraded files are retained as before/after evidence only. They do not
+represent the current cgroup v2 state.
 
 ## Files
 
 | File | Status | Notes |
 | --- | --- | --- |
-| `manual_smoke_summary.json` | real summary | HTTP status summary from manual degraded API smoke. |
-| `env_check.txt` | real output | Shows openEuler/root plus cgroup v2 failure. |
-| `go_test.txt` | real output | `go test ./...` passed with Go 1.22.12 on openEuler. |
-| `agents.json` | real output | Contains real worker PIDs and degraded capsule paths. |
-| `agent_summary.json` | real summary | Extracted from `manual_smoke_summary.json` and API output. |
-| `syscalls.json` | real output | Syscall gateway records from the degraded smoke run. |
-| `context_stats.json` | real output | CVM stats from the degraded smoke run. |
-| `scheduler_decisions.json` | real output | Scheduler decision log from the degraded smoke run. |
-| `fault_tool_timeout.json` | real output | Tool timeout fault recovered evidence. |
-| `kill.json` | real output | Agent kill API returned 200. |
-| `health.json` | placeholder | `unavailable_from_manual_run`; HTTP 200 is recorded in `manual_smoke_summary.json`. |
-| `demo_run.json` | placeholder | `unavailable_from_manual_run`; HTTP 202 is recorded in `manual_smoke_summary.json`. |
+| `REAL_CGROUP_V2_SUMMARY.md` | current summary | Latest real cgroup v2 result. |
+| `capsule_real.json` | current real output | `capsule_mode=real`, `real_cgroup_v2=true`. |
+| `agent_summary.json` | current real summary | Worker PID, cgroup path, memory/pids counters, freeze/unfreeze/kill. |
+| `env_check.json` | current real output | Shows `cgroup2fs`, root, writable cgroup mount. |
+| `go_test_cgroupv2_7d939c2.txt` | current real output | `go test ./...` passed on openEuler. |
+| `aort-r-openeuler-7d939c2-cgroupv2-real-evidence.tgz` | current evidence package | Compact archive of the real smoke evidence. |
+| `manual_smoke_summary.json` | historical summary | Older degraded API smoke record retained for comparison. |
+| `env_check_latest.txt` | historical output | Shows older cgroup v2 failure. |
 
 ## Real cgroup v2 requirement
 
-The next real smoke must run on a host where:
+Real smoke must run on a host where:
 
 ```bash
 stat -fc %T /sys/fs/cgroup

@@ -484,6 +484,46 @@ tbody tr:hover {
   color: #ffd1d1;
 }
 
+.evidence-badge {
+  display: inline-flex;
+  align-items: center;
+  min-width: 78px;
+  justify-content: center;
+  border: 1px solid rgb(141 171 185 / 22%);
+  border-radius: 999px;
+  padding: 4px 10px;
+  color: #d7e8ef;
+  background: rgb(44 60 73 / 70%);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.evidence-badge[data-mode="real"] {
+  border-color: rgb(83 255 177 / 34%);
+  background: rgb(27 102 77 / 38%);
+  color: #b6ffe4;
+}
+
+.evidence-badge[data-mode="degraded"] {
+  border-color: rgb(255 209 92 / 34%);
+  background: rgb(112 85 27 / 38%);
+  color: #ffe7a8;
+}
+
+.evidence-badge[data-mode="mock"],
+.evidence-badge[data-mode="planned"] {
+  border-color: rgb(122 176 255 / 34%);
+  background: rgb(35 64 111 / 38%);
+  color: #c9ddff;
+}
+
+.evidence-badge[data-mode="unavailable"] {
+  border-color: rgb(255 109 109 / 34%);
+  background: rgb(120 36 45 / 42%);
+  color: #ffd1d1;
+}
+
 .timeline-list {
   display: grid;
   overflow: hidden;

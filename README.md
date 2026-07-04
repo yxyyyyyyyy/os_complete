@@ -79,7 +79,15 @@ provider is implemented.
   capsule fallback, `degraded-proxy` kernel exec evidence instead of eBPF,
   unavailable PSI files, and degraded-copy workspace rollback instead of
   overlayfs.
-- `simulation/mock`: The path is intentionally synthetic or mocked for
+- `mock`: The path is intentionally mocked for repeatable local demos, such as
+  the default LLM provider. Mock paths are useful for deterministic tests but
+  must not be presented as real model-provider evidence.
+- `simulation`: The path is intentionally synthetic for unavailable OS
+  capabilities or controlled experiment models. Simulation outputs must be
+  labeled as simulation/degraded-simulation.
+- `planned`: The design is documented but not implemented in this build, such
+  as true eBPF attachment or overlayfs mount/commit isolation.
+- `simulation/mock`: Legacy reports may use this combined label for
   repeatable local demos, such as the mock LLM provider or experiment modes that
   model unavailable OS capabilities. These paths must be labeled as
   simulation/mock and should not be presented as real openEuler evidence.
@@ -128,43 +136,52 @@ Run these commands on openEuler 24.03 LTS with Linux root permission and cgroup 
 ```bash
 bash scripts/check_openeuler_env.sh
 bash scripts/smoke_openeuler.sh
+bash scripts/smoke_cgroupv2_multi_agent.sh
+bash scripts/smoke_cgroupv2_limits.sh
 ```
 
-Smoke outputs are written to `experiments/results/openeuler_smoke/`.
+Smoke outputs are written to:
 
-## 当前 Smoke 状态
+- `experiments/results/openeuler_smoke/`
+- `experiments/results/openeuler_cgroupv2_multi/`
+- `experiments/results/openeuler_cgroupv2_limits/`
 
-当前已完成一次 degraded-real smoke：
+## Current openEuler Evidence Status
 
-- Go test 通过
-- API smoke 通过
-- syscall / CVM / scheduler / fault API 有响应
-- 当前服务器 cgroup capsule 为 degraded
-- 尚未获得 `capsule_mode=real` 的 cgroup v2 证据
+Latest status:
 
-当前证据位于 `experiments/results/openeuler_smoke/`。其中
-`manual_smoke_summary.json` 记录了 HTTP 状态汇总，`agent_summary.json`
-明确标记：
+- openEuler 24.03 LTS / Linux root has been switched to unified cgroup v2.
+- `/sys/fs/cgroup` is `cgroup2fs`.
+- Runtime smoke has passed with `capsule_mode=real`.
+- `real_cgroup_v2=true`.
+- `memory.current`, `pids.current`, `cpu.stat`, freeze, unfreeze, and kill
+  are recorded from real cgroup v2 files and APIs.
 
-```json
-{
-  "mode": "degraded-real",
-  "capsule_mode": "degraded",
-  "real_cgroup_v2": false
-}
-```
+Primary current evidence:
 
-下一步 real 验证要求：
+- `experiments/results/openeuler_smoke/capsule_real.json`
+- `experiments/results/openeuler_smoke/agent_summary.json`
+- `experiments/results/openeuler_smoke/aort-r-openeuler-7d939c2-cgroupv2-real-evidence.tgz`
+- `docs/phase_reports/PHASE_16_OPEN_EULER_REAL_CGROUP_REPORT.md`
+- `docs/phase_reports/PHASE_16_CGROUP_V2_REAL_REPORT.md`
+
+Historical degraded evidence under `experiments/results/openeuler_smoke/` and
+older phase reports is retained only as a before/after record. It does not
+represent the current openEuler cgroup v2 status.
+
+To re-verify from scratch on openEuler:
 
 ```bash
 stat -fc %T /sys/fs/cgroup
-# 必须输出 cgroup2fs
+# expected: cgroup2fs
 
 bash scripts/check_openeuler_env.sh
 bash scripts/smoke_openeuler.sh
+bash scripts/smoke_cgroupv2_multi_agent.sh
+bash scripts/smoke_cgroupv2_limits.sh
 ```
 
-不要把当前 degraded smoke 解释为 cgroup v2 real 证据。
+Do not present mock, degraded, simulation, or planned modules as real evidence.
 
 ## openEuler Notes
 

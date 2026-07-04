@@ -3,6 +3,7 @@ import {
   getAgents,
   getContextPages,
   getContextStats,
+  getEvidenceReport,
   getExperimentResults,
   getKernelEvents,
   getKernelStatus,
@@ -17,6 +18,7 @@ import {
   type Agent,
   type ContextPage,
   type ContextStats,
+  type EvidenceReport,
   type ExperimentResults,
   type IPCMetric,
   type IPCTopics,
@@ -78,6 +80,10 @@ export const runtimeStore = reactive({
     throttle_reason: '',
     sampled_at: 0
   } as PressureStatus,
+  evidenceReport: {
+    updated_at: 0,
+    modules: []
+  } as EvidenceReport,
   recoveryStatus: {
     mode: 'checkpoint-light',
     degraded: true,
@@ -135,6 +141,7 @@ export async function refreshTasks() {
   runtimeStore.kernelStatus = await getKernelStatus()
   runtimeStore.kernelEvents = await getKernelEvents()
   runtimeStore.pressureStatus = await getPressureStatus()
+  runtimeStore.evidenceReport = await getEvidenceReport()
   runtimeStore.recoveryStatus = await getRecoveryStatus()
   runtimeStore.experimentResults = await getExperimentResults()
   await refreshContext()

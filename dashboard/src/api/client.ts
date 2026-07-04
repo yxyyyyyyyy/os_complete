@@ -159,6 +159,20 @@ export interface PressureStatus {
   sampled_at: number
 }
 
+export interface EvidenceModule {
+  name: string
+  status: 'real' | 'degraded' | 'mock' | 'planned' | 'unavailable' | string
+  mode: string
+  endpoint?: string
+  signals?: string[]
+  reason?: string
+}
+
+export interface EvidenceReport {
+  updated_at: number
+  modules: EvidenceModule[]
+}
+
 export interface E1SchedulerResult {
   experiment: string
   policy: string
@@ -374,6 +388,14 @@ export async function getPressureStatus(): Promise<PressureStatus> {
   const response = await fetch('/api/pressure/status')
   if (!response.ok) {
     throw new Error(`pressure status request failed: ${response.status}`)
+  }
+  return response.json()
+}
+
+export async function getEvidenceReport(): Promise<EvidenceReport> {
+  const response = await fetch('/api/evidence')
+  if (!response.ok) {
+    throw new Error(`evidence request failed: ${response.status}`)
   }
   return response.json()
 }

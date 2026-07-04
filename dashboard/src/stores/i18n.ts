@@ -65,6 +65,10 @@ const messages = {
       cpuAvg10: 'CPU avg10',
       memoryAvg10: '内存 avg10',
       ioAvg10: 'IO avg10',
+      evidenceMode: '证据模式',
+      evidenceDesc: '模块级 real / degraded / mock / planned 边界。',
+      module: '模块',
+      signals: '信号',
       yes: '是',
       no: '否'
     },
@@ -220,6 +224,10 @@ const messages = {
       cpuAvg10: 'CPU avg10',
       memoryAvg10: 'Memory avg10',
       ioAvg10: 'IO avg10',
+      evidenceMode: 'Evidence Mode',
+      evidenceDesc: 'Module-level real / degraded / mock / planned boundaries.',
+      module: 'Module',
+      signals: 'Signals',
       yes: 'Yes',
       no: 'No'
     },

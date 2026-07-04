@@ -93,6 +93,6 @@ go: failed to trim cache: open /Users/yxy/Library/Caches/go-build/trim.txt: oper
 
 ## 下一步最该做的 3 件事
 
-1. 在 openEuler VM/root/cgroup v2/systemd 环境跑一次完整 smoke，确认 cgroup capsule、systemd service、PSI 的真实证据。
+1. 保留最新 openEuler unified cgroup v2 real smoke 作为主证据，并补充多 Agent 隔离与 limit 生效脚本输出。
 2. 将 workspace `degraded-copy` 升级为 openEuler 上的真实 overlayfs mount/commit/rollback，并保留 degraded fallback。
 3. 实现并验证真实 eBPF `sched_process_exec` 观测链路，把 kernel observer 从 `degraded-proxy` 推进到 real probe。

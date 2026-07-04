@@ -2,6 +2,11 @@
 
 mode=degraded-real
 
+> Historical note: this PHASE_15 report is a before/after record from the
+> legacy cgroup environment. The latest PHASE_16 real report supersedes it:
+> openEuler unified cgroup v2 has passed with `capsule_mode=real` and
+> `real_cgroup_v2=true`.
+
 本报告记录 AORT-R 在一台公网 openEuler 24.03 LTS / 类 openEuler 环境服务器上的
 真实验证结果。
 本次没有伪造 cgroup v2 证据：服务器当前不是统一 cgroup v2 挂载，因此正式
@@ -9,8 +14,8 @@ mode=degraded-real
 smoke，用于证明 Runtime 可启动、可运行 demo、可输出调度/CVM/syscall/fault
 证据。
 
-当前结论：已经完成一次 degraded-real smoke；`go test` 通过，API smoke 通过，
-但尚未获得 `capsule_mode=real` 的 cgroup v2 满血证据。
+当时结论：已经完成一次 degraded-real smoke；`go test` 通过，API smoke 通过，
+但当时尚未获得 `capsule_mode=real` 的 cgroup v2 满血证据。
 
 ## 执行环境
 
@@ -124,7 +129,7 @@ Runtime 在 openEuler/root/Go 1.22.12 上可编译测试通过，并能在 cgrou
 }
 ```
 
-## 当前 degraded 项
+## 历史 degraded 项
 
 | 模块 | 当前状态 | 说明 |
 | --- | --- | --- |
@@ -144,7 +149,7 @@ Runtime 在 openEuler/root/Go 1.22.12 上可编译测试通过，并能在 cgrou
    failure。
 3. 再执行 `bash scripts/smoke_openeuler.sh`，目标是生成 real
    `memory.current`、`pids.current`、`freeze/unfreeze=2xx` 证据。
-4. 保留当前 degraded 证据作为对照组，再补一组 cgroup v2 real 证据，用于答辩中
+4. 保留本 degraded 证据作为历史对照组；最新 cgroup v2 real 证据以 PHASE_16 为准
    区分“环境不满足导致降级”和“Runtime 真实 OS 控制能力”。
 
 必须满足：

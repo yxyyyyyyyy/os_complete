@@ -117,6 +117,7 @@ func (s *Server) routes() {
 			"mode":   s.cfg.Mode,
 		})
 	})
+	mux.HandleFunc("/api/evidence", s.handleEvidence)
 	mux.HandleFunc("/api/events", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodGet {
 			w.Header().Set("Allow", http.MethodGet)
@@ -708,6 +709,166 @@ func (s *Server) capsuleEvidence(agent avp.AVP) capsuleEvidence {
 		Frozen:        stats.Frozen,
 		Error:         stats.Error,
 	}
+}
+
+type evidenceModule struct {
+	Name     string   `json:"name"`
+	Status   string   `json:"status"`
+	Mode     string   `json:"mode"`
+	Endpoint string   `json:"endpoint,omitempty"`
+	Signals  []string `json:"signals,omitempty"`
+	Reason   string   `json:"reason,omitempty"`
+}
+
+type evidenceResponse struct {
+	UpdatedAt int64            `json:"updated_at"`
+	Modules   []evidenceModule `json:"modules"`
+}
+
+func (s *Server) handleEvidence(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		w.Header().Set("Allow", http.MethodGet)
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	writeJSON(w, http.StatusOK, s.evidenceReport())
+}
+
+func (s *Server) evidenceReport() evidenceResponse {
+	kernelStatus := s.kernel.Status()
+	pressureStatus := s.pressure.Sample()
+	modules := []evidenceModule{
+		s.cgroupEvidenceModule(),
+		s.workerEvidenceModule(),
+		{
+			Name:     "Syscall Gateway",
+			Status:   "real",
+			Mode:     "uds-json-rpc",
+			Endpoint: "/api/syscalls",
+			Signals:  []string{"context.materialize", "llm.call", "tool.exec", "ipc.publish", "agent.spawn"},
+		},
+		{
+			Name:     "Scheduler",
+			Status:   "real",
+			Mode:     s.scheduler.Policy(),
+			Endpoint: "/api/scheduler/decisions",
+			Signals:  []string{"decision_log", "vruntime", "prefix_affinity", "pressure_payload"},
+		},
+		{
+			Name:     "CVM",
+			Status:   "real",
+			Mode:     "real-partial",
+			Endpoint: "/api/context/stats",
+			Signals:  []string{"page_store", "page_table", "saved_bytes", "saved_tokens"},
+			Reason:   "KV cache is represented as context pages and reuse stats, not a model-server KV memory map.",
+		},
+		{
+			Name:     "Page-reference IPC",
+			Status:   "real",
+			Mode:     "real-partial",
+			Endpoint: "/api/ipc/metrics",
+			Signals:  []string{"page_id_publish", "subscriber_poll", "avoided_copy_bytes"},
+			Reason:   "IPC passes page references inside the runtime; cross-host transport is not implemented.",
+		},
+		{
+			Name:     "Workspace Isolation",
+			Status:   "degraded",
+			Mode:     "degraded-copy",
+			Endpoint: "/api/demo/fault/rmrf",
+			Signals:  []string{"snapshot_copy", "rollback_success"},
+			Reason:   "overlayfs mount/commit is planned; current implementation uses copy rollback.",
+		},
+		{
+			Name:     "Kernel Observer",
+			Status:   "degraded",
+			Mode:     kernelStatus.Mode,
+			Endpoint: "/api/kernel/status",
+			Signals:  []string{kernelStatus.Probe, "kernel.exec"},
+			Reason:   kernelStatus.Reason,
+		},
+		{
+			Name:     "PSI Monitor",
+			Status:   pressureEvidenceStatus(pressureStatus),
+			Mode:     pressureStatus.Mode,
+			Endpoint: "/api/pressure/status",
+			Signals:  []string{"cpu.some", "memory.some", "io.some", "pressure_throttle"},
+			Reason:   pressureStatus.Reason,
+		},
+		{
+			Name:    "eBPF Observer",
+			Status:  "planned",
+			Mode:    "planned",
+			Signals: []string{"sched_process_exec"},
+			Reason:  "Not implemented in this build; kernel observer intentionally reports degraded-proxy.",
+		},
+		{
+			Name:    "LLM Provider",
+			Status:  "mock",
+			Mode:    "mock",
+			Signals: []string{"llm.call"},
+			Reason:  "Default provider is deterministic mock; DeepSeek/llama.cpp providers are not enabled in Git.",
+		},
+	}
+	return evidenceResponse{UpdatedAt: time.Now().UnixMilli(), Modules: modules}
+}
+
+func (s *Server) cgroupEvidenceModule() evidenceModule {
+	module := evidenceModule{
+		Name:     "Cgroup Capsule",
+		Status:   "degraded",
+		Mode:     "degraded",
+		Endpoint: "/api/capsules",
+		Signals:  []string{"capsule_mode", "real_cgroup_v2", "memory.current", "pids.current", "cpu.stat", "cgroup.events"},
+		Reason:   "No real cgroup v2 capsule has been observed in this runtime process yet.",
+	}
+	if s.registry == nil || s.capsules == nil {
+		module.Reason = "Worker runtime or capsule manager is not enabled."
+		return module
+	}
+	for _, agent := range s.registry.List() {
+		evidence := s.capsuleEvidence(agent)
+		if evidence.RealCgroupV2 && evidence.CapsuleMode == capsule.ModeReal {
+			module.Status = "real"
+			module.Mode = "cgroup-v2"
+			module.Reason = "At least one Agent is attached to a real cgroup v2 capsule."
+			return module
+		}
+	}
+	return module
+}
+
+func (s *Server) workerEvidenceModule() evidenceModule {
+	module := evidenceModule{
+		Name:     "Worker Process",
+		Status:   "degraded",
+		Mode:     "worker-registry",
+		Endpoint: "/api/agents",
+		Signals:  []string{"worker_pid", "uds_register", "heartbeat"},
+		Reason:   "No registered worker PID has been observed yet.",
+	}
+	if s.registry == nil {
+		module.Reason = "Worker runtime is not enabled."
+		return module
+	}
+	for _, agent := range s.registry.List() {
+		if agent.PID > 0 {
+			module.Status = "real"
+			module.Mode = "process"
+			module.Reason = "At least one Agent has a real worker PID."
+			return module
+		}
+	}
+	return module
+}
+
+func pressureEvidenceStatus(status pressure.Status) string {
+	if status.Mode == pressure.ModePSI && !status.Degraded {
+		return "real"
+	}
+	if status.Degraded {
+		return "unavailable"
+	}
+	return "degraded"
 }
 
 func (s *Server) handleContextPages(w http.ResponseWriter, r *http.Request) {

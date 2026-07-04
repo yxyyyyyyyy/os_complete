@@ -8,6 +8,7 @@ import { t } from '../stores/i18n'
 const task = selectedTask
 const recentDecisions = computed(() => runtimeStore.schedulerDecisions.slice(-6).reverse())
 const recentRecoveredTasks = computed(() => runtimeStore.recoveryStatus.recovered_tasks.slice(-4).reverse())
+const evidenceModules = computed(() => runtimeStore.evidenceReport.modules)
 </script>
 
 <template>
@@ -31,6 +32,38 @@ const recentRecoveredTasks = computed(() => runtimeStore.recoveryStatus.recovere
       <MetricCard :label="t.overview.sse" :value="runtimeStore.connected ? 'online' : 'offline'" />
       <MetricCard :label="t.overview.runtimeMode" value="mock" />
     </div>
+
+    <section class="section-block evidence-panel">
+      <div class="section-title">
+        <h2>{{ t.overview.evidenceMode }}</h2>
+        <span class="subtle-text">{{ t.overview.evidenceDesc }}</span>
+      </div>
+      <div class="inline-table">
+        <table>
+          <thead>
+            <tr>
+              <th>{{ t.overview.module }}</th>
+              <th>{{ t.common.evidence }}</th>
+              <th>{{ t.common.mode }}</th>
+              <th>{{ t.overview.signals }}</th>
+              <th>{{ t.common.reason }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="item in evidenceModules" :key="item.name">
+              <td>{{ item.name }}</td>
+              <td>
+                <span class="evidence-badge" :data-mode="item.status">{{ item.status }}</span>
+              </td>
+              <td>{{ item.mode }}</td>
+              <td class="mono-cell">{{ item.signals?.slice(0, 3).join(', ') }}</td>
+              <td>{{ item.reason || '-' }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div v-if="evidenceModules.length === 0" class="empty-state">{{ t.common.pending }}</div>
+      </div>
+    </section>
 
     <section class="section-block recovery-panel">
       <div class="section-title">
