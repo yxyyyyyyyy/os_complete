@@ -9,7 +9,7 @@ mode=blocked-by-remote-cgroup-legacy
 
 | 项目 | 结果 |
 | --- | --- |
-| Git commit | `67a6298` |
+| Git commit | `9029ec3` |
 | OS | `openEuler 24.03 (LTS)` |
 | Kernel | `6.6.0-112.0.0.104.oe2403.x86_64` |
 | 用户 | `uid=0(root)` |
@@ -29,6 +29,13 @@ GOCACHE="$PWD/.cache/go-build" go test ./...
 ```
 
 ## 3. 真实结果
+
+当前 commit `9029ec3` 已在远程 openEuler 上执行 `go test ./...`，退出码为 `0`。
+完整输出见：
+
+```text
+experiments/results/openeuler_smoke/go_test_latest.txt
+```
 
 `scripts/check_openeuler_env.sh` 已生成文本和 JSON 双格式证据。关键结果：
 
@@ -59,7 +66,15 @@ failures=3 warnings=4
 `scripts/smoke_openeuler.sh` 真实退出码为 `1`，停在 cgroup v2 环境门槛。
 这是预期的安全行为：环境不满足时拒绝生成 fake real capsule 证据。
 
-`go test ./...` 在远程 openEuler 上通过。
+本次远程证据文件：
+
+```text
+experiments/results/openeuler_smoke/go_test_latest.txt
+experiments/results/openeuler_smoke/env_check_latest.txt
+experiments/results/openeuler_smoke/smoke_latest.log
+experiments/results/openeuler_smoke/env_check.json
+experiments/results/openeuler_smoke/aort-r-openeuler-9029ec3-evidence.tgz
+```
 
 ## 4. 非破坏性 cgroup2 探测
 
