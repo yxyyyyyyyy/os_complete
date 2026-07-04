@@ -58,6 +58,27 @@ func TestMountWriteDeltaAndMaterialize(t *testing.T) {
 	}
 }
 
+func TestMountingSharedPageCountsAvoidedCopies(t *testing.T) {
+	store := NewStore(nil)
+	page, err := store.CreatePage(KindProject, "shared context page")
+	if err != nil {
+		t.Fatalf("CreatePage: %v", err)
+	}
+	if err := store.MountPage("agent-1", page.ID); err != nil {
+		t.Fatalf("Mount agent-1: %v", err)
+	}
+	if stats := store.Stats(); stats.SavedBytes != 0 || stats.SavedTokens != 0 {
+		t.Fatalf("first mount should not count as avoided copy: %#v", stats)
+	}
+	if err := store.MountPage("agent-2", page.ID); err != nil {
+		t.Fatalf("Mount agent-2: %v", err)
+	}
+	stats := store.Stats()
+	if stats.SavedBytes != int64(page.Bytes) || stats.SavedTokens != int64(page.TokenCount) {
+		t.Fatalf("stats = %#v, page = %#v", stats, page)
+	}
+}
+
 func TestMountRejectsUnknownPage(t *testing.T) {
 	store := NewStore(nil)
 	if err := store.MountPage("agent-1", "missing"); err == nil {

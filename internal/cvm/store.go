@@ -106,6 +106,10 @@ func (s *Store) MountPage(agentID, pageID string) error {
 		}
 	}
 	s.pageTables[agentID] = append(s.pageTables[agentID], pageID)
+	if page.RefCount > 1 {
+		s.savedBytes += int64(page.Bytes)
+		s.savedTokens += int64(page.TokenCount)
+	}
 	page.RefCount++
 	s.pages[pageID] = page
 	s.publishLocked("context.page.mounted", agentID, page, nil)

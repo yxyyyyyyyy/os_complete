@@ -258,6 +258,33 @@ th {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
 }
 
+.action-row {
+  display: flex;
+  gap: 6px;
+}
+
+.icon-button {
+  width: 32px;
+  height: 32px;
+  border: 1px solid #c9d7da;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #294247;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.icon-button:hover {
+  border-color: #26756f;
+  color: #165952;
+}
+
+.icon-button.danger {
+  border-color: #d8b9b9;
+  color: #923535;
+}
+
 .empty-state {
   color: #52676d;
   padding: 18px;

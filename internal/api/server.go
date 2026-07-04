@@ -16,6 +16,7 @@ import (
 	"aort-r/internal/cvm"
 	"aort-r/internal/demo"
 	"aort-r/internal/events"
+	syscallgw "aort-r/internal/syscall"
 	"aort-r/internal/trace"
 	"aort-r/internal/worker"
 )
@@ -25,15 +26,22 @@ func NewServer(cfg config.Config) http.Handler {
 }
 
 func NewServerWithEvents(cfg config.Config, hub *events.Hub) http.Handler {
+	sink := newEventSink(cfg, hub)
 	server := &Server{
 		cfg:       cfg,
 		hub:       hub,
-		sink:      newEventSink(cfg, hub),
+		sink:      sink,
 		demo:      demo.NewSoftwareDemoRunner(),
-		cvm:       cvm.NewStore(newEventSink(cfg, hub)),
+		cvm:       cvm.NewStore(sink),
 		tasks:     make(map[string]demo.Result),
 		workerCtx: context.Background(),
 	}
+	server.syscalls = syscallgw.NewGateway(syscallgw.Config{
+		CVM:           server.cvm,
+		Sink:          server.sink,
+		WorkspaceRoot: filepath.Join(cfg.DataDir, "workspaces"),
+		Reporter:      server.handleAgentReport,
+	})
 	server.startWorkerRuntime()
 	server.routes()
 	return server
@@ -45,6 +53,7 @@ type Server struct {
 	sink             *eventSink
 	demo             *demo.Runner
 	cvm              *cvm.Store
+	syscalls         *syscallgw.Gateway
 	mux              *http.ServeMux
 	mu               sync.RWMutex
 	tasks            map[string]demo.Result
@@ -87,6 +96,7 @@ func (s *Server) routes() {
 	mux.HandleFunc("/api/context/pages", s.handleContextPages)
 	mux.HandleFunc("/api/context/stats", s.handleContextStats)
 	mux.HandleFunc("/api/context/agents/", s.handleContextAgent)
+	mux.HandleFunc("/api/syscalls", s.handleSyscalls)
 	mux.HandleFunc("/api/tasks", s.handleTasks)
 	mux.HandleFunc("/api/tasks/", s.handleTaskSubresource)
 	s.mux = mux
@@ -310,6 +320,15 @@ func (s *Server) handleContextAgent(w http.ResponseWriter, r *http.Request) {
 	writeJSON(w, http.StatusOK, s.cvm.PageTable(agentID))
 }
 
+func (s *Server) handleSyscalls(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		w.Header().Set("Allow", http.MethodGet)
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	writeJSON(w, http.StatusOK, s.syscalls.Records())
+}
+
 func (s *Server) handleTaskSubresource(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		w.Header().Set("Allow", http.MethodGet)
@@ -354,7 +373,7 @@ func (s *Server) startWorkerRuntime() {
 		s.cfg.HeartbeatTimeoutMS = 6000
 	}
 	s.heartbeatTimeout = time.Duration(s.cfg.HeartbeatTimeoutMS) * time.Millisecond
-	s.uds = worker.NewUDSServer(s.cfg.SocketPath, s.registry)
+	s.uds = worker.NewUDSServer(s.cfg.SocketPath, s.registry, workerSyscallAdapter{gateway: s.syscalls})
 	if err := s.uds.Start(); err != nil {
 		s.sink.Publish(events.New("runtime.degraded", "", "", "runtime", map[string]any{
 			"component": "uds",
@@ -364,6 +383,52 @@ func (s *Server) startWorkerRuntime() {
 		return
 	}
 	go s.monitorHeartbeats()
+}
+
+func (s *Server) handleAgentReport(report syscallgw.Report) {
+	if s.registry == nil {
+		return
+	}
+	s.registry.HandleMessage(worker.Message{
+		Type:    worker.MessageReport,
+		AgentID: report.AgentID,
+		TaskID:  report.TaskID,
+		Status:  report.Status,
+		Payload: report.Payload,
+	})
+}
+
+type workerSyscallAdapter struct {
+	gateway *syscallgw.Gateway
+}
+
+func (a workerSyscallAdapter) HandleSyscall(message worker.Message) worker.Response {
+	if a.gateway == nil {
+		return worker.Response{
+			Type:      worker.MessageSyscallResult,
+			RequestID: message.RequestID,
+			AgentID:   message.AgentID,
+			TaskID:    message.TaskID,
+			Status:    syscallgw.StatusError,
+			Error:     "syscall gateway is not configured",
+		}
+	}
+	response := a.gateway.Handle(context.Background(), syscallgw.Request{
+		RequestID: message.RequestID,
+		AgentID:   message.AgentID,
+		TaskID:    message.TaskID,
+		Name:      message.Name,
+		Args:      message.Args,
+	})
+	return worker.Response{
+		Type:      worker.MessageSyscallResult,
+		RequestID: response.RequestID,
+		AgentID:   message.AgentID,
+		TaskID:    message.TaskID,
+		Status:    response.Status,
+		Error:     response.Error,
+		Payload:   response.Payload,
+	}
 }
 
 func (s *Server) monitorHeartbeats() {

@@ -1,9 +1,12 @@
 import { reactive } from 'vue'
 import {
+  getAgents,
   getContextPages,
   getContextStats,
   getTasks,
+  postAgentAction,
   runDemo,
+  type Agent,
   type ContextPage,
   type ContextStats,
   type RuntimeEvent,
@@ -12,6 +15,7 @@ import {
 
 export const runtimeStore = reactive({
   tasks: [] as Task[],
+  agents: [] as Agent[],
   events: [] as RuntimeEvent[],
   contextPages: [] as ContextPage[],
   contextStats: {
@@ -27,9 +31,11 @@ export const runtimeStore = reactive({
 })
 
 let eventSource: EventSource | null = null
+let refreshTimer: number | undefined
 
 export async function refreshTasks() {
   runtimeStore.tasks = await getTasks()
+  runtimeStore.agents = await getAgents()
   await refreshContext()
   if (!runtimeStore.selectedTaskID && runtimeStore.tasks.length > 0) {
     runtimeStore.selectedTaskID = runtimeStore.tasks[0].task_id
@@ -38,6 +44,16 @@ export async function refreshTasks() {
     for (const event of task.events ?? []) {
       addEvent(event)
     }
+  }
+}
+
+export async function runAgentAction(agentID: string, action: 'freeze' | 'unfreeze' | 'kill') {
+  runtimeStore.error = ''
+  try {
+    await postAgentAction(agentID, action)
+    await refreshTasks()
+  } catch (error) {
+    runtimeStore.error = error instanceof Error ? error.message : String(error)
   }
 }
 
@@ -78,9 +94,18 @@ export function connectEvents() {
     'runtime.connected',
     'task.created',
     'agent.created',
+    'agent.registered',
+    'agent.report',
+    'agent.capsule_attached',
+    'agent.heartbeat_lost',
     'agent.state_changed',
     'scheduler.selected',
+    'syscall.started',
     'syscall.finished',
+    'context.page.created',
+    'context.page.reused',
+    'context.page.mounted',
+    'context.materialized',
     'task.completed'
   ]
   for (const type of eventTypes) {
@@ -100,4 +125,23 @@ function addEvent(event: RuntimeEvent) {
   }
   runtimeStore.events.push(event)
   runtimeStore.events.sort((a, b) => a.timestamp - b.timestamp)
+  if (
+    event.type.startsWith('agent.') ||
+    event.type.startsWith('context.') ||
+    event.type.startsWith('syscall.')
+  ) {
+    scheduleRefresh()
+  }
+}
+
+function scheduleRefresh() {
+  if (refreshTimer !== undefined) {
+    return
+  }
+  refreshTimer = window.setTimeout(() => {
+    refreshTimer = undefined
+    void refreshTasks().catch((error) => {
+      runtimeStore.error = error instanceof Error ? error.message : String(error)
+    })
+  }, 250)
 }

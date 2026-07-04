@@ -9,9 +9,18 @@ export interface RuntimeEvent {
 }
 
 export interface Agent {
-  id: string
+  id?: string
+  agent_id?: string
+  task_id?: string
   role: string
   state: string
+  pid?: number
+  cgroup_path?: string
+  capsule_mode?: string
+  memory_current?: number
+  pids_current?: number
+  retry_count?: number
+  last_seen?: number
 }
 
 export interface DAGNode {
@@ -59,6 +68,21 @@ export async function getTasks(): Promise<Task[]> {
     throw new Error(`tasks request failed: ${response.status}`)
   }
   return response.json()
+}
+
+export async function getAgents(): Promise<Agent[]> {
+  const response = await fetch('/api/agents')
+  if (!response.ok) {
+    throw new Error(`agents request failed: ${response.status}`)
+  }
+  return response.json()
+}
+
+export async function postAgentAction(agentID: string, action: 'freeze' | 'unfreeze' | 'kill'): Promise<void> {
+  const response = await fetch(`/api/agents/${encodeURIComponent(agentID)}/${action}`, { method: 'POST' })
+  if (!response.ok) {
+    throw new Error(`agent ${action} failed: ${response.status}`)
+  }
 }
 
 export async function getContextPages(): Promise<ContextPage[]> {

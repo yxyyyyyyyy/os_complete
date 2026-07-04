@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import StatusBadge from '../components/StatusBadge.vue'
-import { selectedTask } from '../stores/runtime'
+import { runAgentAction, runtimeStore } from '../stores/runtime'
+import type { Agent } from '../api/client'
 
-const task = selectedTask
+function agentID(agent: Agent): string {
+  return agent.agent_id ?? agent.id ?? ''
+}
 </script>
 
 <template>
@@ -10,9 +13,11 @@ const task = selectedTask
     <div class="page-heading">
       <div>
         <h1>AVP & Capsule</h1>
-        <p>V1 shows AVP state. V2 adds PID, cgroup, and capsule controls.</p>
+        <p>Agent process state, cgroup capsule evidence, and runtime controls.</p>
       </div>
     </div>
+
+    <div v-if="runtimeStore.error" class="error-line">{{ runtimeStore.error }}</div>
 
     <div class="table-wrap">
       <table>
@@ -21,15 +26,29 @@ const task = selectedTask
             <th>Agent</th>
             <th>Role</th>
             <th>State</th>
+            <th>PID</th>
+            <th>Capsule</th>
+            <th>Memory</th>
+            <th>PIDs</th>
             <th>Retry</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="agent in task()?.agents || []" :key="agent.id">
-            <td>{{ agent.id }}</td>
+          <tr v-for="agent in runtimeStore.agents" :key="agentID(agent)">
+            <td class="mono-cell">{{ agentID(agent) }}</td>
             <td>{{ agent.role }}</td>
             <td><StatusBadge :value="agent.state" /></td>
-            <td>0</td>
+            <td>{{ agent.pid || '-' }}</td>
+            <td class="mono-cell">{{ agent.capsule_mode || '-' }}</td>
+            <td>{{ agent.memory_current ?? 0 }}</td>
+            <td>{{ agent.pids_current ?? 0 }}</td>
+            <td>{{ agent.retry_count ?? 0 }}</td>
+            <td class="action-row">
+              <button class="icon-button" title="Freeze Agent" @click="runAgentAction(agentID(agent), 'freeze')">F</button>
+              <button class="icon-button" title="Unfreeze Agent" @click="runAgentAction(agentID(agent), 'unfreeze')">U</button>
+              <button class="icon-button danger" title="Kill Agent" @click="runAgentAction(agentID(agent), 'kill')">K</button>
+            </td>
           </tr>
         </tbody>
       </table>

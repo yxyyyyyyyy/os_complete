@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"flag"
+	"fmt"
 	"log"
 	"net"
 	"os"
@@ -31,13 +32,37 @@ func main() {
 	defer conn.Close()
 
 	encoder := json.NewEncoder(conn)
+	decoder := json.NewDecoder(conn)
+	pid := os.Getpid()
 	send := func(message worker.Message) {
 		if err := encoder.Encode(message); err != nil {
 			log.Fatalf("send %s: %v", message.Type, err)
 		}
 	}
+	syscallSeq := 0
+	call := func(name string, args map[string]any) worker.Response {
+		syscallSeq++
+		requestID := fmt.Sprintf("%s-syscall-%03d", *agentID, syscallSeq)
+		send(worker.Message{
+			Type:      worker.MessageSyscall,
+			RequestID: requestID,
+			AgentID:   *agentID,
+			Role:      *role,
+			TaskID:    *taskID,
+			PID:       pid,
+			Name:      name,
+			Args:      args,
+		})
+		var response worker.Response
+		if err := decoder.Decode(&response); err != nil {
+			log.Fatalf("decode syscall %s response: %v", name, err)
+		}
+		if response.Status != "OK" {
+			log.Printf("syscall %s status=%s error=%s", name, response.Status, response.Error)
+		}
+		return response
+	}
 
-	pid := os.Getpid()
 	send(worker.Message{
 		Type:    worker.MessageRegister,
 		AgentID: *agentID,
@@ -46,11 +71,25 @@ func main() {
 		PID:     pid,
 	})
 
+	materialized := call("context.materialize", nil)
+	tool := call("tool.exec", map[string]any{
+		"command":    "go",
+		"args":       []any{"version"},
+		"timeout_ms": 2000,
+	})
+	call("context.write_delta", map[string]any{
+		"content": fmt.Sprintf("%s saw %d context bytes and tool status %s.\n", *role, materialized.Payload["bytes"], tool.Status),
+	})
+	call("agent.report", map[string]any{
+		"status": string(avp.StateCompleted),
+		"role":   *role,
+	})
+
 	heartbeat := time.NewTicker(2 * time.Second)
 	defer heartbeat.Stop()
 	reportTimer := time.NewTimer(time.Duration(*workMS) * time.Millisecond)
 	defer reportTimer.Stop()
-	reported := false
+	reported := true
 
 	for {
 		select {
