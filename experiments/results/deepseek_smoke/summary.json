@@ -3,7 +3,7 @@
   "model": "deepseek-v4-flash",
   "fallback": false,
   "evidence_mode": "real-api",
-  "duration_ms": 949,
-  "tokens": 33,
+  "duration_ms": 911,
+  "tokens": 30,
   "status": "passed"
 }

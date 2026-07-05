@@ -19,6 +19,9 @@ real cgroup, real API, mock, degraded, and simulation results.
 - Software-real demo exists:
   `experiments/results/software_real_demo/result.json` and
   `docs/phase_reports/PHASE_20_SOFTWARE_REAL_DEMO.md`.
+- Software-real live openEuler worker/cgroup-backed smoke exists:
+  `experiments/results/software_real_demo/openeuler/`, including
+  `software_real_openeuler_summary.json` and `software_real_capsules.json`.
 - DeepSeek provider exists with environment-only API key loading, fake-server
   tests, explicit mock fallback, and a real smoke summary:
   `experiments/results/deepseek_smoke/summary.json`.
@@ -72,18 +75,20 @@ same demo that exercises Planner -> Coder -> Tester -> Reviewer -> Fixer ->
 Reporter.
 
 The checked-in local result proves the worker/capsule-backed result shape and
-runtime path with `capsule_evidence_mode=test-cgroup-v2`. A live openEuler
-rerun should be used when the final artifact must show
-`capsule_evidence_mode=real-cgroup-v2` and `/sys/fs/cgroup/aort.slice/...`
-paths rather than a local test cgroup root:
+runtime path with `capsule_evidence_mode=test-cgroup-v2`. The live openEuler
+artifact proves the OS-isolated path with six worker-backed Agents:
+
+- `evidence_mode=real-runtime`
+- `capsule_evidence_mode=real-cgroup-v2`
+- `worker_cgroup_backed_agents=6`
+- cgroup paths under `/sys/fs/cgroup/aort.slice/...`
+- `first_test_status=failed`, `second_test_status=passed`
+
+The live script remains:
 
 ```bash
 bash scripts/smoke_software_real_openeuler.sh
 ```
-
-The live script writes `experiments/results/software_real_demo/openeuler/`,
-including `software_real_openeuler_summary.json` and
-`software_real_capsules.json`.
 
 ## DeepSeek Sync
 
@@ -100,8 +105,6 @@ README, reports, or experiment outputs.
 
 ## Remaining Work
 
-- Run `scripts/smoke_software_real_openeuler.sh` on openEuler if the submitted
-  artifact must itself show live `/sys/fs/cgroup/aort.slice/...` paths.
 - Keep the legacy simulation/degraded artifacts labeled as historical
   comparison data only.
 - Future OS depth work remains outside this sync: full eBPF attachment and
