@@ -13,11 +13,12 @@ if [[ "$OUT_DIR" = /* ]]; then
 else
   OUT_ABS="$ROOT_DIR/$OUT_DIR"
 fi
-WORKER_BIN="${WORKER_BIN:-$OUT_ABS/aort-worker}"
+RUN_DIR="${RUN_DIR:-$ROOT_DIR/.cache/software-real-openeuler}"
+WORKER_BIN="${WORKER_BIN:-$RUN_DIR/aort-worker}"
 RUNTIME_CONFIG="${RUNTIME_CONFIG:-$OUT_ABS/openeuler-runtime.yaml}"
-DATA_DIR="${DATA_DIR:-$OUT_ABS/data}"
-SOCKET_PATH="${SOCKET_PATH:-$OUT_ABS/aortd.sock}"
-mkdir -p "$OUT_DIR" "$DATA_DIR" .cache/go-build
+DATA_DIR="${DATA_DIR:-$RUN_DIR/data}"
+SOCKET_PATH="${SOCKET_PATH:-$RUN_DIR/aortd.sock}"
+mkdir -p "$OUT_DIR" "$RUN_DIR" "$DATA_DIR" .cache/go-build
 export GOCACHE="$PWD/.cache/go-build"
 
 if [ "$(stat -fc %T /sys/fs/cgroup 2>/dev/null || true)" != "cgroup2fs" ]; then
