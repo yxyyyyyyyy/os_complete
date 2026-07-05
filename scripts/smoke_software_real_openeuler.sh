@@ -8,7 +8,16 @@ BASE_URL="${BASE_URL:-http://127.0.0.1:8080}"
 CONFIG_PATH="${CONFIG_PATH:-configs/openeuler-dev.yaml}"
 OUT_DIR="${OUT_DIR:-experiments/results/software_real_demo/openeuler}"
 REQUIREMENT="${SOFTWARE_REAL_REQUIREMENT:-实现一个小 Go module，实现字符串工具函数，并运行 go test ./...}"
-mkdir -p "$OUT_DIR" .cache/go-build
+if [[ "$OUT_DIR" = /* ]]; then
+  OUT_ABS="$OUT_DIR"
+else
+  OUT_ABS="$ROOT_DIR/$OUT_DIR"
+fi
+WORKER_BIN="${WORKER_BIN:-$OUT_ABS/aort-worker}"
+RUNTIME_CONFIG="${RUNTIME_CONFIG:-$OUT_ABS/openeuler-runtime.yaml}"
+DATA_DIR="${DATA_DIR:-$OUT_ABS/data}"
+SOCKET_PATH="${SOCKET_PATH:-$OUT_ABS/aortd.sock}"
+mkdir -p "$OUT_DIR" "$DATA_DIR" .cache/go-build
 export GOCACHE="$PWD/.cache/go-build"
 
 if [ "$(stat -fc %T /sys/fs/cgroup 2>/dev/null || true)" != "cgroup2fs" ]; then
@@ -154,13 +163,27 @@ PY
 echo "== go test ./... =="
 go test ./... >"$OUT_DIR/go_test.txt" 2>&1
 
+echo "== build aort-worker =="
+go build -o "$WORKER_BIN" ./cmd/aort-worker >"$OUT_DIR/build_worker.txt" 2>&1
+chmod +x "$WORKER_BIN"
+
+cat >"$RUNTIME_CONFIG" <<YAML
+http_addr: 127.0.0.1:8080
+mode: openeuler
+data_dir: $DATA_DIR
+socket_path: $SOCKET_PATH
+worker_command: $WORKER_BIN
+heartbeat_timeout_ms: 6000
+cgroup_root: /sys/fs/cgroup/aort.slice
+YAML
+
 echo "== start aortd =="
 if command -v setsid >/dev/null 2>&1; then
-  setsid go run ./cmd/aortd --config "$CONFIG_PATH" >"$AORTD_LOG" 2>&1 &
+  setsid go run ./cmd/aortd --config "$RUNTIME_CONFIG" >"$AORTD_LOG" 2>&1 &
   AORTD_PID="$!"
   AORTD_PGID="$AORTD_PID"
 else
-  go run ./cmd/aortd --config "$CONFIG_PATH" >"$AORTD_LOG" 2>&1 &
+  go run ./cmd/aortd --config "$RUNTIME_CONFIG" >"$AORTD_LOG" 2>&1 &
   AORTD_PID="$!"
 fi
 
