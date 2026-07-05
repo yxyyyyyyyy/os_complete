@@ -15,6 +15,8 @@ Endpoints:
 Artifact:
 
 - `experiments/results/software_real_demo/result.json`
+- Live openEuler worker/cgroup artifact directory:
+  `experiments/results/software_real_demo/openeuler/`
 
 ## Runtime Flow
 
@@ -63,6 +65,18 @@ is carried per Agent through `capsule_mode`, `capsule_evidence_mode`, and
 `capsule_evidence_mode=test-cgroup-v2` so they are not confused with
 `/sys/fs/cgroup` evidence. OpenEuler live capsule proof remains labeled
 `real-cgroup-v2` in the openEuler evidence directories.
+
+The live openEuler smoke entrypoint is:
+
+```bash
+bash scripts/smoke_software_real_openeuler.sh
+```
+
+It requires cgroup v2 + root, starts `aortd`, runs
+`POST /api/demo/software-real/run`, and validates that all six software-real
+Agents have real worker `pid`, `capsule_mode=real`,
+`capsule_evidence_mode=real-cgroup-v2`, and cgroup paths under
+`/sys/fs/cgroup/aort.slice/...`.
 
 ## Go Test Recovery
 

@@ -171,6 +171,7 @@ bash scripts/check_openeuler_env.sh
 bash scripts/smoke_openeuler.sh
 bash scripts/smoke_cgroupv2_multi_agent.sh
 bash scripts/smoke_cgroupv2_limits.sh
+bash scripts/smoke_software_real_openeuler.sh
 ```
 
 Smoke outputs are written to:
@@ -178,6 +179,7 @@ Smoke outputs are written to:
 - `experiments/results/openeuler_smoke/`
 - `experiments/results/openeuler_cgroupv2_multi/`
 - `experiments/results/openeuler_cgroupv2_limits/`
+- `experiments/results/software_real_demo/openeuler/`
 
 ## Current openEuler Evidence Status
 

@@ -75,7 +75,15 @@ The checked-in local result proves the worker/capsule-backed result shape and
 runtime path with `capsule_evidence_mode=test-cgroup-v2`. A live openEuler
 rerun should be used when the final artifact must show
 `capsule_evidence_mode=real-cgroup-v2` and `/sys/fs/cgroup/aort.slice/...`
-paths rather than a local test cgroup root.
+paths rather than a local test cgroup root:
+
+```bash
+bash scripts/smoke_software_real_openeuler.sh
+```
+
+The live script writes `experiments/results/software_real_demo/openeuler/`,
+including `software_real_openeuler_summary.json` and
+`software_real_capsules.json`.
 
 ## DeepSeek Sync
 
@@ -92,9 +100,8 @@ README, reports, or experiment outputs.
 
 ## Remaining Work
 
-- Refresh `experiments/results/software_real_demo/result.json` from a live
-  openEuler worker/cgroup run if the submitted artifact must itself show
-  `/sys/fs/cgroup/aort.slice/...` paths.
+- Run `scripts/smoke_software_real_openeuler.sh` on openEuler if the submitted
+  artifact must itself show live `/sys/fs/cgroup/aort.slice/...` paths.
 - Keep the legacy simulation/degraded artifacts labeled as historical
   comparison data only.
 - Future OS depth work remains outside this sync: full eBPF attachment and
