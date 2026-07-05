@@ -43,7 +43,7 @@ fi
 if [ -f /sys/kernel/btf/vmlinux ]; then
   echo "kernel BTF: available"
 else
-  echo "WARN: /sys/kernel/btf/vmlinux not found; kernel observer will use degraded-proxy mode"
+  echo "WARN: /sys/kernel/btf/vmlinux not found; kernel observer will use degraded mode with syscall-gateway-proxy probe"
 fi
 
 if [ -d /sys/fs/bpf ]; then

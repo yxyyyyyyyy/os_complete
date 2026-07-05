@@ -1,38 +1,41 @@
 
 == OS release ==
-[FAIL] /etc/os-release not found
+NAME="openEuler"
+VERSION="24.03 (LTS)"
+ID="openEuler"
+VERSION_ID="24.03"
+PRETTY_NAME="openEuler 24.03 (LTS)"
+ANSI_COLOR="0;31"
+[PASS] /etc/os-release readable
 
 == Kernel ==
-Darwin yinxinyudeMacBook-Air.local 25.5.0 Darwin Kernel Version 25.5.0: Mon Apr 27 20:41:26 PDT 2026; root:xnu-12377.121.6~2/RELEASE_ARM64_T8132 arm64
+Linux ecs-8937 6.6.0-112.0.0.104.oe2403.x86_64 #1 SMP Wed Oct 15 16:10:04 CST 2025 x86_64 x86_64 x86_64 GNU/Linux
 [PASS] uname available
 
 == User ==
-uid=501(yxy) gid=20(staff) groups=20(staff),12(everyone),61(localaccounts),79(_appserverusr),80(admin),81(_appserveradm),703(com.apple.sharepoint.group.3),33(_appstore),98(_lpadmin),100(_lpoperator),204(_developer),250(_analyticsusers),395(com.apple.access_ftp),398(com.apple.access_screensharing),399(com.apple.access_ssh),400(com.apple.access_remote_ae),701(com.apple.sharepoint.group.1),702(com.apple.sharepoint.group.2)
-[FAIL] not running as root; cgroup write tests may degrade
+uid=0(root) gid=0(root) groups=0(root)
+[PASS] running as root
 
 == cgroup v2 ==
-stat -fc %T /sys/fs/cgroup: <unavailable>
-[FAIL] expected cgroup2fs
-[FAIL] /sys/fs/cgroup is not writable
-/sys/fs/cgroup/aort.slice missing; attempting mkdir -p...
-[FAIL] failed to create /sys/fs/cgroup/aort.slice
+stat -fc %T /sys/fs/cgroup: cgroup2fs
+[PASS] cgroup v2 filesystem is cgroup2fs
+[PASS] /sys/fs/cgroup is writable
+[PASS] /sys/fs/cgroup/aort.slice exists
 
 == overlayfs ==
-[WARN] /proc/filesystems not found
+[WARN] overlayfs not listed in /proc/filesystems
 
 == PSI ==
 [WARN] /proc/pressure not available
 
 == Go ==
-go version go1.25.3 darwin/arm64
+go version go1.22.12 linux/amd64
 [PASS] go available
 
 == Node/npm ==
-v25.8.2
-[PASS] node available
-11.11.1
-[PASS] npm available
+[WARN] node not found; frontend smoke is optional
+[WARN] npm not found; frontend smoke is optional
 
 == Summary ==
-failures=5 warnings=2
+failures=0 warnings=4
 env_check_json=experiments/results/openeuler_smoke/env_check.json

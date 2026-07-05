@@ -2,6 +2,7 @@ package syscallgw
 
 import (
 	"context"
+	"path/filepath"
 	"strings"
 	"testing"
 
@@ -111,6 +112,9 @@ func TestGatewayToolExecReportsKernelExecObservation(t *testing.T) {
 	}
 	if observed.PID == 0 || observed.Workspace == "" || observed.Status != StatusOK {
 		t.Fatalf("observed = %#v", observed)
+	}
+	if filepath.Base(observed.Workspace) != "merged" || filepath.Base(filepath.Dir(observed.Workspace)) != "agent-1" {
+		t.Fatalf("tool exec should run in agent merged workspace, got %q", observed.Workspace)
 	}
 }
 

@@ -79,7 +79,7 @@ Expected:
 - `/api/demo/run` starts Planner, Coder, and Tester worker processes.
 - `/api/agents` returns non-zero `pid` values.
 - `/api/syscalls` contains `context.materialize`, `llm.call`, `ipc.publish`, `ipc.poll`, `agent.spawn`, `tool.exec`, `context.write_delta`, and `agent.report`.
-- `/api/kernel/status` returns `mode=degraded-proxy` unless a future true eBPF attachment is enabled.
+- `/api/kernel/status` returns `mode=degraded` with probe `syscall-gateway-proxy` unless a future true eBPF attachment is enabled.
 - `/api/kernel/events` contains `kernel.exec` records after `tool.exec` runs.
 - `/api/pressure/status` returns Linux PSI metrics or degraded mode when PSI is unavailable.
 - `/api/ipc/metrics` reports positive `avoided_copy_bytes`.
@@ -152,7 +152,7 @@ curl -N --max-time 2 http://127.0.0.1:8080/api/events
 
 Expected:
 
-- `/api/kernel/status` reports `probe=syscall-gateway-proxy` and `mode=degraded-proxy` on macOS/non-root environments.
+- `/api/kernel/status` reports `probe=syscall-gateway-proxy` and `mode=degraded` on macOS/non-root environments.
 - `/api/kernel/events` contains `kernel.exec` with command, args, PID, workspace, status, mode, and probe.
 - SSE contains `kernel.observer_disabled` and `kernel.exec`.
 - Dashboard Timeline shows Kernel Mode, Probe, Kernel Events, and BTF metrics.

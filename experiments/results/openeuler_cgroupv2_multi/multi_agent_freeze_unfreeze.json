@@ -1,6 +1,6 @@
 {
   "evidence_mode": "real-cgroup-v2",
-  "agent_id": "task-1783192294506034713-coder",
+  "agent_id": "task-1783267536394502197-planner",
   "freeze_status": "200",
   "unfreeze_status": "200",
   "success": true

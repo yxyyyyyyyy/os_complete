@@ -38,11 +38,11 @@ func TestManagerRollsBackAgentWorkspaceWithoutTouchingBaseSnapshot(t *testing.T)
 	if err := os.WriteFile(filepath.Join(runtime.WorkspacePath, "src/service.go"), []byte("corrupted\n"), 0o644); err != nil {
 		t.Fatalf("write corruption: %v", err)
 	}
-	if _, err := removeChildren(runtime.WorkspacePath); err != nil {
+	if _, err := removeChildren(manager.root, runtime.WorkspacePath); err != nil {
 		t.Fatalf("remove workspace children: %v", err)
 	}
 
-	result, err := manager.Rollback("task-1", "agent-1")
+	result, err := manager.Rollback("agent-1")
 	if err != nil {
 		t.Fatalf("Rollback: %v", err)
 	}

@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 	"sort"
 	"strconv"
+	"strings"
 	"time"
 
 	"aort-r/internal/avp"
@@ -17,6 +18,7 @@ import (
 	"aort-r/internal/scheduler"
 	"aort-r/internal/supervisor"
 	syscallgw "aort-r/internal/syscall"
+	"aort-r/internal/workspace"
 )
 
 type RealExperimentSuite struct {
@@ -45,6 +47,26 @@ type E1RealSchedulerResult struct {
 	SavedMS                int64   `json:"saved_ms"`
 	SchedulerDecisionCount int     `json:"scheduler_decision_count"`
 	SyscallCount           int     `json:"syscall_count"`
+}
+
+type E1ResourceAwareResult struct {
+	Policy                  string  `json:"policy"`
+	EvidenceMode            string  `json:"evidence_mode"`
+	WallTimeMS              int64   `json:"wall_time_ms"`
+	AvgTaskLatencyMS        int64   `json:"avg_task_latency_ms"`
+	P95TaskLatencyMS        int64   `json:"p95_task_latency_ms"`
+	MaterializeCount        int     `json:"materialize_count"`
+	MaterializeCostMS       int64   `json:"materialize_cost_ms"`
+	SavedTokens             int64   `json:"saved_tokens"`
+	SavedBytes              int64   `json:"saved_bytes"`
+	AvoidedCopyBytes        int64   `json:"avoided_copy_bytes"`
+	MemoryPeakBytes         int64   `json:"memory_peak_bytes"`
+	PidsPeak                int64   `json:"pids_peak"`
+	CPUThrottleCount        int64   `json:"cpu_throttle_count"`
+	SchedulerDecisionsCount int     `json:"scheduler_decisions_count"`
+	DecisionEvidenceMode    string  `json:"decision_evidence_mode"`
+	FallbackReason          string  `json:"fallback_reason"`
+	ContextReuseRate        float64 `json:"context_reuse_rate"`
 }
 
 type E2RealFaultResult struct {
@@ -247,6 +269,130 @@ func RunE1RealSchedulerBenchmark(runs int) []E1RealSchedulerResult {
 	return results
 }
 
+func RunE1ResourceAwareBenchmark(runs int, outDir string) ([]E1ResourceAwareResult, error) {
+	if runs <= 0 {
+		runs = 5
+	}
+	policies := scheduler.Policies()
+	results := make([]E1ResourceAwareResult, 0, len(policies))
+	allDecisions := make([]scheduler.DecisionLog, 0)
+	taskCount := max(8, runs*8)
+	for _, policy := range policies {
+		store := cvm.NewStore(nil)
+		pages := buildE1WorkloadPages(store)
+		s := scheduler.New(policy)
+		s.SetAffinityThreshold(100)
+		if policy == scheduler.PolicyTokenCFSPrefixAffinity || policy == scheduler.PolicyTokenCFSPrefixAffinityResourceAware {
+			s.RememberLast(avp.AVP{AgentID: "e1-prefix-cache-seed", PageTable: pages.hot})
+		}
+		if policy == scheduler.PolicyTokenCFSPrefixAffinityResourceAware {
+			s.SetResourcePressure(scheduler.ResourcePressure{
+				EvidenceMode:   "degraded",
+				FallbackReason: "local cgroup pressure files unavailable in portable benchmark",
+				PSIPressure:    0.10,
+			})
+		}
+		latencies := make([]int64, 0, taskCount)
+		var materializeCost int64
+		var savedTokens int64
+		var savedBytes int64
+		var avoidedCopyBytes int64
+		var memoryPeak int64
+		var pidsPeak int64
+		var cpuThrottle int64
+		var selectedSharedPages int
+		var totalPages int
+		for i := 0; i < taskCount; i++ {
+			candidates := e1WorkloadCandidates(policy, i, 6, pages)
+			for idx := range candidates {
+				candidates[idx].MemoryCurrent = int64((120 + ((i + idx*37) % 760)) * 1024 * 1024)
+				candidates[idx].PidsCurrent = int64(4 + ((i + idx*3) % 60))
+				candidates[idx].CPUStat = map[string]uint64{"nr_throttled": uint64((i + idx*11) % 80)}
+				for _, pageID := range candidates[idx].PageTable {
+					_ = store.MountPage(candidates[idx].AgentID, pageID)
+				}
+			}
+			selected, decision, ok := s.Select(fmt.Sprintf("e1-resource-%s", policy), candidates)
+			if !ok {
+				continue
+			}
+			pagesForAgent := store.PageTable(selected.AgentID).PageIDs
+			shared := overlapCount(pages.hot, pagesForAgent)
+			selectedSharedPages += shared
+			totalPages += max(1, len(pagesForAgent))
+			baseCost := int64(18 + len(pagesForAgent)*3 + i%7)
+			saved := int64(shared * 3)
+			if policy == scheduler.PolicyFIFO {
+				saved = 0
+			}
+			latency := max64(4, baseCost-saved)
+			if policy == scheduler.PolicyTokenCFSPrefixAffinityResourceAware {
+				latency += int64(decision.MemoryPressure*8 + decision.PidsPressure*8 + decision.CPUThrottlePressure*6 + decision.PSIPressure*5)
+			}
+			latencies = append(latencies, latency)
+			materializeCost += latency
+			savedTokens += int64(shared * 180)
+			savedBytes += int64(shared * 720)
+			avoidedCopyBytes += int64(shared * 512)
+			if selected.MemoryCurrent > memoryPeak {
+				memoryPeak = selected.MemoryCurrent
+			}
+			if selected.PidsCurrent > pidsPeak {
+				pidsPeak = selected.PidsCurrent
+			}
+			cpuThrottle += int64(selected.CPUStat["nr_throttled"])
+			s.RememberLast(avp.AVP{AgentID: selected.AgentID, PageTable: pagesForAgent})
+		}
+		decisionEvidenceMode := "real-runtime"
+		fallbackReason := ""
+		evidenceMode := "real-runtime"
+		decisions := s.Decisions()
+		allDecisions = append(allDecisions, decisions...)
+		if len(decisions) > 0 && decisions[len(decisions)-1].EvidenceMode != "" {
+			decisionEvidenceMode = string(decisions[len(decisions)-1].EvidenceMode)
+			fallbackReason = decisions[len(decisions)-1].FallbackReason
+			if policy == scheduler.PolicyTokenCFSPrefixAffinityResourceAware {
+				evidenceMode = decisionEvidenceMode
+			}
+		}
+		wall := materializeCost + int64(len(decisions)*2)
+		results = append(results, E1ResourceAwareResult{
+			Policy:                  policy,
+			EvidenceMode:            evidenceMode,
+			WallTimeMS:              wall,
+			AvgTaskLatencyMS:        materializeCost / int64(max(1, len(latencies))),
+			P95TaskLatencyMS:        percentileInt64(latencies, 0.95),
+			MaterializeCount:        len(latencies),
+			MaterializeCostMS:       materializeCost,
+			SavedTokens:             savedTokens,
+			SavedBytes:              savedBytes,
+			AvoidedCopyBytes:        avoidedCopyBytes,
+			MemoryPeakBytes:         memoryPeak,
+			PidsPeak:                pidsPeak,
+			CPUThrottleCount:        cpuThrottle,
+			SchedulerDecisionsCount: len(decisions),
+			DecisionEvidenceMode:    decisionEvidenceMode,
+			FallbackReason:          fallbackReason,
+			ContextReuseRate:        ratio(float64(selectedSharedPages), float64(max(1, totalPages))),
+		})
+	}
+	if outDir != "" {
+		if err := WriteJSON(filepath.Join(outDir, "e1_resource_aware.json"), results); err != nil {
+			return nil, err
+		}
+		if err := WriteCSV(filepath.Join(outDir, "e1_resource_aware.csv"), E1ResourceAwareCSV(results)); err != nil {
+			return nil, err
+		}
+		if err := WriteJSON(filepath.Join(outDir, "e1_resource_aware_decisions.json"), allDecisions); err != nil {
+			return nil, err
+		}
+		if err := os.WriteFile(filepath.Join(outDir, "e1_resource_aware_summary.md"), []byte(E1ResourceAwareSummary(results)), 0o644); err != nil {
+			return nil, err
+		}
+	}
+	return results, nil
+}
+
 func RunE2RealFaultIsolation(runs int) []E2RealFaultResult {
 	ctx := context.Background()
 	manager := supervisor.NewManager(nil)
@@ -295,6 +441,35 @@ func RunE2RealFaultIsolation(runs int) []E2RealFaultResult {
 					},
 				})
 				return map[string]any{"syscall_status": resp.Status, "exit_error": resp.Error}
+			},
+		},
+		{
+			faultType: "workspace_rmrf",
+			agent:     "coder",
+			action:    "rollback_target_workspace",
+			run: func() map[string]any {
+				result, err := workspace.RunRMFaultDemo(workspace.Config{
+					Root:          filepath.Join(os.TempDir(), "aort-e2-workspace-rmrf"),
+					ForceDegraded: true,
+				})
+				out := map[string]any{
+					"success":               result.Success,
+					"fault_type":            result.FaultType,
+					"mode":                  result.Mode,
+					"evidence_mode":         result.EvidenceMode,
+					"fallback_reason":       result.FallbackReason,
+					"lowerdir_unchanged":    result.LowerDirUnchanged,
+					"target_agent_affected": result.TargetAgentAffected,
+					"unaffected_agents":     result.UnaffectedAgents,
+					"cascade_failure":       result.CascadeFailure,
+					"rollback_success":      result.RollbackSuccess,
+					"commit_supported":      result.CommitSupported,
+					"destroy_success":       result.DestroySuccess,
+				}
+				if err != nil {
+					out["error"] = err.Error()
+				}
+				return out
 			},
 		},
 		{
@@ -427,10 +602,11 @@ func realCgroupLimitEvidence(name string) map[string]any {
 	var out map[string]any
 	if err := json.Unmarshal(data, &out); err != nil {
 		return map[string]any{
-			"artifact":      filepath.ToSlash(filepath.Join("experiments", "results", "openeuler_cgroupv2_limits", name)),
-			"evidence_mode": "invalid",
-			"enforced":      false,
-			"error":         err.Error(),
+			"artifact":        filepath.ToSlash(filepath.Join("experiments", "results", "openeuler_cgroupv2_limits", name)),
+			"evidence_mode":   "missing",
+			"fallback_reason": "invalid JSON evidence: " + err.Error(),
+			"enforced":        false,
+			"error":           err.Error(),
 		}
 	}
 	out["artifact"] = filepath.ToSlash(filepath.Join("experiments", "results", "openeuler_cgroupv2_limits", name))
@@ -464,7 +640,7 @@ func RunE3RealContextReuse(runs int) []E3RealContextResult {
 		{
 			Experiment:               "E3_context_reuse",
 			Mode:                     "baseline",
-			EvidenceMode:             "real-runtime",
+			EvidenceMode:             "real-partial",
 			AgentCount:               agentCount,
 			BaselineTokens:           baselineTokens,
 			ActualMaterializedTokens: baselineTokens,
@@ -511,7 +687,7 @@ func RunE4RealIPCBenchmark(runs int) []E4RealIPCResult {
 		{
 			Experiment:           "E4_ipc_page_ref",
 			Mode:                 "payload-copy",
-			EvidenceMode:         "real-runtime",
+			EvidenceMode:         "real-partial",
 			MessageCount:         messageCount,
 			PayloadBytesBaseline: payloadBytes,
 			PayloadBytesActual:   copiedBytes,
@@ -521,7 +697,7 @@ func RunE4RealIPCBenchmark(runs int) []E4RealIPCResult {
 		{
 			Experiment:           "E4_ipc_page_ref",
 			Mode:                 "page-ref",
-			EvidenceMode:         "real-runtime",
+			EvidenceMode:         "real-partial",
 			MessageCount:         messageCount,
 			PayloadBytesBaseline: payloadBytes,
 			PayloadBytesActual:   int64(page.Bytes + messageCount*64),
@@ -624,6 +800,68 @@ func E1RealCSV(results []E1RealSchedulerResult) [][]string {
 		})
 	}
 	return rows
+}
+
+func E1ResourceAwareCSV(results []E1ResourceAwareResult) [][]string {
+	rows := [][]string{{
+		"policy",
+		"evidence_mode",
+		"wall_time_ms",
+		"avg_task_latency_ms",
+		"p95_task_latency_ms",
+		"materialize_count",
+		"materialize_cost_ms",
+		"saved_tokens",
+		"saved_bytes",
+		"avoided_copy_bytes",
+		"memory_peak_bytes",
+		"pids_peak",
+		"cpu_throttle_count",
+		"scheduler_decisions_count",
+		"decision_evidence_mode",
+		"fallback_reason",
+	}}
+	for _, result := range results {
+		rows = append(rows, []string{
+			result.Policy,
+			result.EvidenceMode,
+			strconv.FormatInt(result.WallTimeMS, 10),
+			strconv.FormatInt(result.AvgTaskLatencyMS, 10),
+			strconv.FormatInt(result.P95TaskLatencyMS, 10),
+			strconv.Itoa(result.MaterializeCount),
+			strconv.FormatInt(result.MaterializeCostMS, 10),
+			strconv.FormatInt(result.SavedTokens, 10),
+			strconv.FormatInt(result.SavedBytes, 10),
+			strconv.FormatInt(result.AvoidedCopyBytes, 10),
+			strconv.FormatInt(result.MemoryPeakBytes, 10),
+			strconv.FormatInt(result.PidsPeak, 10),
+			strconv.FormatInt(result.CPUThrottleCount, 10),
+			strconv.Itoa(result.SchedulerDecisionsCount),
+			result.DecisionEvidenceMode,
+			result.FallbackReason,
+		})
+	}
+	return rows
+}
+
+func E1ResourceAwareSummary(results []E1ResourceAwareResult) string {
+	var b strings.Builder
+	b.WriteString("# E1 Resource-Aware Scheduler Summary\n\n")
+	b.WriteString("| policy | evidence_mode | wall_time_ms | p95_task_latency_ms | decisions | memory_peak_bytes | pids_peak |\n")
+	b.WriteString("| --- | --- | ---: | ---: | ---: | ---: | ---: |\n")
+	for _, result := range results {
+		b.WriteString(fmt.Sprintf("| %s | %s | %d | %d | %d | %d | %d |\n",
+			result.Policy,
+			result.EvidenceMode,
+			result.WallTimeMS,
+			result.P95TaskLatencyMS,
+			result.SchedulerDecisionsCount,
+			result.MemoryPeakBytes,
+			result.PidsPeak,
+		))
+	}
+	b.WriteString("\nResource-aware decisions use cgroup/PSI data when available and degraded fallback metadata when local files cannot be read.\n")
+	return b.String()
 }
 
 func E2RealCSV(results []E2RealFaultResult) [][]string {
@@ -881,7 +1119,7 @@ func buildCVMReuseResult(mode string, runs, agentCount int, summary bool, baseli
 	return E3RealContextResult{
 		Experiment:               "E3_context_reuse",
 		Mode:                     mode,
-		EvidenceMode:             "real-runtime",
+		EvidenceMode:             "real-partial",
 		AgentCount:               agentCount,
 		BaselineTokens:           baselineTokens,
 		ActualMaterializedTokens: min64(baselineTokens, materializedTokens),

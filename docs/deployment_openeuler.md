@@ -143,7 +143,7 @@ Outputs:
 
 - Workspace rollback is implemented in degraded-copy mode and proves that an Agent workspace can be destroyed and restored from a base snapshot without touching the base. Real overlayfs mount/commit is the next openEuler-root enhancement.
 - Checkpoint recovery is lightweight in this iteration: AVP state, scheduler vruntime, and CVM page references are restored into the runtime index; durable CVM page contents and overlay upper-layer snapshots are the next enhancement.
-- Kernel observer currently uses `degraded-proxy` mode: it records exec evidence from the syscall gateway and labels the probe as `syscall-gateway-proxy`. True `sched_process_exec` eBPF attachment is the next openEuler-root enhancement.
+- Kernel observer currently uses `degraded` mode and records exec evidence from the syscall gateway with probe label `syscall-gateway-proxy`. True `sched_process_exec` eBPF attachment is the next openEuler-root enhancement.
 - DeepSeek is implemented by `internal/llm/deepseek_provider.go` behind the
   `llm.Router` interface, with credentials read only from environment
   variables and mock fallback. The llama.cpp local provider path remains a

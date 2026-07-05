@@ -3,6 +3,8 @@ package ipc
 import (
 	"sync"
 	"time"
+
+	"aort-r/internal/evidence"
 )
 
 type PublishRequest struct {
@@ -23,11 +25,12 @@ type Message struct {
 }
 
 type Metric struct {
-	Topic             string `json:"topic"`
-	TotalMessages     int    `json:"total_messages"`
-	DeliveredMessages int    `json:"delivered_messages"`
-	TopicDepth        int    `json:"topic_depth"`
-	AvoidedCopyBytes  int    `json:"avoided_copy_bytes"`
+	EvidenceMode      evidence.Mode `json:"evidence_mode"`
+	Topic             string        `json:"topic"`
+	TotalMessages     int           `json:"total_messages"`
+	DeliveredMessages int           `json:"delivered_messages"`
+	TopicDepth        int           `json:"topic_depth"`
+	AvoidedCopyBytes  int           `json:"avoided_copy_bytes"`
 }
 
 type Blackboard struct {
@@ -89,6 +92,7 @@ func (b *Blackboard) Metrics() Metric {
 	b.mu.RLock()
 	defer b.mu.RUnlock()
 	return Metric{
+		EvidenceMode:     evidence.ModeRealPartial,
 		TotalMessages:    b.total,
 		TopicDepth:       b.total,
 		AvoidedCopyBytes: b.avoidedCopy,
@@ -107,6 +111,7 @@ func (b *Blackboard) Topics() map[string][]Message {
 
 func (b *Blackboard) metricLocked(topic string, delivered, avoided int) Metric {
 	return Metric{
+		EvidenceMode:      evidence.ModeRealPartial,
 		Topic:             topic,
 		TotalMessages:     b.total,
 		DeliveredMessages: delivered,

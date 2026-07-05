@@ -15,7 +15,7 @@ func TestKernelAPIsExposeObserverStatusAndExecEvents(t *testing.T) {
 	statusReq := httptest.NewRequest(http.MethodGet, "/api/kernel/status", nil)
 	statusRec := httptest.NewRecorder()
 	srv.ServeHTTP(statusRec, statusReq)
-	if statusRec.Code != http.StatusOK || !strings.Contains(statusRec.Body.String(), "degraded-proxy") {
+	if statusRec.Code != http.StatusOK || !strings.Contains(statusRec.Body.String(), `"mode":"degraded"`) {
 		t.Fatalf("kernel status=%d body=%s", statusRec.Code, statusRec.Body.String())
 	}
 

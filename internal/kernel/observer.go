@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	ModeDegradedProxy        = "degraded-proxy"
+	ModeDegraded             = "degraded"
 	ProbeSyscallGatewayProxy = "syscall-gateway-proxy"
 )
 
@@ -81,7 +81,7 @@ func NewObserver(cfg Config) *Observer {
 	return &Observer{
 		cfg: cfg,
 		status: Status{
-			Mode:  ModeDegradedProxy,
+			Mode:  ModeDegraded,
 			Probe: ProbeSyscallGatewayProxy,
 		},
 	}
@@ -105,7 +105,7 @@ func (o *Observer) Start(ctx context.Context) error {
 	}
 	o.mu.Lock()
 	o.status.Enabled = false
-	o.status.Mode = ModeDegradedProxy
+	o.status.Mode = ModeDegraded
 	o.status.Probe = ProbeSyscallGatewayProxy
 	o.status.Reason = reason
 	o.status.BTFAvailable = btf
@@ -143,7 +143,7 @@ func (o *Observer) ObserveExec(observation ExecObservation) events.Event {
 		CgroupPath: observation.CgroupPath,
 		Workspace:  observation.Workspace,
 		Status:     observation.Status,
-		Mode:       ModeDegradedProxy,
+		Mode:       ModeDegraded,
 		Probe:      ProbeSyscallGatewayProxy,
 		Timestamp:  now,
 	}

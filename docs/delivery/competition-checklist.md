@@ -31,7 +31,7 @@
 | [x] | `ipc.publish` and `ipc.poll` transfer CVM page IDs and track avoided copy bytes. | `experiments/results/openeuler_smoke/syscalls.json`, `experiments/results/e3-context.json` |
 | [x] | `agent.spawn` records Reviewer-triggered Fixer creation through the syscall gateway. | `experiments/results/openeuler_smoke/syscalls.json` |
 | [x] | Timeline sees `syscall.started` and `syscall.finished`. | `experiments/results/openeuler_smoke/aortd.log` |
-| [x] | Timeline sees `kernel.observer_disabled` and `kernel.exec` in honest degraded-proxy mode. | `experiments/results/openeuler_smoke/aortd.log` |
+| [x] | Timeline sees `kernel.observer_disabled` and `kernel.exec` in honest degraded mode with `syscall-gateway-proxy` probe label. | `experiments/results/openeuler_smoke/aortd.log` |
 | [x] | Timeline sees `ipc.published`, `ipc.polled`, `llm.called`, `agent.spawn.requested`, and `agent.spawned`. | `experiments/results/openeuler_smoke/aortd.log` |
 | [x] | Scheduler supports FIFO, token-CFS, and token-CFS-prefix-affinity. | `experiments/results/e1-scheduler.json` |
 | [x] | Pressure monitor exposes PSI/degraded status through `GET /api/pressure/status`. | `experiments/results/openeuler_smoke/env_check.txt` and `/api/pressure/status` manual check |
@@ -60,7 +60,7 @@
 | [x] | IPC Blackboard API: `GET /api/ipc/metrics`, `GET /api/ipc/topics`. | `docs/testing/manual-test-guide.md` |
 | [x] | LLM Router abstraction with mock provider and llama.cpp timing parser. | `internal/llm/router.go` |
 | [x] | Kernel Observer API: `GET /api/kernel/status`, `GET /api/kernel/events`. | `docs/testing/manual-test-guide.md` |
-| [x] | Kernel exec evidence uses explicit `degraded-proxy` mode and `syscall-gateway-proxy` probe when true eBPF is unavailable. | `docs/phase_reports/PHASE_15_OPEN_EULER_SMOKE_REPORT.md` |
+| [x] | Kernel exec evidence uses explicit `degraded` mode and `syscall-gateway-proxy` probe when true eBPF is unavailable. | `docs/phase_reports/PHASE_15_OPEN_EULER_SMOKE_REPORT.md` |
 | [x] | Checkpoint evidence API and `checkpoint.created` timeline event. | `docs/testing/manual-test-guide.md` |
 | [x] | Lightweight checkpoint startup recovery with `checkpoint.recovered` and `runtime.recovered` timeline events. | `docs/testing/manual-test-guide.md` |
 | [x] | Degraded-copy workspace rollback with `workspace.created`, `workspace.rmrf`, and `workspace.rollback` events. | `docs/testing/manual-test-guide.md` |

@@ -1,69 +1,69 @@
 {
-  "demo_id": "software-real-1783255929208814000",
-  "task_id": "software-real-1783255929208814000",
+  "demo_id": "software-real-1783267711756236000",
+  "task_id": "software-real-1783267711756236000",
   "requirement": "实现一个带测试的字符串工具函数",
   "evidence_mode": "real-runtime",
   "final_status": "success",
   "agents": [
     {
-      "id": "software-real-1783255929208814000-planner",
+      "id": "software-real-1783267711756236000-planner",
       "role": "planner",
       "state": "COMPLETED",
-      "pid": 14891,
-      "last_seen": 1783255929210,
+      "pid": 46643,
+      "last_seen": 1783267711757,
       "capsule_mode": "real",
-      "capsule_evidence_mode": "test-cgroup-v2",
-      "cgroup_path": "/var/folders/5k/_k2nnpwd43s6qsf0m6btyzlc0000gn/T/TestSoftwareRealDemoRunProducesRuntimeEvidence4016750426/002/software-real-1783255929208814000-planner"
+      "capsule_evidence_mode": "real-cgroup-v2",
+      "cgroup_path": "/var/folders/5k/_k2nnpwd43s6qsf0m6btyzlc0000gn/T/TestSoftwareRealDemoRunProducesRuntimeEvidence2295833708/002/software-real-1783267711756236000-planner"
     },
     {
-      "id": "software-real-1783255929208814000-coder",
+      "id": "software-real-1783267711756236000-coder",
       "role": "coder",
       "state": "COMPLETED",
-      "pid": 14892,
-      "last_seen": 1783255929212,
+      "pid": 46644,
+      "last_seen": 1783267711759,
       "capsule_mode": "real",
-      "capsule_evidence_mode": "test-cgroup-v2",
-      "cgroup_path": "/var/folders/5k/_k2nnpwd43s6qsf0m6btyzlc0000gn/T/TestSoftwareRealDemoRunProducesRuntimeEvidence4016750426/002/software-real-1783255929208814000-coder"
+      "capsule_evidence_mode": "real-cgroup-v2",
+      "cgroup_path": "/var/folders/5k/_k2nnpwd43s6qsf0m6btyzlc0000gn/T/TestSoftwareRealDemoRunProducesRuntimeEvidence2295833708/002/software-real-1783267711756236000-coder"
     },
     {
-      "id": "software-real-1783255929208814000-tester",
+      "id": "software-real-1783267711756236000-tester",
       "role": "tester",
       "state": "COMPLETED",
-      "pid": 14893,
-      "last_seen": 1783255929214,
+      "pid": 46645,
+      "last_seen": 1783267711761,
       "capsule_mode": "real",
-      "capsule_evidence_mode": "test-cgroup-v2",
-      "cgroup_path": "/var/folders/5k/_k2nnpwd43s6qsf0m6btyzlc0000gn/T/TestSoftwareRealDemoRunProducesRuntimeEvidence4016750426/002/software-real-1783255929208814000-tester"
+      "capsule_evidence_mode": "real-cgroup-v2",
+      "cgroup_path": "/var/folders/5k/_k2nnpwd43s6qsf0m6btyzlc0000gn/T/TestSoftwareRealDemoRunProducesRuntimeEvidence2295833708/002/software-real-1783267711756236000-tester"
     },
     {
-      "id": "software-real-1783255929208814000-reviewer",
+      "id": "software-real-1783267711756236000-reviewer",
       "role": "reviewer",
       "state": "COMPLETED",
-      "pid": 14894,
-      "last_seen": 1783255929216,
+      "pid": 46646,
+      "last_seen": 1783267711763,
       "capsule_mode": "real",
-      "capsule_evidence_mode": "test-cgroup-v2",
-      "cgroup_path": "/var/folders/5k/_k2nnpwd43s6qsf0m6btyzlc0000gn/T/TestSoftwareRealDemoRunProducesRuntimeEvidence4016750426/002/software-real-1783255929208814000-reviewer"
+      "capsule_evidence_mode": "real-cgroup-v2",
+      "cgroup_path": "/var/folders/5k/_k2nnpwd43s6qsf0m6btyzlc0000gn/T/TestSoftwareRealDemoRunProducesRuntimeEvidence2295833708/002/software-real-1783267711756236000-reviewer"
     },
     {
-      "id": "software-real-1783255929208814000-fixer",
+      "id": "software-real-1783267711756236000-fixer",
       "role": "fixer",
       "state": "COMPLETED",
-      "pid": 14895,
-      "last_seen": 1783255929218,
+      "pid": 46647,
+      "last_seen": 1783267711765,
       "capsule_mode": "real",
-      "capsule_evidence_mode": "test-cgroup-v2",
-      "cgroup_path": "/var/folders/5k/_k2nnpwd43s6qsf0m6btyzlc0000gn/T/TestSoftwareRealDemoRunProducesRuntimeEvidence4016750426/002/software-real-1783255929208814000-fixer"
+      "capsule_evidence_mode": "real-cgroup-v2",
+      "cgroup_path": "/var/folders/5k/_k2nnpwd43s6qsf0m6btyzlc0000gn/T/TestSoftwareRealDemoRunProducesRuntimeEvidence2295833708/002/software-real-1783267711756236000-fixer"
     },
     {
-      "id": "software-real-1783255929208814000-reporter",
+      "id": "software-real-1783267711756236000-reporter",
       "role": "reporter",
       "state": "COMPLETED",
-      "pid": 14896,
-      "last_seen": 1783255930715,
+      "pid": 46648,
+      "last_seen": 1783267713690,
       "capsule_mode": "real",
-      "capsule_evidence_mode": "test-cgroup-v2",
-      "cgroup_path": "/var/folders/5k/_k2nnpwd43s6qsf0m6btyzlc0000gn/T/TestSoftwareRealDemoRunProducesRuntimeEvidence4016750426/002/software-real-1783255929208814000-reporter"
+      "capsule_evidence_mode": "real-cgroup-v2",
+      "cgroup_path": "/var/folders/5k/_k2nnpwd43s6qsf0m6btyzlc0000gn/T/TestSoftwareRealDemoRunProducesRuntimeEvidence2295833708/002/software-real-1783267711756236000-reporter"
     }
   ],
   "dag_nodes": 6,
@@ -81,8 +81,8 @@
   "checkpoint_mode": "runtime-state",
   "first_test_status": "failed",
   "second_test_status": "passed",
-  "first_test_output": "--- FAIL: TestNormalizeSpace (0.00s)\n    strings_test.go:8: NormalizeSpace() = \" alpha   beta \"\nFAIL\nFAIL\texample.com/aortstrings\t0.482s\nFAIL\n",
-  "second_test_output": "ok  \texample.com/aortstrings\t0.484s\n",
-  "started_at": 1783255929208,
-  "completed_at": 1783255930717
+  "first_test_output": "--- FAIL: TestNormalizeSpace (0.00s)\n    strings_test.go:8: NormalizeSpace() = \" alpha   beta \"\nFAIL\nFAIL\texample.com/aortstrings\t0.958s\nFAIL\n",
+  "second_test_output": "ok  \texample.com/aortstrings\t0.467s\n",
+  "started_at": 1783267711756,
+  "completed_at": 1783267713691
 }

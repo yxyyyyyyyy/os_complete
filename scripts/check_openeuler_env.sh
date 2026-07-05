@@ -199,8 +199,22 @@ import sys
 def flag(name):
     return os.environ.get(name) == "true"
 
+fallback_reasons = []
+if "openEuler" not in os.environ.get("os_release", ""):
+    fallback_reasons.append("host is not openEuler")
+if not flag("cgroup_v2"):
+    fallback_reasons.append("stat -fc %T /sys/fs/cgroup is not cgroup2fs")
+if not flag("cgroup_writable"):
+    fallback_reasons.append("/sys/fs/cgroup is not writable")
+if not flag("is_root"):
+    fallback_reasons.append("process is not running as root")
+
+evidence_mode = "real-cgroup-v2" if flag("cgroup_v2") and flag("cgroup_writable") and flag("is_root") else "degraded"
+
 data = {
-    "evidence_mode": "real-cgroup-v2" if flag("cgroup_v2") and flag("cgroup_writable") else "degraded",
+    "evidence_mode": evidence_mode,
+    "cgroup_mode": evidence_mode,
+    "fallback_reason": "; ".join(fallback_reasons) if evidence_mode == "degraded" else "",
     "os_release": os.environ.get("os_release", ""),
     "kernel": os.environ.get("kernel", ""),
     "id": os.environ.get("id_output", ""),
@@ -235,5 +249,8 @@ else
 fi
 
 if [ "$failures" -ne 0 ]; then
-  exit 1
+  if [ "${AORT_REQUIRE_LIVE_OPENEULER:-0}" = "1" ]; then
+    exit 1
+  fi
+  printf '[WARN] live host checks degraded; continuing because AORT_REQUIRE_LIVE_OPENEULER is not set.\n'
 fi

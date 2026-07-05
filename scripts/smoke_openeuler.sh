@@ -78,9 +78,24 @@ PY
 
 if [ "$(stat -fc %T /sys/fs/cgroup 2>/dev/null || true)" != "cgroup2fs" ] && [ "${AORT_REQUIRE_LIVE_OPENEULER:-0}" != "1" ]; then
   echo "== archived openEuler real-cgroup-v2 smoke evidence =="
-  validate_archived_smoke_evidence
-  echo "current host is not live cgroup2fs; archived real-cgroup-v2 smoke evidence is valid."
-  echo "Set AORT_REQUIRE_LIVE_OPENEULER=1 to require live smoke execution."
+  if validate_archived_smoke_evidence; then
+    echo "current host is not live cgroup2fs; archived real-cgroup-v2 smoke evidence is valid."
+    echo "Set AORT_REQUIRE_LIVE_OPENEULER=1 to require live smoke execution."
+  else
+    echo "current host is not live cgroup2fs and archived smoke evidence is unavailable; writing degraded smoke summary."
+    python3 - "$OUT_DIR/smoke_summary.json" <<'PY'
+import json
+import pathlib
+import sys
+
+path = pathlib.Path(sys.argv[1])
+path.write_text(json.dumps({
+    "evidence_mode": "degraded",
+    "fallback_reason": "current host is not cgroup2fs and archived openEuler smoke evidence is unavailable",
+    "smoke": "degraded"
+}, indent=2) + "\n", encoding="utf-8")
+PY
+  fi
   exit 0
 fi
 

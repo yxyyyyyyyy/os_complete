@@ -11,10 +11,13 @@
 | AVP 抽象 | `internal/avp/`, `/api/agents` |
 | Worker process | `/api/agents` 中的真实 `pid` |
 | token-CFS-prefix-affinity scheduler | `internal/scheduler/`, `/api/scheduler/decisions` |
+| resource-aware scheduler | `internal/scheduler/`, `/api/scheduler/resource-pressure`, `experiments/results/e1/e1_resource_aware.json` |
 | cgroup v2 capsule | `/api/capsules`, `capsule_real.json` |
 | scheduler trace | `experiments/results/e1-real-scheduler.json` |
 
-当前证据模式：worker/capsule/scheduler 在 openEuler cgroup v2 smoke 中为 `real`。
+当前证据模式：worker process 为 `real-runtime`；openEuler cgroup v2 capsule 为
+`real-cgroup-v2`；资源指标不可读时 scheduler decision 标记 `degraded` 并写
+`fallback_reason`。
 
 ## 2. Context / KV Cache 冗余拷贝
 
@@ -27,8 +30,9 @@
 | Page-reference IPC | `internal/ipc/`, `/api/ipc/metrics` |
 | saved bytes / tokens | `/api/context/stats`, `experiments/results/e3-real-context.json` |
 
-当前证据模式：Runtime page store、page table、saved bytes/tokens 为 `real`；
-真实模型 KV cache 内存映射未接入，答辩时应描述为 `real-partial`。
+当前证据模式：Runtime page store、page table、saved bytes/tokens 为
+`real-partial`。真实模型 KV cache 内存映射未接入，答辩时应描述为
+上下文页级复用，不说真实 KV Cache 共享。
 
 ## 3. 模型调用、工具调用与系统资源缺乏统一抽象
 
@@ -43,8 +47,8 @@
 | `agent.spawn` | `/api/syscalls`, worker registry |
 | cgroup resource control | `/api/capsules`, real cgroup v2 files |
 
-当前证据模式：syscall gateway、tool、context、IPC、agent control 为 `real`
-Runtime output；LLM provider 默认 `mock`，不能宣称真实 DeepSeek/llama.cpp。
+当前证据模式：syscall gateway、tool、agent control 为 `real-runtime`；CVM 和
+IPC 为 `real-partial`；LLM provider 默认 `mock`，不能宣称真实 DeepSeek/llama.cpp。
 
 ## 4. 复杂任务缺乏系统级可观测性与控制能力
 
@@ -59,6 +63,8 @@ Runtime output；LLM provider 默认 `mock`，不能宣称真实 DeepSeek/llama.
 | Checkpoint | `/api/checkpoints`, `/api/recovery/status` |
 | cgroup stats | `memory.current`, `pids.current`, `cpu.stat`, `cgroup.events` |
 | Runtime control | `freeze`, `unfreeze`, `kill` API |
+| Workspace isolation | `/api/workspaces`, `POST /api/demo/fault/workspace-rmrf`, `workspace_isolation_evidence.json` |
+| Final verification | `scripts/competition_verify.sh`, `experiments/results/final/FINAL_EVIDENCE_INDEX.json` |
 
 当前证据模式：openEuler real cgroup v2 smoke 已验证 freeze/unfreeze/kill 为
 `200`，且其他 Agent 未被级联影响的验证由
@@ -68,14 +74,24 @@ Runtime output；LLM provider 默认 `mock`，不能宣称真实 DeepSeek/llama.
 
 | 模块 | 当前状态 |
 | --- | --- |
-| Cgroup Capsule | `real` |
-| Worker Process | `real` |
-| Syscall Gateway | `real` |
-| Scheduler | `real` |
+| Cgroup Capsule | `real-cgroup-v2` 或 `degraded` |
+| Worker Process | `real-runtime` |
+| Syscall Gateway | `real-runtime` |
+| Scheduler | `real-runtime`；resource pressure 不可读时 decision 为 `degraded` |
 | CVM | `real-partial` |
 | Page-reference IPC | `real-partial` |
-| Workspace Isolation | `degraded-copy` |
-| Kernel Observer | `degraded-proxy` |
-| PSI Monitor | `unavailable/degraded` |
+| Workspace Isolation | `real-overlayfs` 或 `degraded-copy` |
+| Kernel Observer | `degraded` |
+| PSI Monitor | `real-cgroup-v2` 相关 host 可读时参与调度；否则 `degraded` |
 | eBPF Observer | `planned` |
 | LLM Provider | `mock` |
+
+## P0/P1/P2 Evidence Files
+
+| requirement | artifact |
+| --- | --- |
+| P0 one-command verification | `scripts/competition_verify.sh` |
+| P0 final index | `experiments/results/final/FINAL_EVIDENCE_INDEX.json` |
+| P0 final summary | `experiments/results/final/FINAL_SUMMARY.md` |
+| P1 resource-aware E1 | `experiments/results/e1/e1_resource_aware.json` |
+| P2 workspace rmrf fault | `experiments/results/workspace_isolation_evidence.json` |

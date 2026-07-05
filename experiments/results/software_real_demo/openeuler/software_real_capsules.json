@@ -3,70 +3,70 @@
   "cgroup_fs": "cgroup2fs",
   "capsules": [
     {
-      "agent_id": "software-real-1783259061642750909-planner",
+      "agent_id": "software-real-1783267543515679201-planner",
       "role": "planner",
-      "pid": 14611,
+      "pid": 21592,
       "capsule_mode": "real",
       "capsule_evidence_mode": "real-cgroup-v2",
-      "cgroup_path": "/sys/fs/cgroup/aort.slice/software-real-1783259061642750909-planner",
+      "cgroup_path": "/sys/fs/cgroup/aort.slice/software-real-1783267543515679201-planner",
       "memory.current": 0,
       "pids.current": 1,
-      "cpu.stat": "usage_usec 389\nuser_usec 389\nsystem_usec 0\nnr_periods 2\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0"
+      "cpu.stat": "usage_usec 356\nuser_usec 0\nsystem_usec 356\nnr_periods 3\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0"
     },
     {
-      "agent_id": "software-real-1783259061642750909-coder",
+      "agent_id": "software-real-1783267543515679201-coder",
       "role": "coder",
-      "pid": 14623,
+      "pid": 21604,
       "capsule_mode": "real",
       "capsule_evidence_mode": "real-cgroup-v2",
-      "cgroup_path": "/sys/fs/cgroup/aort.slice/software-real-1783259061642750909-coder",
+      "cgroup_path": "/sys/fs/cgroup/aort.slice/software-real-1783267543515679201-coder",
       "memory.current": 0,
       "pids.current": 1,
-      "cpu.stat": "usage_usec 410\nuser_usec 410\nsystem_usec 0\nnr_periods 2\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0"
+      "cpu.stat": "usage_usec 377\nuser_usec 377\nsystem_usec 0\nnr_periods 2\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0"
     },
     {
-      "agent_id": "software-real-1783259061642750909-tester",
+      "agent_id": "software-real-1783267543515679201-tester",
       "role": "tester",
-      "pid": 14635,
+      "pid": 21616,
       "capsule_mode": "real",
       "capsule_evidence_mode": "real-cgroup-v2",
-      "cgroup_path": "/sys/fs/cgroup/aort.slice/software-real-1783259061642750909-tester",
+      "cgroup_path": "/sys/fs/cgroup/aort.slice/software-real-1783267543515679201-tester",
       "memory.current": 0,
       "pids.current": 1,
-      "cpu.stat": "usage_usec 364\nuser_usec 212\nsystem_usec 151\nnr_periods 2\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0"
+      "cpu.stat": "usage_usec 396\nuser_usec 396\nsystem_usec 0\nnr_periods 2\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0"
     },
     {
-      "agent_id": "software-real-1783259061642750909-reviewer",
+      "agent_id": "software-real-1783267543515679201-reviewer",
       "role": "reviewer",
-      "pid": 14647,
+      "pid": 21628,
       "capsule_mode": "real",
       "capsule_evidence_mode": "real-cgroup-v2",
-      "cgroup_path": "/sys/fs/cgroup/aort.slice/software-real-1783259061642750909-reviewer",
+      "cgroup_path": "/sys/fs/cgroup/aort.slice/software-real-1783267543515679201-reviewer",
       "memory.current": 0,
       "pids.current": 1,
-      "cpu.stat": "usage_usec 382\nuser_usec 382\nsystem_usec 0\nnr_periods 2\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0"
+      "cpu.stat": "usage_usec 422\nuser_usec 422\nsystem_usec 0\nnr_periods 2\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0"
     },
     {
-      "agent_id": "software-real-1783259061642750909-fixer",
+      "agent_id": "software-real-1783267543515679201-fixer",
       "role": "fixer",
-      "pid": 14659,
+      "pid": 21640,
       "capsule_mode": "real",
       "capsule_evidence_mode": "real-cgroup-v2",
-      "cgroup_path": "/sys/fs/cgroup/aort.slice/software-real-1783259061642750909-fixer",
+      "cgroup_path": "/sys/fs/cgroup/aort.slice/software-real-1783267543515679201-fixer",
       "memory.current": 0,
       "pids.current": 1,
-      "cpu.stat": "usage_usec 348\nuser_usec 348\nsystem_usec 0\nnr_periods 2\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0"
+      "cpu.stat": "usage_usec 451\nuser_usec 451\nsystem_usec 0\nnr_periods 2\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0"
     },
     {
-      "agent_id": "software-real-1783259061642750909-reporter",
+      "agent_id": "software-real-1783267543515679201-reporter",
       "role": "reporter",
-      "pid": 14671,
+      "pid": 21652,
       "capsule_mode": "real",
       "capsule_evidence_mode": "real-cgroup-v2",
-      "cgroup_path": "/sys/fs/cgroup/aort.slice/software-real-1783259061642750909-reporter",
+      "cgroup_path": "/sys/fs/cgroup/aort.slice/software-real-1783267543515679201-reporter",
       "memory.current": 0,
       "pids.current": 1,
-      "cpu.stat": "usage_usec 401\nuser_usec 401\nsystem_usec 0\nnr_periods 2\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0"
+      "cpu.stat": "usage_usec 448\nuser_usec 448\nsystem_usec 0\nnr_periods 2\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0"
     }
   ]
 }

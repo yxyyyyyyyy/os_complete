@@ -535,7 +535,7 @@ func (g *Gateway) workspaceForAgent(agentID string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	workspace := filepath.Join(root, cleanAgentID)
+	workspace := filepath.Join(root, cleanAgentID, "merged")
 	if err := os.MkdirAll(workspace, 0o755); err != nil {
 		return "", err
 	}

@@ -1,6 +1,7 @@
 package experiment
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 	"testing"
@@ -54,12 +55,13 @@ func TestRunRealExperimentSuiteProducesP0Artifacts(t *testing.T) {
 		t.Fatalf("prefix-affinity should preserve at least FIFO context reuse: %#v", suite.E1Scheduler)
 	}
 
-	if len(suite.E2Fault) != 5 {
+	if len(suite.E2Fault) != 6 {
 		t.Fatalf("E2 faults = %#v", suite.E2Fault)
 	}
 	requiredFaults := map[string]bool{
 		"tool_timeout":          false,
 		"agent_crash":           false,
+		"workspace_rmrf":        false,
 		"kill_capsule":          false,
 		"memory_limit_exceeded": false,
 		"pids_limit_exceeded":   false,
@@ -75,8 +77,14 @@ func TestRunRealExperimentSuiteProducesP0Artifacts(t *testing.T) {
 		if result.FinalStatus != "recovered" || !result.CheckpointUsed {
 			t.Fatalf("bad E2 recovery evidence: %#v", result)
 		}
-		if result.FaultEvidence == nil || result.FaultEvidence["syscall_status"] == nil {
+		if result.FaultEvidence == nil {
 			t.Fatalf("missing E2 fault evidence: %#v", result)
+		}
+		if result.FaultType != "workspace_rmrf" && result.FaultEvidence["syscall_status"] == nil {
+			t.Fatalf("missing syscall status evidence: %#v", result)
+		}
+		if result.FaultType == "workspace_rmrf" && (result.FaultEvidence["rollback_success"] != true || fmt.Sprint(result.FaultEvidence["evidence_mode"]) != "degraded-copy") {
+			t.Fatalf("workspace rmrf evidence incomplete: %#v", result)
 		}
 		if result.FaultType == "memory_limit_exceeded" && result.FaultEvidence["resource_limit_enforced"] != true {
 			t.Fatalf("memory limit was not enforced: %#v", result)
@@ -101,7 +109,7 @@ func TestRunRealExperimentSuiteProducesP0Artifacts(t *testing.T) {
 		t.Fatalf("E3 modes = %#v", suite.E3Context)
 	}
 	for _, result := range suite.E3Context {
-		if result.Experiment != "E3_context_reuse" || result.EvidenceMode != "real-runtime" {
+		if result.Experiment != "E3_context_reuse" || result.EvidenceMode != "real-partial" {
 			t.Fatalf("bad E3 identity: %#v", result)
 		}
 		if result.BaselineTokens <= 0 || result.ActualMaterializedTokens <= 0 || result.ReuseRate < 0 {
@@ -114,6 +122,11 @@ func TestRunRealExperimentSuiteProducesP0Artifacts(t *testing.T) {
 
 	if len(suite.E4IPC) != 2 {
 		t.Fatalf("E4 modes = %#v", suite.E4IPC)
+	}
+	for _, result := range suite.E4IPC {
+		if result.EvidenceMode != "real-partial" {
+			t.Fatalf("E4 IPC should be real-partial page-reference evidence: %#v", result)
+		}
 	}
 	if suite.E4IPC[1].AvoidedCopyBytes <= 0 || suite.E4IPC[1].PayloadBytesActual >= suite.E4IPC[1].PayloadBytesBaseline {
 		t.Fatalf("bad E4 page-ref evidence: %#v", suite.E4IPC)

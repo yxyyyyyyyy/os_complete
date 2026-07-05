@@ -3,7 +3,7 @@
   "os": "openEuler 24.03 LTS",
   "cgroup_fs": "cgroup2fs",
   "capsule_mode": "real",
-  "cgroup_path": "/sys/fs/cgroup/aort.slice/task-1783187945630244755-tester",
+  "cgroup_path": "/sys/fs/cgroup/aort.slice/task-1783267531828087260-tester",
   "memory_current": 8192,
   "pids_current": 5,
   "cpu_stat": {
@@ -13,8 +13,8 @@
     "nr_throttled": 0,
     "system_usec": 0,
     "throttled_usec": 0,
-    "usage_usec": 588,
-    "user_usec": 588
+    "usage_usec": 332,
+    "user_usec": 332
   },
   "events": {
     "frozen": 0,

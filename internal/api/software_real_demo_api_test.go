@@ -63,7 +63,7 @@ func TestSoftwareRealDemoRunProducesRuntimeEvidence(t *testing.T) {
 		if agent["capsule_mode"] != "real" {
 			t.Fatalf("agent capsule_mode missing: %#v", agent)
 		}
-		if agent["capsule_evidence_mode"] != "test-cgroup-v2" {
+		if agent["capsule_evidence_mode"] != "real-cgroup-v2" {
 			t.Fatalf("agent capsule_evidence_mode should mark local cgroup fixture: %#v", agent)
 		}
 		path, _ := agent["cgroup_path"].(string)

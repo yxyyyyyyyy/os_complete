@@ -1,0 +1,37 @@
+{
+  "timestamp": "2026-07-05T16:05:53.317177+00:00",
+  "os_release": "NAME=\"openEuler\"\nVERSION=\"24.03 (LTS)\"\nID=\"openEuler\"\nVERSION_ID=\"24.03\"\nPRETTY_NAME=\"openEuler 24.03 (LTS)\"\nANSI_COLOR=\"0;31\"",
+  "kernel": "Linux ecs-8937 6.6.0-112.0.0.104.oe2403.x86_64 #1 SMP Wed Oct 15 16:10:04 CST 2025 x86_64 x86_64 x86_64 GNU/Linux",
+  "cgroup_fs_type": "cgroup2fs",
+  "go_version": "go version go1.22.12 linux/amd64",
+  "evidence_mode": "real-runtime",
+  "go_test": "passed",
+  "smoke": "passed",
+  "e1_scheduler": "passed",
+  "e2_fault_isolation": "passed",
+  "software_real_demo": "passed",
+  "workspace_isolation": "passed",
+  "generated_files": [
+    "experiments/results/final/env_check.json",
+    "experiments/results/e1/e1_resource_aware.json",
+    "experiments/results/e1/e1_resource_aware.csv",
+    "experiments/results/e1/e1_resource_aware_decisions.json",
+    "experiments/results/e1/e1_resource_aware_summary.md",
+    "experiments/results/e2-real-fault.json",
+    "experiments/results/e2-real-fault.csv",
+    "experiments/results/software_real_demo/result.json",
+    "experiments/results/workspace_isolation_evidence.json"
+  ],
+  "evidence_mode_summary": {
+    "cgroup_capsule": "real-cgroup-v2",
+    "worker_process": "real-runtime",
+    "cvm": "real-partial",
+    "ipc": "real-partial",
+    "llm": "mock",
+    "ebpf": "planned",
+    "overlayfs": "degraded-copy"
+  },
+  "known_limits": [
+    "overlayfs mount was unavailable or not attempted; workspace isolation used degraded-copy fallback"
+  ]
+}

@@ -4,26 +4,26 @@
   "capsule_count": 4,
   "freeze_unfreeze": {
     "evidence_mode": "real-cgroup-v2",
-    "agent_id": "task-1783192294506034713-coder",
+    "agent_id": "task-1783267536394502197-planner",
     "freeze_status": "200",
     "unfreeze_status": "200",
     "success": true
   },
   "kill_recovery": {
     "evidence_mode": "real-cgroup-v2",
-    "killed_agent_id": "task-1783192294506034713-tester",
+    "killed_agent_id": "task-1783267536394502197-coder",
     "kill_status": "200",
     "killed_state": "KILLED",
     "unaffected_agents": [
       {
-        "agent_id": "task-1783192294506034713-reviewer",
+        "agent_id": "task-1783267536394502197-tester",
         "state": "COMPLETED",
         "capsule_mode": "real",
         "pids_current": 5,
         "memory_current": 0
       },
       {
-        "agent_id": "task-1783192294506034713-planner",
+        "agent_id": "task-1783267536394502197-reviewer",
         "state": "COMPLETED",
         "capsule_mode": "real",
         "pids_current": 5,

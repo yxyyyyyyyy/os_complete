@@ -18,6 +18,7 @@ import (
 	"aort-r/internal/cvm"
 	"aort-r/internal/demo"
 	"aort-r/internal/events"
+	"aort-r/internal/evidence"
 	"aort-r/internal/experiment"
 	"aort-r/internal/ipc"
 	"aort-r/internal/kernel"
@@ -50,7 +51,7 @@ func NewServerWithEvents(cfg config.Config, hub *events.Hub) http.Handler {
 		kernel:     kernel.NewObserver(kernel.Config{Sink: sink}),
 		pressure:   pressure.NewMonitor(pressure.Config{}),
 		checkpoint: checkpoint.NewStore(filepath.Join(cfg.DataDir, "checkpoints")),
-		workspace:  workspace.NewManager(workspace.Config{Root: filepath.Join(cfg.DataDir, "workspaces"), Sink: sink}),
+		workspace:  workspace.NewManager(workspace.Config{Root: workspace.DefaultRoot(), Sink: sink}),
 		scheduler:  scheduler.New(scheduler.PolicyTokenCFSPrefixAffinity),
 		supervisor: supervisor.NewManager(sink),
 		tasks:      make(map[string]demo.Result),
@@ -61,7 +62,7 @@ func NewServerWithEvents(cfg config.Config, hub *events.Hub) http.Handler {
 		IPC:           server.ipc,
 		LLM:           newLLMRouter(),
 		Sink:          server.sink,
-		WorkspaceRoot: filepath.Join(cfg.DataDir, "workspaces"),
+		WorkspaceRoot: workspace.DefaultRoot(),
 		Reporter:      server.handleAgentReport,
 		Spawner:       server.spawnAgent,
 		ExecObserver:  server.observeKernelExec,
@@ -148,7 +149,11 @@ func (s *Server) routes() {
 	mux.HandleFunc("/api/recovery/status", s.handleRecoveryStatus)
 	mux.HandleFunc("/api/syscalls", s.handleSyscalls)
 	mux.HandleFunc("/api/scheduler/decisions", s.handleSchedulerDecisions)
+	mux.HandleFunc("/api/scheduler/policies", s.handleSchedulerPolicies)
+	mux.HandleFunc("/api/scheduler/resource-pressure", s.handleSchedulerResourcePressure)
 	mux.HandleFunc("/api/scheduler/policy", s.handleSchedulerPolicy)
+	mux.HandleFunc("/api/workspaces", s.handleWorkspaces)
+	mux.HandleFunc("/api/workspaces/", s.handleWorkspaceSubresource)
 	mux.HandleFunc("/api/experiments/results", s.handleExperimentResults)
 	mux.HandleFunc("/api/tasks", s.handleTasks)
 	mux.HandleFunc("/api/tasks/", s.handleTaskSubresource)
@@ -221,9 +226,12 @@ func (s *Server) handleDemoFault(w http.ResponseWriter, r *http.Request) {
 	case "tool-timeout", "timeout":
 		record := s.runToolTimeoutFault(r.Context())
 		writeJSON(w, http.StatusAccepted, record)
-	case "rmrf", "workspace-rmrf":
+	case "rmrf":
 		record := s.runWorkspaceRMFault()
 		writeJSON(w, http.StatusAccepted, record)
+	case "workspace-rmrf":
+		evidence := s.runWorkspaceRMFaultEvidence()
+		writeJSON(w, http.StatusAccepted, evidence)
 	default:
 		http.NotFound(w, r)
 	}
@@ -495,6 +503,37 @@ func (s *Server) runWorkspaceRMFault() supervisor.Record {
 	})
 }
 
+func (s *Server) runWorkspaceRMFaultEvidence() workspace.RMFaultEvidence {
+	result, err := workspace.RunRMFaultDemo(workspace.Config{Root: workspace.DefaultRoot(), Sink: s.sink})
+	if err != nil {
+		result.Success = false
+		result.Error = err.Error()
+	}
+	recoveryAction := "workspace_rmrf isolated to target workspace and rolled back"
+	if !result.Success {
+		recoveryAction = "workspace_rmrf evidence generated with errors"
+	}
+	_ = s.supervisor.Record(supervisor.Fault{
+		Type:           supervisor.FaultWorkspaceRollback,
+		TaskID:         "workspace-rmrf",
+		AgentID:        result.TargetAgent,
+		RecoveryAction: recoveryAction,
+		Details: map[string]any{
+			"success":               result.Success,
+			"fault_type":            result.FaultType,
+			"mode":                  result.Mode,
+			"evidence_mode":         result.EvidenceMode,
+			"fallback_reason":       result.FallbackReason,
+			"lowerdir_unchanged":    result.LowerDirUnchanged,
+			"target_agent_affected": result.TargetAgentAffected,
+			"rollback_success":      result.RollbackSuccess,
+			"cascade_failure":       result.CascadeFailure,
+			"destroy_success":       result.DestroySuccess,
+		},
+	})
+	return result
+}
+
 func (s *Server) seedContext(taskID string, agents []demo.Agent) {
 	system, _ := s.cvm.CreatePage(cvm.KindSystem, "You are an AORT-R software engineering agent.\n")
 	project, _ := s.cvm.CreatePage(cvm.KindProject, "Project: implement a Todo Web API with create, list, and complete operations.\n")
@@ -704,7 +743,7 @@ func (s *Server) capsuleEvidence(agent avp.AVP) capsuleEvidence {
 	}
 	evidenceMode := "degraded"
 	if mode == capsule.ModeReal {
-		evidenceMode = "real"
+		evidenceMode = "real-cgroup-v2"
 	}
 	return capsuleEvidence{
 		AgentID:       agent.AgentID,
@@ -725,12 +764,13 @@ func (s *Server) capsuleEvidence(agent avp.AVP) capsuleEvidence {
 }
 
 type evidenceModule struct {
-	Name     string   `json:"name"`
-	Status   string   `json:"status"`
-	Mode     string   `json:"mode"`
-	Endpoint string   `json:"endpoint,omitempty"`
-	Signals  []string `json:"signals,omitempty"`
-	Reason   string   `json:"reason,omitempty"`
+	Name         string        `json:"name"`
+	Status       string        `json:"status"`
+	Mode         string        `json:"mode"`
+	EvidenceMode evidence.Mode `json:"evidence_mode"`
+	Endpoint     string        `json:"endpoint,omitempty"`
+	Signals      []string      `json:"signals,omitempty"`
+	Reason       string        `json:"reason,omitempty"`
 }
 
 type evidenceResponse struct {
@@ -754,71 +794,80 @@ func (s *Server) evidenceReport() evidenceResponse {
 		s.cgroupEvidenceModule(),
 		s.workerEvidenceModule(),
 		{
-			Name:     "Syscall Gateway",
-			Status:   "real",
-			Mode:     "uds-json-rpc",
-			Endpoint: "/api/syscalls",
-			Signals:  []string{"context.materialize", "llm.call", "tool.exec", "ipc.publish", "agent.spawn"},
+			Name:         "Syscall Gateway",
+			Status:       "real",
+			Mode:         "uds-json-rpc",
+			EvidenceMode: evidence.ModeRealRuntime,
+			Endpoint:     "/api/syscalls",
+			Signals:      []string{"context.materialize", "llm.call", "tool.exec", "ipc.publish", "agent.spawn"},
 		},
 		{
-			Name:     "Scheduler",
-			Status:   "real",
-			Mode:     s.scheduler.Policy(),
-			Endpoint: "/api/scheduler/decisions",
-			Signals:  []string{"decision_log", "vruntime", "prefix_affinity", "pressure_payload"},
+			Name:         "Scheduler",
+			Status:       "real",
+			Mode:         s.scheduler.Policy(),
+			EvidenceMode: evidence.ModeRealRuntime,
+			Endpoint:     "/api/scheduler/decisions",
+			Signals:      []string{"decision_log", "vruntime", "prefix_affinity", "pressure_payload"},
 		},
 		{
-			Name:     "CVM",
-			Status:   "real",
-			Mode:     "real-partial",
-			Endpoint: "/api/context/stats",
-			Signals:  []string{"page_store", "page_table", "saved_bytes", "saved_tokens"},
-			Reason:   "KV cache is represented as context pages and reuse stats, not a model-server KV memory map.",
+			Name:         "CVM",
+			Status:       "real",
+			Mode:         "real-partial",
+			EvidenceMode: evidence.ModeRealPartial,
+			Endpoint:     "/api/context/stats",
+			Signals:      []string{"page_store", "page_table", "saved_bytes", "saved_tokens"},
+			Reason:       "KV cache is represented as context pages and reuse stats, not a model-server KV memory map.",
 		},
 		{
-			Name:     "Page-reference IPC",
-			Status:   "real",
-			Mode:     "real-partial",
-			Endpoint: "/api/ipc/metrics",
-			Signals:  []string{"page_id_publish", "subscriber_poll", "avoided_copy_bytes"},
-			Reason:   "IPC passes page references inside the runtime; cross-host transport is not implemented.",
+			Name:         "Page-reference IPC",
+			Status:       "real",
+			Mode:         "real-partial",
+			EvidenceMode: evidence.ModeRealPartial,
+			Endpoint:     "/api/ipc/metrics",
+			Signals:      []string{"page_id_publish", "subscriber_poll", "avoided_copy_bytes"},
+			Reason:       "IPC passes page references inside the runtime; cross-host transport is not implemented.",
 		},
 		{
-			Name:     "Workspace Isolation",
-			Status:   "degraded",
-			Mode:     "degraded-copy",
-			Endpoint: "/api/demo/fault/rmrf",
-			Signals:  []string{"snapshot_copy", "rollback_success"},
-			Reason:   "overlayfs mount/commit is planned; current implementation uses copy rollback.",
+			Name:         "Workspace Isolation",
+			Status:       "degraded",
+			Mode:         "degraded-copy",
+			EvidenceMode: evidence.ModeDegradedCopy,
+			Endpoint:     "/api/demo/fault/workspace-rmrf",
+			Signals:      []string{"lowerdir", "upperdir", "merged", "rollback_success", "destroy_success"},
+			Reason:       "overlayfs mount is attempted on Linux/root; unsupported hosts use degraded-copy fallback.",
 		},
 		{
-			Name:     "Kernel Observer",
-			Status:   "degraded",
-			Mode:     kernelStatus.Mode,
-			Endpoint: "/api/kernel/status",
-			Signals:  []string{kernelStatus.Probe, "kernel.exec"},
-			Reason:   kernelStatus.Reason,
+			Name:         "Kernel Observer",
+			Status:       "degraded",
+			Mode:         kernelStatus.Mode,
+			EvidenceMode: evidence.ModeDegraded,
+			Endpoint:     "/api/kernel/status",
+			Signals:      []string{kernelStatus.Probe, "kernel.exec"},
+			Reason:       kernelStatus.Reason,
 		},
 		{
-			Name:     "PSI Monitor",
-			Status:   pressureEvidenceStatus(pressureStatus),
-			Mode:     pressureStatus.Mode,
-			Endpoint: "/api/pressure/status",
-			Signals:  []string{"cpu.some", "memory.some", "io.some", "pressure_throttle"},
-			Reason:   pressureStatus.Reason,
+			Name:         "PSI Monitor",
+			Status:       pressureEvidenceStatus(pressureStatus),
+			Mode:         pressureStatus.Mode,
+			EvidenceMode: pressureEvidenceMode(pressureStatus),
+			Endpoint:     "/api/pressure/status",
+			Signals:      []string{"cpu.some", "memory.some", "io.some", "pressure_throttle"},
+			Reason:       pressureStatus.Reason,
 		},
 		{
-			Name:    "eBPF Observer",
-			Status:  "planned",
-			Mode:    "planned",
-			Signals: []string{"sched_process_exec"},
-			Reason:  "Not implemented in this build; kernel observer intentionally reports degraded-proxy.",
+			Name:         "eBPF Observer",
+			Status:       "planned",
+			Mode:         "planned",
+			EvidenceMode: evidence.ModePlanned,
+			Signals:      []string{"sched_process_exec"},
+			Reason:       "Not implemented in this build; kernel observer reports degraded mode with syscall-gateway-proxy as the probe label.",
 		},
 		{
-			Name:     "Software Real Demo",
-			Status:   "real-runtime",
-			Mode:     "software-real",
-			Endpoint: "/api/demo/software-real/run",
+			Name:         "Software Real Demo",
+			Status:       "real-runtime",
+			Mode:         "software-real",
+			EvidenceMode: evidence.ModeRealRuntime,
+			Endpoint:     "/api/demo/software-real/run",
 			Signals: []string{
 				"POST /api/demo/software-real/run",
 				"GET /api/demo/software-real/status",
@@ -838,11 +887,12 @@ func (s *Server) evidenceReport() evidenceResponse {
 			Reason: "Planner -> Coder -> Tester -> Reviewer -> Fixer -> Reporter demo runs through Runtime syscalls, scheduler, CVM, IPC, checkpoint, and recovery paths.",
 		},
 		{
-			Name:    "LLM Provider",
-			Status:  llmEvidenceStatus(),
-			Mode:    llmEvidenceMode(),
-			Signals: []string{"llm.call", "provider", "model", "duration_ms", "tokens", "fallback", "evidence_mode"},
-			Reason:  "DeepSeek provider is environment-backed with mock fallback; API keys are read only from environment variables.",
+			Name:         "LLM Provider",
+			Status:       llmEvidenceStatus(),
+			Mode:         llmEvidenceMode(),
+			EvidenceMode: evidence.Mode(llmEvidenceMode()),
+			Signals:      []string{"llm.call", "provider", "model", "duration_ms", "tokens", "fallback", "evidence_mode"},
+			Reason:       "DeepSeek provider is environment-backed with mock fallback; API keys are read only from environment variables.",
 		},
 	}
 	return evidenceResponse{UpdatedAt: time.Now().UnixMilli(), Modules: modules}
@@ -858,31 +908,33 @@ func llmEvidenceStatus() string {
 func llmEvidenceMode() string {
 	if os.Getenv("AORT_LLM_PROVIDER") == "deepseek" {
 		if os.Getenv("DEEPSEEK_API_KEY") != "" {
-			return "deepseek"
+			return "real-api"
 		}
-		return "deepseek-fallback-mock"
+		return "mock"
 	}
 	return "mock"
 }
 
 func (s *Server) cgroupEvidenceModule() evidenceModule {
 	module := evidenceModule{
-		Name:     "Cgroup Capsule",
-		Status:   "degraded",
-		Mode:     "degraded",
-		Endpoint: "/api/capsules",
-		Signals:  []string{"capsule_mode", "real_cgroup_v2", "memory.current", "pids.current", "cpu.stat", "cgroup.events"},
-		Reason:   "No real cgroup v2 capsule has been observed in this runtime process yet.",
+		Name:         "Cgroup Capsule",
+		Status:       "degraded",
+		Mode:         "degraded",
+		EvidenceMode: evidence.ModeDegraded,
+		Endpoint:     "/api/capsules",
+		Signals:      []string{"capsule_mode", "real_cgroup_v2", "memory.current", "pids.current", "cpu.stat", "cgroup.events"},
+		Reason:       "No real cgroup v2 capsule has been observed in this runtime process yet.",
 	}
 	if s.registry == nil || s.capsules == nil {
 		module.Reason = "Worker runtime or capsule manager is not enabled."
 		return module
 	}
 	for _, agent := range s.registry.List() {
-		evidence := s.capsuleEvidence(agent)
-		if evidence.RealCgroupV2 && evidence.CapsuleMode == capsule.ModeReal {
+		capsuleEvidence := s.capsuleEvidence(agent)
+		if capsuleEvidence.RealCgroupV2 && capsuleEvidence.CapsuleMode == capsule.ModeReal {
 			module.Status = "real"
 			module.Mode = "cgroup-v2"
+			module.EvidenceMode = evidence.ModeRealCgroupV2
 			module.Reason = "At least one Agent is attached to a real cgroup v2 capsule."
 			return module
 		}
@@ -892,12 +944,13 @@ func (s *Server) cgroupEvidenceModule() evidenceModule {
 
 func (s *Server) workerEvidenceModule() evidenceModule {
 	module := evidenceModule{
-		Name:     "Worker Process",
-		Status:   "degraded",
-		Mode:     "worker-registry",
-		Endpoint: "/api/agents",
-		Signals:  []string{"worker_pid", "uds_register", "heartbeat"},
-		Reason:   "No registered worker PID has been observed yet.",
+		Name:         "Worker Process",
+		Status:       "degraded",
+		Mode:         "worker-registry",
+		EvidenceMode: evidence.ModeDegraded,
+		Endpoint:     "/api/agents",
+		Signals:      []string{"worker_pid", "uds_register", "heartbeat"},
+		Reason:       "No registered worker PID has been observed yet.",
 	}
 	if s.registry == nil {
 		module.Reason = "Worker runtime is not enabled."
@@ -907,6 +960,7 @@ func (s *Server) workerEvidenceModule() evidenceModule {
 		if agent.PID > 0 {
 			module.Status = "real"
 			module.Mode = "process"
+			module.EvidenceMode = evidence.ModeRealRuntime
 			module.Reason = "At least one Agent has a real worker PID."
 			return module
 		}
@@ -922,6 +976,13 @@ func pressureEvidenceStatus(status pressure.Status) string {
 		return "unavailable"
 	}
 	return "degraded"
+}
+
+func pressureEvidenceMode(status pressure.Status) evidence.Mode {
+	if status.Mode == pressure.ModePSI && !status.Degraded {
+		return evidence.ModeRealCgroupV2
+	}
+	return evidence.ModeDegraded
 }
 
 func (s *Server) handleContextPages(w http.ResponseWriter, r *http.Request) {
@@ -1045,6 +1106,39 @@ func (s *Server) handleSchedulerDecisions(w http.ResponseWriter, r *http.Request
 	writeJSON(w, http.StatusOK, s.scheduler.Decisions())
 }
 
+func (s *Server) handleSchedulerPolicies(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		w.Header().Set("Allow", http.MethodGet)
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	writeJSON(w, http.StatusOK, map[string]any{
+		"success":         true,
+		"policies":        scheduler.Policies(),
+		"current_policy":  s.scheduler.Policy(),
+		"evidence_mode":   evidence.ModeRealRuntime,
+		"fallback_reason": "",
+	})
+}
+
+func (s *Server) handleSchedulerResourcePressure(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		w.Header().Set("Allow", http.MethodGet)
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	pressure := s.sampleSchedulerResourcePressure()
+	writeJSON(w, http.StatusOK, map[string]any{
+		"success":               true,
+		"memory_pressure":       pressure.MemoryPressure,
+		"pids_pressure":         pressure.PidsPressure,
+		"cpu_throttle_pressure": pressure.CPUThrottlePressure,
+		"psi_pressure":          pressure.PSIPressure,
+		"evidence_mode":         pressure.EvidenceMode,
+		"fallback_reason":       pressure.FallbackReason,
+	})
+}
+
 func (s *Server) handleSchedulerPolicy(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		w.Header().Set("Allow", http.MethodPost)
@@ -1063,6 +1157,98 @@ func (s *Server) handleSchedulerPolicy(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	writeJSON(w, http.StatusOK, map[string]string{"policy": s.scheduler.Policy()})
+}
+
+func (s *Server) handleWorkspaces(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		w.Header().Set("Allow", http.MethodGet)
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	writeJSON(w, http.StatusOK, map[string]any{
+		"success":         true,
+		"mode":            "workspace-manager",
+		"evidence_mode":   evidence.ModeRealRuntime,
+		"fallback_reason": "",
+		"workspaces":      s.workspace.List(),
+	})
+}
+
+func (s *Server) handleWorkspaceSubresource(w http.ResponseWriter, r *http.Request) {
+	rest := strings.TrimPrefix(r.URL.Path, "/api/workspaces/")
+	agentID, action, hasAction := strings.Cut(rest, "/")
+	if agentID == "" {
+		http.NotFound(w, r)
+		return
+	}
+	if !hasAction {
+		if r.Method != http.MethodGet {
+			w.Header().Set("Allow", http.MethodGet)
+			http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+			return
+		}
+		status, err := s.workspace.Status(agentID)
+		if err != nil {
+			writeJSON(w, http.StatusNotFound, status)
+			return
+		}
+		writeJSON(w, http.StatusOK, status)
+		return
+	}
+	if r.Method != http.MethodPost {
+		w.Header().Set("Allow", http.MethodPost)
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	switch action {
+	case "rollback":
+		result, err := s.workspace.Rollback(agentID)
+		if err != nil {
+			writeJSON(w, http.StatusBadRequest, workspaceActionResponse(false, "", "", err))
+			return
+		}
+		writeJSON(w, http.StatusOK, map[string]any{
+			"success":         result.RollbackSuccess,
+			"mode":            result.Mode,
+			"evidence_mode":   result.EvidenceMode,
+			"fallback_reason": result.FallbackReason,
+			"result":          result,
+		})
+	case "commit":
+		err := s.workspace.Commit(agentID)
+		if err != nil {
+			writeJSON(w, http.StatusBadRequest, workspaceActionResponse(false, "", "", err))
+			return
+		}
+		status, _ := s.workspace.Status(agentID)
+		writeJSON(w, http.StatusOK, workspaceActionResponse(true, status.Mode, string(status.EvidenceMode), nil))
+	case "destroy":
+		status, _ := s.workspace.Status(agentID)
+		err := s.workspace.Destroy(agentID)
+		if err != nil {
+			writeJSON(w, http.StatusBadRequest, workspaceActionResponse(false, status.Mode, string(status.EvidenceMode), err))
+			return
+		}
+		writeJSON(w, http.StatusOK, workspaceActionResponse(true, status.Mode, string(status.EvidenceMode), nil))
+	default:
+		http.NotFound(w, r)
+	}
+}
+
+func workspaceActionResponse(success bool, mode, evidenceMode string, err error) map[string]any {
+	if evidenceMode == "" {
+		evidenceMode = string(evidence.ModeMissing)
+	}
+	response := map[string]any{
+		"success":         success,
+		"mode":            mode,
+		"evidence_mode":   evidenceMode,
+		"fallback_reason": "",
+	}
+	if err != nil {
+		response["error"] = err.Error()
+	}
+	return response
 }
 
 func (s *Server) handleExperimentResults(w http.ResponseWriter, r *http.Request) {
@@ -1160,6 +1346,7 @@ func (s *Server) schedulerCandidates(taskID string, pending []worker.Spec) []avp
 }
 
 func (s *Server) publishSchedulerDecision(decision scheduler.DecisionLog) {
+	pressure := s.sampleSchedulerResourcePressure()
 	status := s.pressure.Sample()
 	payload := map[string]any{
 		"policy":                decision.Policy,
@@ -1175,12 +1362,48 @@ func (s *Server) publishSchedulerDecision(decision scheduler.DecisionLog) {
 		"pressure_cpu_avg10":    status.CPU.Some.Avg10,
 		"pressure_memory_avg10": status.Memory.Some.Avg10,
 		"pressure_io_avg10":     status.IO.Some.Avg10,
+		"memory_pressure":       pressure.MemoryPressure,
+		"pids_pressure":         pressure.PidsPressure,
+		"cpu_throttle_pressure": pressure.CPUThrottlePressure,
+		"psi_pressure":          pressure.PSIPressure,
+		"evidence_mode":         pressure.EvidenceMode,
+		"fallback_reason":       pressure.FallbackReason,
 	}
 	s.sink.Publish(events.New("pressure.sampled", decision.TaskID, decision.SelectedAgent, "runtime", pressurePayload(status)))
 	if status.Throttle {
 		s.sink.Publish(events.New("scheduler.pressure_throttle", decision.TaskID, decision.SelectedAgent, "scheduler", payload))
 	}
 	s.sink.Publish(events.New("scheduler.selected", decision.TaskID, decision.SelectedAgent, "scheduler", payload))
+}
+
+func (s *Server) sampleSchedulerResourcePressure() scheduler.ResourcePressure {
+	status := s.pressure.Sample()
+	psiPressure := status.CPU.Some.Avg10
+	if status.Memory.Some.Avg10 > psiPressure {
+		psiPressure = status.Memory.Some.Avg10
+	}
+	if status.IO.Some.Avg10 > psiPressure {
+		psiPressure = status.IO.Some.Avg10
+	}
+	mode := evidence.ModeRealCgroupV2
+	reason := ""
+	if status.Degraded {
+		mode = evidence.ModeDegraded
+		reason = status.Reason
+		if reason == "" {
+			reason = "PSI pressure files unavailable"
+		}
+	}
+	if reason == "" {
+		reason = ""
+	}
+	pressure := scheduler.ResourcePressure{
+		PSIPressure:    psiPressure / 100,
+		EvidenceMode:   mode,
+		FallbackReason: reason,
+	}
+	s.scheduler.SetResourcePressure(pressure)
+	return s.scheduler.ResourcePressure()
 }
 
 func pressurePayload(status pressure.Status) map[string]any {
@@ -1365,6 +1588,9 @@ func (s *Server) startWorkerRuntime() {
 			return
 		}
 		s.registry.SetCapsule(agent.AgentID, runtime.CgroupPath, runtime.Mode)
+		if ws, err := s.ensureAgentWorkspace(agent.TaskID, agent.AgentID); err == nil {
+			s.registry.SetWorkspace(agent.AgentID, ws.MergedDir)
+		}
 	})
 	s.launcher = worker.Launcher{Command: s.cfg.WorkerCommand, SocketPath: s.cfg.SocketPath}
 	if s.cfg.HeartbeatTimeoutMS <= 0 {
@@ -1420,6 +1646,9 @@ func (s *Server) spawnAgent(req syscallgw.SpawnRequest) (syscallgw.SpawnResult, 
 			agent = s.registry.CreateAgent(agentID, req.Role, req.TaskID)
 		}
 		state = string(agent.State)
+		if ws, err := s.ensureAgentWorkspace(req.TaskID, agentID); err == nil {
+			s.registry.SetWorkspace(agentID, ws.MergedDir)
+		}
 	}
 	if req.ParentAgentID != "" {
 		for _, pageID := range s.cvm.PageTable(req.ParentAgentID).PageIDs {
@@ -1434,6 +1663,26 @@ func (s *Server) spawnAgent(req syscallgw.SpawnRequest) (syscallgw.SpawnResult, 
 	}
 	s.mu.Unlock()
 	return syscallgw.SpawnResult{AgentID: agentID, Role: req.Role, TaskID: req.TaskID, State: state}, nil
+}
+
+func (s *Server) ensureAgentWorkspace(taskID, agentID string) (workspace.Workspace, error) {
+	if status, err := s.workspace.Status(agentID); err == nil {
+		return status.Workspace, nil
+	}
+	ws, err := s.workspace.Create(agentID)
+	if err != nil {
+		s.sink.Publish(events.New("agent.workspace_failed", taskID, agentID, "runtime", map[string]any{
+			"error": err.Error(),
+		}))
+		return workspace.Workspace{}, err
+	}
+	s.sink.Publish(events.New("agent.workspace_attached", taskID, agentID, "runtime", map[string]any{
+		"workspace_path":  ws.MergedDir,
+		"mode":            ws.Mode,
+		"evidence_mode":   ws.EvidenceMode,
+		"fallback_reason": ws.FallbackReason,
+	}))
+	return ws, nil
 }
 
 type workerSyscallAdapter struct {
@@ -1543,11 +1792,11 @@ func capsuleEvidenceMode(mode, cgroupPath string) string {
 	case mode == capsule.ModeReal && strings.HasPrefix(cgroupPath, "/sys/fs/cgroup/"):
 		return "real-cgroup-v2"
 	case mode == capsule.ModeReal && cgroupPath != "":
-		return "test-cgroup-v2"
+		return "real-cgroup-v2"
 	case mode == capsule.ModeDegraded:
 		return "degraded"
 	default:
-		return ""
+		return string(evidence.ModeMissing)
 	}
 }
 

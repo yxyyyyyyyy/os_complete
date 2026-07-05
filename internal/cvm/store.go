@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"aort-r/internal/events"
+	"aort-r/internal/evidence"
 )
 
 type PageKind string
@@ -40,10 +41,11 @@ type PageTable struct {
 }
 
 type Stats struct {
-	TotalPages  int   `json:"total_pages"`
-	SharedPages int   `json:"shared_pages"`
-	SavedBytes  int64 `json:"saved_bytes"`
-	SavedTokens int64 `json:"saved_tokens"`
+	EvidenceMode evidence.Mode `json:"evidence_mode"`
+	TotalPages   int           `json:"total_pages"`
+	SharedPages  int           `json:"shared_pages"`
+	SavedBytes   int64         `json:"saved_bytes"`
+	SavedTokens  int64         `json:"saved_tokens"`
 }
 
 type Store struct {
@@ -168,7 +170,7 @@ func (s *Store) PageTable(agentID string) PageTable {
 func (s *Store) Stats() Stats {
 	s.mu.RLock()
 	defer s.mu.RUnlock()
-	stats := Stats{TotalPages: len(s.pages), SavedBytes: s.savedBytes, SavedTokens: s.savedTokens}
+	stats := Stats{EvidenceMode: evidence.ModeRealPartial, TotalPages: len(s.pages), SavedBytes: s.savedBytes, SavedTokens: s.savedTokens}
 	for _, page := range s.pages {
 		if page.RefCount > 1 {
 			stats.SharedPages++

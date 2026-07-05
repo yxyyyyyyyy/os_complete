@@ -102,6 +102,16 @@ func (r *Registry) SetCapsule(agentID, cgroupPath, mode string) {
 	r.publishLocked("agent.capsule_attached", agent, map[string]any{"cgroup_path": cgroupPath, "mode": mode})
 }
 
+func (r *Registry) SetWorkspace(agentID, workspacePath string) {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	agent := r.agents[agentID]
+	agent.WorkspacePath = workspacePath
+	agent.UpdatedAt = time.Now().UnixMilli()
+	r.agents[agentID] = agent
+	r.publishLocked("agent.workspace_attached", agent, map[string]any{"workspace_path": workspacePath})
+}
+
 func (r *Registry) SetState(agentID string, state avp.AgentState) {
 	r.mu.Lock()
 	defer r.mu.Unlock()

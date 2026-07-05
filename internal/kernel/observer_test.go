@@ -16,7 +16,7 @@ func (s *testSink) Publish(event events.Event) {
 	s.events = append(s.events, event)
 }
 
-func TestObserverStartsInDegradedProxyModeWhenEBPFUnavailable(t *testing.T) {
+func TestObserverStartsInDegradedModeWhenEBPFUnavailable(t *testing.T) {
 	sink := &testSink{}
 	observer := NewObserver(Config{
 		Sink:    sink,
@@ -32,7 +32,7 @@ func TestObserverStartsInDegradedProxyModeWhenEBPFUnavailable(t *testing.T) {
 	if status.Enabled {
 		t.Fatalf("status = %#v", status)
 	}
-	if status.Mode != ModeDegradedProxy {
+	if status.Mode != ModeDegraded {
 		t.Fatalf("mode = %q", status.Mode)
 	}
 	if !strings.Contains(status.Reason, "proxy") {
@@ -63,7 +63,7 @@ func TestObserverRecordsExecEventWithKernelTimelinePayload(t *testing.T) {
 	if event.Type != "kernel.exec" || event.Source != "kernel" || event.AgentID != "agent-1" {
 		t.Fatalf("event = %#v", event)
 	}
-	if event.Payload["probe"] != ProbeSyscallGatewayProxy || event.Payload["mode"] != ModeDegradedProxy {
+	if event.Payload["probe"] != ProbeSyscallGatewayProxy || event.Payload["mode"] != ModeDegraded {
 		t.Fatalf("payload = %#v", event.Payload)
 	}
 	records := observer.Events()
