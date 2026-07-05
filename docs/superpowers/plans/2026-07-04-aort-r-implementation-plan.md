@@ -168,7 +168,7 @@ Expected result:
 - Create `internal/checkpoint/checkpoint.go`: runtime checkpoint and recovery.
 - Create `internal/llm/router.go`: provider interface and routing policy.
 - Create `internal/llm/mock.go`: deterministic LLM provider.
-- Create `internal/llm/deepseek.go`: OpenAI-compatible relay provider.
+- Create `internal/llm/deepseek_provider.go`: OpenAI-compatible relay provider.
 - Create `internal/llm/llamacpp.go`: llama.cpp local provider and timing parser.
 - Create `internal/ebpf/observer.go`: kernel event observer with graceful disabled mode.
 - Create `internal/experiment/e1_scheduler.go`: scheduler experiment.
@@ -1400,7 +1400,7 @@ git commit -m "feat: add supervisor fault injection and v2 report"
 **Files:**
 - Create: `internal/llm/router.go`
 - Create: `internal/llm/mock.go`
-- Create: `internal/llm/deepseek.go`
+- Create: `internal/llm/deepseek_provider.go`
 - Create: `internal/llm/llamacpp.go`
 - Modify: `internal/syscall/gateway.go`
 - Test: `internal/llm/router_test.go`

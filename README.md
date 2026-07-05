@@ -133,6 +133,8 @@ marked as `fallback=true`, `fallback_reason=no_api_key` or `api_error`, and
 ```bash
 mkdir -p .cache/go-build
 GOCACHE="$PWD/.cache/go-build" go run ./cmd/aort-experiment --name all --runs 5 --out experiments/results
+GOCACHE="$PWD/.cache/go-build" go run ./cmd/aort-experiment --name e1-real-scheduler --runs 5 --out experiments/results
+GOCACHE="$PWD/.cache/go-build" go run ./cmd/aort-experiment --name e2-real-fault --runs 5 --out experiments/results
 curl -s http://127.0.0.1:8080/api/experiments/results
 ```
 
@@ -144,6 +146,11 @@ Outputs:
 - `experiments/results/e1-real-scheduler.json`
 - `experiments/results/e2-real-fault.json`
 - Matching CSV files for each experiment.
+
+`e1-scheduler` and `e2-fault` are retained as legacy
+simulation/synthetic baselines. Current scheduler/fault evidence should use
+`e1-real-scheduler` and `e2-real-fault`, which call the real-runtime benchmark
+functions and write `evidence_mode=real-runtime`.
 
 ## openEuler Smoke Test
 

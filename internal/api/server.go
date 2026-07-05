@@ -815,6 +815,29 @@ func (s *Server) evidenceReport() evidenceResponse {
 			Reason:  "Not implemented in this build; kernel observer intentionally reports degraded-proxy.",
 		},
 		{
+			Name:     "Software Real Demo",
+			Status:   "real-runtime",
+			Mode:     "software-real",
+			Endpoint: "/api/demo/software-real/run",
+			Signals: []string{
+				"POST /api/demo/software-real/run",
+				"GET /api/demo/software-real/status",
+				"GET /api/demo/software-real/result",
+				"agent.spawn",
+				"scheduler decision",
+				"context.materialize",
+				"context.write_delta",
+				"llm.call",
+				"tool.exec",
+				"ipc.publish",
+				"ipc.poll",
+				"agent.report",
+				"checkpoint",
+				"test failure recovery",
+			},
+			Reason: "Planner -> Coder -> Tester -> Reviewer -> Fixer -> Reporter demo runs through Runtime syscalls, scheduler, CVM, IPC, checkpoint, and recovery paths.",
+		},
+		{
 			Name:    "LLM Provider",
 			Status:  llmEvidenceStatus(),
 			Mode:    llmEvidenceMode(),
@@ -1088,10 +1111,10 @@ func loadExperimentResults() experimentResultsResponse {
 	base := filepath.Join("experiments", "results")
 	response := experimentResultsResponse{}
 	if !readJSON(filepath.Join(base, "e1-scheduler.json"), &response.E1Scheduler) {
-		response.E1Scheduler = experiment.RunE1Scheduler(5)
+		response.E1Scheduler = experiment.RunLegacyE1Scheduler(5)
 	}
 	if !readJSON(filepath.Join(base, "e2-fault.json"), &response.E2Fault) {
-		response.E2Fault = experiment.RunE2FaultIsolation(5)
+		response.E2Fault = experiment.RunLegacyE2FaultIsolation(5)
 	}
 	if !readJSON(filepath.Join(base, "e3-context.json"), &response.E3Context) {
 		response.E3Context = experiment.RunE3ContextSharing(5)

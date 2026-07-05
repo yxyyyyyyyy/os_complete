@@ -8,12 +8,12 @@
     "unaffected_agents": 5,
     "total_agents": 6,
     "recovery_action": "kill_tool_process_and_resume_agent",
-    "recovery_time_ms": 11,
+    "recovery_time_ms": 10,
     "checkpoint_used": true,
     "final_status": "recovered",
     "system_survived": true,
     "cascade_failure": false,
-    "supervisor_fault_id": "20260705163342.355043000",
+    "supervisor_fault_id": "20260705183629.024856000",
     "fault_evidence": {
       "error": "tool timeout",
       "syscall_status": "TIMEOUT"
@@ -33,7 +33,7 @@
     "final_status": "recovered",
     "system_survived": true,
     "cascade_failure": false,
-    "supervisor_fault_id": "20260705163342.361017000",
+    "supervisor_fault_id": "20260705183629.030550000",
     "fault_evidence": {
       "exit_error": "exit status 9",
       "syscall_status": "ERROR"
@@ -48,12 +48,12 @@
     "unaffected_agents": 5,
     "total_agents": 6,
     "recovery_action": "restart_agent_capsule_from_checkpoint",
-    "recovery_time_ms": 5,
+    "recovery_time_ms": 4,
     "checkpoint_used": true,
     "final_status": "recovered",
     "system_survived": true,
     "cascade_failure": false,
-    "supervisor_fault_id": "20260705163342.366693000",
+    "supervisor_fault_id": "20260705183629.035334000",
     "fault_evidence": {
       "capsule_signal": "cgroup.kill invoked",
       "exit_error": "signal: terminated",
@@ -69,12 +69,12 @@
     "unaffected_agents": 5,
     "total_agents": 6,
     "recovery_action": "restart_agent_with_lower_memory_pressure_from_checkpoint",
-    "recovery_time_ms": 5,
+    "recovery_time_ms": 4,
     "checkpoint_used": true,
     "final_status": "recovered",
     "system_survived": true,
     "cascade_failure": false,
-    "supervisor_fault_id": "20260705163342.372492000",
+    "supervisor_fault_id": "20260705183629.039672000",
     "fault_evidence": {
       "limit_artifact": "experiments/results/openeuler_cgroupv2_limits/memory_limit_enforced.json",
       "limit_cgroup_path": "/sys/fs/cgroup/aort.slice/aort-limit-memory-12625",
@@ -96,12 +96,12 @@
     "unaffected_agents": 5,
     "total_agents": 6,
     "recovery_action": "reject_spawn_storm_and_resume_from_checkpoint",
-    "recovery_time_ms": 5,
+    "recovery_time_ms": 3,
     "checkpoint_used": true,
     "final_status": "recovered",
     "system_survived": true,
     "cascade_failure": false,
-    "supervisor_fault_id": "20260705163342.377834000",
+    "supervisor_fault_id": "20260705183629.043664000",
     "fault_evidence": {
       "fork_errors": [
         "[Errno 11] Resource temporarily unavailable"

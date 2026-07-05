@@ -68,7 +68,7 @@
 | [x] | daemonkill recovery demo script at `scripts/demo-daemonkill.sh`. | `scripts/demo-daemonkill.sh` |
 | [x] | openEuler deployment guide and runnable helper scripts. | `docs/deployment_openeuler.md`, `scripts/check_openeuler_env.sh`, `scripts/smoke_openeuler.sh` |
 | [x] | software-real end-to-end demo API and result evidence. | `experiments/results/software_real_demo/result.json`, `docs/phase_reports/PHASE_20_SOFTWARE_REAL_DEMO.md` |
-| [x] | DeepSeek provider exists with environment-only API key loading and mock fallback. | `internal/llm/deepseek.go`, `scripts/smoke_deepseek.sh`, `experiments/results/deepseek_smoke/summary.json` |
+| [x] | DeepSeek provider exists with environment-only API key loading and mock fallback. | `internal/llm/deepseek_provider.go`, `scripts/smoke_deepseek.sh`, `experiments/results/deepseek_smoke/summary.json` |
 
 ## Remaining Enhancement Targets
 

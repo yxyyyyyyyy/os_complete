@@ -49,7 +49,7 @@ type E3ContextResult struct {
 	MaterializeTimeMS   int64  `json:"materialize_time_ms"`
 }
 
-func RunE1Scheduler(runs int) []E1SchedulerResult {
+func RunLegacyE1Scheduler(runs int) []E1SchedulerResult {
 	if runs <= 0 {
 		runs = 5
 	}
@@ -94,7 +94,7 @@ func RunE1Scheduler(runs int) []E1SchedulerResult {
 	return results
 }
 
-func RunE2FaultIsolation(runs int) []E2FaultResult {
+func RunLegacyE2FaultIsolation(runs int) []E2FaultResult {
 	if runs <= 0 {
 		runs = 5
 	}

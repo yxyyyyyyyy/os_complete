@@ -35,8 +35,14 @@ Runtime capsule status is `capsule_mode=real` and `real_cgroup_v2=true`.
 Historical degraded records remain useful as old-environment comparisons only.
 They do not represent the current openEuler state.
 
-## Remaining Gaps
+## Phase-Boundary Gaps Superseded Later
 
-- E1/E2 still needed real-runtime benchmarks at this phase boundary.
-- The software demo still needed a fuller end-to-end real-runtime path.
-- DeepSeek provider still needed real API integration.
+- At this phase boundary, E1/E2 still needed real-runtime benchmarks; current
+  evidence is now in `docs/phase_reports/PHASE_18_REAL_SCHEDULER_BENCHMARK.md`
+  and `docs/phase_reports/PHASE_19_REAL_FAULT_ISOLATION.md`.
+- At this phase boundary, the software demo still needed a fuller
+  end-to-end real-runtime path; current evidence is now in
+  `docs/phase_reports/PHASE_20_SOFTWARE_REAL_DEMO.md`.
+- At this phase boundary, DeepSeek still needed provider integration; current
+  code now includes `internal/llm/deepseek_provider.go` with environment-only
+  API key loading and mock fallback.

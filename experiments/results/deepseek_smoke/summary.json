@@ -1,8 +1,9 @@
 {
-  "provider": "mock",
-  "requested_provider": "deepseek",
-  "fallback": true,
-  "fallback_reason": "no_api_key",
-  "evidence_mode": "mock",
-  "status": "skipped"
+  "provider": "deepseek",
+  "model": "deepseek-v4-flash",
+  "fallback": false,
+  "evidence_mode": "real-api",
+  "duration_ms": 1101,
+  "tokens": 31,
+  "status": "passed"
 }

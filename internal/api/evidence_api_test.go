@@ -41,9 +41,10 @@ func TestEvidenceEndpointReportsModuleModes(t *testing.T) {
 
 	var body struct {
 		Modules []struct {
-			Name   string `json:"name"`
-			Status string `json:"status"`
-			Mode   string `json:"mode"`
+			Name     string `json:"name"`
+			Status   string `json:"status"`
+			Mode     string `json:"mode"`
+			Endpoint string `json:"endpoint"`
 		} `json:"modules"`
 	}
 	if err := json.Unmarshal(rec.Body.Bytes(), &body); err != nil {
@@ -52,9 +53,11 @@ func TestEvidenceEndpointReportsModuleModes(t *testing.T) {
 
 	modes := map[string]string{}
 	statuses := map[string]string{}
+	endpoints := map[string]string{}
 	for _, module := range body.Modules {
 		modes[module.Name] = module.Mode
 		statuses[module.Name] = module.Status
+		endpoints[module.Name] = module.Endpoint
 	}
 	if statuses["Cgroup Capsule"] != "real" || modes["Cgroup Capsule"] != "cgroup-v2" {
 		t.Fatalf("cgroup evidence status=%q mode=%q body=%s", statuses["Cgroup Capsule"], modes["Cgroup Capsule"], rec.Body.String())
@@ -67,6 +70,9 @@ func TestEvidenceEndpointReportsModuleModes(t *testing.T) {
 	}
 	if statuses["eBPF Observer"] != "planned" {
 		t.Fatalf("ebpf observer status=%q", statuses["eBPF Observer"])
+	}
+	if statuses["Software Real Demo"] != "real-runtime" || endpoints["Software Real Demo"] != "/api/demo/software-real/run" {
+		t.Fatalf("software-real evidence missing status=%q endpoint=%q body=%s", statuses["Software Real Demo"], endpoints["Software Real Demo"], rec.Body.String())
 	}
 }
 

@@ -78,7 +78,7 @@ AORT-R real cgroup v2 capsule：
 | Kernel Observer | `degraded` | 当前为 `degraded-proxy`，不宣称 eBPF real。 |
 | PSI Monitor | `unavailable/degraded` | 当前 openEuler 实例无 `/proc/pressure`。 |
 | eBPF Observer | `planned` | 未实现。 |
-| LLM Provider | `mock` | 默认 mock provider；DeepSeek/llama.cpp 未启用。 |
+| LLM Provider | `mock` at PHASE_16 boundary | PHASE_16 smoke 默认 mock provider；当前代码已新增 `internal/llm/deepseek_provider.go`，DeepSeek 凭据只从环境变量读取并可 fallback 到 mock。 |
 
 ## 重新验证命令
 

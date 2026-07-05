@@ -37,7 +37,7 @@ func run(name string, runs int, outDir string) error {
 		_, err := experiment.RunRealExperimentSuite(runs, outDir)
 		return err
 	case "e1-scheduler":
-		results := experiment.RunE1Scheduler(runs)
+		results := experiment.RunLegacyE1Scheduler(runs)
 		if err := experiment.WriteJSON(filepath.Join(outDir, "e1-scheduler.json"), results); err != nil {
 			return err
 		}
@@ -45,7 +45,7 @@ func run(name string, runs int, outDir string) error {
 			return err
 		}
 	case "e2-fault":
-		results := experiment.RunE2FaultIsolation(runs)
+		results := experiment.RunLegacyE2FaultIsolation(runs)
 		if err := experiment.WriteJSON(filepath.Join(outDir, "e2-fault.json"), results); err != nil {
 			return err
 		}

@@ -2,8 +2,8 @@ package experiment
 
 import "testing"
 
-func TestRunE1SchedulerProducesAllPolicies(t *testing.T) {
-	results := RunE1Scheduler(5)
+func TestRunLegacyE1SchedulerProducesAllPolicies(t *testing.T) {
+	results := RunLegacyE1Scheduler(5)
 	if len(results) != 3 {
 		t.Fatalf("results = %#v", results)
 	}
@@ -21,8 +21,8 @@ func TestRunE1SchedulerProducesAllPolicies(t *testing.T) {
 	}
 }
 
-func TestRunE2FaultIsolationProducesCapsuleComparison(t *testing.T) {
-	results := RunE2FaultIsolation(5)
+func TestRunLegacyE2FaultIsolationProducesCapsuleComparison(t *testing.T) {
+	results := RunLegacyE2FaultIsolation(5)
 	if len(results) != 2 {
 		t.Fatalf("results = %#v", results)
 	}
