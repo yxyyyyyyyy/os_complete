@@ -84,7 +84,7 @@ func TestRunRealExperimentSuiteProducesP0Artifacts(t *testing.T) {
 		if result.FaultType == "memory_limit_exceeded" && result.FaultEvidence["limit_evidence_mode"] != "real-cgroup-v2" {
 			t.Fatalf("memory limit evidence was not real cgroup v2: %#v", result)
 		}
-		if result.FaultType == "pids_limit_exceeded" && result.FaultEvidence["syscall_status"] != "ERROR" {
+		if result.FaultType == "pids_limit_exceeded" && result.FaultEvidence["resource_limit_enforced"] != true {
 			t.Fatalf("pids limit was not enforced: %#v", result)
 		}
 		if result.FaultType == "pids_limit_exceeded" && result.FaultEvidence["limit_evidence_mode"] != "real-cgroup-v2" {
