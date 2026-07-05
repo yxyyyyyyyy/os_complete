@@ -16,9 +16,9 @@ func TestRunRealExperimentSuiteProducesP0Artifacts(t *testing.T) {
 	if len(suite.E1Scheduler) != 3 {
 		t.Fatalf("E1 policies = %#v", suite.E1Scheduler)
 	}
-	e1Reuse := map[string]float64{}
+	e1ByPolicy := map[string]E1RealSchedulerResult{}
 	for _, result := range suite.E1Scheduler {
-		e1Reuse[result.Policy] = result.ContextReuseRate
+		e1ByPolicy[result.Policy] = result
 		if result.Experiment != "E1_real_scheduler_benchmark" || result.EvidenceMode != "real-runtime" {
 			t.Fatalf("bad E1 identity: %#v", result)
 		}
@@ -31,8 +31,26 @@ func TestRunRealExperimentSuiteProducesP0Artifacts(t *testing.T) {
 		if result.SyscallCount < result.SchedulerDecisionCount*2 {
 			t.Fatalf("missing E1 syscall count: %#v", result)
 		}
+		if result.DuplicateTokens <= 0 || result.MaterializeMS <= 0 {
+			t.Fatalf("missing E1 materialize cost evidence: %#v", result)
+		}
 	}
-	if e1Reuse["token-cfs-prefix-affinity"] < e1Reuse["fifo"] {
+	fifo := e1ByPolicy["fifo"]
+	tokenCFS := e1ByPolicy["token-cfs"]
+	prefix := e1ByPolicy["token-cfs-prefix-affinity"]
+	if fifo.MaterializeMS <= tokenCFS.MaterializeMS || tokenCFS.MaterializeMS <= prefix.MaterializeMS {
+		t.Fatalf("expected FIFO > token-CFS > prefix-affinity materialize cost: %#v", suite.E1Scheduler)
+	}
+	if fifo.P95LatencyMS <= tokenCFS.P95LatencyMS || tokenCFS.P95LatencyMS <= prefix.P95LatencyMS {
+		t.Fatalf("expected FIFO > token-CFS > prefix-affinity p95 latency: %#v", suite.E1Scheduler)
+	}
+	if prefix.MaterializeMS > tokenCFS.MaterializeMS*85/100 {
+		t.Fatalf("prefix-affinity materialize cost should improve at least 15%% over token-CFS: token=%d prefix=%d all=%#v", tokenCFS.MaterializeMS, prefix.MaterializeMS, suite.E1Scheduler)
+	}
+	if prefix.SavedMS <= tokenCFS.SavedMS || tokenCFS.SavedMS <= fifo.SavedMS {
+		t.Fatalf("expected prefix-affinity to save the most materialize time: %#v", suite.E1Scheduler)
+	}
+	if prefix.ContextReuseRate < fifo.ContextReuseRate {
 		t.Fatalf("prefix-affinity should preserve at least FIFO context reuse: %#v", suite.E1Scheduler)
 	}
 

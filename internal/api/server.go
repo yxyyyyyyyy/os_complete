@@ -1312,12 +1312,14 @@ func taskFromSnapshot(snapshot checkpoint.Snapshot, status string) demo.Result {
 			state = avp.StateReady
 		}
 		result.Agents = append(result.Agents, demo.Agent{
-			ID:         agent.AgentID,
-			Role:       agent.Role,
-			State:      string(state),
-			PID:        agent.PID,
-			LastSeen:   agent.LastSeen,
-			CgroupPath: agent.CgroupPath,
+			ID:                  agent.AgentID,
+			Role:                agent.Role,
+			State:               string(state),
+			PID:                 agent.PID,
+			LastSeen:            agent.LastSeen,
+			CapsuleMode:         agent.CapsuleMode,
+			CapsuleEvidenceMode: capsuleEvidenceMode(agent.CapsuleMode, agent.CgroupPath),
+			CgroupPath:          agent.CgroupPath,
 		})
 		result.DAG = append(result.DAG, demo.DAGNode{
 			ID:           agent.AgentID,
@@ -1413,8 +1415,10 @@ func (s *Server) spawnAgent(req syscallgw.SpawnRequest) (syscallgw.SpawnResult, 
 	}
 	state := string(avp.StateCreated)
 	if s.registry != nil {
-		agent := s.registry.CreateAgent(agentID, req.Role, req.TaskID)
-		agent.Dependencies = append([]string(nil), req.Dependencies...)
+		agent, ok := s.registry.Get(agentID)
+		if !ok {
+			agent = s.registry.CreateAgent(agentID, req.Role, req.TaskID)
+		}
 		state = string(agent.State)
 	}
 	if req.ParentAgentID != "" {
@@ -1481,9 +1485,20 @@ func (s *Server) agentsForTask(task demo.Result) []demo.Agent {
 		return task.Agents
 	}
 	agents := s.registry.ListByTask(task.TaskID)
-	out := make([]demo.Agent, 0, len(agents))
+	if len(agents) == 0 {
+		return task.Agents
+	}
+	byID := make(map[string]avp.AVP, len(agents))
 	for _, agent := range s.enrichedAgents(agents) {
-		out = append(out, agentToDemo(agent))
+		byID[agent.AgentID] = agent
+	}
+	out := make([]demo.Agent, 0, len(task.Agents))
+	for _, original := range task.Agents {
+		if agent, ok := byID[original.ID]; ok {
+			out = append(out, agentToDemo(agent))
+			continue
+		}
+		out = append(out, original)
 	}
 	return out
 }
@@ -1512,12 +1527,27 @@ func (s *Server) enrichedAgents(agents []avp.AVP) []avp.AVP {
 
 func agentToDemo(agent avp.AVP) demo.Agent {
 	return demo.Agent{
-		ID:         agent.AgentID,
-		Role:       agent.Role,
-		State:      string(agent.State),
-		PID:        agent.PID,
-		LastSeen:   agent.LastSeen,
-		CgroupPath: agent.CgroupPath,
+		ID:                  agent.AgentID,
+		Role:                agent.Role,
+		State:               string(agent.State),
+		PID:                 agent.PID,
+		LastSeen:            agent.LastSeen,
+		CapsuleMode:         agent.CapsuleMode,
+		CapsuleEvidenceMode: capsuleEvidenceMode(agent.CapsuleMode, agent.CgroupPath),
+		CgroupPath:          agent.CgroupPath,
+	}
+}
+
+func capsuleEvidenceMode(mode, cgroupPath string) string {
+	switch {
+	case mode == capsule.ModeReal && strings.HasPrefix(cgroupPath, "/sys/fs/cgroup/"):
+		return "real-cgroup-v2"
+	case mode == capsule.ModeReal && cgroupPath != "":
+		return "test-cgroup-v2"
+	case mode == capsule.ModeDegraded:
+		return "degraded"
+	default:
+		return ""
 	}
 }
 

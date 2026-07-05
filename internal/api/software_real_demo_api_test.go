@@ -9,10 +9,15 @@ import (
 	"testing"
 
 	"aort-r/internal/config"
+	"aort-r/internal/worker"
 )
 
 func TestSoftwareRealDemoRunProducesRuntimeEvidence(t *testing.T) {
 	srv := NewServer(config.Config{HTTPAddr: "127.0.0.1:8080", Mode: "mock", DataDir: t.TempDir()})
+	server := srv.(*Server)
+	server.registry = worker.NewRegistry(server.sink)
+	server.capsules = fakeRealCapsuleManager(t)
+
 	req := httptest.NewRequest(http.MethodPost, "/api/demo/software-real/run", bytes.NewBufferString(`{"requirement":"实现一个带测试的字符串工具函数"}`))
 	req.Header.Set("Content-Type", "application/json")
 	rec := httptest.NewRecorder()
@@ -42,6 +47,29 @@ func TestSoftwareRealDemoRunProducesRuntimeEvidence(t *testing.T) {
 	}
 	if result["checkpoint_used"] != true || int(result["checkpoint_count"].(float64)) < 1 {
 		t.Fatalf("checkpoint evidence result=%#v", result)
+	}
+	agents, ok := result["agents"].([]any)
+	if !ok || len(agents) != 6 {
+		t.Fatalf("agent evidence missing result=%#v", result)
+	}
+	for _, raw := range agents {
+		agent, ok := raw.(map[string]any)
+		if !ok {
+			t.Fatalf("bad agent payload %#v", raw)
+		}
+		if int(agent["pid"].(float64)) <= 0 {
+			t.Fatalf("agent pid missing: %#v", agent)
+		}
+		if agent["capsule_mode"] != "real" {
+			t.Fatalf("agent capsule_mode missing: %#v", agent)
+		}
+		if agent["capsule_evidence_mode"] != "test-cgroup-v2" {
+			t.Fatalf("agent capsule_evidence_mode should mark local cgroup fixture: %#v", agent)
+		}
+		path, _ := agent["cgroup_path"].(string)
+		if path == "" || strings.HasPrefix(path, "degraded://") {
+			t.Fatalf("agent cgroup_path missing real capsule path: %#v", agent)
+		}
 	}
 
 	demoID := result["demo_id"].(string)

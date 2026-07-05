@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"time"
 
@@ -15,6 +16,7 @@ import (
 	"aort-r/internal/events"
 	"aort-r/internal/supervisor"
 	syscallgw "aort-r/internal/syscall"
+	"aort-r/internal/worker"
 )
 
 type softwareRealDemoRequest struct {
@@ -161,6 +163,9 @@ func (s *Server) runSoftwareRealDemo(ctx context.Context, requirement string) (s
 	if err := s.seedSoftwareRealContext(requirement, task.Agents); err != nil {
 		return softwareRealDemoResult{}, demo.Result{}, err
 	}
+	if err := s.prepareSoftwareRealAgentCapsules(ctx, task); err != nil {
+		return softwareRealDemoResult{}, demo.Result{}, err
+	}
 	testEvidence, err := s.runSoftwareRealAgentSteps(ctx, demoID, task)
 	if err != nil {
 		return softwareRealDemoResult{}, demo.Result{}, err
@@ -201,6 +206,8 @@ func (s *Server) runSoftwareRealDemo(ctx context.Context, requirement string) (s
 	}
 
 	task.Status = "success"
+	s.completeSoftwareRealAgents(task)
+	task.Agents = s.agentsForTask(task)
 	s.saveCheckpoint(task, 1)
 	checkpointCount, checkpointMode := s.softwareRealCheckpointEvidence(demoID)
 	s.publishSoftwareRealEvent(demoID, demoID+"-reporter", "software_real.reporter_completed", map[string]any{
@@ -239,6 +246,110 @@ func (s *Server) runSoftwareRealDemo(ctx context.Context, requirement string) (s
 		CompletedAt:            time.Now().UnixMilli(),
 	}
 	return result, task, nil
+}
+
+func (s *Server) prepareSoftwareRealAgentCapsules(ctx context.Context, task demo.Result) error {
+	if s.registry == nil {
+		return nil
+	}
+	for _, agent := range task.Agents {
+		if _, ok := s.registry.Get(agent.ID); !ok {
+			s.registry.CreateAgent(agent.ID, agent.Role, task.TaskID)
+		}
+		if s.launcher.Command != "" && s.cfg.SocketPath != "" {
+			if _, err := s.launcher.Start(ctx, worker.Spec{AgentID: agent.ID, Role: agent.Role, TaskID: task.TaskID}); err != nil {
+				return fmt.Errorf("start software-real worker %s: %w", agent.ID, err)
+			}
+			if err := s.waitForSoftwareRealCapsule(ctx, agent.ID, 20*time.Second); err != nil {
+				return err
+			}
+			continue
+		}
+		pid, err := startSoftwareRealFallbackWorker(ctx)
+		if err != nil {
+			return fmt.Errorf("start software-real fallback worker %s: %w", agent.ID, err)
+		}
+		s.registry.HandleMessage(worker.Message{
+			Type:    worker.MessageRegister,
+			AgentID: agent.ID,
+			Role:    agent.Role,
+			TaskID:  task.TaskID,
+			PID:     pid,
+		})
+		if err := s.attachSoftwareRealCapsule(agent.ID, task.TaskID, pid); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func startSoftwareRealFallbackWorker(ctx context.Context) (int, error) {
+	cmd := exec.CommandContext(ctx, "sleep", "10")
+	if err := cmd.Start(); err != nil {
+		return 0, err
+	}
+	go func() {
+		_ = cmd.Wait()
+	}()
+	return cmd.Process.Pid, nil
+}
+
+func (s *Server) waitForSoftwareRealCapsule(ctx context.Context, agentID string, timeout time.Duration) error {
+	deadline := time.NewTimer(timeout)
+	defer deadline.Stop()
+	ticker := time.NewTicker(25 * time.Millisecond)
+	defer ticker.Stop()
+	for {
+		select {
+		case <-ctx.Done():
+			return ctx.Err()
+		case <-deadline.C:
+			return fmt.Errorf("software-real worker %s did not register before timeout", agentID)
+		case <-ticker.C:
+			agent, ok := s.registry.Get(agentID)
+			if !ok || agent.PID == 0 {
+				continue
+			}
+			if err := s.attachSoftwareRealCapsule(agentID, agent.TaskID, agent.PID); err != nil {
+				return err
+			}
+			return nil
+		}
+	}
+}
+
+func (s *Server) attachSoftwareRealCapsule(agentID, taskID string, pid int) error {
+	if s.capsules == nil {
+		return nil
+	}
+	if rt, ok := s.capsules.Runtime(agentID); ok {
+		s.registry.SetCapsule(agentID, rt.CgroupPath, rt.Mode)
+		return nil
+	}
+	rt, err := s.capsules.Prepare(agentID, pid)
+	if err != nil {
+		s.sink.Publish(events.New("software_real.capsule_failed", taskID, agentID, "runtime", map[string]any{
+			"error": err.Error(),
+			"pid":   pid,
+		}))
+		return fmt.Errorf("prepare software-real capsule %s: %w", agentID, err)
+	}
+	s.registry.SetCapsule(agentID, rt.CgroupPath, rt.Mode)
+	s.publishSoftwareRealEvent(taskID, agentID, "software_real.capsule_attached", map[string]any{
+		"pid":          pid,
+		"capsule_mode": rt.Mode,
+		"cgroup_path":  rt.CgroupPath,
+	})
+	return nil
+}
+
+func (s *Server) completeSoftwareRealAgents(task demo.Result) {
+	if s.registry == nil {
+		return
+	}
+	for _, agent := range task.Agents {
+		s.registry.SetState(agent.ID, avp.StateCompleted)
+	}
 }
 
 func (s *Server) softwareRealCheckpointEvidence(taskID string) (int, string) {

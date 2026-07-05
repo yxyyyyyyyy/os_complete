@@ -45,4 +45,8 @@ They do not represent the current openEuler state.
   `docs/phase_reports/PHASE_20_SOFTWARE_REAL_DEMO.md`.
 - At this phase boundary, DeepSeek still needed provider integration; current
   code now includes `internal/llm/deepseek_provider.go` with environment-only
-  API key loading and mock fallback.
+  API key loading, mock fallback, and a real API smoke summary in
+  `experiments/results/deepseek_smoke/summary.json`.
+
+For the latest delivery-wide reconciliation, see
+`docs/phase_reports/PHASE_21_DELIVERY_FINAL_SYNC_REPORT.md`.

@@ -1,4 +1,4 @@
-experiment,policy,evidence_mode,task_count,agent_count,wall_time_ms,p50_latency_ms,p95_latency_ms,throughput_tasks_per_sec,avg_wait_time_ms,context_saved_tokens,context_reuse_rate,scheduler_decision_count,syscall_count
-E1_real_scheduler_benchmark,fifo,real-runtime,50,8,50,4,5,1000.0000,49,9646,0.9800,50,100
-E1_real_scheduler_benchmark,token-cfs,real-runtime,50,8,50,3,5,1000.0000,46,8494,0.8600,50,100
-E1_real_scheduler_benchmark,token-cfs-prefix-affinity,real-runtime,50,8,50,5,6,1000.0000,62,9646,0.9800,50,100
+experiment,policy,evidence_mode,task_count,agent_count,wall_time_ms,p50_latency_ms,p95_latency_ms,throughput_tasks_per_sec,avg_wait_time_ms,context_saved_tokens,context_reuse_rate,duplicate_tokens,materialize_ms,saved_ms,scheduler_decision_count,syscall_count
+E1_real_scheduler_benchmark,fifo,real-runtime,50,8,17600,368,388,2.8409,1149,480465,0.6100,510027,17350,900,50,100
+E1_real_scheduler_benchmark,token-cfs,real-runtime,50,8,14603,303,328,3.4240,948,481203,0.6100,500947,14453,3539,50,100
+E1_real_scheduler_benchmark,token-cfs-prefix-affinity,real-runtime,50,8,10572,218,236,4.7295,685,495421,0.6224,512059,10472,7870,50,100

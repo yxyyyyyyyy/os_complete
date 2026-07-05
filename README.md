@@ -72,6 +72,16 @@ documentation, or experiment results. Failed DeepSeek calls are explicitly
 marked as `fallback=true`, `fallback_reason=no_api_key` or `api_error`, and
 `evidence_mode=mock`.
 
+Run the optional smoke with:
+
+```bash
+bash scripts/smoke_deepseek.sh
+```
+
+With `DEEPSEEK_API_KEY` set, the smoke writes a redacted
+`experiments/results/deepseek_smoke/summary.json` labeled `real-api`; without a
+key it skips without failing and records explicit mock fallback.
+
 ## Evidence Modes
 
 - `real`: Evidence comes from the running Runtime or OS surface directly.
@@ -229,7 +239,8 @@ See [docs/deployment_openeuler.md](docs/deployment_openeuler.md) for deployment 
   targets. Degraded-copy workspace rollback, lightweight checkpoint startup
   recovery, PSI/degraded pressure monitoring, and honest degraded-proxy kernel
   exec evidence are implemented and test-covered.
-- DeepSeek provider is implemented with environment-only credentials and mock
-  fallback; local llama.cpp remains a planned provider path.
+- DeepSeek provider is implemented with environment-only credentials, mock
+  fallback, and a redacted real-api smoke summary; local llama.cpp remains a
+  planned provider path.
 - Experiments are marked as real-cgroup-v2, real-runtime, real-api, mock,
   degraded, or simulation according to the available evidence.

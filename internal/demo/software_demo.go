@@ -13,12 +13,14 @@ type Runner struct {
 }
 
 type Agent struct {
-	ID         string `json:"id"`
-	Role       string `json:"role"`
-	State      string `json:"state"`
-	PID        int    `json:"pid"`
-	LastSeen   int64  `json:"last_seen"`
-	CgroupPath string `json:"cgroup_path"`
+	ID                  string `json:"id"`
+	Role                string `json:"role"`
+	State               string `json:"state"`
+	PID                 int    `json:"pid"`
+	LastSeen            int64  `json:"last_seen"`
+	CapsuleMode         string `json:"capsule_mode,omitempty"`
+	CapsuleEvidenceMode string `json:"capsule_evidence_mode,omitempty"`
+	CgroupPath          string `json:"cgroup_path"`
 }
 
 type DAGNode struct {

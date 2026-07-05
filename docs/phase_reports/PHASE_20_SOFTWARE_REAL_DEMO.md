@@ -38,6 +38,32 @@ It triggers runtime evidence for:
 - checkpoint
 - test failure recovery and tool timeout recovery
 
+## Worker And Capsule Evidence
+
+When the worker registry and capsule manager are enabled, `software-real`
+creates/registers the six demo Agents as worker-backed runtime Agents before
+the end-to-end flow runs. The result artifact now records each Agent's
+`pid`, `capsule_mode`, and `cgroup_path`.
+
+On openEuler 24.03 LTS with `cgroup_root=/sys/fs/cgroup/aort.slice`, those
+records use real cgroup v2 capsule paths such as:
+
+```json
+{
+  "pid": 12345,
+  "capsule_mode": "real",
+  "cgroup_path": "/sys/fs/cgroup/aort.slice/software-real-...-planner"
+}
+```
+
+The runtime result remains labeled `evidence_mode=real-runtime`; cgroup proof
+is carried per Agent through `capsule_mode`, `capsule_evidence_mode`, and
+`cgroup_path`. Live openEuler capsule rows use
+`capsule_evidence_mode=real-cgroup-v2`; local test-root rows use
+`capsule_evidence_mode=test-cgroup-v2` so they are not confused with
+`/sys/fs/cgroup` evidence. OpenEuler live capsule proof remains labeled
+`real-cgroup-v2` in the openEuler evidence directories.
+
 ## Go Test Recovery
 
 The Tester creates a tiny Go module with `NormalizeSpace` implemented

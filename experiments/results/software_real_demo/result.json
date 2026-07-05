@@ -1,57 +1,69 @@
 {
-  "demo_id": "software-real-1783248493336172000",
-  "task_id": "software-real-1783248493336172000",
+  "demo_id": "software-real-1783255467352167000",
+  "task_id": "software-real-1783255467352167000",
   "requirement": "实现一个带测试的字符串工具函数",
   "evidence_mode": "real-runtime",
   "final_status": "success",
   "agents": [
     {
-      "id": "software-real-1783248493336172000-planner",
+      "id": "software-real-1783255467352167000-planner",
       "role": "planner",
       "state": "COMPLETED",
-      "pid": 0,
-      "last_seen": 0,
-      "cgroup_path": ""
+      "pid": 91046,
+      "last_seen": 1783255467353,
+      "capsule_mode": "real",
+      "capsule_evidence_mode": "test-cgroup-v2",
+      "cgroup_path": "/var/folders/5k/_k2nnpwd43s6qsf0m6btyzlc0000gn/T/TestSoftwareRealDemoRunProducesRuntimeEvidence20316775/002/software-real-1783255467352167000-planner"
     },
     {
-      "id": "software-real-1783248493336172000-coder",
+      "id": "software-real-1783255467352167000-coder",
       "role": "coder",
       "state": "COMPLETED",
-      "pid": 0,
-      "last_seen": 0,
-      "cgroup_path": ""
+      "pid": 91047,
+      "last_seen": 1783255467355,
+      "capsule_mode": "real",
+      "capsule_evidence_mode": "test-cgroup-v2",
+      "cgroup_path": "/var/folders/5k/_k2nnpwd43s6qsf0m6btyzlc0000gn/T/TestSoftwareRealDemoRunProducesRuntimeEvidence20316775/002/software-real-1783255467352167000-coder"
     },
     {
-      "id": "software-real-1783248493336172000-tester",
+      "id": "software-real-1783255467352167000-tester",
       "role": "tester",
       "state": "COMPLETED",
-      "pid": 0,
-      "last_seen": 0,
-      "cgroup_path": ""
+      "pid": 91048,
+      "last_seen": 1783255467358,
+      "capsule_mode": "real",
+      "capsule_evidence_mode": "test-cgroup-v2",
+      "cgroup_path": "/var/folders/5k/_k2nnpwd43s6qsf0m6btyzlc0000gn/T/TestSoftwareRealDemoRunProducesRuntimeEvidence20316775/002/software-real-1783255467352167000-tester"
     },
     {
-      "id": "software-real-1783248493336172000-reviewer",
+      "id": "software-real-1783255467352167000-reviewer",
       "role": "reviewer",
       "state": "COMPLETED",
-      "pid": 0,
-      "last_seen": 0,
-      "cgroup_path": ""
+      "pid": 91049,
+      "last_seen": 1783255467360,
+      "capsule_mode": "real",
+      "capsule_evidence_mode": "test-cgroup-v2",
+      "cgroup_path": "/var/folders/5k/_k2nnpwd43s6qsf0m6btyzlc0000gn/T/TestSoftwareRealDemoRunProducesRuntimeEvidence20316775/002/software-real-1783255467352167000-reviewer"
     },
     {
-      "id": "software-real-1783248493336172000-fixer",
+      "id": "software-real-1783255467352167000-fixer",
       "role": "fixer",
       "state": "COMPLETED",
-      "pid": 0,
-      "last_seen": 0,
-      "cgroup_path": ""
+      "pid": 91050,
+      "last_seen": 1783255467362,
+      "capsule_mode": "real",
+      "capsule_evidence_mode": "test-cgroup-v2",
+      "cgroup_path": "/var/folders/5k/_k2nnpwd43s6qsf0m6btyzlc0000gn/T/TestSoftwareRealDemoRunProducesRuntimeEvidence20316775/002/software-real-1783255467352167000-fixer"
     },
     {
-      "id": "software-real-1783248493336172000-reporter",
+      "id": "software-real-1783255467352167000-reporter",
       "role": "reporter",
       "state": "COMPLETED",
-      "pid": 0,
-      "last_seen": 0,
-      "cgroup_path": ""
+      "pid": 91051,
+      "last_seen": 1783255468830,
+      "capsule_mode": "real",
+      "capsule_evidence_mode": "test-cgroup-v2",
+      "cgroup_path": "/var/folders/5k/_k2nnpwd43s6qsf0m6btyzlc0000gn/T/TestSoftwareRealDemoRunProducesRuntimeEvidence20316775/002/software-real-1783255467352167000-reporter"
     }
   ],
   "dag_nodes": 6,
@@ -69,8 +81,8 @@
   "checkpoint_mode": "runtime-state",
   "first_test_status": "failed",
   "second_test_status": "passed",
-  "first_test_output": "--- FAIL: TestNormalizeSpace (0.00s)\n    strings_test.go:8: NormalizeSpace() = \" alpha   beta \"\nFAIL\nFAIL\texample.com/aortstrings\t0.391s\nFAIL\n",
-  "second_test_output": "ok  \texample.com/aortstrings\t0.404s\n",
-  "started_at": 1783248493336,
-  "completed_at": 1783248494448
+  "first_test_output": "--- FAIL: TestNormalizeSpace (0.00s)\n    strings_test.go:8: NormalizeSpace() = \" alpha   beta \"\nFAIL\nFAIL\texample.com/aortstrings\t0.509s\nFAIL\n",
+  "second_test_output": "ok  \texample.com/aortstrings\t0.478s\n",
+  "started_at": 1783255467352,
+  "completed_at": 1783255468832
 }

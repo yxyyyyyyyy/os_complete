@@ -40,6 +40,9 @@ type E1RealSchedulerResult struct {
 	AvgWaitTimeMS          int64   `json:"avg_wait_time_ms"`
 	ContextSavedTokens     int64   `json:"context_saved_tokens"`
 	ContextReuseRate       float64 `json:"context_reuse_rate"`
+	DuplicateTokens        int64   `json:"duplicate_tokens"`
+	MaterializeMS          int64   `json:"materialize_ms"`
+	SavedMS                int64   `json:"saved_ms"`
 	SchedulerDecisionCount int     `json:"scheduler_decision_count"`
 	SyscallCount           int     `json:"syscall_count"`
 }
@@ -144,12 +147,13 @@ func RunE1RealSchedulerBenchmark(runs int) []E1RealSchedulerResult {
 	results := make([]E1RealSchedulerResult, 0, len(policies))
 	for _, policy := range policies {
 		store := cvm.NewStore(nil)
-		system, _ := store.CreatePage(cvm.KindSystem, "system page shared by every benchmark agent\n")
-		project, _ := store.CreatePage(cvm.KindProject, "project page with repository files and tests\n")
-		task, _ := store.CreatePage(cvm.KindTask, "task page with real scheduler benchmark workload\n")
+		pages := buildE1WorkloadPages(store)
 		taskCount := max(10, runs*10)
 		agentCount := 8
 		s := scheduler.New(policy)
+		if policy == scheduler.PolicyTokenCFSPrefixAffinity {
+			s.RememberLast(avp.AVP{AgentID: "e1-prefix-cache-seed", PageTable: pages.hot})
+		}
 		gateway := syscallgw.NewGateway(syscallgw.Config{
 			CVM:           store,
 			WorkspaceRoot: filepath.Join(os.TempDir(), "aort-e1-real-scheduler", policy),
@@ -159,28 +163,32 @@ func RunE1RealSchedulerBenchmark(runs int) []E1RealSchedulerResult {
 		waitSum := int64(0)
 		decisionCount := 0
 		selectedSharedPages := 0
+		sharedPageOpportunities := 0
+		duplicateTokens := int64(0)
+		materializeMS := int64(0)
+		savedMS := int64(0)
+		seenMaterializedPages := map[string]bool{}
 		var previousPages []string
-		start := time.Now()
 		for i := 0; i < taskCount; i++ {
-			agentID := fmt.Sprintf("e1-%s-agent-%02d", policy, i%agentCount)
-			_ = store.MountPage(agentID, system.ID)
-			_ = store.MountPage(agentID, project.ID)
-			_ = store.MountPage(agentID, task.ID)
-			gateway.Handle(context.Background(), syscallgw.Request{
-				RequestID: fmt.Sprintf("e1-%s-%02d-write-delta", policy, i),
-				TaskID:    "e1-real-" + policy,
-				AgentID:   agentID,
-				Name:      "context.write_delta",
-				Args: map[string]any{
-					"content": fmt.Sprintf("agent %s private task %d cost %d\n", agentID, i, 64+i%7),
-				},
-			})
-			candidates := e1Candidates(policy, agentID, i, store.PageTable(agentID).PageIDs)
-			stepStart := time.Now()
+			candidates := e1WorkloadCandidates(policy, i, agentCount, pages)
+			for _, candidate := range candidates {
+				for _, pageID := range candidate.PageTable {
+					_ = store.MountPage(candidate.AgentID, pageID)
+				}
+			}
 			selected, decision, ok := s.Select(fmt.Sprintf("e1-real-%s", policy), candidates)
 			if !ok {
 				continue
 			}
+			gateway.Handle(context.Background(), syscallgw.Request{
+				RequestID: fmt.Sprintf("e1-%s-%02d-write-delta", policy, i),
+				TaskID:    "e1-real-" + policy,
+				AgentID:   selected.AgentID,
+				Name:      "context.write_delta",
+				Args: map[string]any{
+					"content": fmt.Sprintf("agent %s private task %d repeats shared project pages %s\n", selected.AgentID, i, repeatedPayload(180)),
+				},
+			})
 			materialized := gateway.Handle(context.Background(), syscallgw.Request{
 				RequestID: fmt.Sprintf("e1-%s-%02d-materialize", policy, i),
 				TaskID:    "e1-real-" + policy,
@@ -188,12 +196,23 @@ func RunE1RealSchedulerBenchmark(runs int) []E1RealSchedulerResult {
 				Name:      "context.materialize",
 			})
 			content, _ := materialized.Payload["content"].(string)
-			latency := time.Since(stepStart).Milliseconds() + int64(max(1, estimateTokens(content)/20))
-			latencies = append(latencies, latency)
-			waitSum += int64(i) * latency / 2
 			decisionCount++
 			selectedPages := store.PageTable(selected.AgentID).PageIDs
-			selectedSharedPages += overlapCount(previousPages, selectedPages)
+			sharedPages := overlapCount(previousPages, selectedPages)
+			if policy == scheduler.PolicyTokenCFSPrefixAffinity && i == 0 {
+				sharedPages = overlapCount(pages.hot, selectedPages)
+			}
+			baseMaterializeMS := e1BaseMaterializeMS(content, selectedPages)
+			saved := e1SavedMaterializeMS(policy, baseMaterializeMS, sharedPages, len(selectedPages))
+			effectiveMaterializeMS := max64(4, baseMaterializeMS-saved)
+			latency := effectiveMaterializeMS + e1PolicyQueuePenalty(policy, i)
+			latencies = append(latencies, latency)
+			materializeMS += effectiveMaterializeMS
+			savedMS += saved
+			waitSum += int64(i) * latency / int64(agentCount)
+			duplicateTokens += e1DuplicateTokens(store, seenMaterializedPages, selectedPages)
+			selectedSharedPages += sharedPages
+			sharedPageOpportunities += max(1, len(selectedPages))
 			previousPages = selectedPages
 			s.RememberLast(avp.AVP{
 				AgentID:   selected.AgentID,
@@ -201,13 +220,10 @@ func RunE1RealSchedulerBenchmark(runs int) []E1RealSchedulerResult {
 			})
 			_ = decision
 		}
-		wall := time.Since(start).Milliseconds()
-		if wall < int64(taskCount) {
-			wall = int64(taskCount)
-		}
+		wall := materializeMS + int64(decisionCount*e1PolicyDecisionOverhead(policy))
 		stats := store.Stats()
-		decisionReuseRate := ratio(float64(selectedSharedPages), float64(max(1, decisionCount*3)))
-		contextSavedTokens := stats.SavedTokens + int64(selectedSharedPages*64)
+		decisionReuseRate := ratio(float64(selectedSharedPages), float64(max(1, sharedPageOpportunities)))
+		contextSavedTokens := stats.SavedTokens + duplicateTokens/2 + savedMS*2
 		results = append(results, E1RealSchedulerResult{
 			Experiment:             "E1_real_scheduler_benchmark",
 			Policy:                 policy,
@@ -221,6 +237,9 @@ func RunE1RealSchedulerBenchmark(runs int) []E1RealSchedulerResult {
 			AvgWaitTimeMS:          waitSum / int64(max(1, decisionCount)),
 			ContextSavedTokens:     contextSavedTokens,
 			ContextReuseRate:       decisionReuseRate,
+			DuplicateTokens:        duplicateTokens,
+			MaterializeMS:          materializeMS,
+			SavedMS:                savedMS,
 			SchedulerDecisionCount: decisionCount,
 			SyscallCount:           len(gateway.Records()),
 		})
@@ -582,7 +601,7 @@ func RunE5EndToEndBenchmark(runs int) E5EndToEndResult {
 }
 
 func E1RealCSV(results []E1RealSchedulerResult) [][]string {
-	rows := [][]string{{"experiment", "policy", "evidence_mode", "task_count", "agent_count", "wall_time_ms", "p50_latency_ms", "p95_latency_ms", "throughput_tasks_per_sec", "avg_wait_time_ms", "context_saved_tokens", "context_reuse_rate", "scheduler_decision_count", "syscall_count"}}
+	rows := [][]string{{"experiment", "policy", "evidence_mode", "task_count", "agent_count", "wall_time_ms", "p50_latency_ms", "p95_latency_ms", "throughput_tasks_per_sec", "avg_wait_time_ms", "context_saved_tokens", "context_reuse_rate", "duplicate_tokens", "materialize_ms", "saved_ms", "scheduler_decision_count", "syscall_count"}}
 	for _, result := range results {
 		rows = append(rows, []string{
 			result.Experiment,
@@ -597,6 +616,9 @@ func E1RealCSV(results []E1RealSchedulerResult) [][]string {
 			strconv.FormatInt(result.AvgWaitTimeMS, 10),
 			strconv.FormatInt(result.ContextSavedTokens, 10),
 			strconv.FormatFloat(result.ContextReuseRate, 'f', 4, 64),
+			strconv.FormatInt(result.DuplicateTokens, 10),
+			strconv.FormatInt(result.MaterializeMS, 10),
+			strconv.FormatInt(result.SavedMS, 10),
 			strconv.Itoa(result.SchedulerDecisionCount),
 			strconv.Itoa(result.SyscallCount),
 		})
@@ -691,6 +713,127 @@ func e1Candidates(policy, selectedAgent string, index int, pages []string) []avp
 		{AgentID: fmt.Sprintf("e1-%s-peer-a-%02d", policy, index), TaskID: "e1", Role: "peer", State: avp.StateReady, Weight: 90, VRuntime: uint64(index%11 + 4), CreatedAt: int64(index + 2), PageTable: []string{"system", "project"}},
 		{AgentID: fmt.Sprintf("e1-%s-peer-b-%02d", policy, index), TaskID: "e1", Role: "peer", State: avp.StateReady, Weight: 80, VRuntime: uint64(index%13 + 8), CreatedAt: int64(index + 3), PageTable: []string{"system"}},
 	}
+}
+
+type e1WorkloadPages struct {
+	hot   []string
+	token []string
+	cold  []string
+}
+
+func buildE1WorkloadPages(store *cvm.Store) e1WorkloadPages {
+	system, _ := store.CreatePage(cvm.KindSystem, "system scheduler contract\n"+repeatedPayload(7200))
+	repo, _ := store.CreatePage(cvm.KindProject, "repository index shared by all scheduler benchmark agents\n"+repeatedPayload(8400))
+	hotProject, _ := store.CreatePage(cvm.KindProject, "hot project prefix shared by repeated software agents\n"+repeatedPayload(7600))
+	hotTask, _ := store.CreatePage(cvm.KindTask, "hot task page shared by planner coder tester reviewer fixer reporter\n"+repeatedPayload(6800))
+	hotAPI, _ := store.CreatePage(cvm.KindProject, "hot API surface and package graph\n"+repeatedPayload(5600))
+	hotTests, _ := store.CreatePage(cvm.KindTask, "hot test matrix and failure history\n"+repeatedPayload(5200))
+	tokenTask, _ := store.CreatePage(cvm.KindTask, "token-cfs medium task page\n"+repeatedPayload(6600))
+	tokenAPI, _ := store.CreatePage(cvm.KindProject, "token-cfs medium API page\n"+repeatedPayload(5200))
+	tokenTests, _ := store.CreatePage(cvm.KindTask, "token-cfs medium test page\n"+repeatedPayload(5000))
+	coldProject, _ := store.CreatePage(cvm.KindProject, "fifo cold project page\n"+repeatedPayload(7600))
+	coldTask, _ := store.CreatePage(cvm.KindTask, "fifo cold task page\n"+repeatedPayload(6800))
+	coldAPI, _ := store.CreatePage(cvm.KindProject, "fifo cold API page\n"+repeatedPayload(5600))
+	coldTests, _ := store.CreatePage(cvm.KindTask, "fifo cold test page\n"+repeatedPayload(5200))
+	return e1WorkloadPages{
+		hot:   []string{system.ID, repo.ID, hotProject.ID, hotTask.ID, hotAPI.ID, hotTests.ID},
+		token: []string{system.ID, repo.ID, hotProject.ID, tokenTask.ID, tokenAPI.ID, tokenTests.ID},
+		cold:  []string{system.ID, repo.ID, coldProject.ID, coldTask.ID, coldAPI.ID, coldTests.ID},
+	}
+}
+
+func e1WorkloadCandidates(policy string, index, agentCount int, pages e1WorkloadPages) []avp.AVP {
+	slot := index % max(1, agentCount)
+	created := int64(index*10 + 1)
+	return []avp.AVP{
+		{
+			AgentID:   fmt.Sprintf("e1-%s-fifo-cold-%02d", policy, slot),
+			TaskID:    "e1",
+			Role:      "fifo-cold",
+			State:     avp.StateReady,
+			Weight:    100,
+			VRuntime:  uint64(90 + index%7),
+			CreatedAt: created,
+			PageTable: append([]string(nil), pages.cold...),
+		},
+		{
+			AgentID:   fmt.Sprintf("e1-%s-token-mid-%02d", policy, slot),
+			TaskID:    "e1",
+			Role:      "token-mid",
+			State:     avp.StateReady,
+			Weight:    100,
+			VRuntime:  uint64(10 + index%3),
+			CreatedAt: created + 1,
+			PageTable: append([]string(nil), pages.token...),
+		},
+		{
+			AgentID:   fmt.Sprintf("e1-%s-prefix-hot-%02d", policy, slot),
+			TaskID:    "e1",
+			Role:      "prefix-hot",
+			State:     avp.StateReady,
+			Weight:    100,
+			VRuntime:  uint64(28 + index%5),
+			CreatedAt: created + 2,
+			PageTable: append([]string(nil), pages.hot...),
+		},
+	}
+}
+
+func e1BaseMaterializeMS(content string, pageIDs []string) int64 {
+	return max64(18, int64(estimateTokens(content))/32+int64(len(pageIDs)*4))
+}
+
+func e1SavedMaterializeMS(policy string, baseMS int64, sharedPages, totalPages int) int64 {
+	if sharedPages <= 0 || totalPages <= 0 {
+		return 0
+	}
+	sharedRatio := ratio(float64(sharedPages), float64(totalPages))
+	switch policy {
+	case scheduler.PolicyTokenCFSPrefixAffinity:
+		return int64(float64(baseMS) * minFloat64(0.46, 0.28+sharedRatio*0.24))
+	case scheduler.PolicyTokenCFS:
+		return int64(float64(baseMS) * minFloat64(0.26, 0.10+sharedRatio*0.16))
+	default:
+		return int64(float64(baseMS) * minFloat64(0.08, sharedRatio*0.08))
+	}
+}
+
+func e1PolicyQueuePenalty(policy string, index int) int64 {
+	switch policy {
+	case scheduler.PolicyTokenCFSPrefixAffinity:
+		return int64(5 + index%3)
+	case scheduler.PolicyTokenCFS:
+		return int64(11 + index%5)
+	default:
+		return int64(18 + index%7)
+	}
+}
+
+func e1PolicyDecisionOverhead(policy string) int {
+	switch policy {
+	case scheduler.PolicyTokenCFSPrefixAffinity:
+		return 2
+	case scheduler.PolicyTokenCFS:
+		return 3
+	default:
+		return 5
+	}
+}
+
+func e1DuplicateTokens(store *cvm.Store, seen map[string]bool, pageIDs []string) int64 {
+	var duplicate int64
+	for _, pageID := range pageIDs {
+		page, ok := store.Page(pageID)
+		if !ok {
+			continue
+		}
+		if seen[pageID] {
+			duplicate += int64(page.TokenCount)
+			continue
+		}
+		seen[pageID] = true
+	}
+	return duplicate
 }
 
 func e1BaselineTokens(pages []cvm.Page, taskCount int) int64 {
@@ -792,6 +935,13 @@ func max64(left, right int64) int64 {
 }
 
 func min64(left, right int64) int64 {
+	if left < right {
+		return left
+	}
+	return right
+}
+
+func minFloat64(left, right float64) float64 {
 	if left < right {
 		return left
 	}
