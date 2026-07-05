@@ -1,5 +1,5 @@
 {
-  "evidence_mode": "real",
+  "evidence_mode": "real-cgroup-v2",
   "agent_id": "task-1783192294506034713-coder",
   "freeze_status": "200",
   "unfreeze_status": "200",

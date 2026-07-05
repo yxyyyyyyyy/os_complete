@@ -7,7 +7,7 @@ Latest status:
 
 ```json
 {
-  "evidence_mode": "real",
+  "evidence_mode": "real-cgroup-v2",
   "cgroup_fs": "cgroup2fs",
   "capsule_mode": "real",
   "real_cgroup_v2": true

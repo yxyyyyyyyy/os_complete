@@ -1,5 +1,5 @@
 {
-  "evidence_mode": "real",
+  "evidence_mode": "real-cgroup-v2",
   "cgroup_path": "/sys/fs/cgroup/aort.slice/aort-limit-memory-12625",
   "memory.max": "20971520",
   "memory.current": "0",

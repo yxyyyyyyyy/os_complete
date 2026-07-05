@@ -1,5 +1,5 @@
 {
-  "evidence_mode": "real",
+  "evidence_mode": "real-cgroup-v2",
   "real_cgroup_v2": true,
   "agent_id": "task-1783187945630244755-tester",
   "pid": 8164,

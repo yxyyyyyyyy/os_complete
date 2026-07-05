@@ -1,5 +1,5 @@
 {
-  "evidence_mode": "real",
+  "evidence_mode": "real-cgroup-v2",
   "os_release": "NAME=\"openEuler\"\nVERSION=\"24.03 (LTS)\"\nID=\"openEuler\"\nVERSION_ID=\"24.03\"\nPRETTY_NAME=\"openEuler 24.03 (LTS)\"\nANSI_COLOR=\"0;31\"",
   "kernel": "Linux ecs-8937 6.6.0-112.0.0.104.oe2403.x86_64 #1 SMP Wed Oct 15 16:10:04 CST 2025 x86_64 x86_64 x86_64 GNU/Linux",
   "id": "uid=0(root) gid=0(root) groups=0(root)",

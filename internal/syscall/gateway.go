@@ -46,16 +46,17 @@ type Response struct {
 }
 
 type Record struct {
-	ID         string `json:"id"`
-	AgentID    string `json:"agent_id"`
-	Name       string `json:"name"`
-	StartTime  int64  `json:"start_time"`
-	EndTime    int64  `json:"end_time"`
-	DurationMS int64  `json:"duration_ms"`
-	Status     string `json:"status"`
-	Error      string `json:"error,omitempty"`
-	InputSize  int    `json:"input_size"`
-	OutputSize int    `json:"output_size"`
+	ID         string         `json:"id"`
+	AgentID    string         `json:"agent_id"`
+	Name       string         `json:"name"`
+	StartTime  int64          `json:"start_time"`
+	EndTime    int64          `json:"end_time"`
+	DurationMS int64          `json:"duration_ms"`
+	Status     string         `json:"status"`
+	Error      string         `json:"error,omitempty"`
+	InputSize  int            `json:"input_size"`
+	OutputSize int            `json:"output_size"`
+	Evidence   map[string]any `json:"evidence,omitempty"`
 }
 
 type Report struct {
@@ -170,6 +171,7 @@ func (g *Gateway) Handle(ctx context.Context, req Request) Response {
 		Error:      resp.Error,
 		InputSize:  inputSize,
 		OutputSize: outputSize,
+		Evidence:   syscallEvidence(req.Name, resp.Payload, duration),
 	}
 	g.mu.Lock()
 	g.records = append(g.records, record)
@@ -244,20 +246,47 @@ func (g *Gateway) llmCall(ctx context.Context, req Request) Response {
 		return Response{RequestID: req.RequestID, Status: StatusError, Error: err.Error()}
 	}
 	payload := map[string]any{
-		"text":          resp.Text,
-		"provider":      resp.Provider,
-		"fallback_from": resp.FallbackFrom,
-		"usage":         usagePayload(usage),
+		"text":               resp.Text,
+		"provider":           resp.Provider,
+		"requested_provider": resp.RequestedProvider,
+		"model":              resp.Model,
+		"fallback":           resp.Fallback,
+		"fallback_from":      resp.FallbackFrom,
+		"fallback_reason":    resp.FallbackReason,
+		"evidence_mode":      resp.EvidenceMode,
+		"tokens":             usage.PromptTokens + usage.CompletionTokens,
+		"usage":              usagePayload(usage),
 	}
 	g.publish("llm.called", req, map[string]any{
-		"provider":      resp.Provider,
-		"fallback_from": resp.FallbackFrom,
-		"prompt_tokens": usage.PromptTokens,
-		"cached_tokens": usage.CachedTokens,
-		"ttft_ms":       usage.TTFTMS,
-		"mode":          usage.Mode,
+		"provider":           resp.Provider,
+		"requested_provider": resp.RequestedProvider,
+		"model":              resp.Model,
+		"fallback":           resp.Fallback,
+		"fallback_reason":    resp.FallbackReason,
+		"fallback_from":      resp.FallbackFrom,
+		"prompt_tokens":      usage.PromptTokens,
+		"cached_tokens":      usage.CachedTokens,
+		"ttft_ms":            usage.TTFTMS,
+		"mode":               usage.Mode,
+		"evidence_mode":      resp.EvidenceMode,
 	})
 	return Response{RequestID: req.RequestID, Status: StatusOK, Payload: payload}
+}
+
+func syscallEvidence(name string, payload map[string]any, durationMS int64) map[string]any {
+	if name != "llm.call" || payload == nil {
+		return nil
+	}
+	return map[string]any{
+		"provider":           payload["provider"],
+		"requested_provider": payload["requested_provider"],
+		"model":              payload["model"],
+		"duration_ms":        durationMS,
+		"tokens":             payload["tokens"],
+		"fallback":           payload["fallback"],
+		"fallback_reason":    payload["fallback_reason"],
+		"evidence_mode":      payload["evidence_mode"],
+	}
 }
 
 func (g *Gateway) contextMaterialize(req Request) Response {

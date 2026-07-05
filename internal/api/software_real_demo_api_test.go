@@ -37,6 +37,12 @@ func TestSoftwareRealDemoRunProducesRuntimeEvidence(t *testing.T) {
 	if result["fault_injected"] != true || result["fault_recovered"] != true {
 		t.Fatalf("fault result=%#v", result)
 	}
+	if result["first_test_status"] != "failed" || result["second_test_status"] != "passed" {
+		t.Fatalf("test recovery result=%#v", result)
+	}
+	if result["checkpoint_used"] != true || int(result["checkpoint_count"].(float64)) < 1 {
+		t.Fatalf("checkpoint evidence result=%#v", result)
+	}
 
 	demoID := result["demo_id"].(string)
 	statusReq := httptest.NewRequest(http.MethodGet, "/api/demo/software-real/status", nil)
@@ -58,6 +64,12 @@ func TestSoftwareRealDemoRunProducesRuntimeEvidence(t *testing.T) {
 		want string
 	}{
 		{"/api/syscalls", "context.materialize"},
+		{"/api/syscalls", "context.write_delta"},
+		{"/api/syscalls", "llm.call"},
+		{"/api/syscalls", "tool.exec"},
+		{"/api/syscalls", "ipc.publish"},
+		{"/api/syscalls", "ipc.poll"},
+		{"/api/syscalls", "agent.spawn"},
 		{"/api/syscalls", "agent.report"},
 		{"/api/scheduler/decisions", "token-cfs-prefix-affinity"},
 		{"/api/context/stats", "saved_tokens"},

@@ -243,15 +243,61 @@ func TestGatewayLLMCallUsesRouterAndAuditsUsage(t *testing.T) {
 	if response.Status != StatusOK {
 		t.Fatalf("status=%s error=%s", response.Status, response.Error)
 	}
-	if response.Payload["provider"] != "mock" {
+	if response.Payload["provider"] != "mock" || response.Payload["model"] != "mock" {
 		t.Fatalf("payload = %#v", response.Payload)
 	}
 	usage, ok := response.Payload["usage"].(map[string]any)
 	if !ok || usage["prompt_tokens"] == 0 {
 		t.Fatalf("usage payload = %#v", response.Payload["usage"])
 	}
+	records := gateway.Records()
+	if len(records) != 1 {
+		t.Fatalf("records = %#v", records)
+	}
+	if records[0].Evidence["provider"] != "mock" || records[0].Evidence["model"] != "mock" || records[0].Evidence["evidence_mode"] != "mock" {
+		t.Fatalf("record evidence = %#v", records[0].Evidence)
+	}
+	if records[0].Evidence["duration_ms"] == nil || records[0].Evidence["tokens"] == nil {
+		t.Fatalf("record evidence missing duration/tokens = %#v", records[0].Evidence)
+	}
 	if !containsEventType(sink.events, "llm.called") {
 		t.Fatalf("expected llm.called event, got %#v", sink.events)
+	}
+}
+
+func TestGatewayLLMCallRecordsDeepSeekFallbackEvidence(t *testing.T) {
+	router := llm.NewRouter()
+	router.Register("deepseek", llm.NewDeepSeekProvider(llm.DeepSeekConfig{Model: "deepseek-v4-flash"}))
+	router.Register("mock", llm.NewMockProvider("mock"))
+	router.SetDefault("deepseek")
+	router.SetFallback("mock")
+	gateway := NewGateway(Config{LLM: router, WorkspaceRoot: t.TempDir()})
+
+	response := gateway.Handle(context.Background(), Request{
+		RequestID: "llm-fallback-1",
+		AgentID:   "planner-1",
+		TaskID:    "task-1",
+		Name:      "llm.call",
+		Args: map[string]any{
+			"prompt": "plan the task",
+		},
+	})
+
+	if response.Status != StatusOK {
+		t.Fatalf("status=%s error=%s", response.Status, response.Error)
+	}
+	if response.Payload["provider"] != "mock" || response.Payload["requested_provider"] != "deepseek" {
+		t.Fatalf("payload = %#v", response.Payload)
+	}
+	if response.Payload["model"] != "mock" || response.Payload["fallback"] != true || response.Payload["fallback_reason"] != "no_api_key" || response.Payload["evidence_mode"] != "mock" {
+		t.Fatalf("fallback payload = %#v", response.Payload)
+	}
+	records := gateway.Records()
+	if len(records) != 1 {
+		t.Fatalf("records = %#v", records)
+	}
+	if records[0].Evidence["provider"] != "mock" || records[0].Evidence["model"] != "mock" || records[0].Evidence["requested_provider"] != "deepseek" || records[0].Evidence["fallback"] != true {
+		t.Fatalf("record evidence = %#v", records[0].Evidence)
 	}
 }
 

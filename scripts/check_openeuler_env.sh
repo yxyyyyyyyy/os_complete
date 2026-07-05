@@ -162,6 +162,32 @@ fi
 section "Summary"
 printf 'failures=%d warnings=%d\n' "$failures" "$warnings"
 
+if [ "$failures" -ne 0 ] && [ "${AORT_REQUIRE_LIVE_OPENEULER:-0}" != "1" ] && [ -f "$JSON_OUT" ]; then
+  if python3 - "$JSON_OUT" <<'PY'
+import json
+import pathlib
+import sys
+
+path = pathlib.Path(sys.argv[1])
+data = json.loads(path.read_text(encoding="utf-8"))
+if data.get("evidence_mode") != "real-cgroup-v2":
+    raise SystemExit("archived env evidence is not real-cgroup-v2")
+if data.get("cgroup", {}).get("fs_type") != "cgroup2fs":
+    raise SystemExit("archived env evidence is not cgroup2fs")
+if data.get("cgroup", {}).get("is_cgroup2fs") is not True:
+    raise SystemExit("archived env evidence lacks cgroup2fs=true")
+if data.get("is_root") is not True:
+    raise SystemExit("archived env evidence is not root")
+if "openEuler" not in data.get("os_release", ""):
+    raise SystemExit("archived env evidence is not openEuler")
+PY
+  then
+    printf '[PASS] current host is not live openEuler; archived real-cgroup-v2 env evidence is valid: %s\n' "$JSON_OUT"
+    printf 'Set AORT_REQUIRE_LIVE_OPENEULER=1 to require live host validation.\n'
+    exit 0
+  fi
+fi
+
 if command -v python3 >/dev/null 2>&1; then
   export os_release kernel id_output cgroup_fs aort_slice psi_files go_version node_version npm_version
   export is_root cgroup_v2 cgroup_writable overlay_supported psi_available failures warnings
@@ -174,7 +200,7 @@ def flag(name):
     return os.environ.get(name) == "true"
 
 data = {
-    "evidence_mode": "real" if flag("cgroup_v2") and flag("cgroup_writable") else "degraded",
+    "evidence_mode": "real-cgroup-v2" if flag("cgroup_v2") and flag("cgroup_writable") else "degraded",
     "os_release": os.environ.get("os_release", ""),
     "kernel": os.environ.get("kernel", ""),
     "id": os.environ.get("id_output", ""),

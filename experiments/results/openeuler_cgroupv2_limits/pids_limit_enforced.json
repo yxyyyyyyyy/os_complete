@@ -1,5 +1,5 @@
 {
-  "evidence_mode": "real",
+  "evidence_mode": "real-cgroup-v2",
   "cgroup_path": "/sys/fs/cgroup/aort.slice/aort-limit-pids-12625",
   "pids.max": "12",
   "pids.current": "1",

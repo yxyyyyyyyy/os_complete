@@ -1,5 +1,5 @@
 {
-  "evidence_mode": "real",
+  "evidence_mode": "real-cgroup-v2",
   "os": "openEuler 24.03 LTS",
   "cgroup_fs": "cgroup2fs",
   "capsule_mode": "real",

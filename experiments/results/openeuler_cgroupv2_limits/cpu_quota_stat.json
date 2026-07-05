@@ -1,5 +1,5 @@
 {
-  "evidence_mode": "real",
+  "evidence_mode": "real-cgroup-v2",
   "cgroup_path": "/sys/fs/cgroup/aort.slice/aort-limit-cpu-12625",
   "cpu.max": "10000 100000",
   "cpu.stat_before": {

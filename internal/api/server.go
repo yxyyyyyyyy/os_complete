@@ -417,8 +417,21 @@ func agentIDForRole(agents []demo.Agent, roleNeedle, fallback string) string {
 func newLLMRouter() *llm.Router {
 	router := llm.NewRouter()
 	router.Register("mock", llm.NewMockProvider("mock"))
-	router.SetDefault("mock")
-	router.SetFallback("mock")
+	router.Register("deepseek", llm.NewDeepSeekProvider(llm.DeepSeekConfig{
+		APIKey:  os.Getenv("DEEPSEEK_API_KEY"),
+		BaseURL: os.Getenv("DEEPSEEK_BASE_URL"),
+		Model:   os.Getenv("DEEPSEEK_MODEL"),
+	}))
+	provider := os.Getenv("AORT_LLM_PROVIDER")
+	if provider == "" {
+		provider = "mock"
+	}
+	fallback := os.Getenv("AORT_LLM_FALLBACK_PROVIDER")
+	if fallback == "" {
+		fallback = "mock"
+	}
+	router.SetDefault(provider)
+	router.SetFallback(fallback)
 	return router
 }
 
@@ -803,13 +816,30 @@ func (s *Server) evidenceReport() evidenceResponse {
 		},
 		{
 			Name:    "LLM Provider",
-			Status:  "mock",
-			Mode:    "mock",
-			Signals: []string{"llm.call"},
-			Reason:  "Default provider is deterministic mock; DeepSeek/llama.cpp providers are not enabled in Git.",
+			Status:  llmEvidenceStatus(),
+			Mode:    llmEvidenceMode(),
+			Signals: []string{"llm.call", "provider", "model", "duration_ms", "tokens", "fallback", "evidence_mode"},
+			Reason:  "DeepSeek provider is environment-backed with mock fallback; API keys are read only from environment variables.",
 		},
 	}
 	return evidenceResponse{UpdatedAt: time.Now().UnixMilli(), Modules: modules}
+}
+
+func llmEvidenceStatus() string {
+	if os.Getenv("AORT_LLM_PROVIDER") == "deepseek" && os.Getenv("DEEPSEEK_API_KEY") != "" {
+		return "real-api"
+	}
+	return "mock"
+}
+
+func llmEvidenceMode() string {
+	if os.Getenv("AORT_LLM_PROVIDER") == "deepseek" {
+		if os.Getenv("DEEPSEEK_API_KEY") != "" {
+			return "deepseek"
+		}
+		return "deepseek-fallback-mock"
+	}
+	return "mock"
 }
 
 func (s *Server) cgroupEvidenceModule() evidenceModule {

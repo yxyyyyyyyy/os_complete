@@ -11,6 +11,29 @@ import (
 
 var ErrProviderUnavailable = errors.New("llm provider unavailable")
 
+type ProviderError struct {
+	Reason string
+	Err    error
+}
+
+func (e ProviderError) Error() string {
+	if e.Err == nil {
+		return e.Reason
+	}
+	if e.Reason == "" {
+		return e.Err.Error()
+	}
+	return e.Reason + ": " + e.Err.Error()
+}
+
+func (e ProviderError) Unwrap() error {
+	return e.Err
+}
+
+func AsProviderError(err error, target *ProviderError) bool {
+	return errors.As(err, target)
+}
+
 type Request struct {
 	AgentID  string `json:"agent_id"`
 	Role     string `json:"role"`
@@ -19,9 +42,14 @@ type Request struct {
 }
 
 type Response struct {
-	Text         string `json:"text"`
-	Provider     string `json:"provider"`
-	FallbackFrom string `json:"fallback_from,omitempty"`
+	Text              string `json:"text"`
+	Provider          string `json:"provider"`
+	Model             string `json:"model,omitempty"`
+	RequestedProvider string `json:"requested_provider,omitempty"`
+	Fallback          bool   `json:"fallback"`
+	FallbackFrom      string `json:"fallback_from,omitempty"`
+	FallbackReason    string `json:"fallback_reason,omitempty"`
+	EvidenceMode      string `json:"evidence_mode"`
 }
 
 type Usage struct {
@@ -91,6 +119,10 @@ func (r *Router) Complete(ctx context.Context, req Request) (Response, Usage, er
 	resp, usage, err := provider.Complete(ctx, req)
 	if err == nil {
 		resp.Provider = valueOr(resp.Provider, name)
+		resp.EvidenceMode = valueOr(resp.EvidenceMode, usage.Mode)
+		if resp.EvidenceMode == "" {
+			resp.EvidenceMode = "real-api"
+		}
 		return resp, usage, nil
 	}
 	if fallback == nil || fallbackName == "" || fallbackName == name {
@@ -101,7 +133,11 @@ func (r *Router) Complete(ctx context.Context, req Request) (Response, Usage, er
 		return Response{}, Usage{}, fallbackErr
 	}
 	resp.Provider = valueOr(resp.Provider, fallbackName)
+	resp.RequestedProvider = name
 	resp.FallbackFrom = name
+	resp.Fallback = true
+	resp.FallbackReason = providerErrorReason(err)
+	resp.EvidenceMode = "mock"
 	return resp, usage, nil
 }
 
@@ -123,6 +159,14 @@ func valueOr(value, fallback string) string {
 		return value
 	}
 	return fallback
+}
+
+func providerErrorReason(err error) string {
+	var providerErr ProviderError
+	if errors.As(err, &providerErr) && providerErr.Reason != "" {
+		return providerErr.Reason
+	}
+	return "api_error"
 }
 
 type MockProvider struct {
@@ -154,7 +198,7 @@ func (p MockProvider) Complete(ctx context.Context, req Request) (Response, Usag
 		TotalMS:          maxInt64(1, time.Since(start).Milliseconds()),
 		Mode:             "mock",
 	}
-	return Response{Text: completion, Provider: p.name}, usage, nil
+	return Response{Text: completion, Provider: p.name, Model: p.name, EvidenceMode: "mock"}, usage, nil
 }
 
 func ParseLlamaTimingUsage(raw map[string]any) Usage {

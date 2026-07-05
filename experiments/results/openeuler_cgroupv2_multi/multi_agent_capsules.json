@@ -1,5 +1,5 @@
 {
-  "evidence_mode": "real",
+  "evidence_mode": "real-cgroup-v2",
   "cgroup_fs": "cgroup2fs",
   "agent_count": 4,
   "capsules": [

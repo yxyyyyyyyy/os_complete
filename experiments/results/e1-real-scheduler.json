@@ -12,7 +12,8 @@
     "avg_wait_time_ms": 49,
     "context_saved_tokens": 9646,
     "context_reuse_rate": 0.98,
-    "scheduler_decision_count": 50
+    "scheduler_decision_count": 50,
+    "syscall_count": 100
   },
   {
     "experiment": "E1_real_scheduler_benchmark",
@@ -27,7 +28,8 @@
     "avg_wait_time_ms": 46,
     "context_saved_tokens": 8494,
     "context_reuse_rate": 0.86,
-    "scheduler_decision_count": 50
+    "scheduler_decision_count": 50,
+    "syscall_count": 100
   },
   {
     "experiment": "E1_real_scheduler_benchmark",
@@ -42,6 +44,7 @@
     "avg_wait_time_ms": 62,
     "context_saved_tokens": 9646,
     "context_reuse_rate": 0.98,
-    "scheduler_decision_count": 50
+    "scheduler_decision_count": 50,
+    "syscall_count": 100
   }
 ]

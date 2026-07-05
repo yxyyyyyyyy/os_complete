@@ -1,5 +1,5 @@
 {
-  "evidence_mode": "real",
+  "evidence_mode": "real-cgroup-v2",
   "cgroup_fs": "cgroup2fs",
   "memory_limit_enforced": true,
   "pids_limit_enforced": true,

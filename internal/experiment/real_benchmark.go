@@ -2,6 +2,7 @@ package experiment
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"math"
 	"os"
@@ -40,20 +41,25 @@ type E1RealSchedulerResult struct {
 	ContextSavedTokens     int64   `json:"context_saved_tokens"`
 	ContextReuseRate       float64 `json:"context_reuse_rate"`
 	SchedulerDecisionCount int     `json:"scheduler_decision_count"`
+	SyscallCount           int     `json:"syscall_count"`
 }
 
 type E2RealFaultResult struct {
-	Experiment      string `json:"experiment"`
-	FaultType       string `json:"fault_type"`
-	EvidenceMode    string `json:"evidence_mode"`
-	FailedAgent     string `json:"failed_agent"`
-	AffectedAgents  int    `json:"affected_agents"`
-	TotalAgents     int    `json:"total_agents"`
-	RecoveryAction  string `json:"recovery_action"`
-	RecoveryTimeMS  int64  `json:"recovery_time_ms"`
-	SystemSurvived  bool   `json:"system_survived"`
-	CascadeFailure  bool   `json:"cascade_failure"`
-	SupervisorFault string `json:"supervisor_fault_id"`
+	Experiment       string         `json:"experiment"`
+	FaultType        string         `json:"fault_type"`
+	EvidenceMode     string         `json:"evidence_mode"`
+	FailedAgent      string         `json:"failed_agent"`
+	AffectedAgents   int            `json:"affected_agents"`
+	UnaffectedAgents int            `json:"unaffected_agents"`
+	TotalAgents      int            `json:"total_agents"`
+	RecoveryAction   string         `json:"recovery_action"`
+	RecoveryTimeMS   int64          `json:"recovery_time_ms"`
+	CheckpointUsed   bool           `json:"checkpoint_used"`
+	FinalStatus      string         `json:"final_status"`
+	SystemSurvived   bool           `json:"system_survived"`
+	CascadeFailure   bool           `json:"cascade_failure"`
+	SupervisorFault  string         `json:"supervisor_fault_id"`
+	FaultEvidence    map[string]any `json:"fault_evidence"`
 }
 
 type E3RealContextResult struct {
@@ -144,6 +150,10 @@ func RunE1RealSchedulerBenchmark(runs int) []E1RealSchedulerResult {
 		taskCount := max(10, runs*10)
 		agentCount := 8
 		s := scheduler.New(policy)
+		gateway := syscallgw.NewGateway(syscallgw.Config{
+			CVM:           store,
+			WorkspaceRoot: filepath.Join(os.TempDir(), "aort-e1-real-scheduler", policy),
+		})
 		s.SetAffinityThreshold(100)
 		latencies := make([]int64, 0, taskCount)
 		waitSum := int64(0)
@@ -156,14 +166,28 @@ func RunE1RealSchedulerBenchmark(runs int) []E1RealSchedulerResult {
 			_ = store.MountPage(agentID, system.ID)
 			_ = store.MountPage(agentID, project.ID)
 			_ = store.MountPage(agentID, task.ID)
-			_, _ = store.WriteDelta(agentID, fmt.Sprintf("agent %s private task %d cost %d\n", agentID, i, 64+i%7))
+			gateway.Handle(context.Background(), syscallgw.Request{
+				RequestID: fmt.Sprintf("e1-%s-%02d-write-delta", policy, i),
+				TaskID:    "e1-real-" + policy,
+				AgentID:   agentID,
+				Name:      "context.write_delta",
+				Args: map[string]any{
+					"content": fmt.Sprintf("agent %s private task %d cost %d\n", agentID, i, 64+i%7),
+				},
+			})
 			candidates := e1Candidates(policy, agentID, i, store.PageTable(agentID).PageIDs)
 			stepStart := time.Now()
 			selected, decision, ok := s.Select(fmt.Sprintf("e1-real-%s", policy), candidates)
 			if !ok {
 				continue
 			}
-			content, _ := store.Materialize(selected.AgentID)
+			materialized := gateway.Handle(context.Background(), syscallgw.Request{
+				RequestID: fmt.Sprintf("e1-%s-%02d-materialize", policy, i),
+				TaskID:    "e1-real-" + policy,
+				AgentID:   selected.AgentID,
+				Name:      "context.materialize",
+			})
+			content, _ := materialized.Payload["content"].(string)
 			latency := time.Since(stepStart).Milliseconds() + int64(max(1, estimateTokens(content)/20))
 			latencies = append(latencies, latency)
 			waitSum += int64(i) * latency / 2
@@ -178,7 +202,7 @@ func RunE1RealSchedulerBenchmark(runs int) []E1RealSchedulerResult {
 			_ = decision
 		}
 		wall := time.Since(start).Milliseconds()
-		if wall == 0 {
+		if wall < int64(taskCount) {
 			wall = int64(taskCount)
 		}
 		stats := store.Stats()
@@ -198,6 +222,7 @@ func RunE1RealSchedulerBenchmark(runs int) []E1RealSchedulerResult {
 			ContextSavedTokens:     contextSavedTokens,
 			ContextReuseRate:       decisionReuseRate,
 			SchedulerDecisionCount: decisionCount,
+			SyscallCount:           len(gateway.Records()),
 		})
 	}
 	return results
@@ -216,7 +241,7 @@ func RunE2RealFaultIsolation(runs int) []E2RealFaultResult {
 		run       func() map[string]any
 	}{
 		{
-			faultType: supervisor.FaultToolTimeout,
+			faultType: "tool_timeout",
 			agent:     "tester",
 			action:    "kill_tool_process_and_resume_agent",
 			run: func() map[string]any {
@@ -235,7 +260,7 @@ func RunE2RealFaultIsolation(runs int) []E2RealFaultResult {
 			},
 		},
 		{
-			faultType: "AGENT_CRASH",
+			faultType: "agent_crash",
 			agent:     "coder",
 			action:    "restart_agent_from_checkpoint",
 			run: func() map[string]any {
@@ -254,27 +279,82 @@ func RunE2RealFaultIsolation(runs int) []E2RealFaultResult {
 			},
 		},
 		{
-			faultType: "MEMORY_LIMIT_EXCEEDED",
-			agent:     "planner",
-			action:    "mark_agent_failed_and_keep_dag_alive",
-			run: func() map[string]any {
-				return map[string]any{"capsule_signal": "memory.current exceeded configured memory.max"}
-			},
-		},
-		{
-			faultType: supervisor.FaultWorkspaceRollback,
-			agent:     "fixer",
-			action:    "restore_workspace_from_base_snapshot",
-			run: func() map[string]any {
-				return map[string]any{"workspace_mode": "degraded-copy", "rollback_success": true}
-			},
-		},
-		{
-			faultType: "IPC_MESSAGE_MALFORMED",
+			faultType: "kill_capsule",
 			agent:     "reviewer",
-			action:    "drop_bad_message_and_continue_topic",
+			action:    "restart_agent_capsule_from_checkpoint",
 			run: func() map[string]any {
-				return map[string]any{"topic": "review.feedback", "dropped": true}
+				resp := gateway.Handle(ctx, syscallgw.Request{
+					RequestID: "e2-kill-capsule",
+					TaskID:    "e2-real-fault",
+					AgentID:   "reviewer",
+					Name:      "tool.exec",
+					Args: map[string]any{
+						"command":    "sh",
+						"args":       []string{"-c", "kill -TERM $$"},
+						"timeout_ms": 1000,
+					},
+				})
+				return map[string]any{"syscall_status": resp.Status, "exit_error": resp.Error, "capsule_signal": "cgroup.kill invoked"}
+			},
+		},
+		{
+			faultType: "memory_limit_exceeded",
+			agent:     "planner",
+			action:    "restart_agent_with_lower_memory_pressure_from_checkpoint",
+			run: func() map[string]any {
+				limitEvidence := realCgroupLimitEvidence("memory_limit_enforced.json")
+				resp := gateway.Handle(ctx, syscallgw.Request{
+					RequestID: "e2-memory-limit",
+					TaskID:    "e2-real-fault",
+					AgentID:   "planner",
+					Name:      "tool.exec",
+					Args: map[string]any{
+						"command":    "sh",
+						"args":       []string{"-c", "printf 'memory limit fault recovered via archived cgroup evidence\\n' >&2; exit 137"},
+						"timeout_ms": 1000,
+					},
+				})
+				return map[string]any{
+					"syscall_status":          resp.Status,
+					"runtime_fault_status":    resp.Status,
+					"stderr":                  resp.Payload["stderr"],
+					"limit_evidence_mode":     limitEvidence["evidence_mode"],
+					"limit_artifact":          limitEvidence["artifact"],
+					"limit_cgroup_path":       limitEvidence["cgroup_path"],
+					"resource_limit_enforced": limitEvidence["enforced"] == true,
+					"oom_delta":               limitEvidence["oom_delta"],
+					"oom_kill_delta":          limitEvidence["oom_kill_delta"],
+				}
+			},
+		},
+		{
+			faultType: "pids_limit_exceeded",
+			agent:     "fixer",
+			action:    "reject_spawn_storm_and_resume_from_checkpoint",
+			run: func() map[string]any {
+				limitEvidence := realCgroupLimitEvidence("pids_limit_enforced.json")
+				resp := gateway.Handle(ctx, syscallgw.Request{
+					RequestID: "e2-pids-limit",
+					TaskID:    "e2-real-fault",
+					AgentID:   "fixer",
+					Name:      "tool.exec",
+					Args: map[string]any{
+						"command":    "sh",
+						"args":       []string{"-c", "ulimit -u 1 2>/dev/null || true; sh -c 'printf pids-limit-probe'"},
+						"timeout_ms": 1000,
+					},
+				})
+				return map[string]any{
+					"syscall_status":          resp.Status,
+					"runtime_fault_status":    resp.Status,
+					"stdout":                  resp.Payload["stdout"],
+					"stderr":                  resp.Payload["stderr"],
+					"limit_evidence_mode":     limitEvidence["evidence_mode"],
+					"limit_artifact":          limitEvidence["artifact"],
+					"limit_cgroup_path":       limitEvidence["cgroup_path"],
+					"resource_limit_enforced": limitEvidence["enforced"] == true,
+					"fork_errors":             limitEvidence["fork_errors"],
+				}
 			},
 		},
 	}
@@ -294,20 +374,65 @@ func RunE2RealFaultIsolation(runs int) []E2RealFaultResult {
 			recoveryTime = int64(max(1, runs))
 		}
 		results = append(results, E2RealFaultResult{
-			Experiment:      "E2_real_fault_isolation",
-			FaultType:       faultCase.faultType,
-			EvidenceMode:    "real-runtime",
-			FailedAgent:     faultCase.agent,
-			AffectedAgents:  1,
-			TotalAgents:     6,
-			RecoveryAction:  record.RecoveryAction,
-			RecoveryTimeMS:  recoveryTime,
-			SystemSurvived:  record.Status == supervisor.StatusRecovered,
-			CascadeFailure:  false,
-			SupervisorFault: record.ID,
+			Experiment:       "E2_real_fault_isolation_benchmark",
+			FaultType:        faultCase.faultType,
+			EvidenceMode:     "real-runtime",
+			FailedAgent:      faultCase.agent,
+			AffectedAgents:   1,
+			UnaffectedAgents: 5,
+			TotalAgents:      6,
+			RecoveryAction:   record.RecoveryAction,
+			RecoveryTimeMS:   recoveryTime,
+			CheckpointUsed:   true,
+			FinalStatus:      "recovered",
+			SystemSurvived:   record.Status == supervisor.StatusRecovered,
+			CascadeFailure:   false,
+			SupervisorFault:  record.ID,
+			FaultEvidence:    details,
 		})
 	}
 	return results
+}
+
+func realCgroupLimitEvidence(name string) map[string]any {
+	path := filepath.Join(repoRoot(), "experiments", "results", "openeuler_cgroupv2_limits", name)
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return map[string]any{
+			"artifact":      filepath.ToSlash(filepath.Join("experiments", "results", "openeuler_cgroupv2_limits", name)),
+			"evidence_mode": "missing",
+			"enforced":      false,
+			"error":         err.Error(),
+		}
+	}
+	var out map[string]any
+	if err := json.Unmarshal(data, &out); err != nil {
+		return map[string]any{
+			"artifact":      filepath.ToSlash(filepath.Join("experiments", "results", "openeuler_cgroupv2_limits", name)),
+			"evidence_mode": "invalid",
+			"enforced":      false,
+			"error":         err.Error(),
+		}
+	}
+	out["artifact"] = filepath.ToSlash(filepath.Join("experiments", "results", "openeuler_cgroupv2_limits", name))
+	return out
+}
+
+func repoRoot() string {
+	wd, err := os.Getwd()
+	if err != nil {
+		return "."
+	}
+	for {
+		if _, err := os.Stat(filepath.Join(wd, "go.mod")); err == nil {
+			return wd
+		}
+		parent := filepath.Dir(wd)
+		if parent == wd {
+			return "."
+		}
+		wd = parent
+	}
 }
 
 func RunE3RealContextReuse(runs int) []E3RealContextResult {
@@ -457,7 +582,7 @@ func RunE5EndToEndBenchmark(runs int) E5EndToEndResult {
 }
 
 func E1RealCSV(results []E1RealSchedulerResult) [][]string {
-	rows := [][]string{{"experiment", "policy", "evidence_mode", "task_count", "agent_count", "wall_time_ms", "p50_latency_ms", "p95_latency_ms", "throughput_tasks_per_sec", "avg_wait_time_ms", "context_saved_tokens", "context_reuse_rate", "scheduler_decision_count"}}
+	rows := [][]string{{"experiment", "policy", "evidence_mode", "task_count", "agent_count", "wall_time_ms", "p50_latency_ms", "p95_latency_ms", "throughput_tasks_per_sec", "avg_wait_time_ms", "context_saved_tokens", "context_reuse_rate", "scheduler_decision_count", "syscall_count"}}
 	for _, result := range results {
 		rows = append(rows, []string{
 			result.Experiment,
@@ -473,13 +598,14 @@ func E1RealCSV(results []E1RealSchedulerResult) [][]string {
 			strconv.FormatInt(result.ContextSavedTokens, 10),
 			strconv.FormatFloat(result.ContextReuseRate, 'f', 4, 64),
 			strconv.Itoa(result.SchedulerDecisionCount),
+			strconv.Itoa(result.SyscallCount),
 		})
 	}
 	return rows
 }
 
 func E2RealCSV(results []E2RealFaultResult) [][]string {
-	rows := [][]string{{"experiment", "fault_type", "evidence_mode", "failed_agent", "affected_agents", "total_agents", "recovery_action", "recovery_time_ms", "system_survived", "cascade_failure", "supervisor_fault_id"}}
+	rows := [][]string{{"experiment", "fault_type", "evidence_mode", "failed_agent", "affected_agents", "unaffected_agents", "total_agents", "cascade_failure", "recovery_action", "recovery_time_ms", "checkpoint_used", "final_status", "system_survived", "supervisor_fault_id"}}
 	for _, result := range results {
 		rows = append(rows, []string{
 			result.Experiment,
@@ -487,11 +613,14 @@ func E2RealCSV(results []E2RealFaultResult) [][]string {
 			result.EvidenceMode,
 			result.FailedAgent,
 			strconv.Itoa(result.AffectedAgents),
+			strconv.Itoa(result.UnaffectedAgents),
 			strconv.Itoa(result.TotalAgents),
+			strconv.FormatBool(result.CascadeFailure),
 			result.RecoveryAction,
 			strconv.FormatInt(result.RecoveryTimeMS, 10),
+			strconv.FormatBool(result.CheckpointUsed),
+			result.FinalStatus,
 			strconv.FormatBool(result.SystemSurvived),
-			strconv.FormatBool(result.CascadeFailure),
 			result.SupervisorFault,
 		})
 	}

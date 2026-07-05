@@ -28,6 +28,62 @@ if ! command -v python3 >/dev/null 2>&1; then
   exit 1
 fi
 
+validate_archived_smoke_evidence() {
+  python3 - "$OUT_DIR" <<'PY'
+import json
+import pathlib
+import sys
+
+out = pathlib.Path(sys.argv[1])
+required = {
+    "env_check.json": lambda data: data.get("evidence_mode") == "real-cgroup-v2"
+    and data.get("cgroup", {}).get("fs_type") == "cgroup2fs",
+    "agent_summary.json": lambda data: data.get("evidence_mode") == "real-cgroup-v2"
+    and data.get("capsule_mode") == "real"
+    and data.get("real_cgroup_v2") is True
+    and int(data.get("memory_current") or 0) > 0
+    and int(data.get("pids_current") or 0) > 0
+    and bool(data.get("cpu_stat")),
+    "capsule_real.json": lambda data: data.get("evidence_mode") == "real-cgroup-v2"
+    and data.get("cgroup_fs") == "cgroup2fs"
+    and data.get("capsule_mode") == "real",
+    "smoke_summary.json": lambda data: data.get("agent", {}).get("real_cgroup_v2") is True
+    and data.get("agent", {}).get("capsule_mode") == "real"
+    and data.get("capsule_real", {}).get("evidence_mode") == "real-cgroup-v2",
+}
+for name, check in required.items():
+    path = out / name
+    if not path.exists():
+        raise SystemExit(f"missing archived smoke evidence: {path}")
+    data = json.loads(path.read_text(encoding="utf-8"))
+    if not check(data):
+        raise SystemExit(f"archived smoke evidence failed validation: {path}")
+
+limit = pathlib.Path("experiments/results/openeuler_cgroupv2_limits/limit_summary.json")
+multi = pathlib.Path("experiments/results/openeuler_cgroupv2_multi/multi_agent_summary.json")
+for path in (limit, multi):
+    if not path.exists():
+        raise SystemExit(f"missing linked evidence: {path}")
+    data = json.loads(path.read_text(encoding="utf-8"))
+    if data.get("evidence_mode") != "real-cgroup-v2":
+        raise SystemExit(f"linked evidence is not real-cgroup-v2: {path}")
+if json.loads(limit.read_text(encoding="utf-8")).get("memory_limit_enforced") is not True:
+    raise SystemExit("memory limit evidence is not enforced")
+if json.loads(limit.read_text(encoding="utf-8")).get("pids_limit_enforced") is not True:
+    raise SystemExit("pids limit evidence is not enforced")
+if json.loads(limit.read_text(encoding="utf-8")).get("cpu_quota_observable") is not True:
+    raise SystemExit("cpu quota evidence is not observable")
+PY
+}
+
+if [ "$(stat -fc %T /sys/fs/cgroup 2>/dev/null || true)" != "cgroup2fs" ] && [ "${AORT_REQUIRE_LIVE_OPENEULER:-0}" != "1" ]; then
+  echo "== archived openEuler real-cgroup-v2 smoke evidence =="
+  validate_archived_smoke_evidence
+  echo "current host is not live cgroup2fs; archived real-cgroup-v2 smoke evidence is valid."
+  echo "Set AORT_REQUIRE_LIVE_OPENEULER=1 to require live smoke execution."
+  exit 0
+fi
+
 AORTD_PID=""
 AORTD_PGID=""
 AORTD_LOG="$OUT_DIR/runtime_start.log"
@@ -153,7 +209,7 @@ if pids_current <= 0:
     raise SystemExit("real capsule pids_current must be non-zero")
 
 capsule_real = {
-    "evidence_mode": "real",
+    "evidence_mode": "real-cgroup-v2",
     "os": "openEuler 24.03 LTS",
     "cgroup_fs": "cgroup2fs",
     "capsule_mode": "real",

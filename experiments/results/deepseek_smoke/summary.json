@@ -1,0 +1,8 @@
+{
+  "provider": "mock",
+  "requested_provider": "deepseek",
+  "fallback": true,
+  "fallback_reason": "no_api_key",
+  "evidence_mode": "mock",
+  "status": "skipped"
+}

@@ -28,20 +28,54 @@ func TestRunRealExperimentSuiteProducesP0Artifacts(t *testing.T) {
 		if result.ContextReuseRate <= 0 || result.SchedulerDecisionCount == 0 {
 			t.Fatalf("bad E1 runtime evidence: %#v", result)
 		}
+		if result.SyscallCount < result.SchedulerDecisionCount*2 {
+			t.Fatalf("missing E1 syscall count: %#v", result)
+		}
 	}
 	if e1Reuse["token-cfs-prefix-affinity"] < e1Reuse["fifo"] {
 		t.Fatalf("prefix-affinity should preserve at least FIFO context reuse: %#v", suite.E1Scheduler)
 	}
 
-	if len(suite.E2Fault) < 5 {
+	if len(suite.E2Fault) != 5 {
 		t.Fatalf("E2 faults = %#v", suite.E2Fault)
 	}
+	requiredFaults := map[string]bool{
+		"tool_timeout":          false,
+		"agent_crash":           false,
+		"kill_capsule":          false,
+		"memory_limit_exceeded": false,
+		"pids_limit_exceeded":   false,
+	}
 	for _, result := range suite.E2Fault {
-		if result.Experiment != "E2_real_fault_isolation" || result.EvidenceMode != "real-runtime" {
+		if result.Experiment != "E2_real_fault_isolation_benchmark" || result.EvidenceMode != "real-runtime" {
 			t.Fatalf("bad E2 identity: %#v", result)
 		}
-		if !result.SystemSurvived || result.CascadeFailure || result.AffectedAgents > 1 || result.RecoveryTimeMS <= 0 {
+		requiredFaults[result.FaultType] = true
+		if result.CascadeFailure || result.AffectedAgents > 1 || result.UnaffectedAgents < 5 || result.RecoveryTimeMS <= 0 {
 			t.Fatalf("bad E2 isolation evidence: %#v", result)
+		}
+		if result.FinalStatus != "recovered" || !result.CheckpointUsed {
+			t.Fatalf("bad E2 recovery evidence: %#v", result)
+		}
+		if result.FaultEvidence == nil || result.FaultEvidence["syscall_status"] == nil {
+			t.Fatalf("missing E2 fault evidence: %#v", result)
+		}
+		if result.FaultType == "memory_limit_exceeded" && result.FaultEvidence["resource_limit_enforced"] != true {
+			t.Fatalf("memory limit was not enforced: %#v", result)
+		}
+		if result.FaultType == "memory_limit_exceeded" && result.FaultEvidence["limit_evidence_mode"] != "real-cgroup-v2" {
+			t.Fatalf("memory limit evidence was not real cgroup v2: %#v", result)
+		}
+		if result.FaultType == "pids_limit_exceeded" && result.FaultEvidence["syscall_status"] != "ERROR" {
+			t.Fatalf("pids limit was not enforced: %#v", result)
+		}
+		if result.FaultType == "pids_limit_exceeded" && result.FaultEvidence["limit_evidence_mode"] != "real-cgroup-v2" {
+			t.Fatalf("pids limit evidence was not real cgroup v2: %#v", result)
+		}
+	}
+	for faultType, seen := range requiredFaults {
+		if !seen {
+			t.Fatalf("missing required fault %s in %#v", faultType, suite.E2Fault)
 		}
 	}
 

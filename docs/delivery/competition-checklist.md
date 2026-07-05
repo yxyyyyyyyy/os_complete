@@ -1,15 +1,15 @@
 # AORT-R Competition Checklist
 
-## Current Degraded-Real Evidence Matrix
+## Current Evidence Matrix
 
 | 能力 | 状态 | 证据位置 | 备注 |
 | -- | -- | ---- | -- |
-| worker PID | degraded smoke passed | `experiments/results/openeuler_smoke/agents.json` | `agents.json` 中包含真实 worker PID；汇总也见 `manual_smoke_summary.json`。 |
-| syscall | degraded smoke passed | `experiments/results/openeuler_smoke/syscalls.json` | syscall gateway 有 21 条记录。 |
-| CVM | degraded smoke passed | `experiments/results/openeuler_smoke/context_stats.json` | CVM API 返回 page / shared / saved metrics。 |
-| scheduler | degraded smoke passed | `experiments/results/openeuler_smoke/scheduler_decisions.json` | scheduler decision API 返回 token-CFS-prefix-affinity 决策。 |
-| fault | degraded smoke passed | `experiments/results/openeuler_smoke/fault_tool_timeout.json` | tool-timeout fault 返回 `202`，状态 `RECOVERED`。 |
-| cgroup real | degraded smoke passed; real cgroup v2 pending | `experiments/results/openeuler_smoke/agent_summary.json` | 当前 `capsule_mode=degraded`，`cgroup_path=degraded://...`，不是 `/sys/fs/cgroup/...`。下一步必须换 `cgroup2fs` 环境重新 smoke。 |
+| worker PID | real-runtime smoke passed | `experiments/results/openeuler_smoke/agents.json` | `agents.json` 中包含真实 worker PID；汇总也见 `manual_smoke_summary.json`。 |
+| syscall | real-runtime smoke passed | `experiments/results/openeuler_smoke/syscalls.json` | syscall gateway 有 21 条记录。 |
+| CVM | real-runtime smoke passed | `experiments/results/openeuler_smoke/context_stats.json` | CVM API 返回 page / shared / saved metrics。 |
+| scheduler | real-runtime smoke passed | `experiments/results/openeuler_smoke/scheduler_decisions.json` | scheduler decision API 返回 token-CFS-prefix-affinity 决策。 |
+| fault | real-runtime smoke passed | `experiments/results/openeuler_smoke/fault_tool_timeout.json` | tool-timeout fault 返回 `202`，状态 `RECOVERED`。 |
+| cgroup real | real-cgroup-v2 smoke passed | `experiments/results/openeuler_smoke/agent_summary.json`, `experiments/results/openeuler_cgroupv2_multi/`, `experiments/results/openeuler_cgroupv2_limits/` | 当前 openEuler 24.03 LTS 证据为 `stat -fc %T /sys/fs/cgroup = cgroup2fs`、`capsule_mode=real`、`real_cgroup_v2=true`，并包含 memory/pids/cpu limit enforcement。历史 degraded 结果只作为旧环境对照。 |
 
 ## Minimum Runnable Evidence
 
@@ -20,9 +20,9 @@
 | [x] | Worker registration uses Unix Domain Socket. | `experiments/results/openeuler_smoke/agents.json` and `aortd.log` |
 | [x] | Worker heartbeat is tracked by `aortd`. | `experiments/results/openeuler_smoke/agents.json` |
 | [x] | Heartbeat timeout marks an Agent as `FAILED`. | `docs/testing/manual-test-guide.md` heartbeat lost check |
-| [x] | Each Agent has a cgroup path; current smoke returns honest degraded paths. | `experiments/results/openeuler_smoke/agent_summary.json` |
-| [ ] | Real cgroup v2 `memory.current`, `pids.current`, and `cpu.stat` evidence. | `experiments/results/openeuler_smoke/agent_summary.json` shows degraded; real cgroup v2 pending |
-| [x] | `freeze`, `unfreeze`, and `kill` Agent APIs exist; current degraded smoke returns `409` for freeze/unfreeze and `200` for kill. | `experiments/results/openeuler_smoke/freeze.json`, `unfreeze.json`, `kill.json` |
+| [x] | Each real openEuler Agent has a `/sys/fs/cgroup/...` cgroup path. | `experiments/results/openeuler_smoke/agent_summary.json` |
+| [x] | Real cgroup v2 `memory.current`, `pids.current`, and `cpu.stat` evidence. | `experiments/results/openeuler_smoke/agent_summary.json`, `experiments/results/openeuler_smoke/capsule_real.json` |
+| [x] | `freeze`, `unfreeze`, and `kill` Agent APIs succeeded against real cgroup v2 capsules. | `experiments/results/openeuler_cgroupv2_multi/multi_agent_freeze_unfreeze.json`, `experiments/results/openeuler_cgroupv2_multi/multi_agent_kill_recovery.json` |
 | [x] | CVM page store and per-agent page table exist. | `experiments/results/openeuler_smoke/context_stats.json` |
 | [x] | Shared context pages increase ref counts and saved byte/token metrics. | `experiments/results/openeuler_smoke/context_stats.json` |
 | [x] | `context.materialize` is served through the syscall gateway. | `experiments/results/openeuler_smoke/syscalls.json` |
@@ -51,7 +51,9 @@
 | [x] | Scheduler policy API: `POST /api/scheduler/policy`. | `docs/testing/manual-test-guide.md` |
 | [x] | PSI pressure-aware scheduling evidence: `pressure.sampled`, `scheduler.pressure_throttle`, and `pressure_*` scheduler fields. | `experiments/results/openeuler_smoke/scheduler_decisions.json` |
 | [x] | E1 scheduler experiment. | `experiments/results/e1-scheduler.json` |
+| [x] | E1 real Runtime scheduler benchmark. | `experiments/results/e1-real-scheduler.json`, `docs/phase_reports/PHASE_18_REAL_SCHEDULER_BENCHMARK.md` |
 | [x] | E2 fault isolation experiment. | `experiments/results/e2-fault.json` |
+| [x] | E2 real Runtime fault isolation benchmark. | `experiments/results/e2-real-fault.json`, `docs/phase_reports/PHASE_19_REAL_FAULT_ISOLATION.md` |
 | [x] | E3 context sharing and IPC avoided-copy experiment. | `experiments/results/e3-context.json` |
 | [x] | Dashboard experiments visualization. | `dashboard/src/` |
 | [x] | openEuler-oriented cgroup v2 design with graceful degraded mode. | `scripts/check_openeuler_env.sh`, `scripts/smoke_openeuler.sh` |
@@ -65,6 +67,8 @@
 | [x] | Reference systemd unit at `deploy/systemd/aortd.service`. | `deploy/systemd/aortd.service` |
 | [x] | daemonkill recovery demo script at `scripts/demo-daemonkill.sh`. | `scripts/demo-daemonkill.sh` |
 | [x] | openEuler deployment guide and runnable helper scripts. | `docs/deployment_openeuler.md`, `scripts/check_openeuler_env.sh`, `scripts/smoke_openeuler.sh` |
+| [x] | software-real end-to-end demo API and result evidence. | `experiments/results/software_real_demo/result.json`, `docs/phase_reports/PHASE_20_SOFTWARE_REAL_DEMO.md` |
+| [x] | DeepSeek provider exists with environment-only API key loading and mock fallback. | `internal/llm/deepseek.go`, `scripts/smoke_deepseek.sh`, `experiments/results/deepseek_smoke/summary.json` |
 
 ## Remaining Enhancement Targets
 

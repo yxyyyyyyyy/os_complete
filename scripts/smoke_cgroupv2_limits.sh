@@ -91,7 +91,7 @@ after_events = parse_events(after)
 oom_delta = after_events.get("oom", 0) - before_events.get("oom", 0)
 oom_kill_delta = after_events.get("oom_kill", 0) - before_events.get("oom_kill", 0)
 data = {
-    "evidence_mode": "real",
+    "evidence_mode": "real-cgroup-v2",
     "cgroup_path": cgroup,
     "memory.max": pathlib.Path(cgroup, "memory.max").read_text(encoding="utf-8").strip(),
     "memory.current": pathlib.Path(cgroup, "memory.current").read_text(encoding="utf-8").strip(),
@@ -139,7 +139,7 @@ finally:
 events_path = pathlib.Path(cgroup, "pids.events")
 events = events_path.read_text(encoding="utf-8") if events_path.exists() else ""
 data = {
-    "evidence_mode": "real",
+    "evidence_mode": "real-cgroup-v2",
     "cgroup_path": cgroup,
     "pids.max": pathlib.Path(cgroup, "pids.max").read_text(encoding="utf-8").strip(),
     "pids.current": pathlib.Path(cgroup, "pids.current").read_text(encoding="utf-8").strip(),
@@ -191,7 +191,7 @@ before_stat = parse_stat(before)
 after_stat = parse_stat(after)
 usage_delta = after_stat.get("usage_usec", 0) - before_stat.get("usage_usec", 0)
 data = {
-    "evidence_mode": "real",
+    "evidence_mode": "real-cgroup-v2",
     "cgroup_path": cgroup,
     "cpu.max": pathlib.Path(cgroup, "cpu.max").read_text(encoding="utf-8").strip(),
     "cpu.stat_before": before_stat,
@@ -214,7 +214,7 @@ memory = json.loads((out / "memory_limit_enforced.json").read_text(encoding="utf
 pids = json.loads((out / "pids_limit_enforced.json").read_text(encoding="utf-8"))
 cpu = json.loads((out / "cpu_quota_stat.json").read_text(encoding="utf-8"))
 summary = {
-    "evidence_mode": "real",
+    "evidence_mode": "real-cgroup-v2",
     "cgroup_fs": "cgroup2fs",
     "memory_limit_enforced": memory["enforced"],
     "pids_limit_enforced": pids["enforced"],

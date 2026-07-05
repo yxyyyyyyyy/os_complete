@@ -1,0 +1,76 @@
+{
+  "demo_id": "software-real-1783244532892256000",
+  "task_id": "software-real-1783244532892256000",
+  "requirement": "实现一个带测试的字符串工具函数",
+  "evidence_mode": "real-runtime",
+  "final_status": "success",
+  "agents": [
+    {
+      "id": "software-real-1783244532892256000-planner",
+      "role": "planner",
+      "state": "COMPLETED",
+      "pid": 0,
+      "last_seen": 0,
+      "cgroup_path": ""
+    },
+    {
+      "id": "software-real-1783244532892256000-coder",
+      "role": "coder",
+      "state": "COMPLETED",
+      "pid": 0,
+      "last_seen": 0,
+      "cgroup_path": ""
+    },
+    {
+      "id": "software-real-1783244532892256000-tester",
+      "role": "tester",
+      "state": "COMPLETED",
+      "pid": 0,
+      "last_seen": 0,
+      "cgroup_path": ""
+    },
+    {
+      "id": "software-real-1783244532892256000-reviewer",
+      "role": "reviewer",
+      "state": "COMPLETED",
+      "pid": 0,
+      "last_seen": 0,
+      "cgroup_path": ""
+    },
+    {
+      "id": "software-real-1783244532892256000-fixer",
+      "role": "fixer",
+      "state": "COMPLETED",
+      "pid": 0,
+      "last_seen": 0,
+      "cgroup_path": ""
+    },
+    {
+      "id": "software-real-1783244532892256000-reporter",
+      "role": "reporter",
+      "state": "COMPLETED",
+      "pid": 0,
+      "last_seen": 0,
+      "cgroup_path": ""
+    }
+  ],
+  "dag_nodes": 6,
+  "syscall_count": 17,
+  "scheduler_decision_count": 6,
+  "context_pages": 7,
+  "shared_pages": 7,
+  "saved_tokens": 327,
+  "ipc_messages": 1,
+  "tool_exec_count": 4,
+  "fault_injected": true,
+  "fault_recovered": true,
+  "checkpoint_used": true,
+  "checkpoint_count": 1,
+  "checkpoint_mode": "runtime-state",
+  "first_test_status": "failed",
+  "second_test_status": "passed",
+  "first_test_output": "--- FAIL: TestNormalizeSpace (0.00s)\n    strings_test.go:8: NormalizeSpace() = \" alpha   beta \"\nFAIL\nFAIL\texample.com/aortstrings\t0.475s\nFAIL\n",
+  "second_test_output": "ok  \texample.com/aortstrings\t0.499s\n",
+  "started_at": 1783244532892,
+  "completed_at": 1783244534341
+}

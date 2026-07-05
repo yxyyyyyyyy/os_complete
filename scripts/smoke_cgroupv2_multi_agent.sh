@@ -106,7 +106,7 @@ for item in real:
     })
 
 pathlib.Path(output_path).write_text(json.dumps({
-    "evidence_mode": "real",
+    "evidence_mode": "real-cgroup-v2",
     "cgroup_fs": "cgroup2fs",
     "agent_count": len(records),
     "capsules": records,
@@ -143,7 +143,7 @@ def status(name):
     return (out / f"{name}.status").read_text(encoding="utf-8").strip()
 
 freeze_summary = {
-    "evidence_mode": "real",
+    "evidence_mode": "real-cgroup-v2",
     "agent_id": freeze_agent,
     "freeze_status": status("freeze"),
     "unfreeze_status": status("unfreeze"),
@@ -168,7 +168,7 @@ for agent_id in unaffected:
     })
 
 kill_summary = {
-    "evidence_mode": "real",
+    "evidence_mode": "real-cgroup-v2",
     "killed_agent_id": kill_agent,
     "kill_status": status("kill"),
     "killed_state": agent_state.get(kill_agent, {}).get("state", ""),
@@ -181,7 +181,7 @@ kill_summary = {
 )
 
 summary = {
-    "evidence_mode": "real",
+    "evidence_mode": "real-cgroup-v2",
     "cgroup_fs": "cgroup2fs",
     "capsule_count": capsules_before["agent_count"],
     "freeze_unfreeze": freeze_summary,

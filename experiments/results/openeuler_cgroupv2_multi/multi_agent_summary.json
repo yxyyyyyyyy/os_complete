@@ -1,16 +1,16 @@
 {
-  "evidence_mode": "real",
+  "evidence_mode": "real-cgroup-v2",
   "cgroup_fs": "cgroup2fs",
   "capsule_count": 4,
   "freeze_unfreeze": {
-    "evidence_mode": "real",
+    "evidence_mode": "real-cgroup-v2",
     "agent_id": "task-1783192294506034713-coder",
     "freeze_status": "200",
     "unfreeze_status": "200",
     "success": true
   },
   "kill_recovery": {
-    "evidence_mode": "real",
+    "evidence_mode": "real-cgroup-v2",
     "killed_agent_id": "task-1783192294506034713-tester",
     "kill_status": "200",
     "killed_state": "KILLED",

@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
+	"path/filepath"
 	"time"
 
 	"aort-r/internal/avp"
@@ -36,6 +38,13 @@ type softwareRealDemoResult struct {
 	ToolExecCount          int          `json:"tool_exec_count"`
 	FaultInjected          bool         `json:"fault_injected"`
 	FaultRecovered         bool         `json:"fault_recovered"`
+	CheckpointUsed         bool         `json:"checkpoint_used"`
+	CheckpointCount        int          `json:"checkpoint_count"`
+	CheckpointMode         string       `json:"checkpoint_mode"`
+	FirstTestStatus        string       `json:"first_test_status"`
+	SecondTestStatus       string       `json:"second_test_status"`
+	FirstTestOutput        string       `json:"first_test_output,omitempty"`
+	SecondTestOutput       string       `json:"second_test_output,omitempty"`
 	StartedAt              int64        `json:"started_at"`
 	CompletedAt            int64        `json:"completed_at"`
 }
@@ -62,6 +71,7 @@ func (s *Server) handleSoftwareRealDemoRun(w http.ResponseWriter, r *http.Reques
 	s.tasks[task.TaskID] = task
 	s.softwareReal = &result
 	s.mu.Unlock()
+	s.saveSoftwareRealResult(result)
 	writeJSON(w, http.StatusAccepted, result)
 }
 
@@ -102,6 +112,40 @@ func (s *Server) latestSoftwareRealDemo() (softwareRealDemoResult, bool) {
 	return *s.softwareReal, true
 }
 
+func (s *Server) saveSoftwareRealResult(result softwareRealDemoResult) {
+	root := repoRoot()
+	dir := filepath.Join(root, "experiments", "results", "software_real_demo")
+	if err := os.MkdirAll(dir, 0o755); err != nil {
+		s.sink.Publish(events.New("software_real.result_save_failed", result.TaskID, "", "runtime", map[string]any{"error": err.Error()}))
+		return
+	}
+	data, err := json.MarshalIndent(result, "", "  ")
+	if err != nil {
+		s.sink.Publish(events.New("software_real.result_save_failed", result.TaskID, "", "runtime", map[string]any{"error": err.Error()}))
+		return
+	}
+	if err := os.WriteFile(filepath.Join(dir, "result.json"), append(data, '\n'), 0o644); err != nil {
+		s.sink.Publish(events.New("software_real.result_save_failed", result.TaskID, "", "runtime", map[string]any{"error": err.Error()}))
+	}
+}
+
+func repoRoot() string {
+	wd, err := os.Getwd()
+	if err != nil {
+		return "."
+	}
+	for {
+		if _, err := os.Stat(filepath.Join(wd, "go.mod")); err == nil {
+			return wd
+		}
+		parent := filepath.Dir(wd)
+		if parent == wd {
+			return "."
+		}
+		wd = parent
+	}
+}
+
 func (s *Server) runSoftwareRealDemo(ctx context.Context, requirement string) (softwareRealDemoResult, demo.Result, error) {
 	if requirement == "" {
 		requirement = "实现一个带测试的字符串工具函数"
@@ -117,7 +161,8 @@ func (s *Server) runSoftwareRealDemo(ctx context.Context, requirement string) (s
 	if err := s.seedSoftwareRealContext(requirement, task.Agents); err != nil {
 		return softwareRealDemoResult{}, demo.Result{}, err
 	}
-	if err := s.runSoftwareRealAgentSteps(ctx, demoID, task); err != nil {
+	testEvidence, err := s.runSoftwareRealAgentSteps(ctx, demoID, task)
+	if err != nil {
 		return softwareRealDemoResult{}, demo.Result{}, err
 	}
 
@@ -157,6 +202,7 @@ func (s *Server) runSoftwareRealDemo(ctx context.Context, requirement string) (s
 
 	task.Status = "success"
 	s.saveCheckpoint(task, 1)
+	checkpointCount, checkpointMode := s.softwareRealCheckpointEvidence(demoID)
 	s.publishSoftwareRealEvent(demoID, demoID+"-reporter", "software_real.reporter_completed", map[string]any{
 		"final_status": "success",
 	})
@@ -182,10 +228,43 @@ func (s *Server) runSoftwareRealDemo(ctx context.Context, requirement string) (s
 		ToolExecCount:          countToolExec(records[syscallsBefore:]),
 		FaultInjected:          true,
 		FaultRecovered:         fault.Status == supervisor.StatusRecovered,
+		CheckpointUsed:         checkpointCount > 0,
+		CheckpointCount:        checkpointCount,
+		CheckpointMode:         checkpointMode,
+		FirstTestStatus:        testEvidence.FirstStatus,
+		SecondTestStatus:       testEvidence.SecondStatus,
+		FirstTestOutput:        testEvidence.FirstOutput,
+		SecondTestOutput:       testEvidence.SecondOutput,
 		StartedAt:              startedAt.UnixMilli(),
 		CompletedAt:            time.Now().UnixMilli(),
 	}
 	return result, task, nil
+}
+
+func (s *Server) softwareRealCheckpointEvidence(taskID string) (int, string) {
+	snapshots, err := s.checkpoint.List()
+	if err != nil {
+		return 0, ""
+	}
+	count := 0
+	mode := ""
+	for _, snapshot := range snapshots {
+		if snapshot.TaskID != taskID {
+			continue
+		}
+		count++
+		if snapshot.Mode != "" {
+			mode = snapshot.Mode
+		}
+	}
+	return count, mode
+}
+
+type softwareRealTestEvidence struct {
+	FirstStatus  string
+	SecondStatus string
+	FirstOutput  string
+	SecondOutput string
 }
 
 func softwareRealTask(taskID string) demo.Result {
@@ -239,21 +318,28 @@ func (s *Server) seedSoftwareRealContext(requirement string, agents []demo.Agent
 	return nil
 }
 
-func (s *Server) runSoftwareRealAgentSteps(ctx context.Context, taskID string, task demo.Result) error {
+func (s *Server) runSoftwareRealAgentSteps(ctx context.Context, taskID string, task demo.Result) (softwareRealTestEvidence, error) {
+	var testEvidence softwareRealTestEvidence
 	for index, agent := range task.Agents {
 		if err := s.scheduleSoftwareRealAgent(taskID, agent, index); err != nil {
-			return err
+			return softwareRealTestEvidence{}, err
 		}
 		s.publishSoftwareRealEvent(taskID, agent.ID, "software_real."+agent.Role+"_scheduled", map[string]any{"role": agent.Role})
 		switch agent.Role {
 		case "planner":
 			if err := s.mustSyscallOK(ctx, taskID, agent.ID, "context.materialize", nil); err != nil {
-				return err
+				return softwareRealTestEvidence{}, err
+			}
+			if err := s.mustSyscallOK(ctx, taskID, agent.ID, "llm.call", map[string]any{
+				"role":   "planner",
+				"prompt": "Plan a small Go module with string utility tests.",
+			}); err != nil {
+				return softwareRealTestEvidence{}, err
 			}
 			if err := s.mustSyscallOK(ctx, taskID, agent.ID, "context.write_delta", map[string]any{
 				"content": "Plan: coder writes strings.NormalizeSpace, tester runs shell-backed checks, reviewer publishes findings, fixer patches, reporter closes.\n",
 			}); err != nil {
-				return err
+				return softwareRealTestEvidence{}, err
 			}
 			s.syscalls.Handle(ctx, syscallgw.Request{
 				RequestID: taskID + "-reviewer-spawn-fixer",
@@ -269,55 +355,81 @@ func (s *Server) runSoftwareRealAgentSteps(ctx context.Context, taskID string, t
 			})
 		case "coder":
 			if err := s.mustSyscallOK(ctx, taskID, agent.ID, "context.materialize", nil); err != nil {
-				return err
+				return softwareRealTestEvidence{}, err
 			}
 			if err := s.mustSyscallOK(ctx, taskID, agent.ID, "context.write_delta", map[string]any{
 				"content": "Code artifact: func NormalizeSpace(s string) string { return strings.Join(strings.Fields(s), \" \") }\n",
 			}); err != nil {
-				return err
+				return softwareRealTestEvidence{}, err
 			}
 		case "tester":
 			if err := s.mustSyscallOK(ctx, taskID, agent.ID, "context.materialize", nil); err != nil {
-				return err
+				return softwareRealTestEvidence{}, err
 			}
-			if err := s.mustSyscallOK(ctx, taskID, agent.ID, "tool.exec", map[string]any{
-				"command":    "sh",
-				"args":       []string{"-c", "printf 'normalize-space-ok\\n' > tester.out"},
-				"timeout_ms": 1000,
-			}); err != nil {
-				return err
+			first := s.syscalls.Handle(ctx, syscallgw.Request{
+				RequestID: taskID + "-tester-go-test-first",
+				TaskID:    taskID,
+				AgentID:   agent.ID,
+				Name:      "tool.exec",
+				Args: map[string]any{
+					"command":    "sh",
+					"args":       []string{"-c", brokenGoModuleScript},
+					"timeout_ms": 30000,
+				},
+			})
+			testEvidence.FirstOutput = toolOutput(first)
+			if first.Status != syscallgw.StatusError {
+				return softwareRealTestEvidence{}, fmt.Errorf("expected first go test to fail, got %s", first.Status)
 			}
-			s.publishSoftwareRealEvent(taskID, agent.ID, "software_real.tool_exec_started", map[string]any{"command": "sh -c printf"})
+			testEvidence.FirstStatus = "failed"
+			s.publishSoftwareRealEvent(taskID, agent.ID, "software_real.first_go_test_failed", map[string]any{"command": "go test ./..."})
 		case "reviewer":
-			pageID, pageBytes, err := s.writeDeltaPage(ctx, taskID, agent.ID, "Review: first test pass observed; publish page reference so fixer can avoid copying review text.\n")
+			pageID, pageBytes, err := s.writeDeltaPage(ctx, taskID, agent.ID, "Review: first go test failed; publish page reference so fixer can avoid copying review text.\n")
 			if err != nil {
-				return err
+				return softwareRealTestEvidence{}, err
 			}
 			if err := s.mustSyscallOK(ctx, taskID, agent.ID, "ipc.publish", map[string]any{
 				"topic":      "software-real.review",
 				"page_id":    pageID,
 				"size_bytes": pageBytes,
 			}); err != nil {
-				return err
+				return softwareRealTestEvidence{}, err
 			}
 		case "fixer":
 			if err := s.mustSyscallOK(ctx, taskID, agent.ID, "ipc.poll", map[string]any{
 				"topic": "software-real.review",
 			}); err != nil {
-				return err
+				return softwareRealTestEvidence{}, err
 			}
 			if err := s.mustSyscallOK(ctx, taskID, agent.ID, "context.write_delta", map[string]any{
 				"content": "Fix: preserve Unicode spacing behavior by using Fields before Join; no duplicate context copy needed.\n",
 			}); err != nil {
-				return err
+				return softwareRealTestEvidence{}, err
 			}
+			second := s.syscalls.Handle(ctx, syscallgw.Request{
+				RequestID: taskID + "-fixer-go-test-second",
+				TaskID:    taskID,
+				AgentID:   agent.ID,
+				Name:      "tool.exec",
+				Args: map[string]any{
+					"command":    "sh",
+					"args":       []string{"-c", fixedGoModuleScript},
+					"timeout_ms": 30000,
+				},
+			})
+			testEvidence.SecondOutput = toolOutput(second)
+			if second.Status != syscallgw.StatusOK {
+				return softwareRealTestEvidence{}, fmt.Errorf("expected second go test to pass, got %s %s", second.Status, second.Error)
+			}
+			testEvidence.SecondStatus = "passed"
+			s.publishSoftwareRealEvent(taskID, agent.ID, "software_real.second_go_test_passed", map[string]any{"command": "go test ./..."})
 		case "reporter":
 			if err := s.mustSyscallOK(ctx, taskID, agent.ID, "context.materialize", nil); err != nil {
-				return err
+				return softwareRealTestEvidence{}, err
 			}
 		}
 	}
-	return nil
+	return testEvidence, nil
 }
 
 func (s *Server) runSoftwareRealRecoverySteps(ctx context.Context, taskID string) error {
@@ -426,3 +538,72 @@ func intFromPayload(value any) int {
 		return 0
 	}
 }
+
+func toolOutput(resp syscallgw.Response) string {
+	if resp.Payload == nil {
+		return resp.Error
+	}
+	stdout, _ := resp.Payload["stdout"].(string)
+	stderr, _ := resp.Payload["stderr"].(string)
+	if stderr != "" {
+		return stdout + stderr
+	}
+	if stdout != "" {
+		return stdout
+	}
+	return resp.Error
+}
+
+const brokenGoModuleScript = `cat > go.mod <<'EOF'
+module example.com/aortstrings
+
+go 1.22
+EOF
+cat > strings.go <<'EOF'
+package aortstrings
+
+func NormalizeSpace(s string) string {
+	return s
+}
+EOF
+cat > strings_test.go <<'EOF'
+package aortstrings
+
+import "testing"
+
+func TestNormalizeSpace(t *testing.T) {
+	got := NormalizeSpace(" alpha   beta ")
+	if got != "alpha beta" {
+		t.Fatalf("NormalizeSpace() = %q", got)
+	}
+}
+EOF
+go test ./...`
+
+const fixedGoModuleScript = `cat > go.mod <<'EOF'
+module example.com/aortstrings
+
+go 1.22
+EOF
+cat > strings.go <<'EOF'
+package aortstrings
+
+import "strings"
+
+func NormalizeSpace(s string) string {
+	return strings.Join(strings.Fields(s), " ")
+}
+EOF
+cat > strings_test.go <<'EOF'
+package aortstrings
+
+import "testing"
+
+func TestNormalizeSpace(t *testing.T) {
+	got := NormalizeSpace(" alpha   beta ")
+	if got != "alpha beta" {
+		t.Fatalf("NormalizeSpace() = %q", got)
+	}
+}
+EOF
+go test ./...`
