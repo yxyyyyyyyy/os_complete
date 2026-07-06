@@ -1,6 +1,6 @@
 # AORT-R Final Evidence Summary
 
-- timestamp: 2026-07-06T03:47:21.751413+00:00
+- timestamp: 2026-07-06T04:40:20.623177+00:00
 - evidence_mode: real-runtime
 - go_test: passed
 - smoke: passed
@@ -30,7 +30,7 @@
 - ipc: real-partial
 - llm: mock
 - ebpf: planned
-- overlayfs: degraded-copy
+- overlayfs: real-overlayfs
 
 ## Known Limits
-- overlayfs mount was unavailable or not attempted; workspace isolation used degraded-copy fallback
+- none

@@ -46,7 +46,8 @@ func TestWorkspaceRMFaultRollsBackAgentWorkspace(t *testing.T) {
 	if !strings.Contains(faultRec.Body.String(), `"rollback_success":true`) {
 		t.Fatalf("rollback evidence missing: %s", faultRec.Body.String())
 	}
-	if !strings.Contains(faultRec.Body.String(), `"workspace_mode":"degraded-copy"`) {
+	if !strings.Contains(faultRec.Body.String(), `"workspace_mode":"degraded-copy"`) &&
+		!strings.Contains(faultRec.Body.String(), `"workspace_mode":"overlayfs"`) {
 		t.Fatalf("workspace mode missing: %s", faultRec.Body.String())
 	}
 

@@ -23,7 +23,8 @@ stat -fc %T /sys/fs/cgroup: cgroup2fs
 [PASS] /sys/fs/cgroup/aort.slice exists
 
 == overlayfs ==
-[WARN] overlayfs not listed in /proc/filesystems
+nodev	overlay
+[PASS] overlayfs listed in /proc/filesystems
 
 == PSI ==
 [WARN] /proc/pressure not available
@@ -37,5 +38,5 @@ go version go1.22.12 linux/amd64
 [WARN] npm not found; frontend smoke is optional
 
 == Summary ==
-failures=0 warnings=4
+failures=0 warnings=3
 env_check_json=/root/aort-r-server-run-20260706-p0p1p2-memoryfix/experiments/results/final/openeuler_smoke/env_check.json

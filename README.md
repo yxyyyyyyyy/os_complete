@@ -96,11 +96,16 @@ key it skips without failing and records explicit mock fallback.
   checkpoints, and tool execution.
 - `real-api`: Evidence comes from a successful external model-provider API
   call, currently the DeepSeek OpenAI-compatible provider.
+- `real-overlayfs`: Evidence comes from a successful Linux overlayfs mount for
+  per-Agent workspace isolation, including copy-on-write fault isolation,
+  rollback, commit manifest, and destroy/unmount cleanup.
 - `degraded`: The Runtime is still running real code, but the local OS lacks a
   required capability or permission. Examples include macOS/non-root cgroup
   capsule fallback, kernel exec evidence sourced from the syscall-gateway proxy
-  instead of eBPF, unavailable PSI files, and degraded-copy workspace rollback
-  instead of overlayfs.
+  instead of eBPF, and unavailable PSI files.
+- `degraded-copy`: Workspace isolation fallback using copied lowerdir contents
+  instead of overlayfs. This is valid fallback evidence, not real overlayfs
+  evidence.
 - `mock`: The path is intentionally mocked for repeatable local demos, such as
   the default LLM provider. Mock paths are useful for deterministic tests but
   must not be presented as real model-provider evidence.
@@ -108,7 +113,7 @@ key it skips without failing and records explicit mock fallback.
   capabilities or controlled experiment models. Simulation outputs must be
   labeled as simulation/degraded-simulation.
 - `planned`: The design is documented but not implemented in this build, such
-  as true eBPF attachment or overlayfs mount/commit isolation.
+  as true eBPF attachment.
 - `simulation/mock`: Legacy reports may use this combined label for
   repeatable local demos, such as the mock LLM provider or experiment modes that
   model unavailable OS capabilities. These paths must be labeled as
@@ -129,7 +134,8 @@ key it skips without failing and records explicit mock fallback.
 - FIFO, token-CFS, token-CFS-prefix-affinity, and resource-aware scheduler policies with DecisionLog API.
 - PSI pressure monitor with `/api/pressure/status`, `pressure.sampled`, and scheduler pressure-throttle evidence in degraded or Linux PSI mode.
 - Supervisor fault record path with a runnable `tool.exec` timeout injection.
-- Workspace isolation fault demo with degraded-copy rollback evidence for `rm -rf` style failures.
+- Workspace isolation fault demo with real-overlayfs evidence on Linux/root hosts
+  where overlayfs is available, plus degraded-copy rollback fallback elsewhere.
 - Lightweight checkpoint store for AVP state, CVM page table references, scheduler vruntime, and trace offset evidence.
 - Startup checkpoint recovery report at `/api/recovery/status`, with `checkpoint.recovered` and `runtime.recovered` timeline evidence.
 - LLM Router interface with mock provider, fallback routing, and llama.cpp timing/cache usage parser.
@@ -195,6 +201,10 @@ Latest status:
 - `memory.current`, `pids.current`, `cpu.stat`, freeze, unfreeze, and kill
   are recorded from real cgroup v2 files and APIs.
 - memory, pids, and CPU limits all have real enforcement evidence.
+- Real overlayfs workspace isolation has passed on Linux/root after the overlay
+  module is available, with `evidence_mode=real-overlayfs`,
+  `lowerdir_unchanged=true`, `rollback_success=true`,
+  `commit_supported=true`, and `destroy_success=true`.
 
 Primary current evidence:
 
@@ -203,6 +213,7 @@ Primary current evidence:
 - `experiments/results/openeuler_cgroupv2_limits/`
 - `experiments/results/openeuler_smoke/capsule_real.json`
 - `experiments/results/openeuler_smoke/agent_summary.json`
+- `experiments/results/workspace_isolation_evidence.json`
 - `experiments/results/openeuler_smoke/aort-r-openeuler-7d939c2-cgroupv2-real-evidence.tgz`
 - `docs/phase_reports/PHASE_17_REAL_CGROUP_V2_REPORT.md`
 - `docs/phase_reports/PHASE_16_OPEN_EULER_REAL_CGROUP_REPORT.md`
@@ -222,6 +233,8 @@ bash scripts/check_openeuler_env.sh
 bash scripts/smoke_openeuler.sh
 bash scripts/smoke_cgroupv2_multi_agent.sh
 bash scripts/smoke_cgroupv2_limits.sh
+modprobe overlay 2>/dev/null || true
+go run ./cmd/aortctl demo fault workspace-rmrf --out experiments/results
 ```
 
 Do not present mock, degraded, simulation, or planned modules as real evidence.
@@ -240,10 +253,11 @@ See [docs/deployment_openeuler.md](docs/deployment_openeuler.md) for deployment 
 
 ## Known Limits
 
-- Real overlayfs mount/commit and true eBPF attachment are planned enhancement
-  targets. Degraded-copy workspace rollback, lightweight checkpoint startup
-  recovery, PSI/degraded pressure monitoring, and honest degraded kernel exec
-  evidence are implemented and test-covered.
+- True eBPF attachment is a planned enhancement target. Real overlayfs
+  workspace isolation is implemented and verified when the Linux host exposes
+  overlayfs; otherwise the runtime uses explicit degraded-copy fallback.
+  Lightweight checkpoint startup recovery, PSI/degraded pressure monitoring,
+  and honest degraded kernel exec evidence are implemented and test-covered.
 - DeepSeek provider is implemented with environment-only credentials, mock
   fallback, and a redacted real-api smoke summary; local llama.cpp remains a
   planned provider path.

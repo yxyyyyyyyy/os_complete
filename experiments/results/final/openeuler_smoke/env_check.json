@@ -13,7 +13,7 @@
     "aort_slice": "exists"
   },
   "overlayfs": {
-    "supported": false
+    "supported": true
   },
   "psi": {
     "available": false,
@@ -23,5 +23,5 @@
   "node_version": "",
   "npm_version": "",
   "failures": 0,
-  "warnings": 4
+  "warnings": 3
 }

@@ -53,10 +53,23 @@ func TestWorkspaceEndpointsAndFaultDemoReturnEvidenceMode(t *testing.T) {
 		t.Fatalf("demo status=%d body=%s", demoRec.Code, demoRec.Body.String())
 	}
 	body := demoRec.Body.String()
-	for _, want := range []string{`"success":true`, `"fault_type":"workspace_rmrf"`, `"evidence_mode":"` + string(evidence.ModeDegradedCopy)} {
-		if !strings.Contains(body, want) {
-			t.Fatalf("missing %s in %s", want, body)
-		}
+	var demo map[string]any
+	if err := json.Unmarshal(demoRec.Body.Bytes(), &demo); err != nil {
+		t.Fatalf("decode workspace demo: %v\n%s", err, body)
+	}
+	if demo["success"] != true || demo["fault_type"] != "workspace_rmrf" {
+		t.Fatalf("workspace demo identity missing: %#v", demo)
+	}
+	mode, _ := demo["evidence_mode"].(string)
+	if mode != string(evidence.ModeDegradedCopy) && mode != string(evidence.ModeRealOverlayFS) {
+		t.Fatalf("unexpected workspace evidence mode %q in %s", mode, body)
+	}
+	fallbackReason, _ := demo["fallback_reason"].(string)
+	if mode == string(evidence.ModeDegradedCopy) && fallbackReason == "" {
+		t.Fatalf("degraded-copy demo must explain fallback: %s", body)
+	}
+	if mode == string(evidence.ModeRealOverlayFS) && fallbackReason != "" {
+		t.Fatalf("real-overlayfs demo should not report fallback: %s", body)
 	}
 
 	if !strings.Contains(body, `"destroy_success":true`) {

@@ -31,7 +31,10 @@ func TestManagerRollsBackAgentWorkspaceWithoutTouchingBaseSnapshot(t *testing.T)
 	if err != nil {
 		t.Fatalf("PrepareAgent: %v", err)
 	}
-	if runtime.Mode != ModeDegradedCopy {
+	t.Cleanup(func() {
+		_ = manager.Destroy("agent-1")
+	})
+	if runtime.Mode != ModeDegradedCopy && runtime.Mode != ModeOverlayFS {
 		t.Fatalf("mode = %q", runtime.Mode)
 	}
 
@@ -78,7 +81,10 @@ func TestManagerRunsRMFaultAndReportsEvidence(t *testing.T) {
 	if err != nil {
 		t.Fatalf("InjectRMAndRollback: %v", err)
 	}
-	if result.Mode != ModeDegradedCopy {
+	t.Cleanup(func() {
+		_ = manager.Destroy("agent-1")
+	})
+	if result.Mode != ModeDegradedCopy && result.Mode != ModeOverlayFS {
 		t.Fatalf("mode = %q", result.Mode)
 	}
 	if !result.RollbackSuccess || !result.BaseIntact {

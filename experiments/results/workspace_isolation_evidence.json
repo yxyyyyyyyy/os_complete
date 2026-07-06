@@ -2,8 +2,8 @@
   "success": true,
   "fault_type": "workspace_rmrf",
   "target_agent": "coder",
-  "mode": "degraded-copy",
-  "evidence_mode": "degraded-copy",
+  "mode": "overlayfs",
+  "evidence_mode": "real-overlayfs",
   "runtime_root": "/tmp/aort-runtime/workspaces",
   "lowerdir_unchanged": true,
   "target_agent_affected": true,
@@ -15,7 +15,7 @@
   "rollback_success": true,
   "commit_supported": true,
   "destroy_success": true,
-  "fallback_reason": "overlayfs is not listed in /proc/filesystems",
+  "fallback_reason": "",
   "before_files": {
     "coder": [
       "README.txt",
@@ -72,5 +72,5 @@
     "repo_dir_untouched": true,
     "symlink_escape_blocked": true
   },
-  "timestamp": "2026-07-06T03:47:21.726552104Z"
+  "timestamp": "2026-07-06T04:40:20.59730556Z"
 }
