@@ -75,7 +75,7 @@ AORT-R real cgroup v2 capsule：
 | 模块 | 状态 | 说明 |
 | --- | --- | --- |
 | Workspace Isolation | `degraded` | 当前为 `degraded-copy`，不宣称 overlayfs real。 |
-| Kernel Observer | `degraded` | 当前为 `degraded-proxy`，不宣称 eBPF real。 |
+| Kernel Observer | `degraded` | 当前为 syscall-gateway exec observation，不宣称 eBPF real。 |
 | PSI Monitor | `unavailable/degraded` | 当前 openEuler 实例无 `/proc/pressure`。 |
 | eBPF Observer | `planned` | 未实现。 |
 | LLM Provider | `mock` at PHASE_16 boundary | PHASE_16 smoke 默认 mock provider；当前代码已新增 `internal/llm/deepseek_provider.go`，DeepSeek 凭据只从环境变量读取并可 fallback 到 mock。 |

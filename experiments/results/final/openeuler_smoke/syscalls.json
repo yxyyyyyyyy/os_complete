@@ -1,1 +1,243 @@
-[{"id":"task-1783312817001746440-llm-call","agent_id":"task-1783312817001746440-planner","name":"llm.call","start_time":1783312817001,"end_time":1783312817001,"duration_ms":1,"status":"OK","input_size":18,"output_size":362,"evidence":{"duration_ms":1,"evidence_mode":"mock","fallback":false,"fallback_reason":"","model":"mock","provider":"mock","requested_provider":"","tokens":85}},{"id":"task-1783312817001746440-tool-exec","agent_id":"task-1783312817001746440-planner","name":"tool.exec","start_time":1783312817001,"end_time":1783312817002,"duration_ms":1,"status":"OK","input_size":35,"output_size":214},{"id":"task-1783312817001746440-ipc-publish","agent_id":"task-1783312817001746440-reviewer","name":"ipc.publish","start_time":1783312817002,"end_time":1783312817002,"duration_ms":1,"status":"OK","input_size":120,"output_size":144},{"id":"task-1783312817001746440-agent-spawn","agent_id":"task-1783312817001746440-reviewer","name":"agent.spawn","start_time":1783312817002,"end_time":1783312817004,"duration_ms":1,"status":"OK","input_size":158,"output_size":115},{"id":"task-1783312817001746440-ipc-poll","agent_id":"task-1783312817001746440-fixer","name":"ipc.poll","start_time":1783312817004,"end_time":1783312817004,"duration_ms":1,"status":"OK","input_size":27,"output_size":154},{"id":"task-1783312817001746440-reviewer-syscall-001","agent_id":"task-1783312817001746440-reviewer","name":"context.materialize","start_time":1783312817300,"end_time":1783312817300,"duration_ms":1,"status":"OK","input_size":4,"output_size":399},{"id":"task-1783312817001746440-reviewer-syscall-002","agent_id":"task-1783312817001746440-reviewer","name":"tool.exec","start_time":1783312817301,"end_time":1783312817332,"duration_ms":30,"status":"OK","input_size":53,"output_size":185},{"id":"task-1783312817001746440-reviewer-syscall-003","agent_id":"task-1783312817001746440-reviewer","name":"context.write_delta","start_time":1783312817333,"end_time":1783312817333,"duration_ms":1,"status":"OK","input_size":79,"output_size":101},{"id":"task-1783312817001746440-reviewer-syscall-004","agent_id":"task-1783312817001746440-reviewer","name":"agent.report","start_time":1783312817333,"end_time":1783312817333,"duration_ms":1,"status":"OK","input_size":40,"output_size":22},{"id":"task-1783312817001746440-tester-syscall-001","agent_id":"task-1783312817001746440-tester","name":"context.materialize","start_time":1783312817337,"end_time":1783312817337,"duration_ms":1,"status":"OK","input_size":4,"output_size":305},{"id":"task-1783312817001746440-tester-syscall-002","agent_id":"task-1783312817001746440-tester","name":"tool.exec","start_time":1783312817339,"end_time":1783312817346,"duration_ms":6,"status":"OK","input_size":53,"output_size":183},{"id":"task-1783312817001746440-tester-syscall-003","agent_id":"task-1783312817001746440-tester","name":"context.write_delta","start_time":1783312817347,"end_time":1783312817347,"duration_ms":1,"status":"OK","input_size":77,"output_size":101},{"id":"task-1783312817001746440-tester-syscall-004","agent_id":"task-1783312817001746440-tester","name":"agent.report","start_time":1783312817347,"end_time":1783312817347,"duration_ms":1,"status":"OK","input_size":38,"output_size":22},{"id":"task-1783312817001746440-coder-syscall-001","agent_id":"task-1783312817001746440-coder","name":"context.materialize","start_time":1783312817349,"end_time":1783312817349,"duration_ms":1,"status":"OK","input_size":4,"output_size":304},{"id":"task-1783312817001746440-coder-syscall-002","agent_id":"task-1783312817001746440-coder","name":"tool.exec","start_time":1783312817350,"end_time":1783312817354,"duration_ms":4,"status":"OK","input_size":53,"output_size":182},{"id":"task-1783312817001746440-coder-syscall-003","agent_id":"task-1783312817001746440-coder","name":"context.write_delta","start_time":1783312817354,"end_time":1783312817354,"duration_ms":1,"status":"OK","input_size":76,"output_size":101},{"id":"task-1783312817001746440-coder-syscall-004","agent_id":"task-1783312817001746440-coder","name":"agent.report","start_time":1783312817354,"end_time":1783312817354,"duration_ms":1,"status":"OK","input_size":37,"output_size":22},{"id":"task-1783312817001746440-planner-syscall-001","agent_id":"task-1783312817001746440-planner","name":"context.materialize","start_time":1783312817359,"end_time":1783312817359,"duration_ms":1,"status":"OK","input_size":4,"output_size":306},{"id":"task-1783312817001746440-planner-syscall-002","agent_id":"task-1783312817001746440-planner","name":"tool.exec","start_time":1783312817359,"end_time":1783312817363,"duration_ms":3,"status":"OK","input_size":53,"output_size":184},{"id":"task-1783312817001746440-planner-syscall-003","agent_id":"task-1783312817001746440-planner","name":"context.write_delta","start_time":1783312817363,"end_time":1783312817363,"duration_ms":1,"status":"OK","input_size":78,"output_size":101},{"id":"task-1783312817001746440-planner-syscall-004","agent_id":"task-1783312817001746440-planner","name":"agent.report","start_time":1783312817363,"end_time":1783312817363,"duration_ms":1,"status":"OK","input_size":39,"output_size":22}]
+[
+  {
+    "id": "task-1783316338643864646-llm-call",
+    "agent_id": "task-1783316338643864646-planner",
+    "name": "llm.call",
+    "start_time": 1783316338644,
+    "end_time": 1783316338644,
+    "duration_ms": 1,
+    "status": "OK",
+    "input_size": 18,
+    "output_size": 362,
+    "evidence": {
+      "duration_ms": 1,
+      "evidence_mode": "mock",
+      "fallback": false,
+      "fallback_reason": "",
+      "model": "mock",
+      "provider": "mock",
+      "requested_provider": "",
+      "tokens": 85
+    }
+  },
+  {
+    "id": "task-1783316338643864646-tool-exec",
+    "agent_id": "task-1783316338643864646-planner",
+    "name": "tool.exec",
+    "start_time": 1783316338644,
+    "end_time": 1783316338645,
+    "duration_ms": 1,
+    "status": "OK",
+    "input_size": 35,
+    "output_size": 214
+  },
+  {
+    "id": "task-1783316338643864646-ipc-publish",
+    "agent_id": "task-1783316338643864646-reviewer",
+    "name": "ipc.publish",
+    "start_time": 1783316338645,
+    "end_time": 1783316338645,
+    "duration_ms": 1,
+    "status": "OK",
+    "input_size": 120,
+    "output_size": 144
+  },
+  {
+    "id": "task-1783316338643864646-agent-spawn",
+    "agent_id": "task-1783316338643864646-reviewer",
+    "name": "agent.spawn",
+    "start_time": 1783316338645,
+    "end_time": 1783316338646,
+    "duration_ms": 1,
+    "status": "OK",
+    "input_size": 158,
+    "output_size": 115
+  },
+  {
+    "id": "task-1783316338643864646-ipc-poll",
+    "agent_id": "task-1783316338643864646-fixer",
+    "name": "ipc.poll",
+    "start_time": 1783316338646,
+    "end_time": 1783316338646,
+    "duration_ms": 1,
+    "status": "OK",
+    "input_size": 27,
+    "output_size": 154
+  },
+  {
+    "id": "task-1783316338643864646-tester-syscall-001",
+    "agent_id": "task-1783316338643864646-tester",
+    "name": "context.materialize",
+    "start_time": 1783316338984,
+    "end_time": 1783316338984,
+    "duration_ms": 1,
+    "status": "OK",
+    "input_size": 4,
+    "output_size": 305
+  },
+  {
+    "id": "task-1783316338643864646-coder-syscall-001",
+    "agent_id": "task-1783316338643864646-coder",
+    "name": "context.materialize",
+    "start_time": 1783316338984,
+    "end_time": 1783316338984,
+    "duration_ms": 1,
+    "status": "OK",
+    "input_size": 4,
+    "output_size": 304
+  },
+  {
+    "id": "task-1783316338643864646-coder-syscall-002",
+    "agent_id": "task-1783316338643864646-coder",
+    "name": "tool.exec",
+    "start_time": 1783316338986,
+    "end_time": 1783316338994,
+    "duration_ms": 8,
+    "status": "OK",
+    "input_size": 53,
+    "output_size": 182
+  },
+  {
+    "id": "task-1783316338643864646-coder-syscall-003",
+    "agent_id": "task-1783316338643864646-coder",
+    "name": "context.write_delta",
+    "start_time": 1783316338994,
+    "end_time": 1783316338994,
+    "duration_ms": 1,
+    "status": "OK",
+    "input_size": 76,
+    "output_size": 101
+  },
+  {
+    "id": "task-1783316338643864646-coder-syscall-004",
+    "agent_id": "task-1783316338643864646-coder",
+    "name": "agent.report",
+    "start_time": 1783316338994,
+    "end_time": 1783316338995,
+    "duration_ms": 1,
+    "status": "OK",
+    "input_size": 37,
+    "output_size": 22
+  },
+  {
+    "id": "task-1783316338643864646-tester-syscall-002",
+    "agent_id": "task-1783316338643864646-tester",
+    "name": "tool.exec",
+    "start_time": 1783316338986,
+    "end_time": 1783316339001,
+    "duration_ms": 14,
+    "status": "OK",
+    "input_size": 53,
+    "output_size": 183
+  },
+  {
+    "id": "task-1783316338643864646-tester-syscall-003",
+    "agent_id": "task-1783316338643864646-tester",
+    "name": "context.write_delta",
+    "start_time": 1783316339001,
+    "end_time": 1783316339001,
+    "duration_ms": 1,
+    "status": "OK",
+    "input_size": 77,
+    "output_size": 101
+  },
+  {
+    "id": "task-1783316338643864646-tester-syscall-004",
+    "agent_id": "task-1783316338643864646-tester",
+    "name": "agent.report",
+    "start_time": 1783316339001,
+    "end_time": 1783316339001,
+    "duration_ms": 1,
+    "status": "OK",
+    "input_size": 38,
+    "output_size": 22
+  },
+  {
+    "id": "task-1783316338643864646-reviewer-syscall-001",
+    "agent_id": "task-1783316338643864646-reviewer",
+    "name": "context.materialize",
+    "start_time": 1783316339006,
+    "end_time": 1783316339006,
+    "duration_ms": 1,
+    "status": "OK",
+    "input_size": 4,
+    "output_size": 399
+  },
+  {
+    "id": "task-1783316338643864646-reviewer-syscall-002",
+    "agent_id": "task-1783316338643864646-reviewer",
+    "name": "tool.exec",
+    "start_time": 1783316339007,
+    "end_time": 1783316339010,
+    "duration_ms": 3,
+    "status": "OK",
+    "input_size": 53,
+    "output_size": 185
+  },
+  {
+    "id": "task-1783316338643864646-reviewer-syscall-003",
+    "agent_id": "task-1783316338643864646-reviewer",
+    "name": "context.write_delta",
+    "start_time": 1783316339010,
+    "end_time": 1783316339010,
+    "duration_ms": 1,
+    "status": "OK",
+    "input_size": 79,
+    "output_size": 101
+  },
+  {
+    "id": "task-1783316338643864646-reviewer-syscall-004",
+    "agent_id": "task-1783316338643864646-reviewer",
+    "name": "agent.report",
+    "start_time": 1783316339010,
+    "end_time": 1783316339011,
+    "duration_ms": 1,
+    "status": "OK",
+    "input_size": 40,
+    "output_size": 22
+  },
+  {
+    "id": "task-1783316338643864646-planner-syscall-001",
+    "agent_id": "task-1783316338643864646-planner",
+    "name": "context.materialize",
+    "start_time": 1783316339029,
+    "end_time": 1783316339029,
+    "duration_ms": 1,
+    "status": "OK",
+    "input_size": 4,
+    "output_size": 306
+  },
+  {
+    "id": "task-1783316338643864646-planner-syscall-002",
+    "agent_id": "task-1783316338643864646-planner",
+    "name": "tool.exec",
+    "start_time": 1783316339029,
+    "end_time": 1783316339033,
+    "duration_ms": 3,
+    "status": "OK",
+    "input_size": 53,
+    "output_size": 184
+  },
+  {
+    "id": "task-1783316338643864646-planner-syscall-003",
+    "agent_id": "task-1783316338643864646-planner",
+    "name": "context.write_delta",
+    "start_time": 1783316339033,
+    "end_time": 1783316339033,
+    "duration_ms": 1,
+    "status": "OK",
+    "input_size": 78,
+    "output_size": 101
+  },
+  {
+    "id": "task-1783316338643864646-planner-syscall-004",
+    "agent_id": "task-1783316338643864646-planner",
+    "name": "agent.report",
+    "start_time": 1783316339033,
+    "end_time": 1783316339033,
+    "duration_ms": 1,
+    "status": "OK",
+    "input_size": 39,
+    "output_size": 22
+  }
+]

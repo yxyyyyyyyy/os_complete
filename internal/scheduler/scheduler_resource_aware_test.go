@@ -107,3 +107,74 @@ func TestResourceAwarePressureDimensionsIndependentlyPenalizeCandidates(t *testi
 		})
 	}
 }
+
+func TestResourceAwareDefaultDegradedPressureExplainsFallback(t *testing.T) {
+	s := New(PolicyTokenCFSPrefixAffinityResourceAware)
+	s.RememberLast(avp.AVP{AgentID: "previous", PageTable: []string{"shared"}})
+
+	_, decision, ok := s.Select("task-default-degraded-pressure", []avp.AVP{
+		{
+			AgentID:   "agent-a",
+			TaskID:    "task-default-degraded-pressure",
+			State:     avp.StateReady,
+			VRuntime:  1,
+			Weight:    100,
+			PageTable: []string{"shared"},
+		},
+		{
+			AgentID:   "agent-b",
+			TaskID:    "task-default-degraded-pressure",
+			State:     avp.StateReady,
+			VRuntime:  2,
+			Weight:    100,
+			PageTable: []string{"other"},
+		},
+	})
+	if !ok {
+		t.Fatal("expected resource-aware decision")
+	}
+	if decision.EvidenceMode != evidence.ModeDegraded {
+		t.Fatalf("default resource pressure evidence should be degraded: %#v", decision)
+	}
+	const want = "resource pressure sampler not configured or local cgroup pressure files unavailable"
+	if decision.FallbackReason != want {
+		t.Fatalf("fallback_reason = %q, want %q", decision.FallbackReason, want)
+	}
+}
+
+func TestResourceAwareRecordsPSIPressure(t *testing.T) {
+	s := New(PolicyTokenCFSPrefixAffinityResourceAware)
+	s.SetResourcePressure(ResourcePressure{
+		PSIPressure:  0.42,
+		EvidenceMode: evidence.ModeDegraded,
+	})
+
+	_, decision, ok := s.Select("task-psi-pressure", []avp.AVP{
+		{
+			AgentID:   "agent-a",
+			TaskID:    "task-psi-pressure",
+			State:     avp.StateReady,
+			VRuntime:  1,
+			Weight:    100,
+			PageTable: []string{"shared"},
+		},
+		{
+			AgentID:   "agent-b",
+			TaskID:    "task-psi-pressure",
+			State:     avp.StateReady,
+			VRuntime:  2,
+			Weight:    100,
+			PageTable: []string{"other"},
+		},
+	})
+	if !ok {
+		t.Fatal("expected resource-aware decision")
+	}
+	if decision.PSIPressure != 0.42 {
+		t.Fatalf("psi pressure should be recorded: %#v", decision)
+	}
+	const want = "resource pressure sampler not configured or local cgroup pressure files unavailable"
+	if decision.FallbackReason != want {
+		t.Fatalf("fallback_reason = %q, want %q", decision.FallbackReason, want)
+	}
+}

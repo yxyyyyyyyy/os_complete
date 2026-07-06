@@ -2,7 +2,7 @@ ok  	aort-r/cmd/aort-experiment	(cached)
 ok  	aort-r/cmd/aort-worker	(cached)
 ok  	aort-r/cmd/aortctl	(cached)
 ?   	aort-r/cmd/aortd	[no test files]
-ok  	aort-r/internal/api	0.468s
+ok  	aort-r/internal/api	0.469s
 ok  	aort-r/internal/avp	(cached)
 ok  	aort-r/internal/capsule	(cached)
 ok  	aort-r/internal/checkpoint	(cached)

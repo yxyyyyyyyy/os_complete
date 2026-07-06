@@ -64,6 +64,12 @@ func TestRunE1ResourceAwareWritesRequiredArtifactsAndSchema(t *testing.T) {
 	if report.EvidenceMode == "" || !evidence.IsValid(evidence.Mode(report.EvidenceMode)) {
 		t.Fatalf("invalid report evidence mode: %#v", report)
 	}
+	const pressureFallback = "resource pressure sampler not configured or local cgroup pressure files unavailable"
+	for _, result := range report.PolicyResults {
+		if result.Policy == scheduler.PolicyTokenCFSPrefixAffinityResourceAware && result.FallbackReason != pressureFallback {
+			t.Fatalf("resource-aware fallback_reason = %q, want %q", result.FallbackReason, pressureFallback)
+		}
+	}
 }
 
 func containsPolicy(policies []string, want string) bool {

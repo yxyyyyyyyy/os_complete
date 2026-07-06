@@ -32,11 +32,21 @@ func TestCompetitionVerifyScriptContract(t *testing.T) {
 		"live_openeuler_cgroup",
 		"[ \"$env_check\" != \"passed\" ]",
 		"[ \"$smoke\" != \"passed\" ]",
+		"command=",
+		"log_file=",
+		"status: passed",
+		"status: failed",
+		"status: degraded",
+		"status: missing",
 		"AORT-R competition verification completed.",
+		"See experiments/results/final/FINAL_EVIDENCE_INDEX.json",
 	} {
 		if !strings.Contains(text, want) {
 			t.Fatalf("script missing %q", want)
 		}
+	}
+	if strings.Contains(text, "AORT-R competition verification completed. See experiments/results/final/FINAL_EVIDENCE_INDEX.json") {
+		t.Fatalf("completion message should be two lines, not one compressed line")
 	}
 	cmd := exec.Command("bash", "-n", path)
 	if output, err := cmd.CombinedOutput(); err != nil {
@@ -151,6 +161,24 @@ func TestSmokeOpenEulerSelectsCapsuleWithLiveCounters(t *testing.T) {
 	}
 	if !strings.Contains(string(envData), "AGENT_ID=agent-live") {
 		t.Fatalf("agent.env did not select live agent:\n%s", envData)
+	}
+}
+
+func TestSmokeOpenEulerPrettyPrintsCapturedJSON(t *testing.T) {
+	path := filepath.Join("..", "..", "scripts", "smoke_openeuler.sh")
+	data, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatalf("read smoke script: %v", err)
+	}
+	text := string(data)
+	for _, want := range []string{
+		"pretty_json_file()",
+		"json.dumps(data, indent=2, ensure_ascii=False)",
+		"pretty_json_file \"$output\"",
+	} {
+		if !strings.Contains(text, want) {
+			t.Fatalf("smoke script missing pretty-print hook %q", want)
+		}
 	}
 }
 

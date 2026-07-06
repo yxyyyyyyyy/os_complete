@@ -19,6 +19,9 @@
 `real-cgroup-v2`；资源指标不可读时 scheduler decision 标记 `degraded` 并写
 `fallback_reason`。
 
+当前 portable E1 benchmark 中 `token-cfs-prefix-affinity` wall time 最低；
+resource-aware policy 应表述为资源压力感知和安全调度机制，而不是最快策略。
+
 ## 2. Context / KV Cache 冗余拷贝
 
 对应能力：
@@ -85,6 +88,9 @@ IPC 为 `real-partial`；LLM provider 默认 `mock`，不能宣称真实 DeepSee
 | PSI Monitor | `real-cgroup-v2` 相关 host 可读时参与调度；否则 `degraded` |
 | eBPF Observer | `planned` |
 | LLM Provider | `mock` |
+
+当前 checked-in workspace evidence 为 `real-overlayfs`；只有 Linux/root 主机
+成功 mount overlayfs 后才可保持该标签，其他环境复跑必须写 `degraded-copy`。
 
 ## P0/P1/P2 Evidence Files
 

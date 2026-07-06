@@ -104,7 +104,7 @@
       "cpu_throttle_count": 780,
       "scheduler_decisions_count": 40,
       "decision_evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured",
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
       "context_reuse_rate": 0.3333333333333333
     },
     {
@@ -123,7 +123,7 @@
       "cpu_throttle_count": 1220,
       "scheduler_decisions_count": 40,
       "decision_evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured",
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
       "context_reuse_rate": 0.5
     },
     {
@@ -142,7 +142,7 @@
       "cpu_throttle_count": 1660,
       "scheduler_decisions_count": 40,
       "decision_evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured",
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
       "context_reuse_rate": 1
     },
     {
@@ -161,7 +161,7 @@
       "cpu_throttle_count": 1660,
       "scheduler_decisions_count": 40,
       "decision_evidence_mode": "degraded",
-      "fallback_reason": "local cgroup pressure files unavailable in portable benchmark",
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
       "context_reuse_rate": 1
     }
   ]

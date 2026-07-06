@@ -1,6 +1,6 @@
 # AORT-R Final Evidence Summary
 
-- timestamp: 2026-07-06T04:40:20.623177+00:00
+- timestamp: 2026-07-06T05:39:02.652019+00:00
 - evidence_mode: real-runtime
 - go_test: passed
 - smoke: passed
@@ -10,6 +10,7 @@
 - workspace_isolation: passed
 
 ## Generated Files
+- `experiments/results/final/step_status.tsv`
 - `experiments/results/final/env_check.json`
 - `experiments/results/e1/e1_resource_aware.json`
 - `experiments/results/e1/e1_resource_aware.csv`
@@ -33,4 +34,4 @@
 - overlayfs: real-overlayfs
 
 ## Known Limits
-- none
+- resource-aware pressure sampler degraded: resource pressure sampler not configured or local cgroup pressure files unavailable

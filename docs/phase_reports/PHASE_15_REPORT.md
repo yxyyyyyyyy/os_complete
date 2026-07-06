@@ -2,7 +2,7 @@
 
 ## 1. 阶段目标
 
-补齐系统级可观测性中的 Kernel Observer 证据，让 Timeline 不只展示应用层和 syscall audit，也有明确的 kernel lane。当前阶段不伪装真 eBPF，采用可运行、可验证的 `degraded-proxy` 模式。
+补齐系统级可观测性中的 Kernel Observer 证据，让 Timeline 不只展示应用层和 syscall audit，也有明确的 kernel lane。当前阶段不伪装真 eBPF，采用可运行、可验证的 `degraded` 模式。
 
 ## 2. 本阶段实际完成内容
 
@@ -19,11 +19,14 @@
 当前模式为：
 
 ```text
-mode=degraded-proxy
+mode=degraded
 probe=syscall-gateway-proxy
 ```
 
-含义是：AORT-R 已经把 exec 证据纳入 kernel lane，但事件来源是 syscall gateway 对 tool process 的观察，不是假装来自真实 eBPF。后续在 openEuler root VM 上接入 `sched:sched_process_exec` 后，可将 probe 切换为真实 eBPF。
+含义是：AORT-R 已经把 exec 证据纳入 kernel lane，但事件来源是
+syscall gateway 对 tool process 的观察，不是假装来自真实 eBPF。后续在
+openEuler root VM 上接入 `sched:sched_process_exec` 后，可将 probe 切换为
+真实 eBPF。
 
 ## 4. 修改文件清单
 
@@ -75,5 +78,5 @@ scripts/run_experiments.sh 5
 
 ## 7. 当前风险和下一步
 
-- 真实 eBPF attachment 尚未实现，当前为明确标记的 degraded-proxy。
+- 真实 eBPF attachment 尚未实现，当前为明确标记的 `degraded`。
 - 下一步可在 openEuler 24.03 root VM 上实现 `sched_process_exec` eBPF 程序，并保留当前 proxy 作为 fallback。

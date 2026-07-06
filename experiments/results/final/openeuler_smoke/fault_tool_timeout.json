@@ -1,1 +1,14 @@
-{"id":"20260706124018.830959786","type":"TOOL_TIMEOUT","task_id":"fault-1783312818820394072","agent_id":"fault-1783312818820394072-agent","status":"RECOVERED","recovery_action":"tool process killed by timeout context","details":{"error":"tool timeout","syscall":"tool.exec","syscall_status":"TIMEOUT"},"detected_at":1783312818830}
+{
+  "id": "20260706133900.833387338",
+  "type": "TOOL_TIMEOUT",
+  "task_id": "fault-1783316340822824255",
+  "agent_id": "fault-1783316340822824255-agent",
+  "status": "RECOVERED",
+  "recovery_action": "tool process killed by timeout context",
+  "details": {
+    "error": "tool timeout",
+    "syscall": "tool.exec",
+    "syscall_status": "TIMEOUT"
+  },
+  "detected_at": 1783316340833
+}

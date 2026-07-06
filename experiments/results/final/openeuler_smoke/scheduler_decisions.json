@@ -1,1 +1,189 @@
-[{"id":"20260706124017.004590753","decision_id":"20260706124017.004590753","timestamp":"2026-07-06T04:40:17.004590753Z","task_id":"task-1783312817001746440","selected_task":"task-1783312817001746440","candidates":["task-1783312817001746440-planner","task-1783312817001746440-coder","task-1783312817001746440-tester","task-1783312817001746440-reviewer"],"selected_agent":"task-1783312817001746440-planner","policy":"token-cfs-prefix-affinity","reason":"lowest vruntime; no previous prefix group","vruntime_before":{"task-1783312817001746440-coder":0,"task-1783312817001746440-planner":0,"task-1783312817001746440-reviewer":0,"task-1783312817001746440-tester":0},"vruntime_after":{"task-1783312817001746440-coder":0,"task-1783312817001746440-planner":0,"task-1783312817001746440-reviewer":0,"task-1783312817001746440-tester":0},"shared_pages":{},"vruntime_score":0,"context_affinity_score":0,"memory_pressure":0,"pids_pressure":0,"cpu_throttle_pressure":0,"psi_pressure":0,"dependency_ready":true,"dynamic_spawn_priority":0,"final_score":0,"evidence_mode":"degraded","fallback_reason":"resource pressure sampler not configured","resource_pressure":{"memory_pressure":0,"pids_pressure":0,"cpu_throttle_pressure":0,"psi_pressure":0,"evidence_mode":"degraded","fallback_reason":"resource pressure sampler not configured"},"created_at":1783312817004},{"id":"20260706124017.005436134","decision_id":"20260706124017.005436134","timestamp":"2026-07-06T04:40:17.005436134Z","task_id":"task-1783312817001746440","selected_task":"task-1783312817001746440","candidates":["task-1783312817001746440-coder","task-1783312817001746440-tester","task-1783312817001746440-reviewer"],"selected_agent":"task-1783312817001746440-coder","policy":"token-cfs-prefix-affinity","reason":"lowest vruntime; no affinity candidate within threshold","vruntime_before":{"task-1783312817001746440-coder":0,"task-1783312817001746440-reviewer":0,"task-1783312817001746440-tester":0},"vruntime_after":{"task-1783312817001746440-coder":0,"task-1783312817001746440-reviewer":0,"task-1783312817001746440-tester":0},"shared_pages":{"task-1783312817001746440-coder":3,"task-1783312817001746440-reviewer":3,"task-1783312817001746440-tester":3},"vruntime_score":0,"context_affinity_score":0,"memory_pressure":0,"pids_pressure":0,"cpu_throttle_pressure":0,"psi_pressure":0,"dependency_ready":true,"dynamic_spawn_priority":0,"final_score":0,"evidence_mode":"degraded","fallback_reason":"cpu: open /proc/pressure/cpu.pressure: no such file or directory; memory: open /proc/pressure/memory.pressure: no such file or directory; io: open /proc/pressure/io.pressure: no such file or directory","resource_pressure":{"memory_pressure":0,"pids_pressure":0,"cpu_throttle_pressure":0,"psi_pressure":0,"evidence_mode":"degraded","fallback_reason":"cpu: open /proc/pressure/cpu.pressure: no such file or directory; memory: open /proc/pressure/memory.pressure: no such file or directory; io: open /proc/pressure/io.pressure: no such file or directory"},"created_at":1783312817005},{"id":"20260706124017.006880164","decision_id":"20260706124017.006880164","timestamp":"2026-07-06T04:40:17.006880164Z","task_id":"task-1783312817001746440","selected_task":"task-1783312817001746440","candidates":["task-1783312817001746440-tester","task-1783312817001746440-reviewer"],"selected_agent":"task-1783312817001746440-tester","policy":"token-cfs-prefix-affinity","reason":"lowest vruntime; no affinity candidate within threshold","vruntime_before":{"task-1783312817001746440-reviewer":0,"task-1783312817001746440-tester":0},"vruntime_after":{"task-1783312817001746440-reviewer":0,"task-1783312817001746440-tester":0},"shared_pages":{"task-1783312817001746440-reviewer":3,"task-1783312817001746440-tester":3},"vruntime_score":0,"context_affinity_score":0,"memory_pressure":0,"pids_pressure":0,"cpu_throttle_pressure":0,"psi_pressure":0,"dependency_ready":true,"dynamic_spawn_priority":0,"final_score":0,"evidence_mode":"degraded","fallback_reason":"cpu: open /proc/pressure/cpu.pressure: no such file or directory; memory: open /proc/pressure/memory.pressure: no such file or directory; io: open /proc/pressure/io.pressure: no such file or directory","resource_pressure":{"memory_pressure":0,"pids_pressure":0,"cpu_throttle_pressure":0,"psi_pressure":0,"evidence_mode":"degraded","fallback_reason":"cpu: open /proc/pressure/cpu.pressure: no such file or directory; memory: open /proc/pressure/memory.pressure: no such file or directory; io: open /proc/pressure/io.pressure: no such file or directory"},"created_at":1783312817006},{"id":"20260706124017.007848938","decision_id":"20260706124017.007848938","timestamp":"2026-07-06T04:40:17.007848938Z","task_id":"task-1783312817001746440","selected_task":"task-1783312817001746440","candidates":["task-1783312817001746440-reviewer"],"selected_agent":"task-1783312817001746440-reviewer","policy":"token-cfs-prefix-affinity","reason":"lowest vruntime; no affinity candidate within threshold","vruntime_before":{"task-1783312817001746440-reviewer":0},"vruntime_after":{"task-1783312817001746440-reviewer":0},"shared_pages":{"task-1783312817001746440-reviewer":3},"vruntime_score":0,"context_affinity_score":0,"memory_pressure":0,"pids_pressure":0,"cpu_throttle_pressure":0,"psi_pressure":0,"dependency_ready":true,"dynamic_spawn_priority":0,"final_score":0,"evidence_mode":"degraded","fallback_reason":"cpu: open /proc/pressure/cpu.pressure: no such file or directory; memory: open /proc/pressure/memory.pressure: no such file or directory; io: open /proc/pressure/io.pressure: no such file or directory","resource_pressure":{"memory_pressure":0,"pids_pressure":0,"cpu_throttle_pressure":0,"psi_pressure":0,"evidence_mode":"degraded","fallback_reason":"cpu: open /proc/pressure/cpu.pressure: no such file or directory; memory: open /proc/pressure/memory.pressure: no such file or directory; io: open /proc/pressure/io.pressure: no such file or directory"},"created_at":1783312817007}]
+[
+  {
+    "id": "20260706133858.647084114",
+    "decision_id": "20260706133858.647084114",
+    "timestamp": "2026-07-06T05:38:58.647084114Z",
+    "task_id": "task-1783316338643864646",
+    "selected_task": "task-1783316338643864646",
+    "candidates": [
+      "task-1783316338643864646-planner",
+      "task-1783316338643864646-coder",
+      "task-1783316338643864646-tester",
+      "task-1783316338643864646-reviewer"
+    ],
+    "selected_agent": "task-1783316338643864646-planner",
+    "policy": "token-cfs-prefix-affinity",
+    "reason": "lowest vruntime; no previous prefix group",
+    "vruntime_before": {
+      "task-1783316338643864646-coder": 0,
+      "task-1783316338643864646-planner": 0,
+      "task-1783316338643864646-reviewer": 0,
+      "task-1783316338643864646-tester": 0
+    },
+    "vruntime_after": {
+      "task-1783316338643864646-coder": 0,
+      "task-1783316338643864646-planner": 0,
+      "task-1783316338643864646-reviewer": 0,
+      "task-1783316338643864646-tester": 0
+    },
+    "shared_pages": {},
+    "vruntime_score": 0,
+    "context_affinity_score": 0,
+    "memory_pressure": 0,
+    "pids_pressure": 0,
+    "cpu_throttle_pressure": 0,
+    "psi_pressure": 0,
+    "dependency_ready": true,
+    "dynamic_spawn_priority": 0,
+    "final_score": 0,
+    "evidence_mode": "degraded",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
+    "resource_pressure": {
+      "memory_pressure": 0,
+      "pids_pressure": 0,
+      "cpu_throttle_pressure": 0,
+      "psi_pressure": 0,
+      "evidence_mode": "degraded",
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
+    },
+    "created_at": 1783316338647
+  },
+  {
+    "id": "20260706133858.647955485",
+    "decision_id": "20260706133858.647955485",
+    "timestamp": "2026-07-06T05:38:58.647955485Z",
+    "task_id": "task-1783316338643864646",
+    "selected_task": "task-1783316338643864646",
+    "candidates": [
+      "task-1783316338643864646-coder",
+      "task-1783316338643864646-tester",
+      "task-1783316338643864646-reviewer"
+    ],
+    "selected_agent": "task-1783316338643864646-coder",
+    "policy": "token-cfs-prefix-affinity",
+    "reason": "lowest vruntime; no affinity candidate within threshold",
+    "vruntime_before": {
+      "task-1783316338643864646-coder": 0,
+      "task-1783316338643864646-reviewer": 0,
+      "task-1783316338643864646-tester": 0
+    },
+    "vruntime_after": {
+      "task-1783316338643864646-coder": 0,
+      "task-1783316338643864646-reviewer": 0,
+      "task-1783316338643864646-tester": 0
+    },
+    "shared_pages": {
+      "task-1783316338643864646-coder": 3,
+      "task-1783316338643864646-reviewer": 3,
+      "task-1783316338643864646-tester": 3
+    },
+    "vruntime_score": 0,
+    "context_affinity_score": 0,
+    "memory_pressure": 0,
+    "pids_pressure": 0,
+    "cpu_throttle_pressure": 0,
+    "psi_pressure": 0,
+    "dependency_ready": true,
+    "dynamic_spawn_priority": 0,
+    "final_score": 0,
+    "evidence_mode": "degraded",
+    "fallback_reason": "cpu: open /proc/pressure/cpu.pressure: no such file or directory; memory: open /proc/pressure/memory.pressure: no such file or directory; io: open /proc/pressure/io.pressure: no such file or directory",
+    "resource_pressure": {
+      "memory_pressure": 0,
+      "pids_pressure": 0,
+      "cpu_throttle_pressure": 0,
+      "psi_pressure": 0,
+      "evidence_mode": "degraded",
+      "fallback_reason": "cpu: open /proc/pressure/cpu.pressure: no such file or directory; memory: open /proc/pressure/memory.pressure: no such file or directory; io: open /proc/pressure/io.pressure: no such file or directory"
+    },
+    "created_at": 1783316338647
+  },
+  {
+    "id": "20260706133858.648814949",
+    "decision_id": "20260706133858.648814949",
+    "timestamp": "2026-07-06T05:38:58.648814949Z",
+    "task_id": "task-1783316338643864646",
+    "selected_task": "task-1783316338643864646",
+    "candidates": [
+      "task-1783316338643864646-tester",
+      "task-1783316338643864646-reviewer"
+    ],
+    "selected_agent": "task-1783316338643864646-tester",
+    "policy": "token-cfs-prefix-affinity",
+    "reason": "lowest vruntime; no affinity candidate within threshold",
+    "vruntime_before": {
+      "task-1783316338643864646-reviewer": 0,
+      "task-1783316338643864646-tester": 0
+    },
+    "vruntime_after": {
+      "task-1783316338643864646-reviewer": 0,
+      "task-1783316338643864646-tester": 0
+    },
+    "shared_pages": {
+      "task-1783316338643864646-reviewer": 3,
+      "task-1783316338643864646-tester": 3
+    },
+    "vruntime_score": 0,
+    "context_affinity_score": 0,
+    "memory_pressure": 0,
+    "pids_pressure": 0,
+    "cpu_throttle_pressure": 0,
+    "psi_pressure": 0,
+    "dependency_ready": true,
+    "dynamic_spawn_priority": 0,
+    "final_score": 0,
+    "evidence_mode": "degraded",
+    "fallback_reason": "cpu: open /proc/pressure/cpu.pressure: no such file or directory; memory: open /proc/pressure/memory.pressure: no such file or directory; io: open /proc/pressure/io.pressure: no such file or directory",
+    "resource_pressure": {
+      "memory_pressure": 0,
+      "pids_pressure": 0,
+      "cpu_throttle_pressure": 0,
+      "psi_pressure": 0,
+      "evidence_mode": "degraded",
+      "fallback_reason": "cpu: open /proc/pressure/cpu.pressure: no such file or directory; memory: open /proc/pressure/memory.pressure: no such file or directory; io: open /proc/pressure/io.pressure: no such file or directory"
+    },
+    "created_at": 1783316338648
+  },
+  {
+    "id": "20260706133858.649653238",
+    "decision_id": "20260706133858.649653238",
+    "timestamp": "2026-07-06T05:38:58.649653238Z",
+    "task_id": "task-1783316338643864646",
+    "selected_task": "task-1783316338643864646",
+    "candidates": [
+      "task-1783316338643864646-reviewer"
+    ],
+    "selected_agent": "task-1783316338643864646-reviewer",
+    "policy": "token-cfs-prefix-affinity",
+    "reason": "lowest vruntime; no affinity candidate within threshold",
+    "vruntime_before": {
+      "task-1783316338643864646-reviewer": 0
+    },
+    "vruntime_after": {
+      "task-1783316338643864646-reviewer": 0
+    },
+    "shared_pages": {
+      "task-1783316338643864646-reviewer": 3
+    },
+    "vruntime_score": 0,
+    "context_affinity_score": 0,
+    "memory_pressure": 0,
+    "pids_pressure": 0,
+    "cpu_throttle_pressure": 0,
+    "psi_pressure": 0,
+    "dependency_ready": true,
+    "dynamic_spawn_priority": 0,
+    "final_score": 0,
+    "evidence_mode": "degraded",
+    "fallback_reason": "cpu: open /proc/pressure/cpu.pressure: no such file or directory; memory: open /proc/pressure/memory.pressure: no such file or directory; io: open /proc/pressure/io.pressure: no such file or directory",
+    "resource_pressure": {
+      "memory_pressure": 0,
+      "pids_pressure": 0,
+      "cpu_throttle_pressure": 0,
+      "psi_pressure": 0,
+      "evidence_mode": "degraded",
+      "fallback_reason": "cpu: open /proc/pressure/cpu.pressure: no such file or directory; memory: open /proc/pressure/memory.pressure: no such file or directory; io: open /proc/pressure/io.pressure: no such file or directory"
+    },
+    "created_at": 1783316338649
+  }
+]

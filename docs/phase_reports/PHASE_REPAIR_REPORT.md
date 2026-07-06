@@ -81,7 +81,7 @@ go: failed to trim cache: open /Users/yxy/Library/Caches/go-build/trim.txt: oper
 
 - cgroup capsule：Linux cgroup v2/root 环境可走 real；macOS、非 Linux 或无权限环境进入 `capsule_mode=degraded`。
 - workspace 隔离：当前是 `degraded-copy` 复制回滚，不是真实 overlayfs mount/commit。
-- kernel observer：当前是 `degraded-proxy`，通过 syscall gateway 的 exec observation 形成 `kernel.exec` 证据，不是真实 eBPF attach。
+- kernel observer：当前是 `degraded`，通过 syscall gateway 的 exec observation 形成 `kernel.exec` 证据，不是真实 eBPF attach。
 - pressure monitor：Linux PSI 可读时为 `psi`；无 `/proc/pressure` 或不可读时进入 degraded。
 - checkpoint recovery：当前为 `checkpoint-light`，恢复 AVP 表、scheduler vruntime 与 CVM page references；page content 持久恢复仍依赖未来 durable page backing。
 
@@ -95,4 +95,4 @@ go: failed to trim cache: open /Users/yxy/Library/Caches/go-build/trim.txt: oper
 
 1. 保留最新 openEuler unified cgroup v2 real smoke 作为主证据，并补充多 Agent 隔离与 limit 生效脚本输出。
 2. 将 workspace `degraded-copy` 升级为 openEuler 上的真实 overlayfs mount/commit/rollback，并保留 degraded fallback。
-3. 实现并验证真实 eBPF `sched_process_exec` 观测链路，把 kernel observer 从 `degraded-proxy` 推进到 real probe。
+3. 实现并验证真实 eBPF `sched_process_exec` 观测链路，把 kernel observer 从 `degraded` 推进到 real probe。

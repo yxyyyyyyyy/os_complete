@@ -319,7 +319,7 @@ func RunE1ResourceAwareBenchmark(runs int, outDir string) ([]E1ResourceAwareResu
 		if policy == scheduler.PolicyTokenCFSPrefixAffinityResourceAware {
 			s.SetResourcePressure(scheduler.ResourcePressure{
 				EvidenceMode:   "degraded",
-				FallbackReason: "local cgroup pressure files unavailable in portable benchmark",
+				FallbackReason: "resource pressure sampler not configured or local cgroup pressure files unavailable",
 				PSIPressure:    0.10,
 			})
 		}

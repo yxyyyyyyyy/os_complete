@@ -1,0 +1,8 @@
+env_check	passed	0	/root/aort-r-server-run-20260706-p0p1p2-memoryfix/experiments/results/final/env_check.log	bash scripts/check_openeuler_env.sh
+go_test	passed	0	/root/aort-r-server-run-20260706-p0p1p2-memoryfix/experiments/results/final/go_test.log	go test ./...
+smoke	passed	0	/root/aort-r-server-run-20260706-p0p1p2-memoryfix/experiments/results/final/smoke.log	bash scripts/smoke_openeuler.sh
+e1_scheduler	passed	0	/root/aort-r-server-run-20260706-p0p1p2-memoryfix/experiments/results/final/e1_scheduler.log	go run ./cmd/aortctl experiment e1 --policy resource-aware --runs 5 --out experiments/results/e1
+e2_fault_isolation	passed	0	/root/aort-r-server-run-20260706-p0p1p2-memoryfix/experiments/results/final/e2_fault_isolation.log	go run ./cmd/aortctl experiment e2 --runs 5 --out experiments/results
+software_real_demo	passed	0	/root/aort-r-server-run-20260706-p0p1p2-memoryfix/experiments/results/final/software_real_demo.log	go run ./cmd/aortctl demo software-real --out experiments/results
+workspace_isolation	passed	0	/root/aort-r-server-run-20260706-p0p1p2-memoryfix/experiments/results/final/workspace_isolation.log	go run ./cmd/aortctl demo fault workspace-rmrf --out experiments/results
+final_artifacts	passed	0	/root/aort-r-server-run-20260706-p0p1p2-memoryfix/experiments/results/final/final_artifacts.log	generate final evidence index and summary

@@ -26,6 +26,7 @@ Important boundaries:
 - LLM is `mock` by default. DeepSeek success may be `real-api`; API failure falls back to `mock` with `fallback=true` and `fallback_reason`.
 - eBPF is `planned` or `degraded` unless there is real attachment evidence. Do not report `real-ebpf`.
 - Overlay workspace isolation is `real-overlayfs` only after a successful mount. Otherwise it is `degraded-copy`.
+- Current checked-in workspace evidence is `real-overlayfs` because the Linux/root verification run mounted overlayfs successfully. Do not keep that label after a degraded rerun.
 
 Primary evidence files:
 

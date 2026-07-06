@@ -41,7 +41,14 @@ CLI:
 
 ```bash
 go run ./cmd/aortctl experiment e1 --policy resource-aware --runs 5 --out experiments/results/e1
+go run ./cmd/aortctl experiment e1 --policy all --runs 5 --out experiments/results/e1
 ```
+
+In the current portable benchmark, `token-cfs-prefix-affinity` has the lowest
+wall time. `token-cfs-prefix-affinity-resource-aware` improves over FIFO and
+token-CFS while adding memory/pids/cpu/PSI pressure-aware safety decisions. Do
+not present the resource-aware policy as the fastest policy unless a future
+fresh benchmark actually shows that ordering.
 
 Outputs:
 

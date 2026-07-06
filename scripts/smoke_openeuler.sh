@@ -76,6 +76,22 @@ if json.loads(limit.read_text(encoding="utf-8")).get("cpu_quota_observable") is 
 PY
 }
 
+pretty_json_file() {
+  local path="$1"
+  python3 - "$path" <<'PY'
+import json
+import pathlib
+import sys
+
+path = pathlib.Path(sys.argv[1])
+try:
+    data = json.loads(path.read_text(encoding="utf-8"))
+except Exception:
+    raise SystemExit(0)
+path.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+PY
+}
+
 if [ "$(stat -fc %T /sys/fs/cgroup 2>/dev/null || true)" != "cgroup2fs" ] && [ "${AORT_REQUIRE_LIVE_OPENEULER:-0}" != "1" ]; then
   echo "== archived openEuler real-cgroup-v2 smoke evidence =="
   if validate_archived_smoke_evidence; then
@@ -125,6 +141,7 @@ request() {
 
   code="$(curl -sS -o "$output" -w "%{http_code}" -X "$method" "$BASE_URL$path" || true)"
   printf '%s\n' "$code" >"$status_file"
+  pretty_json_file "$output"
   if [ "$code" -lt 200 ] || [ "$code" -ge 300 ]; then
     echo "request $method $path failed with HTTP $code" >&2
     cat "$output" >&2 || true
@@ -142,6 +159,7 @@ request_allow_failure() {
 
   code="$(curl -sS -o "$output" -w "%{http_code}" -X "$method" "$BASE_URL$path" || true)"
   printf '%s\n' "$code" >"$status_file"
+  pretty_json_file "$output"
 }
 
 validate_real_capsule() {

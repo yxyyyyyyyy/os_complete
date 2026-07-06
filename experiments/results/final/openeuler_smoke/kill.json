@@ -1,1 +1,4 @@
-{"action":"kill","status":"ok"}
+{
+  "action": "kill",
+  "status": "ok"
+}

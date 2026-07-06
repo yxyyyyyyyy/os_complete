@@ -23,6 +23,11 @@ Modes:
 - `real-overlayfs`: Linux root host, overlayfs is listed in `/proc/filesystems`, and the mount succeeds.
 - `degraded-copy`: fallback mode for macOS, non-root Linux, missing overlayfs, or mount failure.
 
+Current checked-in evidence is `real-overlayfs` from a Linux/root verification
+run where overlayfs mounted successfully. If this demo is rerun on macOS,
+non-root Linux, or a host without overlayfs mount support, the evidence must
+remain `degraded-copy` and include the concrete `fallback_reason`.
+
 Real overlayfs mount:
 
 ```bash
@@ -60,4 +65,5 @@ Current limits:
 
 - Real overlayfs depends on Linux root mount capability.
 - Non-Linux or non-root hosts intentionally report `degraded-copy`.
-- The demo proves workspace isolation and rollback; it does not claim kernel namespace isolation.
+- The demo proves Agent runtime workspace layer isolation and rollback; it does
+  not claim full namespace/container sandbox isolation.

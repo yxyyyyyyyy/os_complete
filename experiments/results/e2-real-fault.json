@@ -13,7 +13,7 @@
     "final_status": "recovered",
     "system_survived": true,
     "cascade_failure": false,
-    "supervisor_fault_id": "20260706114721.371742535",
+    "supervisor_fault_id": "20260706133902.259869192",
     "fault_evidence": {
       "error": "tool timeout",
       "syscall_status": "TIMEOUT"
@@ -33,7 +33,7 @@
     "final_status": "recovered",
     "system_survived": true,
     "cascade_failure": false,
-    "supervisor_fault_id": "20260706114721.372700170",
+    "supervisor_fault_id": "20260706133902.260771452",
     "fault_evidence": {
       "exit_error": "exit status 9",
       "syscall_status": "ERROR"
@@ -53,7 +53,7 @@
     "final_status": "recovered",
     "system_survived": true,
     "cascade_failure": false,
-    "supervisor_fault_id": "20260706114721.374058111",
+    "supervisor_fault_id": "20260706133902.262029063",
     "fault_evidence": {
       "cascade_failure": false,
       "commit_supported": true,
@@ -81,12 +81,12 @@
     "unaffected_agents": 5,
     "total_agents": 6,
     "recovery_action": "restart_agent_capsule_from_checkpoint",
-    "recovery_time_ms": 1,
+    "recovery_time_ms": 5,
     "checkpoint_used": true,
     "final_status": "recovered",
     "system_survived": true,
     "cascade_failure": false,
-    "supervisor_fault_id": "20260706114721.375334059",
+    "supervisor_fault_id": "20260706133902.262871311",
     "fault_evidence": {
       "capsule_signal": "cgroup.kill invoked",
       "exit_error": "signal: terminated",
@@ -102,12 +102,12 @@
     "unaffected_agents": 5,
     "total_agents": 6,
     "recovery_action": "restart_agent_with_lower_memory_pressure_from_checkpoint",
-    "recovery_time_ms": 1,
+    "recovery_time_ms": 5,
     "checkpoint_used": true,
     "final_status": "recovered",
     "system_survived": true,
     "cascade_failure": false,
-    "supervisor_fault_id": "20260706114721.376772392",
+    "supervisor_fault_id": "20260706133902.263754359",
     "fault_evidence": {
       "limit_artifact": "experiments/results/openeuler_cgroupv2_limits/memory_limit_enforced.json",
       "limit_cgroup_path": "/sys/fs/cgroup/aort.slice/aort-limit-memory-48222",
@@ -134,7 +134,7 @@
     "final_status": "recovered",
     "system_survived": true,
     "cascade_failure": false,
-    "supervisor_fault_id": "20260706114721.378571494",
+    "supervisor_fault_id": "20260706133902.265429069",
     "fault_evidence": {
       "fork_errors": [
         "[Errno 11] Resource temporarily unavailable"

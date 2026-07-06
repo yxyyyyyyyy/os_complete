@@ -1,8 +1,8 @@
 [
   {
-    "id": "20260706114721.181499899",
-    "decision_id": "20260706114721.181499899",
-    "timestamp": "2026-07-06T03:47:21.181499899Z",
+    "id": "20260706133902.069872565",
+    "decision_id": "20260706133902.069872565",
+    "timestamp": "2026-07-06T05:39:02.069872565Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -34,21 +34,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641181
+    "created_at": 1783316342069
   },
   {
-    "id": "20260706114721.181548160",
-    "decision_id": "20260706114721.181548160",
-    "timestamp": "2026-07-06T03:47:21.18154816Z",
+    "id": "20260706133902.069947017",
+    "decision_id": "20260706133902.069947017",
+    "timestamp": "2026-07-06T05:39:02.069947017Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -80,21 +80,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641181
+    "created_at": 1783316342069
   },
   {
-    "id": "20260706114721.181565037",
-    "decision_id": "20260706114721.181565037",
-    "timestamp": "2026-07-06T03:47:21.181565037Z",
+    "id": "20260706133902.069971472",
+    "decision_id": "20260706133902.069971472",
+    "timestamp": "2026-07-06T05:39:02.069971472Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -126,21 +126,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641181
+    "created_at": 1783316342069
   },
   {
-    "id": "20260706114721.181573163",
-    "decision_id": "20260706114721.181573163",
-    "timestamp": "2026-07-06T03:47:21.181573163Z",
+    "id": "20260706133902.069987128",
+    "decision_id": "20260706133902.069987128",
+    "timestamp": "2026-07-06T05:39:02.069987128Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -172,21 +172,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641181
+    "created_at": 1783316342069
   },
   {
-    "id": "20260706114721.181582268",
-    "decision_id": "20260706114721.181582268",
-    "timestamp": "2026-07-06T03:47:21.181582268Z",
+    "id": "20260706133902.070003179",
+    "decision_id": "20260706133902.070003179",
+    "timestamp": "2026-07-06T05:39:02.070003179Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -218,21 +218,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641181
+    "created_at": 1783316342070
   },
   {
-    "id": "20260706114721.181591334",
-    "decision_id": "20260706114721.181591334",
-    "timestamp": "2026-07-06T03:47:21.181591334Z",
+    "id": "20260706133902.070020532",
+    "decision_id": "20260706133902.070020532",
+    "timestamp": "2026-07-06T05:39:02.070020532Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -264,21 +264,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641181
+    "created_at": 1783316342070
   },
   {
-    "id": "20260706114721.181596908",
-    "decision_id": "20260706114721.181596908",
-    "timestamp": "2026-07-06T03:47:21.181596908Z",
+    "id": "20260706133902.070026049",
+    "decision_id": "20260706133902.070026049",
+    "timestamp": "2026-07-06T05:39:02.070026049Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -310,21 +310,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641181
+    "created_at": 1783316342070
   },
   {
-    "id": "20260706114721.181602172",
-    "decision_id": "20260706114721.181602172",
-    "timestamp": "2026-07-06T03:47:21.181602172Z",
+    "id": "20260706133902.070031854",
+    "decision_id": "20260706133902.070031854",
+    "timestamp": "2026-07-06T05:39:02.070031854Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -356,21 +356,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641181
+    "created_at": 1783316342070
   },
   {
-    "id": "20260706114721.181606517",
-    "decision_id": "20260706114721.181606517",
-    "timestamp": "2026-07-06T03:47:21.181606517Z",
+    "id": "20260706133902.070036523",
+    "decision_id": "20260706133902.070036523",
+    "timestamp": "2026-07-06T05:39:02.070036523Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -402,21 +402,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641181
+    "created_at": 1783316342070
   },
   {
-    "id": "20260706114721.181618471",
-    "decision_id": "20260706114721.181618471",
-    "timestamp": "2026-07-06T03:47:21.181618471Z",
+    "id": "20260706133902.070046301",
+    "decision_id": "20260706133902.070046301",
+    "timestamp": "2026-07-06T05:39:02.070046301Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -448,21 +448,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641181
+    "created_at": 1783316342070
   },
   {
-    "id": "20260706114721.181623675",
-    "decision_id": "20260706114721.181623675",
-    "timestamp": "2026-07-06T03:47:21.181623675Z",
+    "id": "20260706133902.070051616",
+    "decision_id": "20260706133902.070051616",
+    "timestamp": "2026-07-06T05:39:02.070051616Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -494,21 +494,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641181
+    "created_at": 1783316342070
   },
   {
-    "id": "20260706114721.181628669",
-    "decision_id": "20260706114721.181628669",
-    "timestamp": "2026-07-06T03:47:21.181628669Z",
+    "id": "20260706133902.070056326",
+    "decision_id": "20260706133902.070056326",
+    "timestamp": "2026-07-06T05:39:02.070056326Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -540,21 +540,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641181
+    "created_at": 1783316342070
   },
   {
-    "id": "20260706114721.181633313",
-    "decision_id": "20260706114721.181633313",
-    "timestamp": "2026-07-06T03:47:21.181633313Z",
+    "id": "20260706133902.070060434",
+    "decision_id": "20260706133902.070060434",
+    "timestamp": "2026-07-06T05:39:02.070060434Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -586,21 +586,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641181
+    "created_at": 1783316342070
   },
   {
-    "id": "20260706114721.181638055",
-    "decision_id": "20260706114721.181638055",
-    "timestamp": "2026-07-06T03:47:21.181638055Z",
+    "id": "20260706133902.070065537",
+    "decision_id": "20260706133902.070065537",
+    "timestamp": "2026-07-06T05:39:02.070065537Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -632,21 +632,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641181
+    "created_at": 1783316342070
   },
   {
-    "id": "20260706114721.181642432",
-    "decision_id": "20260706114721.181642432",
-    "timestamp": "2026-07-06T03:47:21.181642432Z",
+    "id": "20260706133902.070069842",
+    "decision_id": "20260706133902.070069842",
+    "timestamp": "2026-07-06T05:39:02.070069842Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -678,21 +678,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641181
+    "created_at": 1783316342070
   },
   {
-    "id": "20260706114721.181647225",
-    "decision_id": "20260706114721.181647225",
-    "timestamp": "2026-07-06T03:47:21.181647225Z",
+    "id": "20260706133902.070074023",
+    "decision_id": "20260706133902.070074023",
+    "timestamp": "2026-07-06T05:39:02.070074023Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -724,21 +724,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641181
+    "created_at": 1783316342070
   },
   {
-    "id": "20260706114721.181654273",
-    "decision_id": "20260706114721.181654273",
-    "timestamp": "2026-07-06T03:47:21.181654273Z",
+    "id": "20260706133902.070080729",
+    "decision_id": "20260706133902.070080729",
+    "timestamp": "2026-07-06T05:39:02.070080729Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -770,21 +770,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641181
+    "created_at": 1783316342070
   },
   {
-    "id": "20260706114721.181660070",
-    "decision_id": "20260706114721.181660070",
-    "timestamp": "2026-07-06T03:47:21.18166007Z",
+    "id": "20260706133902.070086594",
+    "decision_id": "20260706133902.070086594",
+    "timestamp": "2026-07-06T05:39:02.070086594Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -816,21 +816,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641181
+    "created_at": 1783316342070
   },
   {
-    "id": "20260706114721.181664544",
-    "decision_id": "20260706114721.181664544",
-    "timestamp": "2026-07-06T03:47:21.181664544Z",
+    "id": "20260706133902.070090857",
+    "decision_id": "20260706133902.070090857",
+    "timestamp": "2026-07-06T05:39:02.070090857Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -862,21 +862,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641181
+    "created_at": 1783316342070
   },
   {
-    "id": "20260706114721.181673552",
-    "decision_id": "20260706114721.181673552",
-    "timestamp": "2026-07-06T03:47:21.181673552Z",
+    "id": "20260706133902.070096223",
+    "decision_id": "20260706133902.070096223",
+    "timestamp": "2026-07-06T05:39:02.070096223Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -908,21 +908,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641181
+    "created_at": 1783316342070
   },
   {
-    "id": "20260706114721.181678497",
-    "decision_id": "20260706114721.181678497",
-    "timestamp": "2026-07-06T03:47:21.181678497Z",
+    "id": "20260706133902.070104352",
+    "decision_id": "20260706133902.070104352",
+    "timestamp": "2026-07-06T05:39:02.070104352Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -954,21 +954,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641181
+    "created_at": 1783316342070
   },
   {
-    "id": "20260706114721.181682740",
-    "decision_id": "20260706114721.181682740",
-    "timestamp": "2026-07-06T03:47:21.18168274Z",
+    "id": "20260706133902.070118714",
+    "decision_id": "20260706133902.070118714",
+    "timestamp": "2026-07-06T05:39:02.070118714Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -1000,21 +1000,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641181
+    "created_at": 1783316342070
   },
   {
-    "id": "20260706114721.181687334",
-    "decision_id": "20260706114721.181687334",
-    "timestamp": "2026-07-06T03:47:21.181687334Z",
+    "id": "20260706133902.070123736",
+    "decision_id": "20260706133902.070123736",
+    "timestamp": "2026-07-06T05:39:02.070123736Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -1046,21 +1046,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641181
+    "created_at": 1783316342070
   },
   {
-    "id": "20260706114721.181691512",
-    "decision_id": "20260706114721.181691512",
-    "timestamp": "2026-07-06T03:47:21.181691512Z",
+    "id": "20260706133902.070127849",
+    "decision_id": "20260706133902.070127849",
+    "timestamp": "2026-07-06T05:39:02.070127849Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -1092,21 +1092,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641181
+    "created_at": 1783316342070
   },
   {
-    "id": "20260706114721.181695642",
-    "decision_id": "20260706114721.181695642",
-    "timestamp": "2026-07-06T03:47:21.181695642Z",
+    "id": "20260706133902.070131926",
+    "decision_id": "20260706133902.070131926",
+    "timestamp": "2026-07-06T05:39:02.070131926Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -1138,21 +1138,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641181
+    "created_at": 1783316342070
   },
   {
-    "id": "20260706114721.181700207",
-    "decision_id": "20260706114721.181700207",
-    "timestamp": "2026-07-06T03:47:21.181700207Z",
+    "id": "20260706133902.070136770",
+    "decision_id": "20260706133902.070136770",
+    "timestamp": "2026-07-06T05:39:02.07013677Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -1184,21 +1184,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641181
+    "created_at": 1783316342070
   },
   {
-    "id": "20260706114721.181704295",
-    "decision_id": "20260706114721.181704295",
-    "timestamp": "2026-07-06T03:47:21.181704295Z",
+    "id": "20260706133902.070141028",
+    "decision_id": "20260706133902.070141028",
+    "timestamp": "2026-07-06T05:39:02.070141028Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -1230,21 +1230,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641181
+    "created_at": 1783316342070
   },
   {
-    "id": "20260706114721.181709270",
-    "decision_id": "20260706114721.181709270",
-    "timestamp": "2026-07-06T03:47:21.18170927Z",
+    "id": "20260706133902.070145206",
+    "decision_id": "20260706133902.070145206",
+    "timestamp": "2026-07-06T05:39:02.070145206Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -1276,21 +1276,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641181
+    "created_at": 1783316342070
   },
   {
-    "id": "20260706114721.181714315",
-    "decision_id": "20260706114721.181714315",
-    "timestamp": "2026-07-06T03:47:21.181714315Z",
+    "id": "20260706133902.070149919",
+    "decision_id": "20260706133902.070149919",
+    "timestamp": "2026-07-06T05:39:02.070149919Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -1322,21 +1322,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641181
+    "created_at": 1783316342070
   },
   {
-    "id": "20260706114721.181727223",
-    "decision_id": "20260706114721.181727223",
-    "timestamp": "2026-07-06T03:47:21.181727223Z",
+    "id": "20260706133902.070154001",
+    "decision_id": "20260706133902.070154001",
+    "timestamp": "2026-07-06T05:39:02.070154001Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -1368,21 +1368,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641181
+    "created_at": 1783316342070
   },
   {
-    "id": "20260706114721.181731571",
-    "decision_id": "20260706114721.181731571",
-    "timestamp": "2026-07-06T03:47:21.181731571Z",
+    "id": "20260706133902.070158171",
+    "decision_id": "20260706133902.070158171",
+    "timestamp": "2026-07-06T05:39:02.070158171Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -1414,21 +1414,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641181
+    "created_at": 1783316342070
   },
   {
-    "id": "20260706114721.181736251",
-    "decision_id": "20260706114721.181736251",
-    "timestamp": "2026-07-06T03:47:21.181736251Z",
+    "id": "20260706133902.070162676",
+    "decision_id": "20260706133902.070162676",
+    "timestamp": "2026-07-06T05:39:02.070162676Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -1460,21 +1460,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641181
+    "created_at": 1783316342070
   },
   {
-    "id": "20260706114721.181740444",
-    "decision_id": "20260706114721.181740444",
-    "timestamp": "2026-07-06T03:47:21.181740444Z",
+    "id": "20260706133902.070166973",
+    "decision_id": "20260706133902.070166973",
+    "timestamp": "2026-07-06T05:39:02.070166973Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -1506,21 +1506,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641181
+    "created_at": 1783316342070
   },
   {
-    "id": "20260706114721.181744594",
-    "decision_id": "20260706114721.181744594",
-    "timestamp": "2026-07-06T03:47:21.181744594Z",
+    "id": "20260706133902.070171310",
+    "decision_id": "20260706133902.070171310",
+    "timestamp": "2026-07-06T05:39:02.07017131Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -1552,21 +1552,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641181
+    "created_at": 1783316342070
   },
   {
-    "id": "20260706114721.181748924",
-    "decision_id": "20260706114721.181748924",
-    "timestamp": "2026-07-06T03:47:21.181748924Z",
+    "id": "20260706133902.070175660",
+    "decision_id": "20260706133902.070175660",
+    "timestamp": "2026-07-06T05:39:02.07017566Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -1598,21 +1598,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641181
+    "created_at": 1783316342070
   },
   {
-    "id": "20260706114721.181753363",
-    "decision_id": "20260706114721.181753363",
-    "timestamp": "2026-07-06T03:47:21.181753363Z",
+    "id": "20260706133902.070180048",
+    "decision_id": "20260706133902.070180048",
+    "timestamp": "2026-07-06T05:39:02.070180048Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -1644,21 +1644,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641181
+    "created_at": 1783316342070
   },
   {
-    "id": "20260706114721.181758747",
-    "decision_id": "20260706114721.181758747",
-    "timestamp": "2026-07-06T03:47:21.181758747Z",
+    "id": "20260706133902.070186414",
+    "decision_id": "20260706133902.070186414",
+    "timestamp": "2026-07-06T05:39:02.070186414Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -1690,21 +1690,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641181
+    "created_at": 1783316342070
   },
   {
-    "id": "20260706114721.181764042",
-    "decision_id": "20260706114721.181764042",
-    "timestamp": "2026-07-06T03:47:21.181764042Z",
+    "id": "20260706133902.070191443",
+    "decision_id": "20260706133902.070191443",
+    "timestamp": "2026-07-06T05:39:02.070191443Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -1736,21 +1736,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641181
+    "created_at": 1783316342070
   },
   {
-    "id": "20260706114721.181768307",
-    "decision_id": "20260706114721.181768307",
-    "timestamp": "2026-07-06T03:47:21.181768307Z",
+    "id": "20260706133902.070195574",
+    "decision_id": "20260706133902.070195574",
+    "timestamp": "2026-07-06T05:39:02.070195574Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -1782,21 +1782,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641181
+    "created_at": 1783316342070
   },
   {
-    "id": "20260706114721.181772712",
-    "decision_id": "20260706114721.181772712",
-    "timestamp": "2026-07-06T03:47:21.181772712Z",
+    "id": "20260706133902.070199541",
+    "decision_id": "20260706133902.070199541",
+    "timestamp": "2026-07-06T05:39:02.070199541Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -1828,21 +1828,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641181
+    "created_at": 1783316342070
   },
   {
-    "id": "20260706114721.183289090",
-    "decision_id": "20260706114721.183289090",
-    "timestamp": "2026-07-06T03:47:21.18328909Z",
+    "id": "20260706133902.071809520",
+    "decision_id": "20260706133902.071809520",
+    "timestamp": "2026-07-06T05:39:02.07180952Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -1874,21 +1874,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641183
+    "created_at": 1783316342071
   },
   {
-    "id": "20260706114721.183300127",
-    "decision_id": "20260706114721.183300127",
-    "timestamp": "2026-07-06T03:47:21.183300127Z",
+    "id": "20260706133902.071820510",
+    "decision_id": "20260706133902.071820510",
+    "timestamp": "2026-07-06T05:39:02.07182051Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -1920,21 +1920,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641183
+    "created_at": 1783316342071
   },
   {
-    "id": "20260706114721.183311722",
-    "decision_id": "20260706114721.183311722",
-    "timestamp": "2026-07-06T03:47:21.183311722Z",
+    "id": "20260706133902.071830983",
+    "decision_id": "20260706133902.071830983",
+    "timestamp": "2026-07-06T05:39:02.071830983Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -1966,21 +1966,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641183
+    "created_at": 1783316342071
   },
   {
-    "id": "20260706114721.183318954",
-    "decision_id": "20260706114721.183318954",
-    "timestamp": "2026-07-06T03:47:21.183318954Z",
+    "id": "20260706133902.071837944",
+    "decision_id": "20260706133902.071837944",
+    "timestamp": "2026-07-06T05:39:02.071837944Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -2012,21 +2012,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641183
+    "created_at": 1783316342071
   },
   {
-    "id": "20260706114721.183327275",
-    "decision_id": "20260706114721.183327275",
-    "timestamp": "2026-07-06T03:47:21.183327275Z",
+    "id": "20260706133902.071845878",
+    "decision_id": "20260706133902.071845878",
+    "timestamp": "2026-07-06T05:39:02.071845878Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -2058,21 +2058,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641183
+    "created_at": 1783316342071
   },
   {
-    "id": "20260706114721.183337528",
-    "decision_id": "20260706114721.183337528",
-    "timestamp": "2026-07-06T03:47:21.183337528Z",
+    "id": "20260706133902.071853131",
+    "decision_id": "20260706133902.071853131",
+    "timestamp": "2026-07-06T05:39:02.071853131Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -2104,21 +2104,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641183
+    "created_at": 1783316342071
   },
   {
-    "id": "20260706114721.183342752",
-    "decision_id": "20260706114721.183342752",
-    "timestamp": "2026-07-06T03:47:21.183342752Z",
+    "id": "20260706133902.071858081",
+    "decision_id": "20260706133902.071858081",
+    "timestamp": "2026-07-06T05:39:02.071858081Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -2150,21 +2150,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641183
+    "created_at": 1783316342071
   },
   {
-    "id": "20260706114721.183347661",
-    "decision_id": "20260706114721.183347661",
-    "timestamp": "2026-07-06T03:47:21.183347661Z",
+    "id": "20260706133902.071862890",
+    "decision_id": "20260706133902.071862890",
+    "timestamp": "2026-07-06T05:39:02.07186289Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -2196,21 +2196,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641183
+    "created_at": 1783316342071
   },
   {
-    "id": "20260706114721.183352677",
-    "decision_id": "20260706114721.183352677",
-    "timestamp": "2026-07-06T03:47:21.183352677Z",
+    "id": "20260706133902.071867399",
+    "decision_id": "20260706133902.071867399",
+    "timestamp": "2026-07-06T05:39:02.071867399Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -2242,21 +2242,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641183
+    "created_at": 1783316342071
   },
   {
-    "id": "20260706114721.183361357",
-    "decision_id": "20260706114721.183361357",
-    "timestamp": "2026-07-06T03:47:21.183361357Z",
+    "id": "20260706133902.071874770",
+    "decision_id": "20260706133902.071874770",
+    "timestamp": "2026-07-06T05:39:02.07187477Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -2288,21 +2288,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641183
+    "created_at": 1783316342071
   },
   {
-    "id": "20260706114721.183366581",
-    "decision_id": "20260706114721.183366581",
-    "timestamp": "2026-07-06T03:47:21.183366581Z",
+    "id": "20260706133902.071880205",
+    "decision_id": "20260706133902.071880205",
+    "timestamp": "2026-07-06T05:39:02.071880205Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -2334,21 +2334,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641183
+    "created_at": 1783316342071
   },
   {
-    "id": "20260706114721.183371297",
-    "decision_id": "20260706114721.183371297",
-    "timestamp": "2026-07-06T03:47:21.183371297Z",
+    "id": "20260706133902.071884915",
+    "decision_id": "20260706133902.071884915",
+    "timestamp": "2026-07-06T05:39:02.071884915Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -2380,21 +2380,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641183
+    "created_at": 1783316342071
   },
   {
-    "id": "20260706114721.183375464",
-    "decision_id": "20260706114721.183375464",
-    "timestamp": "2026-07-06T03:47:21.183375464Z",
+    "id": "20260706133902.071889284",
+    "decision_id": "20260706133902.071889284",
+    "timestamp": "2026-07-06T05:39:02.071889284Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -2426,21 +2426,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641183
+    "created_at": 1783316342071
   },
   {
-    "id": "20260706114721.183380207",
-    "decision_id": "20260706114721.183380207",
-    "timestamp": "2026-07-06T03:47:21.183380207Z",
+    "id": "20260706133902.071894112",
+    "decision_id": "20260706133902.071894112",
+    "timestamp": "2026-07-06T05:39:02.071894112Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -2472,21 +2472,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641183
+    "created_at": 1783316342071
   },
   {
-    "id": "20260706114721.183384894",
-    "decision_id": "20260706114721.183384894",
-    "timestamp": "2026-07-06T03:47:21.183384894Z",
+    "id": "20260706133902.071898679",
+    "decision_id": "20260706133902.071898679",
+    "timestamp": "2026-07-06T05:39:02.071898679Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -2518,21 +2518,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641183
+    "created_at": 1783316342071
   },
   {
-    "id": "20260706114721.183389106",
-    "decision_id": "20260706114721.183389106",
-    "timestamp": "2026-07-06T03:47:21.183389106Z",
+    "id": "20260706133902.071903357",
+    "decision_id": "20260706133902.071903357",
+    "timestamp": "2026-07-06T05:39:02.071903357Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -2564,21 +2564,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641183
+    "created_at": 1783316342071
   },
   {
-    "id": "20260706114721.183393664",
-    "decision_id": "20260706114721.183393664",
-    "timestamp": "2026-07-06T03:47:21.183393664Z",
+    "id": "20260706133902.071908526",
+    "decision_id": "20260706133902.071908526",
+    "timestamp": "2026-07-06T05:39:02.071908526Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -2610,21 +2610,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641183
+    "created_at": 1783316342071
   },
   {
-    "id": "20260706114721.183398950",
-    "decision_id": "20260706114721.183398950",
-    "timestamp": "2026-07-06T03:47:21.18339895Z",
+    "id": "20260706133902.071914492",
+    "decision_id": "20260706133902.071914492",
+    "timestamp": "2026-07-06T05:39:02.071914492Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -2656,21 +2656,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641183
+    "created_at": 1783316342071
   },
   {
-    "id": "20260706114721.183403619",
-    "decision_id": "20260706114721.183403619",
-    "timestamp": "2026-07-06T03:47:21.183403619Z",
+    "id": "20260706133902.071918897",
+    "decision_id": "20260706133902.071918897",
+    "timestamp": "2026-07-06T05:39:02.071918897Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -2702,21 +2702,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641183
+    "created_at": 1783316342071
   },
   {
-    "id": "20260706114721.183412355",
-    "decision_id": "20260706114721.183412355",
-    "timestamp": "2026-07-06T03:47:21.183412355Z",
+    "id": "20260706133902.071925527",
+    "decision_id": "20260706133902.071925527",
+    "timestamp": "2026-07-06T05:39:02.071925527Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -2748,21 +2748,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641183
+    "created_at": 1783316342071
   },
   {
-    "id": "20260706114721.183419796",
-    "decision_id": "20260706114721.183419796",
-    "timestamp": "2026-07-06T03:47:21.183419796Z",
+    "id": "20260706133902.071929832",
+    "decision_id": "20260706133902.071929832",
+    "timestamp": "2026-07-06T05:39:02.071929832Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -2794,21 +2794,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641183
+    "created_at": 1783316342071
   },
   {
-    "id": "20260706114721.183424013",
-    "decision_id": "20260706114721.183424013",
-    "timestamp": "2026-07-06T03:47:21.183424013Z",
+    "id": "20260706133902.071934182",
+    "decision_id": "20260706133902.071934182",
+    "timestamp": "2026-07-06T05:39:02.071934182Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -2840,21 +2840,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641183
+    "created_at": 1783316342071
   },
   {
-    "id": "20260706114721.183428796",
-    "decision_id": "20260706114721.183428796",
-    "timestamp": "2026-07-06T03:47:21.183428796Z",
+    "id": "20260706133902.071939272",
+    "decision_id": "20260706133902.071939272",
+    "timestamp": "2026-07-06T05:39:02.071939272Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -2886,21 +2886,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641183
+    "created_at": 1783316342071
   },
   {
-    "id": "20260706114721.183432944",
-    "decision_id": "20260706114721.183432944",
-    "timestamp": "2026-07-06T03:47:21.183432944Z",
+    "id": "20260706133902.071943534",
+    "decision_id": "20260706133902.071943534",
+    "timestamp": "2026-07-06T05:39:02.071943534Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -2932,21 +2932,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641183
+    "created_at": 1783316342071
   },
   {
-    "id": "20260706114721.183437092",
-    "decision_id": "20260706114721.183437092",
-    "timestamp": "2026-07-06T03:47:21.183437092Z",
+    "id": "20260706133902.071947613",
+    "decision_id": "20260706133902.071947613",
+    "timestamp": "2026-07-06T05:39:02.071947613Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -2978,21 +2978,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641183
+    "created_at": 1783316342071
   },
   {
-    "id": "20260706114721.183441433",
-    "decision_id": "20260706114721.183441433",
-    "timestamp": "2026-07-06T03:47:21.183441433Z",
+    "id": "20260706133902.071952169",
+    "decision_id": "20260706133902.071952169",
+    "timestamp": "2026-07-06T05:39:02.071952169Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -3024,21 +3024,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641183
+    "created_at": 1783316342071
   },
   {
-    "id": "20260706114721.183445803",
-    "decision_id": "20260706114721.183445803",
-    "timestamp": "2026-07-06T03:47:21.183445803Z",
+    "id": "20260706133902.071956222",
+    "decision_id": "20260706133902.071956222",
+    "timestamp": "2026-07-06T05:39:02.071956222Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -3070,21 +3070,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641183
+    "created_at": 1783316342071
   },
   {
-    "id": "20260706114721.183454167",
-    "decision_id": "20260706114721.183454167",
-    "timestamp": "2026-07-06T03:47:21.183454167Z",
+    "id": "20260706133902.071963784",
+    "decision_id": "20260706133902.071963784",
+    "timestamp": "2026-07-06T05:39:02.071963784Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -3116,21 +3116,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641183
+    "created_at": 1783316342071
   },
   {
-    "id": "20260706114721.183461436",
-    "decision_id": "20260706114721.183461436",
-    "timestamp": "2026-07-06T03:47:21.183461436Z",
+    "id": "20260706133902.071968441",
+    "decision_id": "20260706133902.071968441",
+    "timestamp": "2026-07-06T05:39:02.071968441Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -3162,21 +3162,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641183
+    "created_at": 1783316342071
   },
   {
-    "id": "20260706114721.183468245",
-    "decision_id": "20260706114721.183468245",
-    "timestamp": "2026-07-06T03:47:21.183468245Z",
+    "id": "20260706133902.071972497",
+    "decision_id": "20260706133902.071972497",
+    "timestamp": "2026-07-06T05:39:02.071972497Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -3208,21 +3208,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641183
+    "created_at": 1783316342071
   },
   {
-    "id": "20260706114721.183475191",
-    "decision_id": "20260706114721.183475191",
-    "timestamp": "2026-07-06T03:47:21.183475191Z",
+    "id": "20260706133902.071976547",
+    "decision_id": "20260706133902.071976547",
+    "timestamp": "2026-07-06T05:39:02.071976547Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -3254,21 +3254,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641183
+    "created_at": 1783316342071
   },
   {
-    "id": "20260706114721.183483249",
-    "decision_id": "20260706114721.183483249",
-    "timestamp": "2026-07-06T03:47:21.183483249Z",
+    "id": "20260706133902.071981129",
+    "decision_id": "20260706133902.071981129",
+    "timestamp": "2026-07-06T05:39:02.071981129Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -3300,21 +3300,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641183
+    "created_at": 1783316342071
   },
   {
-    "id": "20260706114721.183490515",
-    "decision_id": "20260706114721.183490515",
-    "timestamp": "2026-07-06T03:47:21.183490515Z",
+    "id": "20260706133902.071985167",
+    "decision_id": "20260706133902.071985167",
+    "timestamp": "2026-07-06T05:39:02.071985167Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -3346,21 +3346,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641183
+    "created_at": 1783316342071
   },
   {
-    "id": "20260706114721.183498487",
-    "decision_id": "20260706114721.183498487",
-    "timestamp": "2026-07-06T03:47:21.183498487Z",
+    "id": "20260706133902.071989194",
+    "decision_id": "20260706133902.071989194",
+    "timestamp": "2026-07-06T05:39:02.071989194Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -3392,21 +3392,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641183
+    "created_at": 1783316342071
   },
   {
-    "id": "20260706114721.183580136",
-    "decision_id": "20260706114721.183580136",
-    "timestamp": "2026-07-06T03:47:21.183580136Z",
+    "id": "20260706133902.071993447",
+    "decision_id": "20260706133902.071993447",
+    "timestamp": "2026-07-06T05:39:02.071993447Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -3438,21 +3438,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641183
+    "created_at": 1783316342071
   },
   {
-    "id": "20260706114721.183594701",
-    "decision_id": "20260706114721.183594701",
-    "timestamp": "2026-07-06T03:47:21.183594701Z",
+    "id": "20260706133902.071998013",
+    "decision_id": "20260706133902.071998013",
+    "timestamp": "2026-07-06T05:39:02.071998013Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -3484,21 +3484,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641183
+    "created_at": 1783316342071
   },
   {
-    "id": "20260706114721.183636254",
-    "decision_id": "20260706114721.183636254",
-    "timestamp": "2026-07-06T03:47:21.183636254Z",
+    "id": "20260706133902.072003934",
+    "decision_id": "20260706133902.072003934",
+    "timestamp": "2026-07-06T05:39:02.072003934Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -3530,21 +3530,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641183
+    "created_at": 1783316342072
   },
   {
-    "id": "20260706114721.183748596",
-    "decision_id": "20260706114721.183748596",
-    "timestamp": "2026-07-06T03:47:21.183748596Z",
+    "id": "20260706133902.072008289",
+    "decision_id": "20260706133902.072008289",
+    "timestamp": "2026-07-06T05:39:02.072008289Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -3576,21 +3576,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641183
+    "created_at": 1783316342072
   },
   {
-    "id": "20260706114721.183757950",
-    "decision_id": "20260706114721.183757950",
-    "timestamp": "2026-07-06T03:47:21.18375795Z",
+    "id": "20260706133902.072012718",
+    "decision_id": "20260706133902.072012718",
+    "timestamp": "2026-07-06T05:39:02.072012718Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -3622,21 +3622,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641183
+    "created_at": 1783316342072
   },
   {
-    "id": "20260706114721.183762657",
-    "decision_id": "20260706114721.183762657",
-    "timestamp": "2026-07-06T03:47:21.183762657Z",
+    "id": "20260706133902.072016728",
+    "decision_id": "20260706133902.072016728",
+    "timestamp": "2026-07-06T05:39:02.072016728Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -3668,21 +3668,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641183
+    "created_at": 1783316342072
   },
   {
-    "id": "20260706114721.185369628",
-    "decision_id": "20260706114721.185369628",
-    "timestamp": "2026-07-06T03:47:21.185369628Z",
+    "id": "20260706133902.073471762",
+    "decision_id": "20260706133902.073471762",
+    "timestamp": "2026-07-06T05:39:02.073471762Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -3718,21 +3718,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641185
+    "created_at": 1783316342073
   },
   {
-    "id": "20260706114721.185383387",
-    "decision_id": "20260706114721.185383387",
-    "timestamp": "2026-07-06T03:47:21.185383387Z",
+    "id": "20260706133902.073483138",
+    "decision_id": "20260706133902.073483138",
+    "timestamp": "2026-07-06T05:39:02.073483138Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -3768,21 +3768,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641185
+    "created_at": 1783316342073
   },
   {
-    "id": "20260706114721.185395682",
-    "decision_id": "20260706114721.185395682",
-    "timestamp": "2026-07-06T03:47:21.185395682Z",
+    "id": "20260706133902.073492562",
+    "decision_id": "20260706133902.073492562",
+    "timestamp": "2026-07-06T05:39:02.073492562Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -3818,21 +3818,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641185
+    "created_at": 1783316342073
   },
   {
-    "id": "20260706114721.185408505",
-    "decision_id": "20260706114721.185408505",
-    "timestamp": "2026-07-06T03:47:21.185408505Z",
+    "id": "20260706133902.073500537",
+    "decision_id": "20260706133902.073500537",
+    "timestamp": "2026-07-06T05:39:02.073500537Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -3868,21 +3868,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641185
+    "created_at": 1783316342073
   },
   {
-    "id": "20260706114721.185435059",
-    "decision_id": "20260706114721.185435059",
-    "timestamp": "2026-07-06T03:47:21.185435059Z",
+    "id": "20260706133902.073509504",
+    "decision_id": "20260706133902.073509504",
+    "timestamp": "2026-07-06T05:39:02.073509504Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -3918,21 +3918,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641185
+    "created_at": 1783316342073
   },
   {
-    "id": "20260706114721.185448085",
-    "decision_id": "20260706114721.185448085",
-    "timestamp": "2026-07-06T03:47:21.185448085Z",
+    "id": "20260706133902.073517478",
+    "decision_id": "20260706133902.073517478",
+    "timestamp": "2026-07-06T05:39:02.073517478Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -3968,21 +3968,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641185
+    "created_at": 1783316342073
   },
   {
-    "id": "20260706114721.185456342",
-    "decision_id": "20260706114721.185456342",
-    "timestamp": "2026-07-06T03:47:21.185456342Z",
+    "id": "20260706133902.073523471",
+    "decision_id": "20260706133902.073523471",
+    "timestamp": "2026-07-06T05:39:02.073523471Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -4018,21 +4018,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641185
+    "created_at": 1783316342073
   },
   {
-    "id": "20260706114721.185465517",
-    "decision_id": "20260706114721.185465517",
-    "timestamp": "2026-07-06T03:47:21.185465517Z",
+    "id": "20260706133902.073529509",
+    "decision_id": "20260706133902.073529509",
+    "timestamp": "2026-07-06T05:39:02.073529509Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -4068,21 +4068,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641185
+    "created_at": 1783316342073
   },
   {
-    "id": "20260706114721.185475628",
-    "decision_id": "20260706114721.185475628",
-    "timestamp": "2026-07-06T03:47:21.185475628Z",
+    "id": "20260706133902.073535341",
+    "decision_id": "20260706133902.073535341",
+    "timestamp": "2026-07-06T05:39:02.073535341Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -4118,21 +4118,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641185
+    "created_at": 1783316342073
   },
   {
-    "id": "20260706114721.185490082",
-    "decision_id": "20260706114721.185490082",
-    "timestamp": "2026-07-06T03:47:21.185490082Z",
+    "id": "20260706133902.073542179",
+    "decision_id": "20260706133902.073542179",
+    "timestamp": "2026-07-06T05:39:02.073542179Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -4168,21 +4168,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641185
+    "created_at": 1783316342073
   },
   {
-    "id": "20260706114721.185498744",
-    "decision_id": "20260706114721.185498744",
-    "timestamp": "2026-07-06T03:47:21.185498744Z",
+    "id": "20260706133902.073548999",
+    "decision_id": "20260706133902.073548999",
+    "timestamp": "2026-07-06T05:39:02.073548999Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -4218,21 +4218,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641185
+    "created_at": 1783316342073
   },
   {
-    "id": "20260706114721.185507211",
-    "decision_id": "20260706114721.185507211",
-    "timestamp": "2026-07-06T03:47:21.185507211Z",
+    "id": "20260706133902.073554911",
+    "decision_id": "20260706133902.073554911",
+    "timestamp": "2026-07-06T05:39:02.073554911Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -4268,21 +4268,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641185
+    "created_at": 1783316342073
   },
   {
-    "id": "20260706114721.185514484",
-    "decision_id": "20260706114721.185514484",
-    "timestamp": "2026-07-06T03:47:21.185514484Z",
+    "id": "20260706133902.073560326",
+    "decision_id": "20260706133902.073560326",
+    "timestamp": "2026-07-06T05:39:02.073560326Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -4318,21 +4318,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641185
+    "created_at": 1783316342073
   },
   {
-    "id": "20260706114721.185522524",
-    "decision_id": "20260706114721.185522524",
-    "timestamp": "2026-07-06T03:47:21.185522524Z",
+    "id": "20260706133902.073566023",
+    "decision_id": "20260706133902.073566023",
+    "timestamp": "2026-07-06T05:39:02.073566023Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -4368,21 +4368,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641185
+    "created_at": 1783316342073
   },
   {
-    "id": "20260706114721.185529810",
-    "decision_id": "20260706114721.185529810",
-    "timestamp": "2026-07-06T03:47:21.18552981Z",
+    "id": "20260706133902.073582666",
+    "decision_id": "20260706133902.073582666",
+    "timestamp": "2026-07-06T05:39:02.073582666Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -4418,21 +4418,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641185
+    "created_at": 1783316342073
   },
   {
-    "id": "20260706114721.185537847",
-    "decision_id": "20260706114721.185537847",
-    "timestamp": "2026-07-06T03:47:21.185537847Z",
+    "id": "20260706133902.073589035",
+    "decision_id": "20260706133902.073589035",
+    "timestamp": "2026-07-06T05:39:02.073589035Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -4468,21 +4468,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641185
+    "created_at": 1783316342073
   },
   {
-    "id": "20260706114721.185546194",
-    "decision_id": "20260706114721.185546194",
-    "timestamp": "2026-07-06T03:47:21.185546194Z",
+    "id": "20260706133902.073595084",
+    "decision_id": "20260706133902.073595084",
+    "timestamp": "2026-07-06T05:39:02.073595084Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -4518,21 +4518,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641185
+    "created_at": 1783316342073
   },
   {
-    "id": "20260706114721.185555032",
-    "decision_id": "20260706114721.185555032",
-    "timestamp": "2026-07-06T03:47:21.185555032Z",
+    "id": "20260706133902.073602060",
+    "decision_id": "20260706133902.073602060",
+    "timestamp": "2026-07-06T05:39:02.07360206Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -4568,21 +4568,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641185
+    "created_at": 1783316342073
   },
   {
-    "id": "20260706114721.185563422",
-    "decision_id": "20260706114721.185563422",
-    "timestamp": "2026-07-06T03:47:21.185563422Z",
+    "id": "20260706133902.073607782",
+    "decision_id": "20260706133902.073607782",
+    "timestamp": "2026-07-06T05:39:02.073607782Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -4618,21 +4618,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641185
+    "created_at": 1783316342073
   },
   {
-    "id": "20260706114721.185570734",
-    "decision_id": "20260706114721.185570734",
-    "timestamp": "2026-07-06T03:47:21.185570734Z",
+    "id": "20260706133902.073613786",
+    "decision_id": "20260706133902.073613786",
+    "timestamp": "2026-07-06T05:39:02.073613786Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -4668,21 +4668,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641185
+    "created_at": 1783316342073
   },
   {
-    "id": "20260706114721.185578240",
-    "decision_id": "20260706114721.185578240",
-    "timestamp": "2026-07-06T03:47:21.18557824Z",
+    "id": "20260706133902.073619690",
+    "decision_id": "20260706133902.073619690",
+    "timestamp": "2026-07-06T05:39:02.07361969Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -4718,21 +4718,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641185
+    "created_at": 1783316342073
   },
   {
-    "id": "20260706114721.185585374",
-    "decision_id": "20260706114721.185585374",
-    "timestamp": "2026-07-06T03:47:21.185585374Z",
+    "id": "20260706133902.073625425",
+    "decision_id": "20260706133902.073625425",
+    "timestamp": "2026-07-06T05:39:02.073625425Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -4768,21 +4768,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641185
+    "created_at": 1783316342073
   },
   {
-    "id": "20260706114721.185593711",
-    "decision_id": "20260706114721.185593711",
-    "timestamp": "2026-07-06T03:47:21.185593711Z",
+    "id": "20260706133902.073631327",
+    "decision_id": "20260706133902.073631327",
+    "timestamp": "2026-07-06T05:39:02.073631327Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -4818,21 +4818,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641185
+    "created_at": 1783316342073
   },
   {
-    "id": "20260706114721.185599194",
-    "decision_id": "20260706114721.185599194",
-    "timestamp": "2026-07-06T03:47:21.185599194Z",
+    "id": "20260706133902.073636739",
+    "decision_id": "20260706133902.073636739",
+    "timestamp": "2026-07-06T05:39:02.073636739Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -4868,21 +4868,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641185
+    "created_at": 1783316342073
   },
   {
-    "id": "20260706114721.185604208",
-    "decision_id": "20260706114721.185604208",
-    "timestamp": "2026-07-06T03:47:21.185604208Z",
+    "id": "20260706133902.073642045",
+    "decision_id": "20260706133902.073642045",
+    "timestamp": "2026-07-06T05:39:02.073642045Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -4918,21 +4918,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641185
+    "created_at": 1783316342073
   },
   {
-    "id": "20260706114721.185609651",
-    "decision_id": "20260706114721.185609651",
-    "timestamp": "2026-07-06T03:47:21.185609651Z",
+    "id": "20260706133902.073647844",
+    "decision_id": "20260706133902.073647844",
+    "timestamp": "2026-07-06T05:39:02.073647844Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -4968,21 +4968,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641185
+    "created_at": 1783316342073
   },
   {
-    "id": "20260706114721.185614782",
-    "decision_id": "20260706114721.185614782",
-    "timestamp": "2026-07-06T03:47:21.185614782Z",
+    "id": "20260706133902.073653441",
+    "decision_id": "20260706133902.073653441",
+    "timestamp": "2026-07-06T05:39:02.073653441Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -5018,21 +5018,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641185
+    "created_at": 1783316342073
   },
   {
-    "id": "20260706114721.185620205",
-    "decision_id": "20260706114721.185620205",
-    "timestamp": "2026-07-06T03:47:21.185620205Z",
+    "id": "20260706133902.073658831",
+    "decision_id": "20260706133902.073658831",
+    "timestamp": "2026-07-06T05:39:02.073658831Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -5068,21 +5068,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641185
+    "created_at": 1783316342073
   },
   {
-    "id": "20260706114721.185626528",
-    "decision_id": "20260706114721.185626528",
-    "timestamp": "2026-07-06T03:47:21.185626528Z",
+    "id": "20260706133902.073664845",
+    "decision_id": "20260706133902.073664845",
+    "timestamp": "2026-07-06T05:39:02.073664845Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -5118,21 +5118,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641185
+    "created_at": 1783316342073
   },
   {
-    "id": "20260706114721.185631556",
-    "decision_id": "20260706114721.185631556",
-    "timestamp": "2026-07-06T03:47:21.185631556Z",
+    "id": "20260706133902.073670411",
+    "decision_id": "20260706133902.073670411",
+    "timestamp": "2026-07-06T05:39:02.073670411Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -5168,21 +5168,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641185
+    "created_at": 1783316342073
   },
   {
-    "id": "20260706114721.185637385",
-    "decision_id": "20260706114721.185637385",
-    "timestamp": "2026-07-06T03:47:21.185637385Z",
+    "id": "20260706133902.073675995",
+    "decision_id": "20260706133902.073675995",
+    "timestamp": "2026-07-06T05:39:02.073675995Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -5218,21 +5218,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641185
+    "created_at": 1783316342073
   },
   {
-    "id": "20260706114721.185643657",
-    "decision_id": "20260706114721.185643657",
-    "timestamp": "2026-07-06T03:47:21.185643657Z",
+    "id": "20260706133902.073681488",
+    "decision_id": "20260706133902.073681488",
+    "timestamp": "2026-07-06T05:39:02.073681488Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -5268,21 +5268,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641185
+    "created_at": 1783316342073
   },
   {
-    "id": "20260706114721.185648851",
-    "decision_id": "20260706114721.185648851",
-    "timestamp": "2026-07-06T03:47:21.185648851Z",
+    "id": "20260706133902.073686671",
+    "decision_id": "20260706133902.073686671",
+    "timestamp": "2026-07-06T05:39:02.073686671Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -5318,21 +5318,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641185
+    "created_at": 1783316342073
   },
   {
-    "id": "20260706114721.185653738",
-    "decision_id": "20260706114721.185653738",
-    "timestamp": "2026-07-06T03:47:21.185653738Z",
+    "id": "20260706133902.073692288",
+    "decision_id": "20260706133902.073692288",
+    "timestamp": "2026-07-06T05:39:02.073692288Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -5368,21 +5368,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641185
+    "created_at": 1783316342073
   },
   {
-    "id": "20260706114721.185659718",
-    "decision_id": "20260706114721.185659718",
-    "timestamp": "2026-07-06T03:47:21.185659718Z",
+    "id": "20260706133902.073698306",
+    "decision_id": "20260706133902.073698306",
+    "timestamp": "2026-07-06T05:39:02.073698306Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -5418,21 +5418,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641185
+    "created_at": 1783316342073
   },
   {
-    "id": "20260706114721.185664871",
-    "decision_id": "20260706114721.185664871",
-    "timestamp": "2026-07-06T03:47:21.185664871Z",
+    "id": "20260706133902.073703442",
+    "decision_id": "20260706133902.073703442",
+    "timestamp": "2026-07-06T05:39:02.073703442Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -5468,21 +5468,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641185
+    "created_at": 1783316342073
   },
   {
-    "id": "20260706114721.185671759",
-    "decision_id": "20260706114721.185671759",
-    "timestamp": "2026-07-06T03:47:21.185671759Z",
+    "id": "20260706133902.073710373",
+    "decision_id": "20260706133902.073710373",
+    "timestamp": "2026-07-06T05:39:02.073710373Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -5518,21 +5518,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641185
+    "created_at": 1783316342073
   },
   {
-    "id": "20260706114721.185677062",
-    "decision_id": "20260706114721.185677062",
-    "timestamp": "2026-07-06T03:47:21.185677062Z",
+    "id": "20260706133902.073715838",
+    "decision_id": "20260706133902.073715838",
+    "timestamp": "2026-07-06T05:39:02.073715838Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -5568,21 +5568,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641185
+    "created_at": 1783316342073
   },
   {
-    "id": "20260706114721.185682294",
-    "decision_id": "20260706114721.185682294",
-    "timestamp": "2026-07-06T03:47:21.185682294Z",
+    "id": "20260706133902.073721156",
+    "decision_id": "20260706133902.073721156",
+    "timestamp": "2026-07-06T05:39:02.073721156Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -5618,21 +5618,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641185
+    "created_at": 1783316342073
   },
   {
-    "id": "20260706114721.185687971",
-    "decision_id": "20260706114721.185687971",
-    "timestamp": "2026-07-06T03:47:21.185687971Z",
+    "id": "20260706133902.073726682",
+    "decision_id": "20260706133902.073726682",
+    "timestamp": "2026-07-06T05:39:02.073726682Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -5668,21 +5668,21 @@
     "dynamic_spawn_priority": 0,
     "final_score": 0,
     "evidence_mode": "degraded",
-    "fallback_reason": "resource pressure sampler not configured",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
       "psi_pressure": 0,
       "evidence_mode": "degraded",
-      "fallback_reason": "resource pressure sampler not configured"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783309641185
+    "created_at": 1783316342073
   },
   {
-    "id": "20260706114721.187280142",
-    "decision_id": "20260706114721.187280142",
-    "timestamp": "2026-07-06T03:47:21.187280142Z",
+    "id": "20260706133902.075422470",
+    "decision_id": "20260706133902.075422470",
+    "timestamp": "2026-07-06T05:39:02.07542247Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -5759,14 +5759,14 @@
     "dynamic_spawn_priority": 0,
     "final_score": 119.981,
     "evidence_mode": "degraded",
-    "fallback_reason": "local cgroup pressure files unavailable in portable benchmark",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0.189,
       "pids_pressure": 0.156,
       "cpu_throttle_pressure": 0.22,
       "psi_pressure": 0.1,
       "evidence_mode": "degraded",
-      "fallback_reason": "local cgroup pressure files unavailable in portable benchmark"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
     "score_by_agent": {
       "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-00": {
@@ -5809,12 +5809,12 @@
         "final_score": 113.611
       }
     },
-    "created_at": 1783309641187
+    "created_at": 1783316342075
   },
   {
-    "id": "20260706114721.187292069",
-    "decision_id": "20260706114721.187292069",
-    "timestamp": "2026-07-06T03:47:21.187292069Z",
+    "id": "20260706133902.075434420",
+    "decision_id": "20260706133902.075434420",
+    "timestamp": "2026-07-06T05:39:02.07543442Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -5891,14 +5891,14 @@
     "dynamic_spawn_priority": 0,
     "final_score": 114.956,
     "evidence_mode": "degraded",
-    "fallback_reason": "local cgroup pressure files unavailable in portable benchmark",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0.19,
       "pids_pressure": 0.172,
       "cpu_throttle_pressure": 0.23,
       "psi_pressure": 0.1,
       "evidence_mode": "degraded",
-      "fallback_reason": "local cgroup pressure files unavailable in portable benchmark"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
     "score_by_agent": {
       "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-01": {
@@ -5941,12 +5941,12 @@
         "final_score": 102.16
       }
     },
-    "created_at": 1783309641187
+    "created_at": 1783316342075
   },
   {
-    "id": "20260706114721.187301839",
-    "decision_id": "20260706114721.187301839",
-    "timestamp": "2026-07-06T03:47:21.187301839Z",
+    "id": "20260706133902.075444180",
+    "decision_id": "20260706133902.075444180",
+    "timestamp": "2026-07-06T05:39:02.07544418Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -6023,14 +6023,14 @@
     "dynamic_spawn_priority": 0,
     "final_score": 110.005,
     "evidence_mode": "degraded",
-    "fallback_reason": "local cgroup pressure files unavailable in portable benchmark",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0.191,
       "pids_pressure": 0.188,
       "cpu_throttle_pressure": 0.24,
       "psi_pressure": 0.1,
       "evidence_mode": "degraded",
-      "fallback_reason": "local cgroup pressure files unavailable in portable benchmark"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
     "score_by_agent": {
       "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-02": {
@@ -6073,12 +6073,12 @@
         "final_score": 91.874
       }
     },
-    "created_at": 1783309641187
+    "created_at": 1783316342075
   },
   {
-    "id": "20260706114721.187310392",
-    "decision_id": "20260706114721.187310392",
-    "timestamp": "2026-07-06T03:47:21.187310392Z",
+    "id": "20260706133902.075457696",
+    "decision_id": "20260706133902.075457696",
+    "timestamp": "2026-07-06T05:39:02.075457696Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -6155,14 +6155,14 @@
     "dynamic_spawn_priority": 0,
     "final_score": 105.121,
     "evidence_mode": "degraded",
-    "fallback_reason": "local cgroup pressure files unavailable in portable benchmark",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0.192,
       "pids_pressure": 0.203,
       "cpu_throttle_pressure": 0.25,
       "psi_pressure": 0.1,
       "evidence_mode": "degraded",
-      "fallback_reason": "local cgroup pressure files unavailable in portable benchmark"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
     "score_by_agent": {
       "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-03": {
@@ -6205,12 +6205,12 @@
         "final_score": 101.984
       }
     },
-    "created_at": 1783309641187
+    "created_at": 1783316342075
   },
   {
-    "id": "20260706114721.187318778",
-    "decision_id": "20260706114721.187318778",
-    "timestamp": "2026-07-06T03:47:21.187318778Z",
+    "id": "20260706133902.075466112",
+    "decision_id": "20260706133902.075466112",
+    "timestamp": "2026-07-06T05:39:02.075466112Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -6287,14 +6287,14 @@
     "dynamic_spawn_priority": 0,
     "final_score": 100.298,
     "evidence_mode": "degraded",
-    "fallback_reason": "local cgroup pressure files unavailable in portable benchmark",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0.193,
       "pids_pressure": 0.219,
       "cpu_throttle_pressure": 0.26,
       "psi_pressure": 0.1,
       "evidence_mode": "degraded",
-      "fallback_reason": "local cgroup pressure files unavailable in portable benchmark"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
     "score_by_agent": {
       "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-04": {
@@ -6337,12 +6337,12 @@
         "final_score": 90.533
       }
     },
-    "created_at": 1783309641187
+    "created_at": 1783316342075
   },
   {
-    "id": "20260706114721.187326908",
-    "decision_id": "20260706114721.187326908",
-    "timestamp": "2026-07-06T03:47:21.187326908Z",
+    "id": "20260706133902.075474612",
+    "decision_id": "20260706133902.075474612",
+    "timestamp": "2026-07-06T05:39:02.075474612Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -6419,14 +6419,14 @@
     "dynamic_spawn_priority": 0,
     "final_score": 100.602,
     "evidence_mode": "degraded",
-    "fallback_reason": "local cgroup pressure files unavailable in portable benchmark",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0.194,
       "pids_pressure": 0.234,
       "cpu_throttle_pressure": 0.27,
       "psi_pressure": 0.1,
       "evidence_mode": "degraded",
-      "fallback_reason": "local cgroup pressure files unavailable in portable benchmark"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
     "score_by_agent": {
       "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-05": {
@@ -6469,12 +6469,12 @@
         "final_score": 80.247
       }
     },
-    "created_at": 1783309641187
+    "created_at": 1783316342075
   },
   {
-    "id": "20260706114721.187333206",
-    "decision_id": "20260706114721.187333206",
-    "timestamp": "2026-07-06T03:47:21.187333206Z",
+    "id": "20260706133902.075480560",
+    "decision_id": "20260706133902.075480560",
+    "timestamp": "2026-07-06T05:39:02.07548056Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -6551,14 +6551,14 @@
     "dynamic_spawn_priority": 0,
     "final_score": 95.577,
     "evidence_mode": "degraded",
-    "fallback_reason": "local cgroup pressure files unavailable in portable benchmark",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0.195,
       "pids_pressure": 0.25,
       "cpu_throttle_pressure": 0.28,
       "psi_pressure": 0.1,
       "evidence_mode": "degraded",
-      "fallback_reason": "local cgroup pressure files unavailable in portable benchmark"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
     "score_by_agent": {
       "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-00": {
@@ -6601,12 +6601,12 @@
         "final_score": 90.357
       }
     },
-    "created_at": 1783309641187
+    "created_at": 1783316342075
   },
   {
-    "id": "20260706114721.187339960",
-    "decision_id": "20260706114721.187339960",
-    "timestamp": "2026-07-06T03:47:21.18733996Z",
+    "id": "20260706133902.075487174",
+    "decision_id": "20260706133902.075487174",
+    "timestamp": "2026-07-06T05:39:02.075487174Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -6683,14 +6683,14 @@
     "dynamic_spawn_priority": 0,
     "final_score": 90.626,
     "evidence_mode": "degraded",
-    "fallback_reason": "local cgroup pressure files unavailable in portable benchmark",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0.196,
       "pids_pressure": 0.266,
       "cpu_throttle_pressure": 0.29,
       "psi_pressure": 0.1,
       "evidence_mode": "degraded",
-      "fallback_reason": "local cgroup pressure files unavailable in portable benchmark"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
     "score_by_agent": {
       "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-01": {
@@ -6733,12 +6733,12 @@
         "final_score": 78.905
       }
     },
-    "created_at": 1783309641187
+    "created_at": 1783316342075
   },
   {
-    "id": "20260706114721.187348512",
-    "decision_id": "20260706114721.187348512",
-    "timestamp": "2026-07-06T03:47:21.187348512Z",
+    "id": "20260706133902.075494812",
+    "decision_id": "20260706133902.075494812",
+    "timestamp": "2026-07-06T05:39:02.075494812Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -6815,14 +6815,14 @@
     "dynamic_spawn_priority": 0,
     "final_score": 85.742,
     "evidence_mode": "degraded",
-    "fallback_reason": "local cgroup pressure files unavailable in portable benchmark",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0.197,
       "pids_pressure": 0.281,
       "cpu_throttle_pressure": 0.3,
       "psi_pressure": 0.1,
       "evidence_mode": "degraded",
-      "fallback_reason": "local cgroup pressure files unavailable in portable benchmark"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
     "score_by_agent": {
       "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-02": {
@@ -6865,12 +6865,12 @@
         "final_score": 68.619
       }
     },
-    "created_at": 1783309641187
+    "created_at": 1783316342075
   },
   {
-    "id": "20260706114721.187356533",
-    "decision_id": "20260706114721.187356533",
-    "timestamp": "2026-07-06T03:47:21.187356533Z",
+    "id": "20260706133902.075501529",
+    "decision_id": "20260706133902.075501529",
+    "timestamp": "2026-07-06T05:39:02.075501529Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -6947,14 +6947,14 @@
     "dynamic_spawn_priority": 0,
     "final_score": 80.919,
     "evidence_mode": "degraded",
-    "fallback_reason": "local cgroup pressure files unavailable in portable benchmark",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0.198,
       "pids_pressure": 0.297,
       "cpu_throttle_pressure": 0.31,
       "psi_pressure": 0.1,
       "evidence_mode": "degraded",
-      "fallback_reason": "local cgroup pressure files unavailable in portable benchmark"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
     "score_by_agent": {
       "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-03": {
@@ -6997,12 +6997,12 @@
         "final_score": 78.729
       }
     },
-    "created_at": 1783309641187
+    "created_at": 1783316342075
   },
   {
-    "id": "20260706114721.187362823",
-    "decision_id": "20260706114721.187362823",
-    "timestamp": "2026-07-06T03:47:21.187362823Z",
+    "id": "20260706133902.075510408",
+    "decision_id": "20260706133902.075510408",
+    "timestamp": "2026-07-06T05:39:02.075510408Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -7079,14 +7079,14 @@
     "dynamic_spawn_priority": 0,
     "final_score": 81.223,
     "evidence_mode": "degraded",
-    "fallback_reason": "local cgroup pressure files unavailable in portable benchmark",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0.199,
       "pids_pressure": 0.313,
       "cpu_throttle_pressure": 0.32,
       "psi_pressure": 0.1,
       "evidence_mode": "degraded",
-      "fallback_reason": "local cgroup pressure files unavailable in portable benchmark"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
     "score_by_agent": {
       "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-04": {
@@ -7129,12 +7129,12 @@
         "final_score": 67.278
       }
     },
-    "created_at": 1783309641187
+    "created_at": 1783316342075
   },
   {
-    "id": "20260706114721.187369250",
-    "decision_id": "20260706114721.187369250",
-    "timestamp": "2026-07-06T03:47:21.18736925Z",
+    "id": "20260706133902.075516873",
+    "decision_id": "20260706133902.075516873",
+    "timestamp": "2026-07-06T05:39:02.075516873Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -7211,14 +7211,14 @@
     "dynamic_spawn_priority": 0,
     "final_score": 76.198,
     "evidence_mode": "degraded",
-    "fallback_reason": "local cgroup pressure files unavailable in portable benchmark",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0.2,
       "pids_pressure": 0.328,
       "cpu_throttle_pressure": 0.33,
       "psi_pressure": 0.1,
       "evidence_mode": "degraded",
-      "fallback_reason": "local cgroup pressure files unavailable in portable benchmark"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
     "score_by_agent": {
       "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-05": {
@@ -7261,12 +7261,12 @@
         "final_score": 56.992
       }
     },
-    "created_at": 1783309641187
+    "created_at": 1783316342075
   },
   {
-    "id": "20260706114721.187375483",
-    "decision_id": "20260706114721.187375483",
-    "timestamp": "2026-07-06T03:47:21.187375483Z",
+    "id": "20260706133902.075522346",
+    "decision_id": "20260706133902.075522346",
+    "timestamp": "2026-07-06T05:39:02.075522346Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -7343,14 +7343,14 @@
     "dynamic_spawn_priority": 0,
     "final_score": 71.247,
     "evidence_mode": "degraded",
-    "fallback_reason": "local cgroup pressure files unavailable in portable benchmark",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0.201,
       "pids_pressure": 0.344,
       "cpu_throttle_pressure": 0.34,
       "psi_pressure": 0.1,
       "evidence_mode": "degraded",
-      "fallback_reason": "local cgroup pressure files unavailable in portable benchmark"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
     "score_by_agent": {
       "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-00": {
@@ -7393,12 +7393,12 @@
         "final_score": 67.102
       }
     },
-    "created_at": 1783309641187
+    "created_at": 1783316342075
   },
   {
-    "id": "20260706114721.187381543",
-    "decision_id": "20260706114721.187381543",
-    "timestamp": "2026-07-06T03:47:21.187381543Z",
+    "id": "20260706133902.075532075",
+    "decision_id": "20260706133902.075532075",
+    "timestamp": "2026-07-06T05:39:02.075532075Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -7475,14 +7475,14 @@
     "dynamic_spawn_priority": 0,
     "final_score": 66.363,
     "evidence_mode": "degraded",
-    "fallback_reason": "local cgroup pressure files unavailable in portable benchmark",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0.202,
       "pids_pressure": 0.359,
       "cpu_throttle_pressure": 0.35,
       "psi_pressure": 0.1,
       "evidence_mode": "degraded",
-      "fallback_reason": "local cgroup pressure files unavailable in portable benchmark"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
     "score_by_agent": {
       "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-01": {
@@ -7525,12 +7525,12 @@
         "final_score": 55.651
       }
     },
-    "created_at": 1783309641187
+    "created_at": 1783316342075
   },
   {
-    "id": "20260706114721.187387508",
-    "decision_id": "20260706114721.187387508",
-    "timestamp": "2026-07-06T03:47:21.187387508Z",
+    "id": "20260706133902.075540352",
+    "decision_id": "20260706133902.075540352",
+    "timestamp": "2026-07-06T05:39:02.075540352Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -7607,14 +7607,14 @@
     "dynamic_spawn_priority": 0,
     "final_score": 61.541,
     "evidence_mode": "degraded",
-    "fallback_reason": "local cgroup pressure files unavailable in portable benchmark",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0.203,
       "pids_pressure": 0.375,
       "cpu_throttle_pressure": 0.36,
       "psi_pressure": 0.1,
       "evidence_mode": "degraded",
-      "fallback_reason": "local cgroup pressure files unavailable in portable benchmark"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
     "score_by_agent": {
       "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-02": {
@@ -7657,12 +7657,12 @@
         "final_score": 45.364
       }
     },
-    "created_at": 1783309641187
+    "created_at": 1783316342075
   },
   {
-    "id": "20260706114721.187394130",
-    "decision_id": "20260706114721.187394130",
-    "timestamp": "2026-07-06T03:47:21.18739413Z",
+    "id": "20260706133902.075545792",
+    "decision_id": "20260706133902.075545792",
+    "timestamp": "2026-07-06T05:39:02.075545792Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -7739,14 +7739,14 @@
     "dynamic_spawn_priority": 0,
     "final_score": 61.844,
     "evidence_mode": "degraded",
-    "fallback_reason": "local cgroup pressure files unavailable in portable benchmark",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0.204,
       "pids_pressure": 0.391,
       "cpu_throttle_pressure": 0.37,
       "psi_pressure": 0.1,
       "evidence_mode": "degraded",
-      "fallback_reason": "local cgroup pressure files unavailable in portable benchmark"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
     "score_by_agent": {
       "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-03": {
@@ -7789,12 +7789,12 @@
         "final_score": 55.475
       }
     },
-    "created_at": 1783309641187
+    "created_at": 1783316342075
   },
   {
-    "id": "20260706114721.187400253",
-    "decision_id": "20260706114721.187400253",
-    "timestamp": "2026-07-06T03:47:21.187400253Z",
+    "id": "20260706133902.075552270",
+    "decision_id": "20260706133902.075552270",
+    "timestamp": "2026-07-06T05:39:02.07555227Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -7871,14 +7871,14 @@
     "dynamic_spawn_priority": 0,
     "final_score": 56.819,
     "evidence_mode": "degraded",
-    "fallback_reason": "local cgroup pressure files unavailable in portable benchmark",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0.205,
       "pids_pressure": 0.406,
       "cpu_throttle_pressure": 0.38,
       "psi_pressure": 0.1,
       "evidence_mode": "degraded",
-      "fallback_reason": "local cgroup pressure files unavailable in portable benchmark"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
     "score_by_agent": {
       "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-04": {
@@ -7921,12 +7921,12 @@
         "final_score": 44.023
       }
     },
-    "created_at": 1783309641187
+    "created_at": 1783316342075
   },
   {
-    "id": "20260706114721.187407246",
-    "decision_id": "20260706114721.187407246",
-    "timestamp": "2026-07-06T03:47:21.187407246Z",
+    "id": "20260706133902.075560992",
+    "decision_id": "20260706133902.075560992",
+    "timestamp": "2026-07-06T05:39:02.075560992Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -8003,14 +8003,14 @@
     "dynamic_spawn_priority": 0,
     "final_score": 51.868,
     "evidence_mode": "degraded",
-    "fallback_reason": "local cgroup pressure files unavailable in portable benchmark",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0.206,
       "pids_pressure": 0.422,
       "cpu_throttle_pressure": 0.39,
       "psi_pressure": 0.1,
       "evidence_mode": "degraded",
-      "fallback_reason": "local cgroup pressure files unavailable in portable benchmark"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
     "score_by_agent": {
       "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-05": {
@@ -8053,12 +8053,12 @@
         "final_score": 33.737
       }
     },
-    "created_at": 1783309641187
+    "created_at": 1783316342075
   },
   {
-    "id": "20260706114721.187414348",
-    "decision_id": "20260706114721.187414348",
-    "timestamp": "2026-07-06T03:47:21.187414348Z",
+    "id": "20260706133902.075566551",
+    "decision_id": "20260706133902.075566551",
+    "timestamp": "2026-07-06T05:39:02.075566551Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -8135,14 +8135,14 @@
     "dynamic_spawn_priority": 0,
     "final_score": 46.984,
     "evidence_mode": "degraded",
-    "fallback_reason": "local cgroup pressure files unavailable in portable benchmark",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0.207,
       "pids_pressure": 0.438,
       "cpu_throttle_pressure": 0.4,
       "psi_pressure": 0.1,
       "evidence_mode": "degraded",
-      "fallback_reason": "local cgroup pressure files unavailable in portable benchmark"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
     "score_by_agent": {
       "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-00": {
@@ -8185,12 +8185,12 @@
         "final_score": 43.847
       }
     },
-    "created_at": 1783309641187
+    "created_at": 1783316342075
   },
   {
-    "id": "20260706114721.187420155",
-    "decision_id": "20260706114721.187420155",
-    "timestamp": "2026-07-06T03:47:21.187420155Z",
+    "id": "20260706133902.075583413",
+    "decision_id": "20260706133902.075583413",
+    "timestamp": "2026-07-06T05:39:02.075583413Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -8267,14 +8267,14 @@
     "dynamic_spawn_priority": 0,
     "final_score": 42.162,
     "evidence_mode": "degraded",
-    "fallback_reason": "local cgroup pressure files unavailable in portable benchmark",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0.208,
       "pids_pressure": 0.453,
       "cpu_throttle_pressure": 0.41,
       "psi_pressure": 0.1,
       "evidence_mode": "degraded",
-      "fallback_reason": "local cgroup pressure files unavailable in portable benchmark"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
     "score_by_agent": {
       "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-01": {
@@ -8317,12 +8317,12 @@
         "final_score": 32.396
       }
     },
-    "created_at": 1783309641187
+    "created_at": 1783316342075
   },
   {
-    "id": "20260706114721.187426813",
-    "decision_id": "20260706114721.187426813",
-    "timestamp": "2026-07-06T03:47:21.187426813Z",
+    "id": "20260706133902.075592449",
+    "decision_id": "20260706133902.075592449",
+    "timestamp": "2026-07-06T05:39:02.075592449Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -8399,14 +8399,14 @@
     "dynamic_spawn_priority": 0,
     "final_score": 42.466,
     "evidence_mode": "degraded",
-    "fallback_reason": "local cgroup pressure files unavailable in portable benchmark",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0.209,
       "pids_pressure": 0.469,
       "cpu_throttle_pressure": 0.42,
       "psi_pressure": 0.1,
       "evidence_mode": "degraded",
-      "fallback_reason": "local cgroup pressure files unavailable in portable benchmark"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
     "score_by_agent": {
       "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-02": {
@@ -8449,12 +8449,12 @@
         "final_score": 22.11
       }
     },
-    "created_at": 1783309641187
+    "created_at": 1783316342075
   },
   {
-    "id": "20260706114721.187432748",
-    "decision_id": "20260706114721.187432748",
-    "timestamp": "2026-07-06T03:47:21.187432748Z",
+    "id": "20260706133902.075598528",
+    "decision_id": "20260706133902.075598528",
+    "timestamp": "2026-07-06T05:39:02.075598528Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -8531,14 +8531,14 @@
     "dynamic_spawn_priority": 0,
     "final_score": 37.44,
     "evidence_mode": "degraded",
-    "fallback_reason": "local cgroup pressure files unavailable in portable benchmark",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0.21,
       "pids_pressure": 0.484,
       "cpu_throttle_pressure": 0.43,
       "psi_pressure": 0.1,
       "evidence_mode": "degraded",
-      "fallback_reason": "local cgroup pressure files unavailable in portable benchmark"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
     "score_by_agent": {
       "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-03": {
@@ -8581,12 +8581,12 @@
         "final_score": 32.22
       }
     },
-    "created_at": 1783309641187
+    "created_at": 1783316342075
   },
   {
-    "id": "20260706114721.187438680",
-    "decision_id": "20260706114721.187438680",
-    "timestamp": "2026-07-06T03:47:21.18743868Z",
+    "id": "20260706133902.075604044",
+    "decision_id": "20260706133902.075604044",
+    "timestamp": "2026-07-06T05:39:02.075604044Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -8663,14 +8663,14 @@
     "dynamic_spawn_priority": 0,
     "final_score": 32.489,
     "evidence_mode": "degraded",
-    "fallback_reason": "local cgroup pressure files unavailable in portable benchmark",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0.211,
       "pids_pressure": 0.5,
       "cpu_throttle_pressure": 0.44,
       "psi_pressure": 0.1,
       "evidence_mode": "degraded",
-      "fallback_reason": "local cgroup pressure files unavailable in portable benchmark"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
     "score_by_agent": {
       "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-04": {
@@ -8713,12 +8713,12 @@
         "final_score": 20.768
       }
     },
-    "created_at": 1783309641187
+    "created_at": 1783316342075
   },
   {
-    "id": "20260706114721.187444272",
-    "decision_id": "20260706114721.187444272",
-    "timestamp": "2026-07-06T03:47:21.187444272Z",
+    "id": "20260706133902.075609662",
+    "decision_id": "20260706133902.075609662",
+    "timestamp": "2026-07-06T05:39:02.075609662Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -8795,14 +8795,14 @@
     "dynamic_spawn_priority": 0,
     "final_score": 27.605,
     "evidence_mode": "degraded",
-    "fallback_reason": "local cgroup pressure files unavailable in portable benchmark",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0.212,
       "pids_pressure": 0.516,
       "cpu_throttle_pressure": 0.45,
       "psi_pressure": 0.1,
       "evidence_mode": "degraded",
-      "fallback_reason": "local cgroup pressure files unavailable in portable benchmark"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
     "score_by_agent": {
       "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-05": {
@@ -8845,12 +8845,12 @@
         "final_score": 10.482
       }
     },
-    "created_at": 1783309641187
+    "created_at": 1783316342075
   },
   {
-    "id": "20260706114721.187450217",
-    "decision_id": "20260706114721.187450217",
-    "timestamp": "2026-07-06T03:47:21.187450217Z",
+    "id": "20260706133902.075615398",
+    "decision_id": "20260706133902.075615398",
+    "timestamp": "2026-07-06T05:39:02.075615398Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -8927,14 +8927,14 @@
     "dynamic_spawn_priority": 0,
     "final_score": 22.783,
     "evidence_mode": "degraded",
-    "fallback_reason": "local cgroup pressure files unavailable in portable benchmark",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0.213,
       "pids_pressure": 0.531,
       "cpu_throttle_pressure": 0.46,
       "psi_pressure": 0.1,
       "evidence_mode": "degraded",
-      "fallback_reason": "local cgroup pressure files unavailable in portable benchmark"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
     "score_by_agent": {
       "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-00": {
@@ -8977,12 +8977,12 @@
         "final_score": 20.593
       }
     },
-    "created_at": 1783309641187
+    "created_at": 1783316342075
   },
   {
-    "id": "20260706114721.187455753",
-    "decision_id": "20260706114721.187455753",
-    "timestamp": "2026-07-06T03:47:21.187455753Z",
+    "id": "20260706133902.075620984",
+    "decision_id": "20260706133902.075620984",
+    "timestamp": "2026-07-06T05:39:02.075620984Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -9059,14 +9059,14 @@
     "dynamic_spawn_priority": 0,
     "final_score": 23.087,
     "evidence_mode": "degraded",
-    "fallback_reason": "local cgroup pressure files unavailable in portable benchmark",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0.214,
       "pids_pressure": 0.547,
       "cpu_throttle_pressure": 0.47,
       "psi_pressure": 0.1,
       "evidence_mode": "degraded",
-      "fallback_reason": "local cgroup pressure files unavailable in portable benchmark"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
     "score_by_agent": {
       "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-01": {
@@ -9109,12 +9109,12 @@
         "final_score": 9.141
       }
     },
-    "created_at": 1783309641187
+    "created_at": 1783316342075
   },
   {
-    "id": "20260706114721.187461904",
-    "decision_id": "20260706114721.187461904",
-    "timestamp": "2026-07-06T03:47:21.187461904Z",
+    "id": "20260706133902.075630732",
+    "decision_id": "20260706133902.075630732",
+    "timestamp": "2026-07-06T05:39:02.075630732Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -9191,14 +9191,14 @@
     "dynamic_spawn_priority": 0,
     "final_score": 18.061,
     "evidence_mode": "degraded",
-    "fallback_reason": "local cgroup pressure files unavailable in portable benchmark",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0.215,
       "pids_pressure": 0.563,
       "cpu_throttle_pressure": 0.48,
       "psi_pressure": 0.1,
       "evidence_mode": "degraded",
-      "fallback_reason": "local cgroup pressure files unavailable in portable benchmark"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
     "score_by_agent": {
       "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-02": {
@@ -9241,12 +9241,12 @@
         "final_score": -1.145
       }
     },
-    "created_at": 1783309641187
+    "created_at": 1783316342075
   },
   {
-    "id": "20260706114721.187468320",
-    "decision_id": "20260706114721.187468320",
-    "timestamp": "2026-07-06T03:47:21.18746832Z",
+    "id": "20260706133902.075636569",
+    "decision_id": "20260706133902.075636569",
+    "timestamp": "2026-07-06T05:39:02.075636569Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -9323,14 +9323,14 @@
     "dynamic_spawn_priority": 0,
     "final_score": 13.11,
     "evidence_mode": "degraded",
-    "fallback_reason": "local cgroup pressure files unavailable in portable benchmark",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0.216,
       "pids_pressure": 0.578,
       "cpu_throttle_pressure": 0.49,
       "psi_pressure": 0.1,
       "evidence_mode": "degraded",
-      "fallback_reason": "local cgroup pressure files unavailable in portable benchmark"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
     "score_by_agent": {
       "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-03": {
@@ -9373,12 +9373,12 @@
         "final_score": 8.965
       }
     },
-    "created_at": 1783309641187
+    "created_at": 1783316342075
   },
   {
-    "id": "20260706114721.187473831",
-    "decision_id": "20260706114721.187473831",
-    "timestamp": "2026-07-06T03:47:21.187473831Z",
+    "id": "20260706133902.075642309",
+    "decision_id": "20260706133902.075642309",
+    "timestamp": "2026-07-06T05:39:02.075642309Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -9455,14 +9455,14 @@
     "dynamic_spawn_priority": 0,
     "final_score": 8.227,
     "evidence_mode": "degraded",
-    "fallback_reason": "local cgroup pressure files unavailable in portable benchmark",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0.217,
       "pids_pressure": 0.594,
       "cpu_throttle_pressure": 0.5,
       "psi_pressure": 0.1,
       "evidence_mode": "degraded",
-      "fallback_reason": "local cgroup pressure files unavailable in portable benchmark"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
     "score_by_agent": {
       "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-04": {
@@ -9505,12 +9505,12 @@
         "final_score": -2.486
       }
     },
-    "created_at": 1783309641187
+    "created_at": 1783316342075
   },
   {
-    "id": "20260706114721.187479772",
-    "decision_id": "20260706114721.187479772",
-    "timestamp": "2026-07-06T03:47:21.187479772Z",
+    "id": "20260706133902.075647898",
+    "decision_id": "20260706133902.075647898",
+    "timestamp": "2026-07-06T05:39:02.075647898Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -9587,14 +9587,14 @@
     "dynamic_spawn_priority": 0,
     "final_score": 3.404,
     "evidence_mode": "degraded",
-    "fallback_reason": "local cgroup pressure files unavailable in portable benchmark",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0.218,
       "pids_pressure": 0.609,
       "cpu_throttle_pressure": 0.51,
       "psi_pressure": 0.1,
       "evidence_mode": "degraded",
-      "fallback_reason": "local cgroup pressure files unavailable in portable benchmark"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
     "score_by_agent": {
       "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-05": {
@@ -9637,12 +9637,12 @@
         "final_score": -12.772
       }
     },
-    "created_at": 1783309641187
+    "created_at": 1783316342075
   },
   {
-    "id": "20260706114721.187485517",
-    "decision_id": "20260706114721.187485517",
-    "timestamp": "2026-07-06T03:47:21.187485517Z",
+    "id": "20260706133902.075653567",
+    "decision_id": "20260706133902.075653567",
+    "timestamp": "2026-07-06T05:39:02.075653567Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -9719,14 +9719,14 @@
     "dynamic_spawn_priority": 0,
     "final_score": 3.708,
     "evidence_mode": "degraded",
-    "fallback_reason": "local cgroup pressure files unavailable in portable benchmark",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0.219,
       "pids_pressure": 0.625,
       "cpu_throttle_pressure": 0.52,
       "psi_pressure": 0.1,
       "evidence_mode": "degraded",
-      "fallback_reason": "local cgroup pressure files unavailable in portable benchmark"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
     "score_by_agent": {
       "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-00": {
@@ -9769,12 +9769,12 @@
         "final_score": -2.662
       }
     },
-    "created_at": 1783309641187
+    "created_at": 1783316342075
   },
   {
-    "id": "20260706114721.187490831",
-    "decision_id": "20260706114721.187490831",
-    "timestamp": "2026-07-06T03:47:21.187490831Z",
+    "id": "20260706133902.075658914",
+    "decision_id": "20260706133902.075658914",
+    "timestamp": "2026-07-06T05:39:02.075658914Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -9851,14 +9851,14 @@
     "dynamic_spawn_priority": 0,
     "final_score": -1.317,
     "evidence_mode": "degraded",
-    "fallback_reason": "local cgroup pressure files unavailable in portable benchmark",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0.22,
       "pids_pressure": 0.641,
       "cpu_throttle_pressure": 0.53,
       "psi_pressure": 0.1,
       "evidence_mode": "degraded",
-      "fallback_reason": "local cgroup pressure files unavailable in portable benchmark"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
     "score_by_agent": {
       "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-01": {
@@ -9901,12 +9901,12 @@
         "final_score": -14.114
       }
     },
-    "created_at": 1783309641187
+    "created_at": 1783316342075
   },
   {
-    "id": "20260706114721.187496378",
-    "decision_id": "20260706114721.187496378",
-    "timestamp": "2026-07-06T03:47:21.187496378Z",
+    "id": "20260706133902.075664712",
+    "decision_id": "20260706133902.075664712",
+    "timestamp": "2026-07-06T05:39:02.075664712Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -9983,14 +9983,14 @@
     "dynamic_spawn_priority": 0,
     "final_score": -6.268,
     "evidence_mode": "degraded",
-    "fallback_reason": "local cgroup pressure files unavailable in portable benchmark",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0.221,
       "pids_pressure": 0.656,
       "cpu_throttle_pressure": 0.54,
       "psi_pressure": 0.1,
       "evidence_mode": "degraded",
-      "fallback_reason": "local cgroup pressure files unavailable in portable benchmark"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
     "score_by_agent": {
       "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-02": {
@@ -10033,12 +10033,12 @@
         "final_score": -24.4
       }
     },
-    "created_at": 1783309641187
+    "created_at": 1783316342075
   },
   {
-    "id": "20260706114721.187502360",
-    "decision_id": "20260706114721.187502360",
-    "timestamp": "2026-07-06T03:47:21.18750236Z",
+    "id": "20260706133902.075670429",
+    "decision_id": "20260706133902.075670429",
+    "timestamp": "2026-07-06T05:39:02.075670429Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -10115,14 +10115,14 @@
     "dynamic_spawn_priority": 0,
     "final_score": -11.152,
     "evidence_mode": "degraded",
-    "fallback_reason": "local cgroup pressure files unavailable in portable benchmark",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0.222,
       "pids_pressure": 0.672,
       "cpu_throttle_pressure": 0.55,
       "psi_pressure": 0.1,
       "evidence_mode": "degraded",
-      "fallback_reason": "local cgroup pressure files unavailable in portable benchmark"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
     "score_by_agent": {
       "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-03": {
@@ -10165,12 +10165,12 @@
         "final_score": -14.289
       }
     },
-    "created_at": 1783309641187
+    "created_at": 1783316342075
   },
   {
-    "id": "20260706114721.187507611",
-    "decision_id": "20260706114721.187507611",
-    "timestamp": "2026-07-06T03:47:21.187507611Z",
+    "id": "20260706133902.075676407",
+    "decision_id": "20260706133902.075676407",
+    "timestamp": "2026-07-06T05:39:02.075676407Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -10247,14 +10247,14 @@
     "dynamic_spawn_priority": 0,
     "final_score": -15.975,
     "evidence_mode": "degraded",
-    "fallback_reason": "local cgroup pressure files unavailable in portable benchmark",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0.223,
       "pids_pressure": 0.688,
       "cpu_throttle_pressure": 0.56,
       "psi_pressure": 0.1,
       "evidence_mode": "degraded",
-      "fallback_reason": "local cgroup pressure files unavailable in portable benchmark"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
     "score_by_agent": {
       "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-04": {
@@ -10297,12 +10297,12 @@
         "final_score": -25.741
       }
     },
-    "created_at": 1783309641187
+    "created_at": 1783316342075
   },
   {
-    "id": "20260706114721.187512846",
-    "decision_id": "20260706114721.187512846",
-    "timestamp": "2026-07-06T03:47:21.187512846Z",
+    "id": "20260706133902.075681880",
+    "decision_id": "20260706133902.075681880",
+    "timestamp": "2026-07-06T05:39:02.07568188Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -10379,14 +10379,14 @@
     "dynamic_spawn_priority": 0,
     "final_score": -15.671,
     "evidence_mode": "degraded",
-    "fallback_reason": "local cgroup pressure files unavailable in portable benchmark",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0.224,
       "pids_pressure": 0.703,
       "cpu_throttle_pressure": 0.57,
       "psi_pressure": 0.1,
       "evidence_mode": "degraded",
-      "fallback_reason": "local cgroup pressure files unavailable in portable benchmark"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
     "score_by_agent": {
       "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-05": {
@@ -10429,12 +10429,12 @@
         "final_score": -36.027
       }
     },
-    "created_at": 1783309641187
+    "created_at": 1783316342075
   },
   {
-    "id": "20260706114721.187519447",
-    "decision_id": "20260706114721.187519447",
-    "timestamp": "2026-07-06T03:47:21.187519447Z",
+    "id": "20260706133902.075688922",
+    "decision_id": "20260706133902.075688922",
+    "timestamp": "2026-07-06T05:39:02.075688922Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -10511,14 +10511,14 @@
     "dynamic_spawn_priority": 0,
     "final_score": -20.696,
     "evidence_mode": "degraded",
-    "fallback_reason": "local cgroup pressure files unavailable in portable benchmark",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0.225,
       "pids_pressure": 0.719,
       "cpu_throttle_pressure": 0.58,
       "psi_pressure": 0.1,
       "evidence_mode": "degraded",
-      "fallback_reason": "local cgroup pressure files unavailable in portable benchmark"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
     "score_by_agent": {
       "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-00": {
@@ -10561,12 +10561,12 @@
         "final_score": -25.917
       }
     },
-    "created_at": 1783309641187
+    "created_at": 1783316342075
   },
   {
-    "id": "20260706114721.187524573",
-    "decision_id": "20260706114721.187524573",
-    "timestamp": "2026-07-06T03:47:21.187524573Z",
+    "id": "20260706133902.075694319",
+    "decision_id": "20260706133902.075694319",
+    "timestamp": "2026-07-06T05:39:02.075694319Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -10643,14 +10643,14 @@
     "dynamic_spawn_priority": 0,
     "final_score": -25.647,
     "evidence_mode": "degraded",
-    "fallback_reason": "local cgroup pressure files unavailable in portable benchmark",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0.226,
       "pids_pressure": 0.734,
       "cpu_throttle_pressure": 0.59,
       "psi_pressure": 0.1,
       "evidence_mode": "degraded",
-      "fallback_reason": "local cgroup pressure files unavailable in portable benchmark"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
     "score_by_agent": {
       "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-01": {
@@ -10693,12 +10693,12 @@
         "final_score": -37.368
       }
     },
-    "created_at": 1783309641187
+    "created_at": 1783316342075
   },
   {
-    "id": "20260706114721.187530162",
-    "decision_id": "20260706114721.187530162",
-    "timestamp": "2026-07-06T03:47:21.187530162Z",
+    "id": "20260706133902.075699983",
+    "decision_id": "20260706133902.075699983",
+    "timestamp": "2026-07-06T05:39:02.075699983Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -10775,14 +10775,14 @@
     "dynamic_spawn_priority": 0,
     "final_score": -30.531,
     "evidence_mode": "degraded",
-    "fallback_reason": "local cgroup pressure files unavailable in portable benchmark",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0.227,
       "pids_pressure": 0.75,
       "cpu_throttle_pressure": 0.6,
       "psi_pressure": 0.1,
       "evidence_mode": "degraded",
-      "fallback_reason": "local cgroup pressure files unavailable in portable benchmark"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
     "score_by_agent": {
       "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-02": {
@@ -10825,12 +10825,12 @@
         "final_score": -47.654
       }
     },
-    "created_at": 1783309641187
+    "created_at": 1783316342075
   },
   {
-    "id": "20260706114721.187535390",
-    "decision_id": "20260706114721.187535390",
-    "timestamp": "2026-07-06T03:47:21.18753539Z",
+    "id": "20260706133902.075705260",
+    "decision_id": "20260706133902.075705260",
+    "timestamp": "2026-07-06T05:39:02.07570526Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -10907,14 +10907,14 @@
     "dynamic_spawn_priority": 0,
     "final_score": -35.354,
     "evidence_mode": "degraded",
-    "fallback_reason": "local cgroup pressure files unavailable in portable benchmark",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
     "resource_pressure": {
       "memory_pressure": 0.228,
       "pids_pressure": 0.766,
       "cpu_throttle_pressure": 0.61,
       "psi_pressure": 0.1,
       "evidence_mode": "degraded",
-      "fallback_reason": "local cgroup pressure files unavailable in portable benchmark"
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
     "score_by_agent": {
       "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-03": {
@@ -10957,6 +10957,6 @@
         "final_score": -37.544
       }
     },
-    "created_at": 1783309641187
+    "created_at": 1783316342075
   }
 ]

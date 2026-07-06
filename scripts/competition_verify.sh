@@ -7,26 +7,57 @@ cd "$ROOT_DIR"
 FINAL_DIR="$ROOT_DIR/experiments/results/final"
 mkdir -p "$FINAL_DIR" "$ROOT_DIR/.cache/go-build"
 export GOCACHE="$ROOT_DIR/.cache/go-build"
+STEP_STATUS_FILE="$FINAL_DIR/step_status.tsv"
+: >"$STEP_STATUS_FILE"
+LAST_STEP_COMMAND=""
+LAST_STEP_LOG=""
+LAST_STEP_CODE=0
 
 log() {
   printf '\n== %s ==\n' "$1"
+}
+
+quote_command() {
+  local quoted=""
+  local part
+  local escaped
+  for part in "$@"; do
+    printf -v escaped '%q' "$part"
+    quoted="$quoted $escaped"
+  done
+  printf '%s' "${quoted# }"
+}
+
+record_step_status() {
+  local name="$1"
+  local status="$2"
+  local log_file="$3"
+  local command="$4"
+  local code="${5:-0}"
+  # Emitted status values are: status: passed, status: failed, status: degraded, status: missing.
+  printf 'status: %s\n' "$status"
+  printf 'step_%s=%s\n' "$name" "$status"
+  printf '%s\t%s\t%s\t%s\t%s\n' "$name" "$status" "$code" "$log_file" "$command" >>"$STEP_STATUS_FILE"
 }
 
 run_step() {
   local name="$1"
   shift
   local log_file="$FINAL_DIR/${name}.log"
+  local command
+  command="$(quote_command "$@")"
+  LAST_STEP_COMMAND="$command"
+  LAST_STEP_LOG="$log_file"
   log "$name"
+  printf 'step_name=%s\n' "$name"
+  printf 'command=%s\n' "$command"
+  printf 'log_file=%s\n' "$log_file"
   set +e
   "$@" >"$log_file" 2>&1
   local code=$?
   set -e
+  LAST_STEP_CODE="$code"
   cat "$log_file"
-  if [ "$code" -eq 0 ]; then
-    printf 'step_%s=passed\n' "$name"
-    return 0
-  fi
-  printf 'step_%s=failed code=%s\n' "$name" "$code"
   return "$code"
 }
 
@@ -66,11 +97,13 @@ fi
 if [ "$cgroup_fs_type" != "cgroup2fs" ]; then
   env_check="degraded"
 fi
+record_step_status env_check "$env_check" "$LAST_STEP_LOG" "$LAST_STEP_COMMAND" "$LAST_STEP_CODE"
 
 go_test="failed"
 if run_step go_test go test ./...; then
   go_test="passed"
 fi
+record_step_status go_test "$go_test" "$LAST_STEP_LOG" "$LAST_STEP_COMMAND" "$LAST_STEP_CODE"
 
 smoke="failed"
 if OUT_DIR="$FINAL_DIR/openeuler_smoke" run_step smoke bash scripts/smoke_openeuler.sh; then
@@ -81,26 +114,31 @@ fi
 if [ "$cgroup_fs_type" != "cgroup2fs" ]; then
   smoke="degraded"
 fi
+record_step_status smoke "$smoke" "$LAST_STEP_LOG" "$LAST_STEP_COMMAND" "$LAST_STEP_CODE"
 
 e1_scheduler="failed"
 if run_step e1_scheduler go run ./cmd/aortctl experiment e1 --policy resource-aware --runs 5 --out experiments/results/e1; then
   e1_scheduler="passed"
 fi
+record_step_status e1_scheduler "$e1_scheduler" "$LAST_STEP_LOG" "$LAST_STEP_COMMAND" "$LAST_STEP_CODE"
 
 e2_fault_isolation="failed"
 if run_step e2_fault_isolation go run ./cmd/aortctl experiment e2 --runs 5 --out experiments/results; then
   e2_fault_isolation="passed"
 fi
+record_step_status e2_fault_isolation "$e2_fault_isolation" "$LAST_STEP_LOG" "$LAST_STEP_COMMAND" "$LAST_STEP_CODE"
 
 software_real_demo="failed"
 if run_step software_real_demo go run ./cmd/aortctl demo software-real --out experiments/results; then
   software_real_demo="passed"
 fi
+record_step_status software_real_demo "$software_real_demo" "$LAST_STEP_LOG" "$LAST_STEP_COMMAND" "$LAST_STEP_CODE"
 
 workspace_isolation="failed"
 if run_step workspace_isolation go run ./cmd/aortctl demo fault workspace-rmrf --out experiments/results; then
   workspace_isolation="passed"
 fi
+record_step_status workspace_isolation "$workspace_isolation" "$LAST_STEP_LOG" "$LAST_STEP_COMMAND" "$LAST_STEP_CODE"
 
 export kernel os_release cgroup_fs_type go_version_output
 export env_check go_test smoke e1_scheduler e2_fault_isolation software_real_demo workspace_isolation
@@ -129,6 +167,7 @@ def read_json(path: pathlib.Path):
         return None
 
 generated_candidates = [
+    root / "experiments/results/final/step_status.tsv",
     root / "experiments/results/final/env_check.json",
     root / "experiments/results/e1/e1_resource_aware.json",
     root / "experiments/results/e1/e1_resource_aware.csv",
@@ -163,6 +202,8 @@ def status_with_missing(name: str, paths: list[pathlib.Path]) -> str:
 
 env_data = read_json(root / "experiments/results/final/env_check.json") or {}
 workspace_data = read_json(root / "experiments/results/workspace_isolation_evidence.json") or {}
+e1_data = read_json(root / "experiments/results/e1/e1_resource_aware.json") or {}
+e1_decisions = read_json(root / "experiments/results/e1/e1_resource_aware_decisions.json") or []
 overall_mode = "real-runtime"
 known_limits = []
 if os.environ.get("env_check") == "degraded" or env_data.get("evidence_mode") == "degraded":
@@ -172,6 +213,22 @@ if workspace_data.get("evidence_mode") == "degraded-copy":
     known_limits.append("overlayfs mount was unavailable or not attempted; workspace isolation used degraded-copy fallback")
 if os.environ.get("smoke") == "degraded":
     known_limits.append("openEuler smoke ran in degraded mode on this host")
+resource_pressure_fallback = ""
+if e1_data.get("evidence_mode") == "degraded":
+    for result in e1_data.get("policy_results", []):
+        if result.get("policy") == "token-cfs-prefix-affinity-resource-aware":
+            resource_pressure_fallback = result.get("fallback_reason", "")
+            break
+if not resource_pressure_fallback and isinstance(e1_decisions, list):
+    for decision in e1_decisions:
+        if (
+            decision.get("policy") == "token-cfs-prefix-affinity-resource-aware"
+            and decision.get("evidence_mode") == "degraded"
+        ):
+            resource_pressure_fallback = decision.get("fallback_reason", "")
+            break
+if resource_pressure_fallback:
+    known_limits.append("resource-aware pressure sampler degraded: " + resource_pressure_fallback)
 
 index = {
     "timestamp": datetime.now(timezone.utc).isoformat(),
@@ -231,7 +288,16 @@ else:
 summary_path.write_text("\n".join(summary_lines) + "\n", encoding="utf-8")
 PY
 
-printf '\nAORT-R competition verification completed. See experiments/results/final/FINAL_EVIDENCE_INDEX.json\n'
+final_artifacts="passed"
+for required_final in "$FINAL_DIR/FINAL_EVIDENCE_INDEX.json" "$FINAL_DIR/FINAL_SUMMARY.md"; do
+  if [ ! -s "$required_final" ]; then
+    final_artifacts="missing"
+  fi
+done
+record_step_status final_artifacts "$final_artifacts" "$FINAL_DIR/final_artifacts.log" "generate final evidence index and summary" 0
+
+printf '\nAORT-R competition verification completed.\n'
+printf 'See experiments/results/final/FINAL_EVIDENCE_INDEX.json\n'
 
 if [ "$go_test" != "passed" ] ||
   { [ "$live_openeuler_cgroup" = "true" ] && [ "$env_check" != "passed" ]; } ||

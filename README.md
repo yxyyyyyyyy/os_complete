@@ -122,7 +122,8 @@ key it skips without failing and records explicit mock fallback.
 ## Implemented Mechanisms
 
 - Real worker processes launched by `aortd`, with UDS registration and heartbeat.
-- Per-Agent cgroup capsule manager with real Linux cgroup v2 support and degraded mode on macOS/non-root environments.
+- Per-Agent cgroup capsule manager with real Linux cgroup v2 support and
+  degraded mode on macOS/non-root environments.
 - CVM page store with sha256 page ids, per-agent page tables, context materialization, and saved token/byte metrics.
 - Agent syscall gateway for `context.materialize`, `context.write_delta`,
   `llm.call`, `tool.exec`, `ipc.publish`, `ipc.poll`, `agent.spawn`, and
@@ -130,12 +131,19 @@ key it skips without failing and records explicit mock fallback.
 - Kernel observer lane for `kernel.exec` evidence. Current checked-in
   implementation uses `degraded` evidence through syscall-gateway exec
   observations unless a future openEuler eBPF attachment is enabled.
-- Page-reference IPC Blackboard with avoided-copy byte metrics and per-subscriber polling.
-- FIFO, token-CFS, token-CFS-prefix-affinity, and resource-aware scheduler policies with DecisionLog API.
-- PSI pressure monitor with `/api/pressure/status`, `pressure.sampled`, and scheduler pressure-throttle evidence in degraded or Linux PSI mode.
+- Page-reference IPC Blackboard with avoided-copy byte metrics and
+  per-subscriber polling.
+- FIFO, token-CFS, token-CFS-prefix-affinity, and
+  token-CFS-prefix-affinity-resource-aware scheduler policies with DecisionLog
+  API.
+- PSI pressure monitor with `/api/pressure/status`, `pressure.sampled`, and
+  scheduler pressure-throttle evidence in degraded or Linux PSI mode.
 - Supervisor fault record path with a runnable `tool.exec` timeout injection.
-- Workspace isolation fault demo with real-overlayfs evidence on Linux/root hosts
-  where overlayfs is available, plus degraded-copy rollback fallback elsewhere.
+- Workspace isolation manager with overlayfs code path and degraded-copy
+  fallback. Current checked-in evidence is `real-overlayfs` because the latest
+  Linux/root verification host mounted overlayfs successfully; non-Linux,
+  non-root, or overlayfs-unavailable reruns must remain `degraded-copy` with a
+  concrete `fallback_reason`.
 - Lightweight checkpoint store for AVP state, CVM page table references, scheduler vruntime, and trace offset evidence.
 - Startup checkpoint recovery report at `/api/recovery/status`, with `checkpoint.recovered` and `runtime.recovered` timeline evidence.
 - LLM Router interface with mock provider, fallback routing, and llama.cpp timing/cache usage parser.
@@ -148,14 +156,21 @@ key it skips without failing and records explicit mock fallback.
 
 ```bash
 mkdir -p .cache/go-build
-GOCACHE="$PWD/.cache/go-build" go run ./cmd/aort-experiment --name all --runs 5 --out experiments/results
-GOCACHE="$PWD/.cache/go-build" go run ./cmd/aort-experiment --name e1-real-scheduler --runs 5 --out experiments/results
-GOCACHE="$PWD/.cache/go-build" go run ./cmd/aort-experiment --name e2-real-fault --runs 5 --out experiments/results
-go run ./cmd/aortctl experiment e1 --policy resource-aware --runs 5 --out experiments/results/e1
-go run ./cmd/aortctl demo fault workspace-rmrf --out experiments/results
 bash scripts/competition_verify.sh
+go run ./cmd/aortctl experiment e1 --policy resource-aware --runs 5 --out experiments/results/e1
+go run ./cmd/aortctl experiment e1 --policy all --runs 5 --out experiments/results/e1
+go run ./cmd/aortctl experiment e2 --runs 5 --out experiments/results
+go run ./cmd/aortctl demo software-real --out experiments/results
+go run ./cmd/aortctl demo fault workspace-rmrf --out experiments/results
 curl -s http://127.0.0.1:8080/api/experiments/results
 ```
+
+In the current portable benchmark, token-CFS-prefix-affinity has the lowest
+wall time. The resource-aware policy improves over FIFO and token-CFS while
+adding memory/pids/cpu/PSI pressure-aware safety decisions. Because local
+pressure sampling is degraded in this checked-in E1 run, resource-aware should
+be presented as an OS-resource-aware scheduling mechanism, not as the fastest
+policy in this benchmark.
 
 Outputs:
 
@@ -253,10 +268,15 @@ See [docs/deployment_openeuler.md](docs/deployment_openeuler.md) for deployment 
 
 ## Known Limits
 
-- True eBPF attachment is a planned enhancement target. Real overlayfs
-  workspace isolation is implemented and verified when the Linux host exposes
-  overlayfs; otherwise the runtime uses explicit degraded-copy fallback.
-  Lightweight checkpoint startup recovery, PSI/degraded pressure monitoring,
+- True eBPF attachment remains planned.
+- Workspace isolation supports an overlayfs code path plus degraded-copy
+  fallback. Current checked-in evidence is `real-overlayfs`; reruns are
+  `real-overlayfs` only on Linux/root hosts where overlayfs mount succeeds, and
+  otherwise must be `degraded-copy`.
+- CVM remains page-level context reuse and materialization optimization, not
+  true model KV Cache sharing.
+- IPC remains page-reference IPC, not kernel zero-copy.
+- Lightweight checkpoint startup recovery, PSI/degraded pressure monitoring,
   and honest degraded kernel exec evidence are implemented and test-covered.
 - DeepSeek provider is implemented with environment-only credentials, mock
   fallback, and a redacted real-api smoke summary; local llama.cpp remains a

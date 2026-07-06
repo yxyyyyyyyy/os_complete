@@ -384,7 +384,7 @@ func normalizeResourcePressure(pressure ResourcePressure) ResourcePressure {
 		pressure.EvidenceMode = evidence.ModeDegraded
 	}
 	if pressure.EvidenceMode == evidence.ModeDegraded && pressure.FallbackReason == "" {
-		pressure.FallbackReason = "resource pressure sampler not configured"
+		pressure.FallbackReason = "resource pressure sampler not configured or local cgroup pressure files unavailable"
 	}
 	return pressure
 }

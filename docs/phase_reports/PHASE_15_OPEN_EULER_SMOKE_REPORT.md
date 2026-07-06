@@ -136,7 +136,7 @@ Runtime 在 openEuler/root/Go 1.22.12 上可编译测试通过，并能在 cgrou
 | capsule / cgroup isolation | `degraded` | 服务器未提供 `/sys/fs/cgroup` 的 `cgroup2fs` 统一挂载。 |
 | freeze / unfreeze | `degraded` | 因无 cgroup v2，接口返回 `409`，错误原因已记录。 |
 | workspace isolation | `degraded-copy` | 当前 smoke 只验证复制回滚证据，不实现真实 overlayfs mount/commit。 |
-| kernel observer | `degraded-proxy` | 当前通过 syscall gateway 的 exec observation 形成 `kernel.exec` 证据，不做 eBPF attach。 |
+| kernel observer | `degraded` | 当前通过 syscall gateway 的 exec observation 形成 `kernel.exec` 证据，不做 eBPF attach。 |
 | LLM provider | `mock` | 当前默认使用 mock provider，不把外部 LLM API key 写入仓库。 |
 | checkpoint recovery | `checkpoint-light` | 当前恢复 AVP 表、scheduler vruntime 和 CVM page references；page content durable backing 仍是后续工作。 |
 
