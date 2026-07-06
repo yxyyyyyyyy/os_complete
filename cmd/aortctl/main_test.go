@@ -62,3 +62,22 @@ func TestAortctlSoftwareRealDemoCommandWritesResult(t *testing.T) {
 		t.Fatalf("software-real result missing: %v", err)
 	}
 }
+
+func TestAortctlRealOnlyCommandsWriteFailureEvidenceForNonCgroupRoot(t *testing.T) {
+	outDir := t.TempDir()
+	cgroupRoot := filepath.Join(t.TempDir(), "not-cgroup2fs")
+	if err := run([]string{"experiment", "real-cgroup-smoke", "--out", outDir, "--cgroup-root", cgroupRoot}); err == nil {
+		t.Fatalf("real-cgroup-smoke should reject non-cgroup2fs roots")
+	}
+	if _, err := os.Stat(filepath.Join(outDir, "real_cgroup_smoke.json")); err != nil {
+		t.Fatalf("real-cgroup-smoke failure evidence missing: %v", err)
+	}
+
+	pressureDir := filepath.Join(t.TempDir(), "pressure")
+	if err := run([]string{"experiment", "real-pressure-smoke", "--runs", "3", "--out", pressureDir, "--require-real", "--cgroup-root", cgroupRoot}); err == nil {
+		t.Fatalf("real-pressure-smoke should reject non-cgroup2fs roots")
+	}
+	if _, err := os.Stat(filepath.Join(pressureDir, "real_pressure_smoke.json")); err != nil {
+		t.Fatalf("real-pressure-smoke failure evidence missing: %v", err)
+	}
+}

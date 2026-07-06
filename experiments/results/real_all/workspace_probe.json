@@ -8,7 +8,7 @@
   "selected_mode": "overlayfs",
   "mode": "overlayfs",
   "evidence_mode": "real-overlayfs",
-  "runtime_root": "/tmp/aort-runtime/workspaces",
+  "runtime_root": "/tmp/aort-real-all-workspace-probe",
   "fallback_reason": "",
-  "timestamp": "2026-07-06T10:04:28.156770776Z"
+  "timestamp": "2026-07-06T10:04:45.580603076Z"
 }

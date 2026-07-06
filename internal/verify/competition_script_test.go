@@ -79,6 +79,40 @@ func TestOpenEulerEnvCheckRequiresOpenEulerForRealCgroupEvidence(t *testing.T) {
 	}
 }
 
+func TestVerifyRealOpenEulerEnvScriptContract(t *testing.T) {
+	path := filepath.Join("..", "..", "scripts", "verify_real_openeuler_env.sh")
+	data, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatalf("read real openEuler env verifier: %v", err)
+	}
+	text := string(data)
+	for _, want := range []string{
+		"set -euo pipefail",
+		"experiments/results/real_env/real_openeuler_env.json",
+		"not openEuler",
+		"cgroup fs is not cgroup2fs",
+		"no root permission",
+		"cgroup path is not writable",
+		"cgroup.kill unsupported",
+		"overlayfs not listed",
+		"overlayfs mount failed",
+		"memory.current",
+		"pids.current",
+		"cpu.stat",
+		"cgroup.procs",
+		"overlayfs_mount_success",
+		"real-openeuler",
+	} {
+		if !strings.Contains(text, want) {
+			t.Fatalf("real openEuler verifier missing %q", want)
+		}
+	}
+	cmd := exec.Command("bash", "-n", path)
+	if output, err := cmd.CombinedOutput(); err != nil {
+		t.Fatalf("bash -n failed: %v\n%s", err, output)
+	}
+}
+
 func TestSmokeOpenEulerSelectsCapsuleWithLiveCounters(t *testing.T) {
 	python, err := exec.LookPath("python3")
 	if err != nil {

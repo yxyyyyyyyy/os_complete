@@ -1,0 +1,12 @@
+{
+  "experiment": "real_all",
+  "evidence_mode": "real-openeuler",
+  "real_cgroup_v2": true,
+  "real_resource_sampler": true,
+  "real_overlayfs": true,
+  "real_workspace_tool_exec": true,
+  "cgroup_kill_success": true,
+  "resource_aware_scheduler_real_pressure": true,
+  "cascade_failure": false,
+  "all_passed": true
+}

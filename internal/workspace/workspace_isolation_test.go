@@ -96,6 +96,9 @@ func TestWorkspaceRMFaultDemoIsolatesAgentsAndRestoresTarget(t *testing.T) {
 	if !evidence.LowerDirUnchanged || !evidence.TargetAgentAffected || evidence.CascadeFailure || !evidence.RollbackSuccess {
 		t.Fatalf("isolation failed: %#v", evidence)
 	}
+	if evidence.Mode == ModeOverlayFS && !evidence.MergedIsMountpoint {
+		t.Fatalf("real overlayfs evidence must prove merged is a mountpoint: %#v", evidence)
+	}
 	if len(evidence.UnaffectedAgents) != 2 {
 		t.Fatalf("expected planner/reviewer unaffected: %#v", evidence)
 	}

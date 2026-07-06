@@ -107,6 +107,7 @@ type RMFaultEvidence struct {
 	UnaffectedAgents    []string            `json:"unaffected_agents"`
 	CascadeFailure      bool                `json:"cascade_failure"`
 	RollbackSuccess     bool                `json:"rollback_success"`
+	MergedIsMountpoint  bool                `json:"merged_is_mountpoint"`
 	CommitSupported     bool                `json:"commit_supported"`
 	DestroySuccess      bool                `json:"destroy_success"`
 	FallbackReason      string              `json:"fallback_reason"`
@@ -490,6 +491,11 @@ func RunRMFaultDemo(cfg Config) (RMFaultEvidence, error) {
 		_ = os.Remove(filepath.Join(workspaces[target].MergedDir, "symlink-escape"))
 	}
 	commitErr := manager.Commit(target)
+	ws := workspaces[target]
+	if status, statusErr := manager.Status(target); statusErr == nil {
+		ws = status.Workspace
+	}
+	mergedIsMountpoint := ws.Mode == ModeOverlayFS && isMountPoint(ws.MergedDir)
 	destroySuccess := true
 	for _, agent := range agents {
 		if err := manager.Destroy(agent); err != nil {
@@ -503,7 +509,6 @@ func RunRMFaultDemo(cfg Config) (RMFaultEvidence, error) {
 			runtimeRootOnly = false
 		}
 	}
-	ws := workspaces[target]
 	result := RMFaultEvidence{
 		Success:             targetAffected && lowerUnchanged && rollback.RollbackSuccess && len(unaffected) == 2 && commitErr == nil && destroySuccess,
 		FaultType:           "workspace_rmrf",
@@ -516,6 +521,7 @@ func RunRMFaultDemo(cfg Config) (RMFaultEvidence, error) {
 		UnaffectedAgents:    unaffected,
 		CascadeFailure:      len(unaffected) != 2,
 		RollbackSuccess:     rollback.RollbackSuccess,
+		MergedIsMountpoint:  mergedIsMountpoint,
 		CommitSupported:     commitErr == nil,
 		DestroySuccess:      destroySuccess,
 		FallbackReason:      ws.FallbackReason,

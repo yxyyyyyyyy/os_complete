@@ -1,0 +1,13 @@
+{
+  "openEuler": true,
+  "cgroup2fs": true,
+  "root": true,
+  "cgroup_writable": true,
+  "memory_current_readable": true,
+  "pids_current_readable": true,
+  "cpu_stat_readable": true,
+  "cgroup_kill_supported": true,
+  "overlayfs_available": true,
+  "overlayfs_mount_success": true,
+  "evidence_mode": "real-openeuler"
+}
