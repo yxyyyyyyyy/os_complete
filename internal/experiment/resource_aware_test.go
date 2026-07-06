@@ -72,6 +72,66 @@ func TestRunE1ResourceAwareWritesRequiredArtifactsAndSchema(t *testing.T) {
 	}
 }
 
+func TestRunE1PressureBenchmarkProvesRiskReduction(t *testing.T) {
+	outDir := t.TempDir()
+	report, err := RunE1PressureBenchmark(5, outDir)
+	if err != nil {
+		t.Fatalf("RunE1PressureBenchmark: %v", err)
+	}
+	if report.Experiment != "e1_pressure_resource_risk" || report.Runs != 5 {
+		t.Fatalf("bad report identity: %#v", report)
+	}
+	if report.SelectedHighPressureAgentCount != 0 {
+		t.Fatalf("resource-aware should avoid high-pressure selections: %#v", report)
+	}
+	if report.AvoidedHighPressureAgentCount != 10 {
+		t.Fatalf("avoided high-pressure count = %d, want 10: %#v", report.AvoidedHighPressureAgentCount, report)
+	}
+	if !report.ResourceAwareReducedRisk {
+		t.Fatalf("resource-aware reduced risk flag missing: %#v", report)
+	}
+	if report.EvidenceMode == "" || !evidence.IsValid(evidence.Mode(report.EvidenceMode)) {
+		t.Fatalf("invalid evidence mode: %#v", report)
+	}
+	if info, err := os.Stat(filepath.Join(outDir, "e1_pressure.json")); err != nil || info.Size() == 0 {
+		t.Fatalf("missing e1 pressure artifact info=%#v err=%v", info, err)
+	}
+	var decoded E1PressureReport
+	data, err := os.ReadFile(filepath.Join(outDir, "e1_pressure.json"))
+	if err != nil {
+		t.Fatalf("read e1 pressure artifact: %v", err)
+	}
+	if err := json.Unmarshal(data, &decoded); err != nil {
+		t.Fatalf("decode e1 pressure artifact: %v", err)
+	}
+	if decoded.AvoidedHighPressureAgentCount != 10 || !decoded.ResourceAwareReducedRisk {
+		t.Fatalf("bad persisted report: %#v", decoded)
+	}
+}
+
+func TestRunE2PressureFaultCombinesPressureAndWorkspaceFault(t *testing.T) {
+	outDir := t.TempDir()
+	report, err := RunE2PressureFault(3, outDir)
+	if err != nil {
+		t.Fatalf("RunE2PressureFault: %v", err)
+	}
+	if report.Experiment != "e2_pressure_fault_isolation" || report.Runs != 3 {
+		t.Fatalf("bad report identity: %#v", report)
+	}
+	if report.CascadeFailure || !report.RecoverySuccess || !report.UnaffectedAgentsContinued {
+		t.Fatalf("pressure fault should recover without cascade: %#v", report)
+	}
+	if !report.MemoryPressureInjected || !report.PidsPressureInjected || !report.WorkspaceRMFaultInjected {
+		t.Fatalf("combined pressure/workspace injections missing: %#v", report)
+	}
+	if report.EvidenceMode == "" || !evidence.IsValid(evidence.Mode(report.EvidenceMode)) {
+		t.Fatalf("invalid evidence mode: %#v", report)
+	}
+	if info, err := os.Stat(filepath.Join(outDir, "e2_pressure_fault.json")); err != nil || info.Size() == 0 {
+		t.Fatalf("missing e2 pressure fault artifact info=%#v err=%v", info, err)
+	}
+}
+
 func containsPolicy(policies []string, want string) bool {
 	for _, policy := range policies {
 		if policy == want {

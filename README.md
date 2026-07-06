@@ -157,7 +157,9 @@ mkdir -p .cache/go-build
 bash scripts/competition_verify.sh
 go run ./cmd/aortctl experiment e1 --policy resource-aware --runs 5 --out experiments/results/e1
 go run ./cmd/aortctl experiment e1 --policy all --runs 5 --out experiments/results/e1
+go run ./cmd/aortctl experiment e1-pressure --runs 5 --out experiments/results/e1_pressure
 go run ./cmd/aortctl experiment e2 --runs 5 --out experiments/results
+go run ./cmd/aortctl experiment e2-pressure-fault --runs 5 --out experiments/results/e2_pressure_fault
 go run ./cmd/aortctl demo software-real --out experiments/results
 go run ./cmd/aortctl workspace probe --out experiments/results/workspace_probe.json
 go run ./cmd/aortctl demo fault workspace-rmrf --out experiments/results
@@ -177,6 +179,8 @@ Outputs:
 - `experiments/results/e2-fault.json`
 - `experiments/results/e3-context.json`
 - `experiments/results/workspace_probe.json`
+- `experiments/results/e1_pressure/e1_pressure.json`
+- `experiments/results/e2_pressure_fault/e2_pressure_fault.json`
 - `experiments/results/e1-real-scheduler.json`
 - `experiments/results/e2-real-fault.json`
 - Matching CSV files for each experiment.

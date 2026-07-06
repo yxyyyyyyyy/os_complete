@@ -10,7 +10,9 @@
 | `bash -n scripts/competition_verify.sh` | passed | 脚本语法有效。 |
 | `bash scripts/competition_verify.sh` | passed | macOS host 会标记 overall `degraded`；Linux/root/openEuler 复跑保留 real cgroup/overlayfs 证据边界。 |
 | `go run ./cmd/aortctl experiment e1 --policy resource-aware --runs 5 --out experiments/results/e1` | passed | resource-aware 路径可用，输出汇总 JSON/CSV/decision log。 |
+| `go run ./cmd/aortctl experiment e1-pressure --runs 5 --out experiments/results/e1_pressure` | passed | 生成 pressure risk reduction evidence，`selected_high_pressure_agent_count=0`、`avoided_high_pressure_agent_count=10`。 |
 | `go run ./cmd/aortctl experiment e2 --runs 5 --out experiments/results` | passed | 生成 E2 real fault JSON/CSV。 |
+| `go run ./cmd/aortctl experiment e2-pressure-fault --runs 5 --out experiments/results/e2_pressure_fault` | passed | 生成 pressure + workspace fault evidence，服务器上 workspace evidence 为 `real-overlayfs`。 |
 | `go run ./cmd/aortctl demo software-real --out experiments/results` | passed | 生成 `experiments/results/software_real_demo/result.json`。 |
 | `go run ./cmd/aortctl workspace probe --out experiments/results/workspace_probe.json` | passed | 生成 overlayfs mount capability probe evidence。 |
 | `go run ./cmd/aortctl demo fault workspace-rmrf --out experiments/results` | passed | 生成 `experiments/results/workspace_isolation_evidence.json`。 |
@@ -30,23 +32,25 @@
 
 | artifact | exists | key fields |
 | --- | --- | --- |
-| `experiments/results/final/FINAL_EVIDENCE_INDEX.json` | yes | `go_test`, `smoke`, `e1_scheduler`, `e2_fault_isolation`, `software_real_demo`, `workspace_probe`, `workspace_isolation`, `evidence_mode_summary` |
+| `experiments/results/final/FINAL_EVIDENCE_INDEX.json` | yes | `go_test`, `smoke`, `e1_scheduler`, `e1_pressure`, `e2_fault_isolation`, `e2_pressure_fault`, `software_real_demo`, `workspace_probe`, `workspace_isolation`, `evidence_mode_summary` |
 | `experiments/results/final/FINAL_SUMMARY.md` | yes | human-readable final summary |
 | `experiments/results/e1/e1_resource_aware.json` | yes | `experiment`, `runs`, `policies`, `metrics`, `improvement`, `evidence_mode` |
 | `experiments/results/e1/e1_resource_aware.csv` | yes | per-policy metrics |
 | `experiments/results/e1/e1_resource_aware_decisions.json` | yes | scheduler decision log with resource pressure fields |
 | `experiments/results/e1/e1_resource_aware_summary.md` | yes | E1 summary |
+| `experiments/results/e1_pressure/e1_pressure.json` | yes | `selected_high_pressure_agent_count`, `avoided_high_pressure_agent_count`, `resource_aware_reduced_risk` |
+| `experiments/results/e2_pressure_fault/e2_pressure_fault.json` | yes | `cascade_failure`, `recovery_success`, `unaffected_agents_continued`, `workspace_evidence_mode` |
 | `experiments/results/workspace_probe.json` | yes | `mount_test_success`, `merged_is_mountpoint`, `selected_mode`, `evidence_mode`, `fallback_reason` |
 | `experiments/results/workspace_isolation_evidence.json` | yes | `evidence_mode`, `fallback_reason`, `lowerdir_unchanged`, `rollback_success`, `safety_checks` |
 
 ## 当前完成度
 
 - P0：一键复现实验脚本可执行；非 openEuler host 输出 degraded/archived 边界；final index/summary 生成。
-- P1：resource-aware policy 已在 `Policies()`、`SetPolicy()`、E1 benchmark、CLI 和 decision log 中闭环；E1 JSON schema 已补为汇总对象；新增独立压力惩罚测试。
+- P1：resource-aware policy 已在 `Policies()`、`SetPolicy()`、E1 benchmark、CLI 和 decision log 中闭环；E1 JSON schema 已补为汇总对象；新增独立压力惩罚测试；`e1-pressure` 明确证明风险降低而非最快。
 - P2：workspace manager、`workspace probe`、`workspace-rmrf` CLI/API demo
   闭环；Linux/root mount 成功且 probe 证明 merged mountpoint 时为
-  `real-overlayfs`，macOS/non-root fallback 为
-  `degraded-copy`。
+  `real-overlayfs`，macOS/non-root fallback 为 `degraded-copy`；`e2-pressure-fault`
+  组合 memory pressure、pids pressure 和 workspace rmrf fault。
 
 ## 风险
 

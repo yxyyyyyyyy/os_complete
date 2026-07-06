@@ -13,7 +13,7 @@
     "final_status": "recovered",
     "system_survived": true,
     "cascade_failure": false,
-    "supervisor_fault_id": "20260706150228.893583913",
+    "supervisor_fault_id": "20260706152613.647158999",
     "fault_evidence": {
       "error": "tool timeout",
       "syscall_status": "TIMEOUT"
@@ -28,12 +28,12 @@
     "unaffected_agents": 5,
     "total_agents": 6,
     "recovery_action": "restart_agent_from_checkpoint",
-    "recovery_time_ms": 5,
+    "recovery_time_ms": 1,
     "checkpoint_used": true,
     "final_status": "recovered",
     "system_survived": true,
     "cascade_failure": false,
-    "supervisor_fault_id": "20260706150228.894553808",
+    "supervisor_fault_id": "20260706152613.648320121",
     "fault_evidence": {
       "exit_error": "exit status 9",
       "syscall_status": "ERROR"
@@ -53,7 +53,7 @@
     "final_status": "recovered",
     "system_survived": true,
     "cascade_failure": false,
-    "supervisor_fault_id": "20260706150228.895827627",
+    "supervisor_fault_id": "20260706152613.649778092",
     "fault_evidence": {
       "cascade_failure": false,
       "commit_supported": true,
@@ -86,7 +86,7 @@
     "final_status": "recovered",
     "system_survived": true,
     "cascade_failure": false,
-    "supervisor_fault_id": "20260706150228.895866337",
+    "supervisor_fault_id": "20260706152613.649831044",
     "fault_evidence": {
       "cgroup_path": "/tmp/aort-e2-capsule-kill/reviewer",
       "evidence_mode": "real-cgroup-v2",
@@ -108,7 +108,7 @@
     "final_status": "recovered",
     "system_survived": true,
     "cascade_failure": false,
-    "supervisor_fault_id": "20260706150228.896899874",
+    "supervisor_fault_id": "20260706152613.650854095",
     "fault_evidence": {
       "limit_artifact": "experiments/results/openeuler_cgroupv2_limits/memory_limit_enforced.json",
       "limit_cgroup_path": "/sys/fs/cgroup/aort.slice/aort-limit-memory-48222",
@@ -135,7 +135,7 @@
     "final_status": "recovered",
     "system_survived": true,
     "cascade_failure": false,
-    "supervisor_fault_id": "20260706150228.898603123",
+    "supervisor_fault_id": "20260706152613.652480549",
     "fault_evidence": {
       "fork_errors": [
         "[Errno 11] Resource temporarily unavailable"

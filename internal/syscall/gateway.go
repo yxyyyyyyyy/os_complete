@@ -93,30 +93,39 @@ type ExecObservation struct {
 	Status     string
 }
 
+type WorkspaceRuntime interface {
+	WorkspaceDir(agentID string) (string, error)
+	Commit(agentID string) error
+	Rollback(agentID string) error
+	Destroy(agentID string) error
+}
+
 type Config struct {
-	CVM           *cvm.Store
-	IPC           *ipc.Blackboard
-	LLM           *llm.Router
-	Sink          EventSink
-	WorkspaceRoot string
-	ToolTimeout   time.Duration
-	Reporter      func(Report)
-	Spawner       func(SpawnRequest) (SpawnResult, error)
-	ExecObserver  func(ExecObservation)
+	CVM              *cvm.Store
+	IPC              *ipc.Blackboard
+	LLM              *llm.Router
+	Sink             EventSink
+	WorkspaceRoot    string
+	WorkspaceRuntime WorkspaceRuntime
+	ToolTimeout      time.Duration
+	Reporter         func(Report)
+	Spawner          func(SpawnRequest) (SpawnResult, error)
+	ExecObserver     func(ExecObservation)
 }
 
 type Gateway struct {
-	mu            sync.RWMutex
-	cvm           *cvm.Store
-	ipc           *ipc.Blackboard
-	llm           *llm.Router
-	sink          EventSink
-	workspaceRoot string
-	toolTimeout   time.Duration
-	reporter      func(Report)
-	spawner       func(SpawnRequest) (SpawnResult, error)
-	execObserver  func(ExecObservation)
-	records       []Record
+	mu               sync.RWMutex
+	cvm              *cvm.Store
+	ipc              *ipc.Blackboard
+	llm              *llm.Router
+	sink             EventSink
+	workspaceRoot    string
+	workspaceRuntime WorkspaceRuntime
+	toolTimeout      time.Duration
+	reporter         func(Report)
+	spawner          func(SpawnRequest) (SpawnResult, error)
+	execObserver     func(ExecObservation)
+	records          []Record
 }
 
 func NewGateway(cfg Config) *Gateway {
@@ -129,15 +138,16 @@ func NewGateway(cfg Config) *Gateway {
 		root = filepath.Join(os.TempDir(), "aort-workspaces")
 	}
 	return &Gateway{
-		cvm:           cfg.CVM,
-		ipc:           cfg.IPC,
-		llm:           cfg.LLM,
-		sink:          cfg.Sink,
-		workspaceRoot: root,
-		toolTimeout:   timeout,
-		reporter:      cfg.Reporter,
-		spawner:       cfg.Spawner,
-		execObserver:  cfg.ExecObserver,
+		cvm:              cfg.CVM,
+		ipc:              cfg.IPC,
+		llm:              cfg.LLM,
+		sink:             cfg.Sink,
+		workspaceRoot:    root,
+		workspaceRuntime: cfg.WorkspaceRuntime,
+		toolTimeout:      timeout,
+		reporter:         cfg.Reporter,
+		spawner:          cfg.Spawner,
+		execObserver:     cfg.ExecObserver,
 	}
 }
 
@@ -444,16 +454,48 @@ func (g *Gateway) toolExec(ctx context.Context, req Request) Response {
 	}
 	if toolCtx.Err() == context.DeadlineExceeded {
 		payload["exit_code"] = -1
+		if lifecycleErr := g.rollbackWorkspace(req.AgentID); lifecycleErr != nil {
+			payload["workspace_error"] = lifecycleErr.Error()
+		}
 		g.observeExec(req, pid, command, args, cwd, StatusTimeout)
 		return Response{RequestID: req.RequestID, Status: StatusTimeout, Error: "tool timeout", Payload: payload}
 	}
 	if err != nil {
 		payload["exit_code"] = exitCode(err)
+		if lifecycleErr := g.rollbackWorkspace(req.AgentID); lifecycleErr != nil {
+			payload["workspace_error"] = lifecycleErr.Error()
+		}
 		g.observeExec(req, pid, command, args, cwd, StatusError)
 		return Response{RequestID: req.RequestID, Status: StatusError, Error: err.Error(), Payload: payload}
 	}
+	if lifecycleErr := g.commitWorkspace(req.AgentID); lifecycleErr != nil {
+		payload["workspace_error"] = lifecycleErr.Error()
+		g.observeExec(req, pid, command, args, cwd, StatusError)
+		return Response{RequestID: req.RequestID, Status: StatusError, Error: lifecycleErr.Error(), Payload: payload}
+	}
 	g.observeExec(req, pid, command, args, cwd, StatusOK)
 	return Response{RequestID: req.RequestID, Status: StatusOK, Payload: payload}
+}
+
+func (g *Gateway) commitWorkspace(agentID string) error {
+	if g.workspaceRuntime == nil {
+		return nil
+	}
+	return g.workspaceRuntime.Commit(agentID)
+}
+
+func (g *Gateway) rollbackWorkspace(agentID string) error {
+	if g.workspaceRuntime == nil {
+		return nil
+	}
+	return g.workspaceRuntime.Rollback(agentID)
+}
+
+func (g *Gateway) DestroyAgent(agentID string) error {
+	if g.workspaceRuntime == nil {
+		return nil
+	}
+	return g.workspaceRuntime.Destroy(agentID)
 }
 
 func (g *Gateway) observeExec(req Request, pid int, command string, args []string, workspace string, status string) {
@@ -529,6 +571,9 @@ func (g *Gateway) agentSpawn(req Request) Response {
 func (g *Gateway) workspaceForAgent(agentID string) (string, error) {
 	if agentID == "" {
 		return "", fmt.Errorf("agent_id is required")
+	}
+	if g.workspaceRuntime != nil {
+		return g.workspaceRuntime.WorkspaceDir(agentID)
 	}
 	cleanAgentID := strings.NewReplacer("/", "_", "\\", "_", ":", "_").Replace(agentID)
 	root, err := filepath.Abs(g.workspaceRoot)

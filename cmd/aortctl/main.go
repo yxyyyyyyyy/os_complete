@@ -35,7 +35,7 @@ func run(args []string) error {
 
 func runExperiment(args []string) error {
 	if len(args) == 0 {
-		return fmt.Errorf("usage: aortctl experiment e1|e2")
+		return fmt.Errorf("usage: aortctl experiment e1|e1-pressure|e2|e2-pressure-fault")
 	}
 	switch args[0] {
 	case "e1":
@@ -51,6 +51,15 @@ func runExperiment(args []string) error {
 		}
 		_, err := experiment.RunE1ResourceAwareBenchmark(*runs, *out)
 		return err
+	case "e1-pressure":
+		fs := flag.NewFlagSet("experiment e1-pressure", flag.ContinueOnError)
+		runs := fs.Int("runs", 5, "number of runs")
+		out := fs.String("out", filepath.Join("experiments", "results", "e1_pressure"), "output directory")
+		if err := fs.Parse(args[1:]); err != nil {
+			return err
+		}
+		_, err := experiment.RunE1PressureBenchmark(*runs, *out)
+		return err
 	case "e2":
 		fs := flag.NewFlagSet("experiment e2", flag.ContinueOnError)
 		runs := fs.Int("runs", 5, "number of runs")
@@ -63,6 +72,15 @@ func runExperiment(args []string) error {
 			return err
 		}
 		return experiment.WriteCSV(filepath.Join(*out, "e2-real-fault.csv"), experiment.E2RealCSV(results))
+	case "e2-pressure-fault":
+		fs := flag.NewFlagSet("experiment e2-pressure-fault", flag.ContinueOnError)
+		runs := fs.Int("runs", 5, "number of runs")
+		out := fs.String("out", filepath.Join("experiments", "results", "e2_pressure_fault"), "output directory")
+		if err := fs.Parse(args[1:]); err != nil {
+			return err
+		}
+		_, err := experiment.RunE2PressureFault(*runs, *out)
+		return err
 	default:
 		return fmt.Errorf("unknown experiment %q", args[0])
 	}

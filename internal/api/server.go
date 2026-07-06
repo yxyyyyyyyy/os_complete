@@ -37,11 +37,20 @@ func NewServer(cfg config.Config) http.Handler {
 	return NewServerWithEvents(cfg, events.NewHub(32))
 }
 
+func runtimeWorkspaceRoot(dataDir string) string {
+	if dataDir == "" || dataDir == ".aort-dev" {
+		return workspace.DefaultRoot()
+	}
+	return filepath.Join(dataDir, "runtime", "workspaces")
+}
+
 func NewServerWithEvents(cfg config.Config, hub *events.Hub) http.Handler {
 	if cfg.DataDir == "" {
 		cfg.DataDir = ".aort-dev"
 	}
 	sink := newEventSink(cfg, hub)
+	workspaceRoot := runtimeWorkspaceRoot(cfg.DataDir)
+	forceDegradedWorkspace := cfg.WorkerCommand == "" && cfg.SocketPath == "" && workspaceRoot != workspace.DefaultRoot()
 	server := &Server{
 		cfg:             cfg,
 		hub:             hub,
@@ -53,21 +62,22 @@ func NewServerWithEvents(cfg config.Config, hub *events.Hub) http.Handler {
 		pressure:        pressure.NewMonitor(pressure.Config{}),
 		resourceSampler: resource.NewCgroupSampler(""),
 		checkpoint:      checkpoint.NewStore(filepath.Join(cfg.DataDir, "checkpoints")),
-		workspace:       workspace.NewManager(workspace.Config{Root: workspace.DefaultRoot(), Sink: sink}),
+		workspace:       workspace.NewManager(workspace.Config{Root: workspaceRoot, Sink: sink, ForceDegraded: forceDegradedWorkspace}),
 		scheduler:       scheduler.New(scheduler.PolicyTokenCFSPrefixAffinity),
 		supervisor:      supervisor.NewManager(sink),
 		tasks:           make(map[string]demo.Result),
 		workerCtx:       context.Background(),
 	}
 	server.syscalls = syscallgw.NewGateway(syscallgw.Config{
-		CVM:           server.cvm,
-		IPC:           server.ipc,
-		LLM:           newLLMRouter(),
-		Sink:          server.sink,
-		WorkspaceRoot: workspace.DefaultRoot(),
-		Reporter:      server.handleAgentReport,
-		Spawner:       server.spawnAgent,
-		ExecObserver:  server.observeKernelExec,
+		CVM:              server.cvm,
+		IPC:              server.ipc,
+		LLM:              newLLMRouter(),
+		Sink:             server.sink,
+		WorkspaceRoot:    workspaceRoot,
+		WorkspaceRuntime: workspaceRuntimeAdapter{manager: server.workspace},
+		Reporter:         server.handleAgentReport,
+		Spawner:          server.spawnAgent,
+		ExecObserver:     server.observeKernelExec,
 	})
 	_ = server.kernel.Start(context.Background())
 	server.startWorkerRuntime()
@@ -613,6 +623,19 @@ func (s *Server) handleAgentAction(w http.ResponseWriter, r *http.Request) {
 		payload["kill_method"] = result.KillMethod
 		payload["evidence_mode"] = result.EvidenceMode
 		payload["fallback_reason"] = result.FallbackReason
+		if err == nil && s.registry != nil {
+			s.registry.SetState(agentID, avp.StateKilled)
+		}
+	case "destroy":
+		if s.syscalls != nil {
+			err = s.syscalls.DestroyAgent(agentID)
+		} else if s.workspace != nil {
+			err = s.workspace.Destroy(agentID)
+		} else {
+			err = fmt.Errorf("workspace runtime is not enabled")
+		}
+		payload["evidence_mode"] = evidence.ModeRealRuntime
+		payload["fallback_reason"] = ""
 		if err == nil && s.registry != nil {
 			s.registry.SetState(agentID, avp.StateKilled)
 		}
@@ -1736,6 +1759,47 @@ func (s *Server) ensureAgentWorkspace(taskID, agentID string) (workspace.Workspa
 
 type workerSyscallAdapter struct {
 	gateway *syscallgw.Gateway
+}
+
+type workspaceRuntimeAdapter struct {
+	manager *workspace.Manager
+}
+
+func (a workspaceRuntimeAdapter) WorkspaceDir(agentID string) (string, error) {
+	if a.manager == nil {
+		return "", fmt.Errorf("workspace manager is not configured")
+	}
+	status, err := a.manager.Status(agentID)
+	if err == nil {
+		return status.Workspace.MergedDir, nil
+	}
+	ws, err := a.manager.Create(agentID)
+	if err != nil {
+		return "", err
+	}
+	return ws.MergedDir, nil
+}
+
+func (a workspaceRuntimeAdapter) Commit(agentID string) error {
+	if a.manager == nil {
+		return fmt.Errorf("workspace manager is not configured")
+	}
+	return a.manager.Commit(agentID)
+}
+
+func (a workspaceRuntimeAdapter) Rollback(agentID string) error {
+	if a.manager == nil {
+		return fmt.Errorf("workspace manager is not configured")
+	}
+	_, err := a.manager.Rollback(agentID)
+	return err
+}
+
+func (a workspaceRuntimeAdapter) Destroy(agentID string) error {
+	if a.manager == nil {
+		return fmt.Errorf("workspace manager is not configured")
+	}
+	return a.manager.Destroy(agentID)
 }
 
 func (a workerSyscallAdapter) HandleSyscall(message worker.Message) worker.Response {

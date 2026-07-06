@@ -2,7 +2,9 @@ env_check	passed	0	/root/aort-r-server-run-20260706-p0p1p2-memoryfix/experiments
 go_test	passed	0	/root/aort-r-server-run-20260706-p0p1p2-memoryfix/experiments/results/final/go_test.log	go test ./...
 smoke	passed	0	/root/aort-r-server-run-20260706-p0p1p2-memoryfix/experiments/results/final/smoke.log	bash scripts/smoke_openeuler.sh
 e1_scheduler	passed	0	/root/aort-r-server-run-20260706-p0p1p2-memoryfix/experiments/results/final/e1_scheduler.log	go run ./cmd/aortctl experiment e1 --policy resource-aware --runs 5 --out experiments/results/e1
+e1_pressure	passed	0	/root/aort-r-server-run-20260706-p0p1p2-memoryfix/experiments/results/final/e1_pressure.log	go run ./cmd/aortctl experiment e1-pressure --runs 5 --out experiments/results/e1_pressure
 e2_fault_isolation	passed	0	/root/aort-r-server-run-20260706-p0p1p2-memoryfix/experiments/results/final/e2_fault_isolation.log	go run ./cmd/aortctl experiment e2 --runs 5 --out experiments/results
+e2_pressure_fault	passed	0	/root/aort-r-server-run-20260706-p0p1p2-memoryfix/experiments/results/final/e2_pressure_fault.log	go run ./cmd/aortctl experiment e2-pressure-fault --runs 5 --out experiments/results/e2_pressure_fault
 software_real_demo	passed	0	/root/aort-r-server-run-20260706-p0p1p2-memoryfix/experiments/results/final/software_real_demo.log	go run ./cmd/aortctl demo software-real --out experiments/results
 workspace_probe	passed	0	/root/aort-r-server-run-20260706-p0p1p2-memoryfix/experiments/results/final/workspace_probe.log	go run ./cmd/aortctl workspace probe --out experiments/results/workspace_probe.json
 workspace_isolation	passed	0	/root/aort-r-server-run-20260706-p0p1p2-memoryfix/experiments/results/final/workspace_isolation.log	go run ./cmd/aortctl demo fault workspace-rmrf --out experiments/results

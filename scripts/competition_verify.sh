@@ -122,11 +122,23 @@ if run_step e1_scheduler go run ./cmd/aortctl experiment e1 --policy resource-aw
 fi
 record_step_status e1_scheduler "$e1_scheduler" "$LAST_STEP_LOG" "$LAST_STEP_COMMAND" "$LAST_STEP_CODE"
 
+e1_pressure="failed"
+if run_step e1_pressure go run ./cmd/aortctl experiment e1-pressure --runs 5 --out experiments/results/e1_pressure; then
+  e1_pressure="passed"
+fi
+record_step_status e1_pressure "$e1_pressure" "$LAST_STEP_LOG" "$LAST_STEP_COMMAND" "$LAST_STEP_CODE"
+
 e2_fault_isolation="failed"
 if run_step e2_fault_isolation go run ./cmd/aortctl experiment e2 --runs 5 --out experiments/results; then
   e2_fault_isolation="passed"
 fi
 record_step_status e2_fault_isolation "$e2_fault_isolation" "$LAST_STEP_LOG" "$LAST_STEP_COMMAND" "$LAST_STEP_CODE"
+
+e2_pressure_fault="failed"
+if run_step e2_pressure_fault go run ./cmd/aortctl experiment e2-pressure-fault --runs 5 --out experiments/results/e2_pressure_fault; then
+  e2_pressure_fault="passed"
+fi
+record_step_status e2_pressure_fault "$e2_pressure_fault" "$LAST_STEP_LOG" "$LAST_STEP_COMMAND" "$LAST_STEP_CODE"
 
 software_real_demo="failed"
 if run_step software_real_demo go run ./cmd/aortctl demo software-real --out experiments/results; then
@@ -147,7 +159,7 @@ fi
 record_step_status workspace_isolation "$workspace_isolation" "$LAST_STEP_LOG" "$LAST_STEP_COMMAND" "$LAST_STEP_CODE"
 
 export kernel os_release cgroup_fs_type go_version_output
-export env_check go_test smoke e1_scheduler e2_fault_isolation software_real_demo workspace_probe workspace_isolation
+export env_check go_test smoke e1_scheduler e1_pressure e2_fault_isolation e2_pressure_fault software_real_demo workspace_probe workspace_isolation
 
 python3 - "$FINAL_DIR/FINAL_EVIDENCE_INDEX.json" "$FINAL_DIR/FINAL_SUMMARY.md" <<'PY'
 import json
@@ -179,8 +191,10 @@ generated_candidates = [
     root / "experiments/results/e1/e1_resource_aware.csv",
     root / "experiments/results/e1/e1_resource_aware_decisions.json",
     root / "experiments/results/e1/e1_resource_aware_summary.md",
+    root / "experiments/results/e1_pressure/e1_pressure.json",
     root / "experiments/results/e2-real-fault.json",
     root / "experiments/results/e2-real-fault.csv",
+    root / "experiments/results/e2_pressure_fault/e2_pressure_fault.json",
     root / "experiments/results/software_real_demo/result.json",
     root / "experiments/results/workspace_probe.json",
     root / "experiments/results/workspace_isolation_evidence.json",
@@ -194,10 +208,12 @@ e1_required = [
     root / "experiments/results/e1/e1_resource_aware_decisions.json",
     root / "experiments/results/e1/e1_resource_aware_summary.md",
 ]
+e1_pressure_required = [root / "experiments/results/e1_pressure/e1_pressure.json"]
 e2_required = [
     root / "experiments/results/e2-real-fault.json",
     root / "experiments/results/e2-real-fault.csv",
 ]
+e2_pressure_fault_required = [root / "experiments/results/e2_pressure_fault/e2_pressure_fault.json"]
 software_required = [root / "experiments/results/software_real_demo/result.json"]
 workspace_probe_required = [root / "experiments/results/workspace_probe.json"]
 workspace_required = [root / "experiments/results/workspace_isolation_evidence.json"]
@@ -252,7 +268,9 @@ index = {
     "go_test": os.environ.get("go_test", "failed"),
     "smoke": os.environ.get("smoke", "failed"),
     "e1_scheduler": status_with_missing("e1_scheduler", e1_required),
+    "e1_pressure": status_with_missing("e1_pressure", e1_pressure_required),
     "e2_fault_isolation": status_with_missing("e2_fault_isolation", e2_required),
+    "e2_pressure_fault": status_with_missing("e2_pressure_fault", e2_pressure_fault_required),
     "software_real_demo": status_with_missing("software_real_demo", software_required),
     "workspace_probe": status_with_missing("workspace_probe", workspace_probe_required),
     "workspace_isolation": status_with_missing("workspace_isolation", workspace_required),
@@ -279,7 +297,9 @@ summary_lines = [
     f"- go_test: {index['go_test']}",
     f"- smoke: {index['smoke']}",
     f"- e1_scheduler: {index['e1_scheduler']}",
+    f"- e1_pressure: {index['e1_pressure']}",
     f"- e2_fault_isolation: {index['e2_fault_isolation']}",
+    f"- e2_pressure_fault: {index['e2_pressure_fault']}",
     f"- software_real_demo: {index['software_real_demo']}",
     f"- workspace_probe: {index['workspace_probe']}",
     f"- workspace_isolation: {index['workspace_isolation']}",
@@ -317,7 +337,9 @@ if [ "$go_test" != "passed" ] ||
   { [ "$live_openeuler_cgroup" = "true" ] && [ "$env_check" != "passed" ]; } ||
   { [ "$live_openeuler_cgroup" = "true" ] && [ "$smoke" != "passed" ]; } ||
   [ "$e1_scheduler" != "passed" ] ||
+  [ "$e1_pressure" != "passed" ] ||
   [ "$e2_fault_isolation" != "passed" ] ||
+  [ "$e2_pressure_fault" != "passed" ] ||
   [ "$software_real_demo" != "passed" ] ||
   [ "$workspace_probe" != "passed" ] ||
   [ "$workspace_isolation" != "passed" ]; then

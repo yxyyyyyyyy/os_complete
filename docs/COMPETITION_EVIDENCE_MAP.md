@@ -12,6 +12,7 @@
 | Worker process | `/api/agents` 中的真实 `pid` |
 | token-CFS-prefix-affinity scheduler | `internal/scheduler/`, `/api/scheduler/decisions` |
 | resource-aware scheduler | `internal/scheduler/`, `/api/scheduler/resource-pressure`, `experiments/results/e1/e1_resource_aware.json` |
+| pressure risk scheduler evidence | `go run ./cmd/aortctl experiment e1-pressure`, `experiments/results/e1_pressure/e1_pressure.json` |
 | cgroup v2 capsule | `/api/capsules`, `capsule_real.json` |
 | scheduler trace | `experiments/results/e1-real-scheduler.json` |
 
@@ -102,5 +103,7 @@ overlayfs 且 probe 证明 merged 是 mountpoint 后才可保持 `real-overlayfs
 | P0 final index | `experiments/results/final/FINAL_EVIDENCE_INDEX.json` |
 | P0 final summary | `experiments/results/final/FINAL_SUMMARY.md` |
 | P1 resource-aware E1 | `experiments/results/e1/e1_resource_aware.json` |
+| P1 pressure-risk E1 | `experiments/results/e1_pressure/e1_pressure.json` |
+| P2 pressure + workspace fault | `experiments/results/e2_pressure_fault/e2_pressure_fault.json` |
 | P2 workspace overlay probe | `experiments/results/workspace_probe.json` |
 | P2 workspace rmrf fault | `experiments/results/workspace_isolation_evidence.json` |

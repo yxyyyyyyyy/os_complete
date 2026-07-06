@@ -34,6 +34,25 @@ func TestAortctlWorkspaceProbeCommandWritesEvidence(t *testing.T) {
 	}
 }
 
+func TestAortctlPressureExperimentCommandsWriteEvidence(t *testing.T) {
+	outDir := t.TempDir()
+	e1Dir := filepath.Join(outDir, "e1_pressure")
+	if err := run([]string{"experiment", "e1-pressure", "--runs", "2", "--out", e1Dir}); err != nil {
+		t.Fatalf("e1-pressure: %v", err)
+	}
+	if _, err := os.Stat(filepath.Join(e1Dir, "e1_pressure.json")); err != nil {
+		t.Fatalf("e1-pressure evidence missing: %v", err)
+	}
+
+	e2Dir := filepath.Join(outDir, "e2_pressure_fault")
+	if err := run([]string{"experiment", "e2-pressure-fault", "--runs", "2", "--out", e2Dir}); err != nil {
+		t.Fatalf("e2-pressure-fault: %v", err)
+	}
+	if _, err := os.Stat(filepath.Join(e2Dir, "e2_pressure_fault.json")); err != nil {
+		t.Fatalf("e2-pressure-fault evidence missing: %v", err)
+	}
+}
+
 func TestAortctlSoftwareRealDemoCommandWritesResult(t *testing.T) {
 	outDir := t.TempDir()
 	if err := run([]string{"demo", "software-real", "--out", outDir}); err != nil {

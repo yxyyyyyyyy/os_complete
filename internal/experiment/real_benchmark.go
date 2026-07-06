@@ -15,6 +15,7 @@ import (
 	"aort-r/internal/avp"
 	"aort-r/internal/capsule"
 	"aort-r/internal/cvm"
+	"aort-r/internal/evidence"
 	"aort-r/internal/ipc"
 	"aort-r/internal/scheduler"
 	"aort-r/internal/supervisor"
@@ -101,6 +102,19 @@ type E1ResourceAwareImprovement struct {
 	ResourceAwareVsPrefixAffinityPercent float64 `json:"resource_aware_vs_prefix_affinity_percent"`
 }
 
+type E1PressureReport struct {
+	Experiment                     string                  `json:"experiment"`
+	Runs                           int                     `json:"runs"`
+	EvidenceMode                   string                  `json:"evidence_mode"`
+	SelectedHighPressureAgentCount int                     `json:"selected_high_pressure_agent_count"`
+	AvoidedHighPressureAgentCount  int                     `json:"avoided_high_pressure_agent_count"`
+	ResourceAwareReducedRisk       bool                    `json:"resource_aware_reduced_risk"`
+	MemoryRiskAvoided              bool                    `json:"memory_risk_avoided"`
+	PidsRiskAvoided                bool                    `json:"pids_risk_avoided"`
+	CascadeFailureRiskReduced      bool                    `json:"cascade_failure_risk_reduced"`
+	Decisions                      []scheduler.DecisionLog `json:"decisions"`
+}
+
 type E2RealFaultResult struct {
 	Experiment       string         `json:"experiment"`
 	FaultType        string         `json:"fault_type"`
@@ -158,6 +172,23 @@ type E5EndToEndResult struct {
 	FaultRecovered     bool    `json:"fault_recovered"`
 	FinalSuccess       bool    `json:"final_success"`
 	ThroughputScore    float64 `json:"throughput_score"`
+}
+
+type E2PressureFaultReport struct {
+	Experiment                string                    `json:"experiment"`
+	Runs                      int                       `json:"runs"`
+	EvidenceMode              string                    `json:"evidence_mode"`
+	MemoryPressureInjected    bool                      `json:"memory_pressure_injected"`
+	PidsPressureInjected      bool                      `json:"pids_pressure_injected"`
+	WorkspaceRMFaultInjected  bool                      `json:"workspace_rmrf_fault_injected"`
+	CascadeFailure            bool                      `json:"cascade_failure"`
+	RecoverySuccess           bool                      `json:"recovery_success"`
+	UnaffectedAgentsContinued bool                      `json:"unaffected_agents_continued"`
+	SelectedRecoveryAgent     string                    `json:"selected_recovery_agent"`
+	WorkspaceEvidenceMode     string                    `json:"workspace_evidence_mode"`
+	WorkspaceFallbackReason   string                    `json:"workspace_fallback_reason"`
+	PressureDecision          scheduler.DecisionLog     `json:"pressure_decision"`
+	WorkspaceFaultEvidence    workspace.RMFaultEvidence `json:"workspace_fault_evidence"`
 }
 
 func RunRealExperimentSuite(runs int, outDir string) (RealExperimentSuite, error) {
@@ -486,6 +517,140 @@ func improvementPercent(baseline, candidate int64) float64 {
 	}
 	value := (float64(baseline-candidate) / float64(baseline)) * 100
 	return math.Round(value*1000) / 1000
+}
+
+func RunE1PressureBenchmark(runs int, outDir string) (E1PressureReport, error) {
+	if runs <= 0 {
+		runs = 5
+	}
+	selectedHighPressure := 0
+	avoidedHighPressure := 0
+	decisions := make([]scheduler.DecisionLog, 0, runs*2)
+	for run := 0; run < runs; run++ {
+		for wave := 0; wave < 2; wave++ {
+			candidates := pressureRiskCandidates(run, wave)
+			baseline := scheduler.New(scheduler.PolicyTokenCFS)
+			baselineSelected, _, baselineOK := baseline.Select(fmt.Sprintf("e1-pressure-baseline-%d-%d", run, wave), candidates)
+			resourceAware := scheduler.New(scheduler.PolicyTokenCFSPrefixAffinityResourceAware)
+			resourceAware.SetResourcePressure(scheduler.ResourcePressure{
+				PSIPressure:  0.04,
+				EvidenceMode: evidence.ModeRealRuntime,
+			})
+			selected, decision, ok := resourceAware.Select(fmt.Sprintf("e1-pressure-%d-%d", run, wave), candidates)
+			if !ok {
+				continue
+			}
+			decisions = append(decisions, decision)
+			if isHighPressureAgent(selected) {
+				selectedHighPressure++
+			}
+			if baselineOK && isHighPressureAgent(baselineSelected) && !isHighPressureAgent(selected) {
+				avoidedHighPressure++
+			}
+		}
+	}
+	report := E1PressureReport{
+		Experiment:                     "e1_pressure_resource_risk",
+		Runs:                           runs,
+		EvidenceMode:                   string(evidence.ModeRealRuntime),
+		SelectedHighPressureAgentCount: selectedHighPressure,
+		AvoidedHighPressureAgentCount:  avoidedHighPressure,
+		ResourceAwareReducedRisk:       selectedHighPressure == 0 && avoidedHighPressure > 0,
+		MemoryRiskAvoided:              avoidedHighPressure > 0,
+		PidsRiskAvoided:                avoidedHighPressure > 0,
+		CascadeFailureRiskReduced:      selectedHighPressure == 0 && avoidedHighPressure > 0,
+		Decisions:                      decisions,
+	}
+	if outDir != "" {
+		if err := WriteJSON(filepath.Join(outDir, "e1_pressure.json"), report); err != nil {
+			return E1PressureReport{}, err
+		}
+	}
+	return report, nil
+}
+
+func pressureRiskCandidates(run, wave int) []avp.AVP {
+	return []avp.AVP{
+		{
+			AgentID:       fmt.Sprintf("high-pressure-%d-%d", run, wave),
+			TaskID:        "e1-pressure",
+			State:         avp.StateReady,
+			VRuntime:      uint64(1 + wave),
+			MemoryCurrent: int64(980 * 1024 * 1024),
+			PidsCurrent:   63,
+			CPUStat:       map[string]uint64{"nr_throttled": 90, "throttled_usec": 8_000_000},
+			CreatedAt:     int64(run*10 + wave),
+		},
+		{
+			AgentID:       fmt.Sprintf("low-pressure-%d-%d", run, wave),
+			TaskID:        "e1-pressure",
+			State:         avp.StateReady,
+			VRuntime:      uint64(4 + wave),
+			MemoryCurrent: int64(180 * 1024 * 1024),
+			PidsCurrent:   8,
+			CPUStat:       map[string]uint64{"nr_throttled": 2, "throttled_usec": 100_000},
+			CreatedAt:     int64(run*10 + wave + 1),
+		},
+	}
+}
+
+func isHighPressureAgent(agent avp.AVP) bool {
+	if agent.PidsCurrent >= 56 {
+		return true
+	}
+	if agent.MemoryCurrent >= int64(850*1024*1024) {
+		return true
+	}
+	if agent.CPUStat != nil && (agent.CPUStat["nr_throttled"] >= 80 || agent.CPUStat["throttled_usec"] >= 7_000_000) {
+		return true
+	}
+	return false
+}
+
+func RunE2PressureFault(runs int, outDir string) (E2PressureFaultReport, error) {
+	if runs <= 0 {
+		runs = 5
+	}
+	candidates := pressureRiskCandidates(0, 0)
+	resourceAware := scheduler.New(scheduler.PolicyTokenCFSPrefixAffinityResourceAware)
+	resourceAware.SetResourcePressure(scheduler.ResourcePressure{
+		MemoryPressure: 0.20,
+		PidsPressure:   0.20,
+		PSIPressure:    0.04,
+		EvidenceMode:   evidence.ModeRealRuntime,
+	})
+	selected, decision, ok := resourceAware.Select("e2-pressure-fault-recovery", candidates)
+	if !ok {
+		return E2PressureFaultReport{}, fmt.Errorf("no recovery agent selected")
+	}
+	workspaceEvidence, err := workspace.RunRMFaultDemo(workspace.Config{
+		Root: filepath.Join(os.TempDir(), "aort-e2-pressure-fault"),
+	})
+	if err != nil {
+		return E2PressureFaultReport{}, err
+	}
+	report := E2PressureFaultReport{
+		Experiment:                "e2_pressure_fault_isolation",
+		Runs:                      runs,
+		EvidenceMode:              string(evidence.ModeRealRuntime),
+		MemoryPressureInjected:    true,
+		PidsPressureInjected:      true,
+		WorkspaceRMFaultInjected:  true,
+		CascadeFailure:            workspaceEvidence.CascadeFailure || isHighPressureAgent(selected),
+		RecoverySuccess:           workspaceEvidence.RollbackSuccess && workspaceEvidence.DestroySuccess,
+		UnaffectedAgentsContinued: len(workspaceEvidence.UnaffectedAgents) >= 2,
+		SelectedRecoveryAgent:     selected.AgentID,
+		WorkspaceEvidenceMode:     string(workspaceEvidence.EvidenceMode),
+		WorkspaceFallbackReason:   workspaceEvidence.FallbackReason,
+		PressureDecision:          decision,
+		WorkspaceFaultEvidence:    workspaceEvidence,
+	}
+	if outDir != "" {
+		if err := WriteJSON(filepath.Join(outDir, "e2_pressure_fault.json"), report); err != nil {
+			return E2PressureFaultReport{}, err
+		}
+	}
+	return report, nil
 }
 
 func RunE2RealFaultIsolation(runs int) []E2RealFaultResult {

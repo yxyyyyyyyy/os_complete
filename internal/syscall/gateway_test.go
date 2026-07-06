@@ -2,6 +2,7 @@ package syscallgw
 
 import (
 	"context"
+	"os"
 	"path/filepath"
 	"strings"
 	"testing"
@@ -18,6 +19,32 @@ type recordingSink struct {
 
 func (s *recordingSink) Publish(event events.Event) {
 	s.events = append(s.events, event)
+}
+
+type fakeWorkspaceRuntime struct {
+	dir       string
+	commits   []string
+	rollbacks []string
+	destroys  []string
+}
+
+func (r *fakeWorkspaceRuntime) WorkspaceDir(agentID string) (string, error) {
+	return r.dir, nil
+}
+
+func (r *fakeWorkspaceRuntime) Commit(agentID string) error {
+	r.commits = append(r.commits, agentID)
+	return nil
+}
+
+func (r *fakeWorkspaceRuntime) Rollback(agentID string) error {
+	r.rollbacks = append(r.rollbacks, agentID)
+	return nil
+}
+
+func (r *fakeWorkspaceRuntime) Destroy(agentID string) error {
+	r.destroys = append(r.destroys, agentID)
+	return nil
 }
 
 func TestGatewayMaterializesContextAndAuditsRecord(t *testing.T) {
@@ -56,6 +83,87 @@ func TestGatewayMaterializesContextAndAuditsRecord(t *testing.T) {
 	}
 }
 
+func TestGatewayToolExecUsesWorkspaceRuntimeAndCommitsOnSuccess(t *testing.T) {
+	dir := t.TempDir()
+	runtime := &fakeWorkspaceRuntime{dir: dir}
+	gateway := NewGateway(Config{WorkspaceRuntime: runtime})
+
+	response := gateway.Handle(context.Background(), Request{
+		AgentID: "agent-1",
+		TaskID:  "task-1",
+		Name:    "tool.exec",
+		Args: map[string]any{
+			"command": "pwd",
+		},
+	})
+
+	if response.Status != StatusOK {
+		t.Fatalf("status = %s error=%s", response.Status, response.Error)
+	}
+	stdout, _ := response.Payload["stdout"].(string)
+	if strings.TrimSpace(stdout) != dir {
+		t.Fatalf("tool.exec cwd = %q, want %q", stdout, dir)
+	}
+	if len(runtime.commits) != 1 || runtime.commits[0] != "agent-1" {
+		t.Fatalf("commit calls = %#v", runtime.commits)
+	}
+	if len(runtime.rollbacks) != 0 {
+		t.Fatalf("unexpected rollback calls = %#v", runtime.rollbacks)
+	}
+}
+
+func TestGatewayToolExecRollsBackWorkspaceRuntimeOnFailureAndTimeout(t *testing.T) {
+	dir := t.TempDir()
+	runtime := &fakeWorkspaceRuntime{dir: dir}
+	gateway := NewGateway(Config{WorkspaceRuntime: runtime})
+
+	failed := gateway.Handle(context.Background(), Request{
+		AgentID: "agent-1",
+		TaskID:  "task-1",
+		Name:    "tool.exec",
+		Args: map[string]any{
+			"command": "sh",
+			"args":    []any{"-c", "exit 7"},
+		},
+	})
+	if failed.Status != StatusError {
+		t.Fatalf("failure status = %s error=%s", failed.Status, failed.Error)
+	}
+
+	timedOut := gateway.Handle(context.Background(), Request{
+		AgentID: "agent-2",
+		TaskID:  "task-1",
+		Name:    "tool.exec",
+		Args: map[string]any{
+			"command":    "sleep",
+			"args":       []any{"1"},
+			"timeout_ms": 10,
+		},
+	})
+	if timedOut.Status != StatusTimeout {
+		t.Fatalf("timeout status = %s error=%s", timedOut.Status, timedOut.Error)
+	}
+
+	if len(runtime.rollbacks) != 2 || runtime.rollbacks[0] != "agent-1" || runtime.rollbacks[1] != "agent-2" {
+		t.Fatalf("rollback calls = %#v", runtime.rollbacks)
+	}
+	if len(runtime.commits) != 0 {
+		t.Fatalf("unexpected commit calls = %#v", runtime.commits)
+	}
+}
+
+func TestGatewayDestroyAgentWorkspaceRuntime(t *testing.T) {
+	runtime := &fakeWorkspaceRuntime{dir: t.TempDir()}
+	gateway := NewGateway(Config{WorkspaceRuntime: runtime})
+
+	if err := gateway.DestroyAgent("agent-1"); err != nil {
+		t.Fatalf("DestroyAgent: %v", err)
+	}
+	if len(runtime.destroys) != 1 || runtime.destroys[0] != "agent-1" {
+		t.Fatalf("destroy calls = %#v", runtime.destroys)
+	}
+}
+
 func TestGatewayToolExecTimeoutIsAudited(t *testing.T) {
 	gateway := NewGateway(Config{WorkspaceRoot: t.TempDir()})
 
@@ -87,8 +195,9 @@ func TestGatewayToolExecTimeoutIsAudited(t *testing.T) {
 
 func TestGatewayToolExecReportsKernelExecObservation(t *testing.T) {
 	var observed ExecObservation
+	root := t.TempDir()
 	gateway := NewGateway(Config{
-		WorkspaceRoot: t.TempDir(),
+		WorkspaceRoot: root,
 		ExecObserver: func(event ExecObservation) {
 			observed = event
 		},
@@ -113,8 +222,13 @@ func TestGatewayToolExecReportsKernelExecObservation(t *testing.T) {
 	if observed.PID == 0 || observed.Workspace == "" || observed.Status != StatusOK {
 		t.Fatalf("observed = %#v", observed)
 	}
-	if filepath.Base(observed.Workspace) != "merged" || filepath.Base(filepath.Dir(observed.Workspace)) != "agent-1" {
+	rootAbs, _ := filepath.Abs(root)
+	expected := filepath.Join(rootAbs, "agent-1", "merged")
+	if observed.Workspace != expected {
 		t.Fatalf("tool exec should run in agent merged workspace, got %q", observed.Workspace)
+	}
+	if _, err := os.Stat(expected); err != nil {
+		t.Fatalf("expected fallback workspace missing: %v", err)
 	}
 }
 

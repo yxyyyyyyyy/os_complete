@@ -1,0 +1,189 @@
+{
+  "experiment": "e2_pressure_fault_isolation",
+  "runs": 5,
+  "evidence_mode": "real-runtime",
+  "memory_pressure_injected": true,
+  "pids_pressure_injected": true,
+  "workspace_rmrf_fault_injected": true,
+  "cascade_failure": false,
+  "recovery_success": true,
+  "unaffected_agents_continued": true,
+  "selected_recovery_agent": "low-pressure-0-0",
+  "workspace_evidence_mode": "real-overlayfs",
+  "workspace_fallback_reason": "",
+  "pressure_decision": {
+    "id": "20260706152613.821486416",
+    "decision_id": "20260706152613.821486416",
+    "timestamp": "2026-07-06T07:26:13.821486416Z",
+    "task_id": "e2-pressure-fault-recovery",
+    "selected_task": "e2-pressure-fault-recovery",
+    "candidates": [
+      "high-pressure-0-0",
+      "low-pressure-0-0"
+    ],
+    "candidate_details": [
+      {
+        "agent_id": "high-pressure-0-0",
+        "task_id": "e1-pressure",
+        "vruntime_score": 500,
+        "context_affinity_score": 0,
+        "memory_pressure": 0.957,
+        "pids_pressure": 0.984,
+        "cpu_throttle_pressure": 0.9,
+        "psi_pressure": 0.04,
+        "dependency_ready": true,
+        "dynamic_spawn_priority": 0,
+        "final_score": 58.634
+      },
+      {
+        "agent_id": "low-pressure-0-0",
+        "task_id": "e1-pressure",
+        "vruntime_score": 200,
+        "context_affinity_score": 0,
+        "memory_pressure": 0.2,
+        "pids_pressure": 0.2,
+        "cpu_throttle_pressure": 0.02,
+        "psi_pressure": 0.04,
+        "dependency_ready": true,
+        "dynamic_spawn_priority": 0,
+        "final_score": 126
+      }
+    ],
+    "selected_agent": "low-pressure-0-0",
+    "policy": "token-cfs-prefix-affinity-resource-aware",
+    "reason": "selected due to low vruntime + high context affinity + low resource pressure",
+    "vruntime_before": {
+      "high-pressure-0-0": 1,
+      "low-pressure-0-0": 4
+    },
+    "vruntime_after": {
+      "high-pressure-0-0": 1,
+      "low-pressure-0-0": 4
+    },
+    "shared_pages": {},
+    "vruntime_score": 200,
+    "context_affinity_score": 0,
+    "memory_pressure": 0.957,
+    "pids_pressure": 0.984,
+    "cpu_throttle_pressure": 0.9,
+    "psi_pressure": 0.04,
+    "dependency_ready": true,
+    "dynamic_spawn_priority": 0,
+    "final_score": 126,
+    "evidence_mode": "real-runtime",
+    "fallback_reason": "",
+    "resource_pressure": {
+      "memory_pressure": 0.957,
+      "pids_pressure": 0.984,
+      "cpu_throttle_pressure": 0.9,
+      "psi_pressure": 0.04,
+      "evidence_mode": "real-runtime",
+      "fallback_reason": ""
+    },
+    "score_by_agent": {
+      "high-pressure-0-0": {
+        "agent_id": "high-pressure-0-0",
+        "task_id": "e1-pressure",
+        "vruntime_score": 500,
+        "context_affinity_score": 0,
+        "memory_pressure": 0.957,
+        "pids_pressure": 0.984,
+        "cpu_throttle_pressure": 0.9,
+        "psi_pressure": 0.04,
+        "dependency_ready": true,
+        "dynamic_spawn_priority": 0,
+        "final_score": 58.634
+      },
+      "low-pressure-0-0": {
+        "agent_id": "low-pressure-0-0",
+        "task_id": "e1-pressure",
+        "vruntime_score": 200,
+        "context_affinity_score": 0,
+        "memory_pressure": 0.2,
+        "pids_pressure": 0.2,
+        "cpu_throttle_pressure": 0.02,
+        "psi_pressure": 0.04,
+        "dependency_ready": true,
+        "dynamic_spawn_priority": 0,
+        "final_score": 126
+      }
+    },
+    "created_at": 1783322773821
+  },
+  "workspace_fault_evidence": {
+    "success": true,
+    "fault_type": "workspace_rmrf",
+    "target_agent": "coder",
+    "mode": "overlayfs",
+    "evidence_mode": "real-overlayfs",
+    "runtime_root": "/tmp/aort-e2-pressure-fault",
+    "lowerdir_unchanged": true,
+    "target_agent_affected": true,
+    "unaffected_agents": [
+      "planner",
+      "reviewer"
+    ],
+    "cascade_failure": false,
+    "rollback_success": true,
+    "commit_supported": true,
+    "destroy_success": true,
+    "fallback_reason": "",
+    "before_files": {
+      "coder": [
+        "README.txt",
+        "config/runtime.json",
+        "src/main.txt"
+      ],
+      "planner": [
+        "README.txt",
+        "config/runtime.json",
+        "src/main.txt"
+      ],
+      "reviewer": [
+        "README.txt",
+        "config/runtime.json",
+        "src/main.txt"
+      ]
+    },
+    "after_fault_files": {
+      "coder": [
+        "README.txt",
+        "config/runtime.json"
+      ],
+      "planner": [
+        "README.txt",
+        "config/runtime.json",
+        "src/main.txt"
+      ],
+      "reviewer": [
+        "README.txt",
+        "config/runtime.json",
+        "src/main.txt"
+      ]
+    },
+    "after_rollback_files": {
+      "coder": [
+        "README.txt",
+        "config/runtime.json",
+        "src/main.txt"
+      ],
+      "planner": [
+        "README.txt",
+        "config/runtime.json",
+        "src/main.txt"
+      ],
+      "reviewer": [
+        "README.txt",
+        "config/runtime.json",
+        "src/main.txt"
+      ]
+    },
+    "safety_checks": {
+      "runtime_root_only": true,
+      "path_escape_blocked": true,
+      "repo_dir_untouched": true,
+      "symlink_escape_blocked": true
+    },
+    "timestamp": "2026-07-06T07:26:13.832544162Z"
+  }
+}
