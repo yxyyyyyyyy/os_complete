@@ -1,22 +1,22 @@
 {
   "evidence_mode": "real-cgroup-v2",
-  "killed_agent_id": "task-1783267536394502197-coder",
+  "killed_agent_id": "task-1783309261868291683-planner",
   "kill_status": "200",
   "killed_state": "KILLED",
   "unaffected_agents": [
     {
-      "agent_id": "task-1783267536394502197-tester",
+      "agent_id": "task-1783309261868291683-coder",
       "state": "COMPLETED",
       "capsule_mode": "real",
       "pids_current": 5,
-      "memory_current": 0
+      "memory_current": 2109440
     },
     {
-      "agent_id": "task-1783267536394502197-reviewer",
+      "agent_id": "task-1783309261868291683-reviewer",
       "state": "COMPLETED",
       "capsule_mode": "real",
       "pids_current": 5,
-      "memory_current": 0
+      "memory_current": 2109440
     }
   ],
   "other_agents_unaffected": true

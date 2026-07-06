@@ -13,7 +13,7 @@
     "final_status": "recovered",
     "system_survived": true,
     "cascade_failure": false,
-    "supervisor_fault_id": "20260706000552.954389969",
+    "supervisor_fault_id": "20260706114721.371742535",
     "fault_evidence": {
       "error": "tool timeout",
       "syscall_status": "TIMEOUT"
@@ -28,12 +28,12 @@
     "unaffected_agents": 5,
     "total_agents": 6,
     "recovery_action": "restart_agent_from_checkpoint",
-    "recovery_time_ms": 1,
+    "recovery_time_ms": 5,
     "checkpoint_used": true,
     "final_status": "recovered",
     "system_survived": true,
     "cascade_failure": false,
-    "supervisor_fault_id": "20260706000552.955567899",
+    "supervisor_fault_id": "20260706114721.372700170",
     "fault_evidence": {
       "exit_error": "exit status 9",
       "syscall_status": "ERROR"
@@ -53,7 +53,7 @@
     "final_status": "recovered",
     "system_survived": true,
     "cascade_failure": false,
-    "supervisor_fault_id": "20260706000552.956868878",
+    "supervisor_fault_id": "20260706114721.374058111",
     "fault_evidence": {
       "cascade_failure": false,
       "commit_supported": true,
@@ -81,12 +81,12 @@
     "unaffected_agents": 5,
     "total_agents": 6,
     "recovery_action": "restart_agent_capsule_from_checkpoint",
-    "recovery_time_ms": 5,
+    "recovery_time_ms": 1,
     "checkpoint_used": true,
     "final_status": "recovered",
     "system_survived": true,
     "cascade_failure": false,
-    "supervisor_fault_id": "20260706000552.957832753",
+    "supervisor_fault_id": "20260706114721.375334059",
     "fault_evidence": {
       "capsule_signal": "cgroup.kill invoked",
       "exit_error": "signal: terminated",
@@ -102,15 +102,15 @@
     "unaffected_agents": 5,
     "total_agents": 6,
     "recovery_action": "restart_agent_with_lower_memory_pressure_from_checkpoint",
-    "recovery_time_ms": 5,
+    "recovery_time_ms": 1,
     "checkpoint_used": true,
     "final_status": "recovered",
     "system_survived": true,
     "cascade_failure": false,
-    "supervisor_fault_id": "20260706000552.958785442",
+    "supervisor_fault_id": "20260706114721.376772392",
     "fault_evidence": {
       "limit_artifact": "experiments/results/openeuler_cgroupv2_limits/memory_limit_enforced.json",
-      "limit_cgroup_path": "/sys/fs/cgroup/aort.slice/aort-limit-memory-21111",
+      "limit_cgroup_path": "/sys/fs/cgroup/aort.slice/aort-limit-memory-48222",
       "limit_evidence_mode": "real-cgroup-v2",
       "oom_delta": 1,
       "oom_kill_delta": 1,
@@ -134,13 +134,13 @@
     "final_status": "recovered",
     "system_survived": true,
     "cascade_failure": false,
-    "supervisor_fault_id": "20260706000552.960486073",
+    "supervisor_fault_id": "20260706114721.378571494",
     "fault_evidence": {
       "fork_errors": [
         "[Errno 11] Resource temporarily unavailable"
       ],
       "limit_artifact": "experiments/results/openeuler_cgroupv2_limits/pids_limit_enforced.json",
-      "limit_cgroup_path": "/sys/fs/cgroup/aort.slice/aort-limit-pids-21111",
+      "limit_cgroup_path": "/sys/fs/cgroup/aort.slice/aort-limit-pids-48222",
       "limit_evidence_mode": "real-cgroup-v2",
       "resource_limit_enforced": true,
       "runtime_fault_status": "OK",

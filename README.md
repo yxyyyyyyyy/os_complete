@@ -98,9 +98,9 @@ key it skips without failing and records explicit mock fallback.
   call, currently the DeepSeek OpenAI-compatible provider.
 - `degraded`: The Runtime is still running real code, but the local OS lacks a
   required capability or permission. Examples include macOS/non-root cgroup
-  capsule fallback, `degraded-proxy` kernel exec evidence instead of eBPF,
-  unavailable PSI files, and degraded-copy workspace rollback instead of
-  overlayfs.
+  capsule fallback, kernel exec evidence sourced from the syscall-gateway proxy
+  instead of eBPF, unavailable PSI files, and degraded-copy workspace rollback
+  instead of overlayfs.
 - `mock`: The path is intentionally mocked for repeatable local demos, such as
   the default LLM provider. Mock paths are useful for deterministic tests but
   must not be presented as real model-provider evidence.
@@ -123,10 +123,10 @@ key it skips without failing and records explicit mock fallback.
   `llm.call`, `tool.exec`, `ipc.publish`, `ipc.poll`, `agent.spawn`, and
   `agent.report`, with audit records and SSE timeline events.
 - Kernel observer lane for `kernel.exec` evidence. Current checked-in
-  implementation uses explicit `degraded-proxy` mode through syscall-gateway
-  exec observations unless a future openEuler eBPF attachment is enabled.
+  implementation uses `degraded` evidence through syscall-gateway exec
+  observations unless a future openEuler eBPF attachment is enabled.
 - Page-reference IPC Blackboard with avoided-copy byte metrics and per-subscriber polling.
-- FIFO, token-CFS, and token-CFS-prefix-affinity scheduler policies with DecisionLog API.
+- FIFO, token-CFS, token-CFS-prefix-affinity, and resource-aware scheduler policies with DecisionLog API.
 - PSI pressure monitor with `/api/pressure/status`, `pressure.sampled`, and scheduler pressure-throttle evidence in degraded or Linux PSI mode.
 - Supervisor fault record path with a runnable `tool.exec` timeout injection.
 - Workspace isolation fault demo with degraded-copy rollback evidence for `rm -rf` style failures.
@@ -145,6 +145,9 @@ mkdir -p .cache/go-build
 GOCACHE="$PWD/.cache/go-build" go run ./cmd/aort-experiment --name all --runs 5 --out experiments/results
 GOCACHE="$PWD/.cache/go-build" go run ./cmd/aort-experiment --name e1-real-scheduler --runs 5 --out experiments/results
 GOCACHE="$PWD/.cache/go-build" go run ./cmd/aort-experiment --name e2-real-fault --runs 5 --out experiments/results
+go run ./cmd/aortctl experiment e1 --policy resource-aware --runs 5 --out experiments/results/e1
+go run ./cmd/aortctl demo fault workspace-rmrf --out experiments/results
+bash scripts/competition_verify.sh
 curl -s http://127.0.0.1:8080/api/experiments/results
 ```
 
@@ -239,8 +242,8 @@ See [docs/deployment_openeuler.md](docs/deployment_openeuler.md) for deployment 
 
 - Real overlayfs mount/commit and true eBPF attachment are planned enhancement
   targets. Degraded-copy workspace rollback, lightweight checkpoint startup
-  recovery, PSI/degraded pressure monitoring, and honest degraded-proxy kernel
-  exec evidence are implemented and test-covered.
+  recovery, PSI/degraded pressure monitoring, and honest degraded kernel exec
+  evidence are implemented and test-covered.
 - DeepSeek provider is implemented with environment-only credentials, mock
   fallback, and a redacted real-api smoke summary; local llama.cpp remains a
   planned provider path.

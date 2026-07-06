@@ -40,13 +40,14 @@ API:
 CLI:
 
 ```bash
-go run ./cmd/aortctl experiment e1 --policy resource-aware --runs 5
+go run ./cmd/aortctl experiment e1 --policy resource-aware --runs 5 --out experiments/results/e1
 ```
 
 Outputs:
 
 - `experiments/results/e1/e1_resource_aware.json`
 - `experiments/results/e1/e1_resource_aware.csv`
+- `experiments/results/e1/e1_resource_aware_decisions.json`
 - `experiments/results/e1/e1_resource_aware_summary.md`
 
 If cgroup or PSI files cannot be read, the scheduler keeps running and marks

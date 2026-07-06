@@ -46,7 +46,7 @@ Safety boundary:
 Fault demo:
 
 ```bash
-go run ./cmd/aortctl demo fault workspace-rmrf
+go run ./cmd/aortctl demo fault workspace-rmrf --out experiments/results
 ```
 
 The demo creates `planner`, `coder`, and `reviewer` workspaces, deletes

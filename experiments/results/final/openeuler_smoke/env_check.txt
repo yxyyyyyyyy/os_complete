@@ -38,4 +38,4 @@ go version go1.22.12 linux/amd64
 
 == Summary ==
 failures=0 warnings=4
-env_check_json=/root/aort-r-huawei-run-p0p1p2-20260706-000312-clean/experiments/results/final/openeuler_smoke/env_check.json
+env_check_json=/root/aort-r-server-run-20260706-p0p1p2-memoryfix/experiments/results/final/openeuler_smoke/env_check.json

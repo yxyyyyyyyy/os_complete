@@ -41,6 +41,14 @@ fi
 if [ -z "$os_release" ]; then
   os_release="missing"
 fi
+live_openeuler_cgroup="false"
+case "$os_release" in
+  *openEuler*)
+    if [ "$cgroup_fs_type" = "cgroup2fs" ]; then
+      live_openeuler_cgroup="true"
+    fi
+    ;;
+esac
 
 log "base environment"
 printf '%s\n' "$kernel"
@@ -132,6 +140,26 @@ generated_candidates = [
     root / "experiments/results/workspace_isolation_evidence.json",
 ]
 generated_files = [rel(path) for path in generated_candidates if path.exists()]
+missing_files = [rel(path) for path in generated_candidates if not path.exists()]
+
+e1_required = [
+    root / "experiments/results/e1/e1_resource_aware.json",
+    root / "experiments/results/e1/e1_resource_aware.csv",
+    root / "experiments/results/e1/e1_resource_aware_decisions.json",
+    root / "experiments/results/e1/e1_resource_aware_summary.md",
+]
+e2_required = [
+    root / "experiments/results/e2-real-fault.json",
+    root / "experiments/results/e2-real-fault.csv",
+]
+software_required = [root / "experiments/results/software_real_demo/result.json"]
+workspace_required = [root / "experiments/results/workspace_isolation_evidence.json"]
+
+def status_with_missing(name: str, paths: list[pathlib.Path]) -> str:
+    status = os.environ.get(name, "failed")
+    if status == "passed" and any(not path.exists() for path in paths):
+        return "missing"
+    return status
 
 env_data = read_json(root / "experiments/results/final/env_check.json") or {}
 workspace_data = read_json(root / "experiments/results/workspace_isolation_evidence.json") or {}
@@ -154,11 +182,12 @@ index = {
     "evidence_mode": overall_mode,
     "go_test": os.environ.get("go_test", "failed"),
     "smoke": os.environ.get("smoke", "failed"),
-    "e1_scheduler": os.environ.get("e1_scheduler", "failed"),
-    "e2_fault_isolation": os.environ.get("e2_fault_isolation", "failed"),
-    "software_real_demo": os.environ.get("software_real_demo", "failed"),
-    "workspace_isolation": os.environ.get("workspace_isolation", "failed"),
+    "e1_scheduler": status_with_missing("e1_scheduler", e1_required),
+    "e2_fault_isolation": status_with_missing("e2_fault_isolation", e2_required),
+    "software_real_demo": status_with_missing("software_real_demo", software_required),
+    "workspace_isolation": status_with_missing("workspace_isolation", workspace_required),
     "generated_files": generated_files,
+    "missing_files": missing_files,
     "evidence_mode_summary": {
         "cgroup_capsule": env_data.get("evidence_mode", "degraded"),
         "worker_process": "real-runtime",
@@ -187,6 +216,11 @@ summary_lines = [
     "## Generated Files",
 ]
 summary_lines.extend(f"- `{path}`" for path in generated_files)
+summary_lines.extend(["", "## Missing Files"])
+if missing_files:
+    summary_lines.extend(f"- `{path}`" for path in missing_files)
+else:
+    summary_lines.append("- none")
 summary_lines.extend(["", "## Evidence Mode Summary"])
 summary_lines.extend(f"- {key}: {value}" for key, value in index["evidence_mode_summary"].items())
 summary_lines.extend(["", "## Known Limits"])
@@ -199,6 +233,12 @@ PY
 
 printf '\nAORT-R competition verification completed. See experiments/results/final/FINAL_EVIDENCE_INDEX.json\n'
 
-if [ "$go_test" != "passed" ] || [ "$e1_scheduler" != "passed" ] || [ "$e2_fault_isolation" != "passed" ] || [ "$software_real_demo" != "passed" ] || [ "$workspace_isolation" != "passed" ]; then
+if [ "$go_test" != "passed" ] ||
+  { [ "$live_openeuler_cgroup" = "true" ] && [ "$env_check" != "passed" ]; } ||
+  { [ "$live_openeuler_cgroup" = "true" ] && [ "$smoke" != "passed" ]; } ||
+  [ "$e1_scheduler" != "passed" ] ||
+  [ "$e2_fault_isolation" != "passed" ] ||
+  [ "$software_real_demo" != "passed" ] ||
+  [ "$workspace_isolation" != "passed" ]; then
   exit 1
 fi

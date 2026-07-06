@@ -1,7 +1,7 @@
 experiment,fault_type,evidence_mode,failed_agent,affected_agents,unaffected_agents,total_agents,cascade_failure,recovery_action,recovery_time_ms,checkpoint_used,final_status,system_survived,supervisor_fault_id
-E2_real_fault_isolation_benchmark,tool_timeout,real-runtime,tester,1,5,6,false,kill_tool_process_and_resume_agent,10,true,recovered,true,20260706000552.954389969
-E2_real_fault_isolation_benchmark,agent_crash,real-runtime,coder,1,5,6,false,restart_agent_from_checkpoint,1,true,recovered,true,20260706000552.955567899
-E2_real_fault_isolation_benchmark,workspace_rmrf,real-runtime,coder,1,5,6,false,rollback_target_workspace,1,true,recovered,true,20260706000552.956868878
-E2_real_fault_isolation_benchmark,kill_capsule,real-runtime,reviewer,1,5,6,false,restart_agent_capsule_from_checkpoint,5,true,recovered,true,20260706000552.957832753
-E2_real_fault_isolation_benchmark,memory_limit_exceeded,real-runtime,planner,1,5,6,false,restart_agent_with_lower_memory_pressure_from_checkpoint,5,true,recovered,true,20260706000552.958785442
-E2_real_fault_isolation_benchmark,pids_limit_exceeded,real-runtime,fixer,1,5,6,false,reject_spawn_storm_and_resume_from_checkpoint,1,true,recovered,true,20260706000552.960486073
+E2_real_fault_isolation_benchmark,tool_timeout,real-runtime,tester,1,5,6,false,kill_tool_process_and_resume_agent,10,true,recovered,true,20260706114721.371742535
+E2_real_fault_isolation_benchmark,agent_crash,real-runtime,coder,1,5,6,false,restart_agent_from_checkpoint,5,true,recovered,true,20260706114721.372700170
+E2_real_fault_isolation_benchmark,workspace_rmrf,real-runtime,coder,1,5,6,false,rollback_target_workspace,1,true,recovered,true,20260706114721.374058111
+E2_real_fault_isolation_benchmark,kill_capsule,real-runtime,reviewer,1,5,6,false,restart_agent_capsule_from_checkpoint,1,true,recovered,true,20260706114721.375334059
+E2_real_fault_isolation_benchmark,memory_limit_exceeded,real-runtime,planner,1,5,6,false,restart_agent_with_lower_memory_pressure_from_checkpoint,1,true,recovered,true,20260706114721.376772392
+E2_real_fault_isolation_benchmark,pids_limit_exceeded,real-runtime,fixer,1,5,6,false,reject_spawn_storm_and_resume_from_checkpoint,1,true,recovered,true,20260706114721.378571494

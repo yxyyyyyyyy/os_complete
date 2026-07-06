@@ -161,18 +161,45 @@ if not isinstance(capsules, list) or not capsules:
     raise SystemExit("expected /api/capsules to return at least one capsule")
 
 selected = None
+selected_capsule = None
+fallback = None
+fallback_capsule = None
 for agent in agents:
     try:
         if int(agent.get("pid") or 0) > 0:
-            selected = agent
-            break
+            agent_id = agent.get("agent_id") or agent.get("id")
+            capsule = next((item for item in capsules if item.get("agent_id") == agent_id), None)
+            if fallback is None:
+                fallback = agent
+                fallback_capsule = capsule
+            if capsule is None:
+                continue
+            mode = capsule.get("capsule_mode") or agent.get("capsule_mode")
+            cgroup_path = capsule.get("cgroup_path") or agent.get("cgroup_path")
+            memory_current = int(capsule.get("memory_current") or agent.get("memory_current") or 0)
+            pids_current = int(capsule.get("pids_current") or agent.get("pids_current") or 0)
+            real_cgroup_v2 = bool(capsule.get("real_cgroup_v2"))
+            if (
+                mode == "real"
+                and real_cgroup_v2
+                and cgroup_path
+                and str(cgroup_path).startswith("/sys/fs/cgroup/")
+                and memory_current > 0
+                and pids_current > 0
+            ):
+                selected = agent
+                selected_capsule = capsule
+                break
     except (TypeError, ValueError):
         pass
+if selected is None:
+    selected = fallback
+    selected_capsule = fallback_capsule
 if selected is None:
     raise SystemExit("no agent has a non-empty pid")
 
 agent_id = selected.get("agent_id") or selected.get("id")
-capsule = next((item for item in capsules if item.get("agent_id") == agent_id), None)
+capsule = selected_capsule
 if capsule is None:
     raise SystemExit(f"no capsule record for {agent_id}")
 
@@ -217,10 +244,31 @@ if mode != "real" or not real_cgroup_v2:
     raise SystemExit("capsule_mode is not real; refusing to generate fake real evidence")
 
 if not cgroup_path or not str(cgroup_path).startswith("/sys/fs/cgroup/"):
+    capsule_real = {
+        "evidence_mode": "degraded",
+        "real_cgroup_v2": real_cgroup_v2,
+        "reason": f"real capsule has invalid cgroup_path: {cgroup_path!r}",
+        "agent": summary,
+    }
+    pathlib.Path(capsule_real_path).write_text(json.dumps(capsule_real, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     raise SystemExit(f"real capsule has invalid cgroup_path: {cgroup_path!r}")
 if memory_current <= 0:
+    capsule_real = {
+        "evidence_mode": "degraded",
+        "real_cgroup_v2": real_cgroup_v2,
+        "reason": "real capsule memory_current must be non-zero",
+        "agent": summary,
+    }
+    pathlib.Path(capsule_real_path).write_text(json.dumps(capsule_real, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     raise SystemExit("real capsule memory_current must be non-zero")
 if pids_current <= 0:
+    capsule_real = {
+        "evidence_mode": "degraded",
+        "real_cgroup_v2": real_cgroup_v2,
+        "reason": "real capsule pids_current must be non-zero",
+        "agent": summary,
+    }
+    pathlib.Path(capsule_real_path).write_text(json.dumps(capsule_real, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     raise SystemExit("real capsule pids_current must be non-zero")
 
 capsule_real = {

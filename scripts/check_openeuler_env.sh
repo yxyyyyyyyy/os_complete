@@ -45,6 +45,11 @@ else
   os_release=""
   fail "/etc/os-release not found"
 fi
+if printf '%s\n' "$os_release" | grep -q 'openEuler'; then
+  is_openeuler="true"
+else
+  is_openeuler="false"
+fi
 
 section "Kernel"
 kernel="$(uname -a 2>&1 || true)"
@@ -190,6 +195,7 @@ fi
 
 if command -v python3 >/dev/null 2>&1; then
   export os_release kernel id_output cgroup_fs aort_slice psi_files go_version node_version npm_version
+  export is_openeuler
   export is_root cgroup_v2 cgroup_writable overlay_supported psi_available failures warnings
   python3 - "$JSON_OUT" <<'PY'
 import json
@@ -200,7 +206,7 @@ def flag(name):
     return os.environ.get(name) == "true"
 
 fallback_reasons = []
-if "openEuler" not in os.environ.get("os_release", ""):
+if not flag("is_openeuler"):
     fallback_reasons.append("host is not openEuler")
 if not flag("cgroup_v2"):
     fallback_reasons.append("stat -fc %T /sys/fs/cgroup is not cgroup2fs")
@@ -209,7 +215,7 @@ if not flag("cgroup_writable"):
 if not flag("is_root"):
     fallback_reasons.append("process is not running as root")
 
-evidence_mode = "real-cgroup-v2" if flag("cgroup_v2") and flag("cgroup_writable") and flag("is_root") else "degraded"
+evidence_mode = "real-cgroup-v2" if flag("is_openeuler") and flag("cgroup_v2") and flag("cgroup_writable") and flag("is_root") else "degraded"
 
 data = {
     "evidence_mode": evidence_mode,

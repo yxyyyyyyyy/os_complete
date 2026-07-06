@@ -38,17 +38,41 @@ func TestRunE1ResourceAwareWritesRequiredArtifactsAndSchema(t *testing.T) {
 			t.Fatalf("missing artifact %s info=%#v err=%v", name, info, err)
 		}
 	}
-	var rows []E1ResourceAwareResult
+	var report E1ResourceAwareReport
 	data, err := os.ReadFile(filepath.Join(outDir, "e1_resource_aware.json"))
 	if err != nil {
 		t.Fatalf("read json: %v", err)
 	}
-	if err := json.Unmarshal(data, &rows); err != nil {
+	if err := json.Unmarshal(data, &report); err != nil {
 		t.Fatalf("decode json: %v", err)
 	}
-	if rows[0].MemoryPeakBytes == 0 || rows[0].PidsPeak == 0 {
-		t.Fatalf("resource metrics missing: %#v", rows[0])
+	if report.Experiment != "e1_resource_aware_scheduler" || report.Runs != 3 {
+		t.Fatalf("bad report identity: %#v", report)
 	}
+	if len(report.Policies) != 4 || !containsPolicy(report.Policies, scheduler.PolicyTokenCFSPrefixAffinityResourceAware) {
+		t.Fatalf("report policies incomplete: %#v", report.Policies)
+	}
+	if report.Metrics.MemoryPeakBytes[scheduler.PolicyFIFO] == 0 || report.Metrics.PidsPeak[scheduler.PolicyFIFO] == 0 {
+		t.Fatalf("resource metrics missing: %#v", report.Metrics)
+	}
+	if report.Metrics.SchedulerDecisionsCount[scheduler.PolicyTokenCFSPrefixAffinityResourceAware] == 0 {
+		t.Fatalf("decision metrics missing: %#v", report.Metrics)
+	}
+	if report.Improvement.ResourceAwareVsFIFOPercent < -1000 || report.Improvement.ResourceAwareVsFIFOPercent > 1000 {
+		t.Fatalf("resource-aware improvement should be numeric: %#v", report.Improvement)
+	}
+	if report.EvidenceMode == "" || !evidence.IsValid(evidence.Mode(report.EvidenceMode)) {
+		t.Fatalf("invalid report evidence mode: %#v", report)
+	}
+}
+
+func containsPolicy(policies []string, want string) bool {
+	for _, policy := range policies {
+		if policy == want {
+			return true
+		}
+	}
+	return false
 }
 
 func TestRunE2RealFaultIsolationIncludesWorkspaceRMFault(t *testing.T) {

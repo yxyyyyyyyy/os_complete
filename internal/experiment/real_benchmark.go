@@ -69,6 +69,37 @@ type E1ResourceAwareResult struct {
 	ContextReuseRate        float64 `json:"context_reuse_rate"`
 }
 
+type E1ResourceAwareReport struct {
+	Experiment    string                     `json:"experiment"`
+	Runs          int                        `json:"runs"`
+	Policies      []string                   `json:"policies"`
+	Metrics       E1ResourceAwareMetrics     `json:"metrics"`
+	Improvement   E1ResourceAwareImprovement `json:"improvement"`
+	EvidenceMode  string                     `json:"evidence_mode"`
+	PolicyResults []E1ResourceAwareResult    `json:"policy_results"`
+}
+
+type E1ResourceAwareMetrics struct {
+	WallTimeMS              map[string]int64 `json:"wall_time_ms"`
+	AvgTaskLatencyMS        map[string]int64 `json:"avg_task_latency_ms"`
+	P95TaskLatencyMS        map[string]int64 `json:"p95_task_latency_ms"`
+	MaterializeCount        map[string]int   `json:"materialize_count"`
+	MaterializeCostMS       map[string]int64 `json:"materialize_cost_ms"`
+	SavedTokens             map[string]int64 `json:"saved_tokens"`
+	SavedBytes              map[string]int64 `json:"saved_bytes"`
+	AvoidedCopyBytes        map[string]int64 `json:"avoided_copy_bytes"`
+	SchedulerDecisionsCount map[string]int   `json:"scheduler_decisions_count"`
+	MemoryPeakBytes         map[string]int64 `json:"memory_peak_bytes"`
+	PidsPeak                map[string]int64 `json:"pids_peak"`
+	CPUThrottleCount        map[string]int64 `json:"cpu_throttle_count"`
+}
+
+type E1ResourceAwareImprovement struct {
+	ResourceAwareVsFIFOPercent           float64 `json:"resource_aware_vs_fifo_percent"`
+	ResourceAwareVsTokenCFSPercent       float64 `json:"resource_aware_vs_token_cfs_percent"`
+	ResourceAwareVsPrefixAffinityPercent float64 `json:"resource_aware_vs_prefix_affinity_percent"`
+}
+
 type E2RealFaultResult struct {
 	Experiment       string         `json:"experiment"`
 	FaultType        string         `json:"fault_type"`
@@ -377,7 +408,8 @@ func RunE1ResourceAwareBenchmark(runs int, outDir string) ([]E1ResourceAwareResu
 		})
 	}
 	if outDir != "" {
-		if err := WriteJSON(filepath.Join(outDir, "e1_resource_aware.json"), results); err != nil {
+		report := BuildE1ResourceAwareReport(runs, results)
+		if err := WriteJSON(filepath.Join(outDir, "e1_resource_aware.json"), report); err != nil {
 			return nil, err
 		}
 		if err := WriteCSV(filepath.Join(outDir, "e1_resource_aware.csv"), E1ResourceAwareCSV(results)); err != nil {
@@ -391,6 +423,68 @@ func RunE1ResourceAwareBenchmark(runs int, outDir string) ([]E1ResourceAwareResu
 		}
 	}
 	return results, nil
+}
+
+func BuildE1ResourceAwareReport(runs int, results []E1ResourceAwareResult) E1ResourceAwareReport {
+	metrics := E1ResourceAwareMetrics{
+		WallTimeMS:              make(map[string]int64, len(results)),
+		AvgTaskLatencyMS:        make(map[string]int64, len(results)),
+		P95TaskLatencyMS:        make(map[string]int64, len(results)),
+		MaterializeCount:        make(map[string]int, len(results)),
+		MaterializeCostMS:       make(map[string]int64, len(results)),
+		SavedTokens:             make(map[string]int64, len(results)),
+		SavedBytes:              make(map[string]int64, len(results)),
+		AvoidedCopyBytes:        make(map[string]int64, len(results)),
+		SchedulerDecisionsCount: make(map[string]int, len(results)),
+		MemoryPeakBytes:         make(map[string]int64, len(results)),
+		PidsPeak:                make(map[string]int64, len(results)),
+		CPUThrottleCount:        make(map[string]int64, len(results)),
+	}
+	policies := make([]string, 0, len(results))
+	byPolicy := make(map[string]E1ResourceAwareResult, len(results))
+	evidenceMode := "real-runtime"
+	for _, result := range results {
+		policies = append(policies, result.Policy)
+		byPolicy[result.Policy] = result
+		metrics.WallTimeMS[result.Policy] = result.WallTimeMS
+		metrics.AvgTaskLatencyMS[result.Policy] = result.AvgTaskLatencyMS
+		metrics.P95TaskLatencyMS[result.Policy] = result.P95TaskLatencyMS
+		metrics.MaterializeCount[result.Policy] = result.MaterializeCount
+		metrics.MaterializeCostMS[result.Policy] = result.MaterializeCostMS
+		metrics.SavedTokens[result.Policy] = result.SavedTokens
+		metrics.SavedBytes[result.Policy] = result.SavedBytes
+		metrics.AvoidedCopyBytes[result.Policy] = result.AvoidedCopyBytes
+		metrics.SchedulerDecisionsCount[result.Policy] = result.SchedulerDecisionsCount
+		metrics.MemoryPeakBytes[result.Policy] = result.MemoryPeakBytes
+		metrics.PidsPeak[result.Policy] = result.PidsPeak
+		metrics.CPUThrottleCount[result.Policy] = result.CPUThrottleCount
+		if result.Policy == scheduler.PolicyTokenCFSPrefixAffinityResourceAware && result.EvidenceMode != "" {
+			evidenceMode = result.EvidenceMode
+		}
+	}
+	resourceAware := byPolicy[scheduler.PolicyTokenCFSPrefixAffinityResourceAware]
+	improvement := E1ResourceAwareImprovement{
+		ResourceAwareVsFIFOPercent:           improvementPercent(byPolicy[scheduler.PolicyFIFO].WallTimeMS, resourceAware.WallTimeMS),
+		ResourceAwareVsTokenCFSPercent:       improvementPercent(byPolicy[scheduler.PolicyTokenCFS].WallTimeMS, resourceAware.WallTimeMS),
+		ResourceAwareVsPrefixAffinityPercent: improvementPercent(byPolicy[scheduler.PolicyTokenCFSPrefixAffinity].WallTimeMS, resourceAware.WallTimeMS),
+	}
+	return E1ResourceAwareReport{
+		Experiment:    "e1_resource_aware_scheduler",
+		Runs:          runs,
+		Policies:      policies,
+		Metrics:       metrics,
+		Improvement:   improvement,
+		EvidenceMode:  evidenceMode,
+		PolicyResults: append([]E1ResourceAwareResult(nil), results...),
+	}
+}
+
+func improvementPercent(baseline, candidate int64) float64 {
+	if baseline <= 0 || candidate <= 0 {
+		return 0
+	}
+	value := (float64(baseline-candidate) / float64(baseline)) * 100
+	return math.Round(value*1000) / 1000
 }
 
 func RunE2RealFaultIsolation(runs int) []E2RealFaultResult {
