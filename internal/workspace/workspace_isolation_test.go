@@ -3,6 +3,7 @@ package workspace
 import (
 	"os"
 	"path/filepath"
+	"runtime"
 	"testing"
 
 	"aort-r/internal/evidence"
@@ -100,6 +101,40 @@ func TestWorkspaceRMFaultDemoIsolatesAgentsAndRestoresTarget(t *testing.T) {
 	}
 	if !evidence.SafetyChecks.RuntimeRootOnly || !evidence.SafetyChecks.PathEscapeBlocked || !evidence.SafetyChecks.SymlinkEscapeBlocked {
 		t.Fatalf("safety checks incomplete: %#v", evidence.SafetyChecks)
+	}
+}
+
+func TestWorkspaceProbeReportsOverlayCapabilityWithoutFakingReal(t *testing.T) {
+	probe := ProbeOverlay(t.TempDir())
+	if probe.UID != os.Geteuid() {
+		t.Fatalf("uid = %d, want %d", probe.UID, os.Geteuid())
+	}
+	if probe.Linux != (runtime.GOOS == "linux") {
+		t.Fatalf("linux flag = %v on %s", probe.Linux, runtime.GOOS)
+	}
+	if probe.SelectedMode != ModeOverlayFS && probe.SelectedMode != ModeDegradedCopy {
+		t.Fatalf("unexpected selected mode: %#v", probe)
+	}
+	if probe.MountTestSuccess {
+		if probe.EvidenceMode != evidence.ModeRealOverlayFS {
+			t.Fatalf("successful mount must be real-overlayfs: %#v", probe)
+		}
+		if !probe.MergedIsMountpoint {
+			t.Fatalf("successful mount must prove merged is a mountpoint: %#v", probe)
+		}
+		if probe.SelectedMode != ModeOverlayFS {
+			t.Fatalf("successful mount should select overlayfs: %#v", probe)
+		}
+		if probe.FallbackReason != "" {
+			t.Fatalf("real-overlayfs probe should not have fallback reason: %#v", probe)
+		}
+	} else {
+		if probe.EvidenceMode != evidence.ModeDegradedCopy {
+			t.Fatalf("failed mount must be degraded-copy: %#v", probe)
+		}
+		if probe.FallbackReason == "" {
+			t.Fatalf("degraded probe should explain fallback: %#v", probe)
+		}
 	}
 }
 

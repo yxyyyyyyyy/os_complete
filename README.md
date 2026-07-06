@@ -111,13 +111,9 @@ key it skips without failing and records explicit mock fallback.
   must not be presented as real model-provider evidence.
 - `simulation`: The path is intentionally synthetic for unavailable OS
   capabilities or controlled experiment models. Simulation outputs must be
-  labeled as simulation/degraded-simulation.
+  labeled as `simulation`, not as real OS evidence.
 - `planned`: The design is documented but not implemented in this build, such
   as true eBPF attachment.
-- `simulation/mock`: Legacy reports may use this combined label for
-  repeatable local demos, such as the mock LLM provider or experiment modes that
-  model unavailable OS capabilities. These paths must be labeled as
-  simulation/mock and should not be presented as real openEuler evidence.
 
 ## Implemented Mechanisms
 
@@ -140,10 +136,12 @@ key it skips without failing and records explicit mock fallback.
   scheduler pressure-throttle evidence in degraded or Linux PSI mode.
 - Supervisor fault record path with a runnable `tool.exec` timeout injection.
 - Workspace isolation manager with overlayfs code path and degraded-copy
-  fallback. Current checked-in evidence is `real-overlayfs` because the latest
-  Linux/root verification host mounted overlayfs successfully; non-Linux,
-  non-root, or overlayfs-unavailable reruns must remain `degraded-copy` with a
-  concrete `fallback_reason`.
+  fallback. The current overlayfs status is taken from
+  `experiments/results/workspace_probe.json` and
+  `experiments/results/workspace_isolation_evidence.json`: Linux/root runs with
+  a successful mount report `real-overlayfs`; non-Linux, non-root, or
+  overlayfs-unavailable reruns must report `degraded-copy` with a concrete
+  `fallback_reason`.
 - Lightweight checkpoint store for AVP state, CVM page table references, scheduler vruntime, and trace offset evidence.
 - Startup checkpoint recovery report at `/api/recovery/status`, with `checkpoint.recovered` and `runtime.recovered` timeline evidence.
 - LLM Router interface with mock provider, fallback routing, and llama.cpp timing/cache usage parser.
@@ -161,6 +159,7 @@ go run ./cmd/aortctl experiment e1 --policy resource-aware --runs 5 --out experi
 go run ./cmd/aortctl experiment e1 --policy all --runs 5 --out experiments/results/e1
 go run ./cmd/aortctl experiment e2 --runs 5 --out experiments/results
 go run ./cmd/aortctl demo software-real --out experiments/results
+go run ./cmd/aortctl workspace probe --out experiments/results/workspace_probe.json
 go run ./cmd/aortctl demo fault workspace-rmrf --out experiments/results
 curl -s http://127.0.0.1:8080/api/experiments/results
 ```
@@ -177,6 +176,7 @@ Outputs:
 - `experiments/results/e1-scheduler.json`
 - `experiments/results/e2-fault.json`
 - `experiments/results/e3-context.json`
+- `experiments/results/workspace_probe.json`
 - `experiments/results/e1-real-scheduler.json`
 - `experiments/results/e2-real-fault.json`
 - Matching CSV files for each experiment.
@@ -217,7 +217,9 @@ Latest status:
   are recorded from real cgroup v2 files and APIs.
 - memory, pids, and CPU limits all have real enforcement evidence.
 - Real overlayfs workspace isolation has passed on Linux/root after the overlay
-  module is available, with `evidence_mode=real-overlayfs`,
+  module is available. The probe evidence must show
+  `mount_test_success=true`, `merged_is_mountpoint=true`, and
+  `evidence_mode=real-overlayfs`; the fault demo must show
   `lowerdir_unchanged=true`, `rollback_success=true`,
   `commit_supported=true`, and `destroy_success=true`.
 
@@ -228,6 +230,7 @@ Primary current evidence:
 - `experiments/results/openeuler_cgroupv2_limits/`
 - `experiments/results/openeuler_smoke/capsule_real.json`
 - `experiments/results/openeuler_smoke/agent_summary.json`
+- `experiments/results/workspace_probe.json`
 - `experiments/results/workspace_isolation_evidence.json`
 - `experiments/results/openeuler_smoke/aort-r-openeuler-7d939c2-cgroupv2-real-evidence.tgz`
 - `docs/phase_reports/PHASE_17_REAL_CGROUP_V2_REPORT.md`
@@ -249,6 +252,7 @@ bash scripts/smoke_openeuler.sh
 bash scripts/smoke_cgroupv2_multi_agent.sh
 bash scripts/smoke_cgroupv2_limits.sh
 modprobe overlay 2>/dev/null || true
+go run ./cmd/aortctl workspace probe --out experiments/results/workspace_probe.json
 go run ./cmd/aortctl demo fault workspace-rmrf --out experiments/results
 ```
 
@@ -270,9 +274,10 @@ See [docs/deployment_openeuler.md](docs/deployment_openeuler.md) for deployment 
 
 - True eBPF attachment remains planned.
 - Workspace isolation supports an overlayfs code path plus degraded-copy
-  fallback. Current checked-in evidence is `real-overlayfs`; reruns are
-  `real-overlayfs` only on Linux/root hosts where overlayfs mount succeeds, and
-  otherwise must be `degraded-copy`.
+  fallback. Treat `real-overlayfs` as current only when
+  `workspace_probe.json` proves a successful mount and mountpoint check, and
+  `workspace_isolation_evidence.json` proves the rmrf fault isolation path;
+  otherwise the evidence must be `degraded-copy`.
 - CVM remains page-level context reuse and materialization optimization, not
   true model KV Cache sharing.
 - IPC remains page-reference IPC, not kernel zero-copy.

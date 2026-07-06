@@ -118,6 +118,22 @@ type RMFaultEvidence struct {
 	Error               string              `json:"error,omitempty"`
 }
 
+type WorkspaceProbe struct {
+	Success                  bool          `json:"success"`
+	Linux                    bool          `json:"linux"`
+	UID                      int           `json:"uid"`
+	OverlayInProcFilesystems bool          `json:"overlay_in_proc_filesystems"`
+	MountTestSuccess         bool          `json:"mount_test_success"`
+	MergedIsMountpoint       bool          `json:"merged_is_mountpoint"`
+	SelectedMode             string        `json:"selected_mode"`
+	Mode                     string        `json:"mode"`
+	EvidenceMode             evidence.Mode `json:"evidence_mode"`
+	RuntimeRoot              string        `json:"runtime_root"`
+	FallbackReason           string        `json:"fallback_reason"`
+	Timestamp                string        `json:"timestamp"`
+	Error                    string        `json:"error,omitempty"`
+}
+
 type CommitManifest struct {
 	AgentID      string        `json:"agent_id"`
 	Mode         string        `json:"mode"`
@@ -517,6 +533,47 @@ func RunRMFaultDemo(cfg Config) (RMFaultEvidence, error) {
 	return result, nil
 }
 
+func ProbeOverlay(root string) WorkspaceProbe {
+	manager := NewManager(Config{Root: root})
+	probe := WorkspaceProbe{
+		Success:                  true,
+		Linux:                    runtime.GOOS == "linux",
+		UID:                      os.Geteuid(),
+		OverlayInProcFilesystems: overlayInProcFilesystems(),
+		SelectedMode:             ModeDegradedCopy,
+		Mode:                     ModeDegradedCopy,
+		EvidenceMode:             evidence.ModeDegradedCopy,
+		RuntimeRoot:              manager.root,
+		Timestamp:                time.Now().UTC().Format(time.RFC3339Nano),
+	}
+	ws, err := manager.Create("probe")
+	if err != nil {
+		probe.Success = false
+		probe.FallbackReason = err.Error()
+		probe.Error = err.Error()
+		return probe
+	}
+	defer func() {
+		if err := manager.Destroy("probe"); err != nil && probe.Error == "" {
+			probe.Success = false
+			probe.Error = err.Error()
+		}
+	}()
+
+	probe.SelectedMode = ws.Mode
+	probe.Mode = ws.Mode
+	probe.EvidenceMode = ws.EvidenceMode
+	probe.FallbackReason = ws.FallbackReason
+	probe.MergedIsMountpoint = isMountPoint(ws.MergedDir)
+	probe.MountTestSuccess = ws.Mode == ModeOverlayFS && probe.MergedIsMountpoint
+	if ws.Mode == ModeOverlayFS && !probe.MergedIsMountpoint {
+		probe.Success = false
+		probe.EvidenceMode = evidence.ModeDegraded
+		probe.FallbackReason = "overlayfs mount command succeeded but merged directory is not visible as a mountpoint"
+	}
+	return probe
+}
+
 func (m *Manager) create(agentID, seedDir string) (Workspace, error) {
 	if agentID == "" {
 		return Workspace{}, fmt.Errorf("agent_id is required")
@@ -697,6 +754,52 @@ func overlayUnavailableReason(force bool) string {
 		return "overlayfs is not listed in /proc/filesystems"
 	}
 	return ""
+}
+
+func overlayInProcFilesystems() bool {
+	if runtime.GOOS != "linux" {
+		return false
+	}
+	data, err := os.ReadFile("/proc/filesystems")
+	if err != nil {
+		return false
+	}
+	for _, line := range strings.Split(string(data), "\n") {
+		fields := strings.Fields(line)
+		if len(fields) > 0 && fields[len(fields)-1] == "overlay" {
+			return true
+		}
+	}
+	return false
+}
+
+func isMountPoint(path string) bool {
+	if runtime.GOOS != "linux" {
+		return false
+	}
+	target, err := filepath.Abs(filepath.Clean(path))
+	if err != nil {
+		return false
+	}
+	data, err := os.ReadFile("/proc/self/mountinfo")
+	if err != nil {
+		return false
+	}
+	for _, line := range strings.Split(string(data), "\n") {
+		fields := strings.Fields(line)
+		if len(fields) < 5 {
+			continue
+		}
+		if mountInfoUnescape(fields[4]) == target {
+			return true
+		}
+	}
+	return false
+}
+
+func mountInfoUnescape(value string) string {
+	replacer := strings.NewReplacer(`\040`, " ", `\011`, "\t", `\012`, "\n", `\134`, `\`)
+	return replacer.Replace(value)
 }
 
 func mountOverlay(ws Workspace) error {

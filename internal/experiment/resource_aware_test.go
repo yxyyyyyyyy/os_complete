@@ -83,8 +83,17 @@ func containsPolicy(policies []string, want string) bool {
 
 func TestRunE2RealFaultIsolationIncludesWorkspaceRMFault(t *testing.T) {
 	results := RunE2RealFaultIsolation(2)
+	seenKillCapsule := false
+	seenWorkspace := false
 	for _, result := range results {
+		if result.FaultType == "kill_capsule" {
+			seenKillCapsule = true
+			if result.FaultEvidence["kill_method"] != "cgroup.kill" && result.FaultEvidence["kill_method"] != "pid-signal-fallback" {
+				t.Fatalf("kill_capsule evidence missing kill_method: %#v", result)
+			}
+		}
 		if result.FaultType == "workspace_rmrf" {
+			seenWorkspace = true
 			if result.EvidenceMode != string(evidence.ModeRealRuntime) && result.EvidenceMode != string(evidence.ModeDegradedCopy) {
 				t.Fatalf("unexpected workspace evidence mode: %#v", result)
 			}
@@ -94,8 +103,12 @@ func TestRunE2RealFaultIsolationIncludesWorkspaceRMFault(t *testing.T) {
 			if result.FaultEvidence["evidence_mode"] == "" || result.FaultEvidence["fallback_reason"] == nil {
 				t.Fatalf("workspace evidence should include mode/fallback: %#v", result.FaultEvidence)
 			}
-			return
 		}
 	}
-	t.Fatalf("workspace_rmrf fault missing from E2: %#v", results)
+	if !seenKillCapsule {
+		t.Fatalf("kill_capsule fault missing from E2: %#v", results)
+	}
+	if !seenWorkspace {
+		t.Fatalf("workspace_rmrf fault missing from E2: %#v", results)
+	}
 }

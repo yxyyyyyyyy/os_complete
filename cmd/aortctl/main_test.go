@@ -23,6 +23,17 @@ func TestAortctlResourceAwareExperimentAndWorkspaceFaultCommands(t *testing.T) {
 	}
 }
 
+func TestAortctlWorkspaceProbeCommandWritesEvidence(t *testing.T) {
+	outDir := t.TempDir()
+	outFile := filepath.Join(outDir, "workspace_probe.json")
+	if err := run([]string{"workspace", "probe", "--out", outFile, "--root", filepath.Join(outDir, "probe-root")}); err != nil {
+		t.Fatalf("workspace probe: %v", err)
+	}
+	if _, err := os.Stat(outFile); err != nil {
+		t.Fatalf("workspace probe evidence missing: %v", err)
+	}
+}
+
 func TestAortctlSoftwareRealDemoCommandWritesResult(t *testing.T) {
 	outDir := t.TempDir()
 	if err := run([]string{"demo", "software-real", "--out", outDir}); err != nil {

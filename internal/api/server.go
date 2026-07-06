@@ -24,6 +24,7 @@ import (
 	"aort-r/internal/kernel"
 	"aort-r/internal/llm"
 	"aort-r/internal/pressure"
+	"aort-r/internal/resource"
 	"aort-r/internal/scheduler"
 	"aort-r/internal/supervisor"
 	syscallgw "aort-r/internal/syscall"
@@ -42,20 +43,21 @@ func NewServerWithEvents(cfg config.Config, hub *events.Hub) http.Handler {
 	}
 	sink := newEventSink(cfg, hub)
 	server := &Server{
-		cfg:        cfg,
-		hub:        hub,
-		sink:       sink,
-		demo:       demo.NewSoftwareDemoRunner(),
-		cvm:        cvm.NewStore(sink),
-		ipc:        ipc.NewBlackboard(),
-		kernel:     kernel.NewObserver(kernel.Config{Sink: sink}),
-		pressure:   pressure.NewMonitor(pressure.Config{}),
-		checkpoint: checkpoint.NewStore(filepath.Join(cfg.DataDir, "checkpoints")),
-		workspace:  workspace.NewManager(workspace.Config{Root: workspace.DefaultRoot(), Sink: sink}),
-		scheduler:  scheduler.New(scheduler.PolicyTokenCFSPrefixAffinity),
-		supervisor: supervisor.NewManager(sink),
-		tasks:      make(map[string]demo.Result),
-		workerCtx:  context.Background(),
+		cfg:             cfg,
+		hub:             hub,
+		sink:            sink,
+		demo:            demo.NewSoftwareDemoRunner(),
+		cvm:             cvm.NewStore(sink),
+		ipc:             ipc.NewBlackboard(),
+		kernel:          kernel.NewObserver(kernel.Config{Sink: sink}),
+		pressure:        pressure.NewMonitor(pressure.Config{}),
+		resourceSampler: resource.NewCgroupSampler(""),
+		checkpoint:      checkpoint.NewStore(filepath.Join(cfg.DataDir, "checkpoints")),
+		workspace:       workspace.NewManager(workspace.Config{Root: workspace.DefaultRoot(), Sink: sink}),
+		scheduler:       scheduler.New(scheduler.PolicyTokenCFSPrefixAffinity),
+		supervisor:      supervisor.NewManager(sink),
+		tasks:           make(map[string]demo.Result),
+		workerCtx:       context.Background(),
 	}
 	server.syscalls = syscallgw.NewGateway(syscallgw.Config{
 		CVM:           server.cvm,
@@ -83,6 +85,7 @@ type Server struct {
 	ipc              *ipc.Blackboard
 	kernel           *kernel.Observer
 	pressure         *pressure.Monitor
+	resourceSampler  *resource.CgroupSampler
 	checkpoint       *checkpoint.Store
 	workspace        *workspace.Manager
 	scheduler        *scheduler.Scheduler
@@ -598,13 +601,18 @@ func (s *Server) handleAgentAction(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	var err error
+	payload := map[string]any{"status": "ok", "action": action}
 	switch action {
 	case "freeze":
 		err = s.capsules.Freeze(agentID)
 	case "unfreeze":
 		err = s.capsules.Unfreeze(agentID)
 	case "kill":
-		err = s.capsules.Kill(agentID)
+		var result capsule.KillResult
+		result, err = s.capsules.Kill(agentID)
+		payload["kill_method"] = result.KillMethod
+		payload["evidence_mode"] = result.EvidenceMode
+		payload["fallback_reason"] = result.FallbackReason
 		if err == nil && s.registry != nil {
 			s.registry.SetState(agentID, avp.StateKilled)
 		}
@@ -618,10 +626,10 @@ func (s *Server) handleAgentAction(w http.ResponseWriter, r *http.Request) {
 	}
 	if s.registry != nil {
 		if agent, ok := s.registry.Get(agentID); ok {
-			s.sink.Publish(events.New("agent."+action, agent.TaskID, agent.AgentID, "runtime", map[string]any{"action": action}))
+			s.sink.Publish(events.New("agent."+action, agent.TaskID, agent.AgentID, "runtime", payload))
 		}
 	}
-	writeJSON(w, http.StatusOK, map[string]string{"status": "ok", "action": action})
+	writeJSON(w, http.StatusOK, payload)
 }
 
 type capsuleEvidence struct {
@@ -702,13 +710,18 @@ func (s *Server) handleCapsuleAction(w http.ResponseWriter, agentID, action stri
 		return
 	}
 	var err error
+	payload := map[string]any{"status": "ok", "action": action}
 	switch action {
 	case "freeze":
 		err = s.capsules.Freeze(agentID)
 	case "unfreeze":
 		err = s.capsules.Unfreeze(agentID)
 	case "kill":
-		err = s.capsules.Kill(agentID)
+		var result capsule.KillResult
+		result, err = s.capsules.Kill(agentID)
+		payload["kill_method"] = result.KillMethod
+		payload["evidence_mode"] = result.EvidenceMode
+		payload["fallback_reason"] = result.FallbackReason
 		if err == nil && s.registry != nil {
 			s.registry.SetState(agentID, avp.StateKilled)
 		}
@@ -722,10 +735,10 @@ func (s *Server) handleCapsuleAction(w http.ResponseWriter, agentID, action stri
 	}
 	if s.registry != nil {
 		if agent, ok := s.registry.Get(agentID); ok {
-			s.sink.Publish(events.New("capsule."+action, agent.TaskID, agent.AgentID, "runtime", map[string]any{"action": action}))
+			s.sink.Publish(events.New("capsule."+action, agent.TaskID, agent.AgentID, "runtime", payload))
 		}
 	}
-	writeJSON(w, http.StatusOK, map[string]string{"status": "ok", "action": action})
+	writeJSON(w, http.StatusOK, payload)
 }
 
 func (s *Server) capsuleEvidence(agent avp.AVP) capsuleEvidence {
@@ -1333,6 +1346,8 @@ func readJSON(path string, target any) bool {
 
 func (s *Server) schedulerCandidates(taskID string, pending []worker.Spec) []avp.AVP {
 	candidates := make([]avp.AVP, 0, len(pending))
+	combined := scheduler.ResourcePressure{}
+	sampled := false
 	for _, spec := range pending {
 		agent, ok := s.registry.Get(spec.AgentID)
 		if !ok {
@@ -1340,9 +1355,43 @@ func (s *Server) schedulerCandidates(taskID string, pending []worker.Spec) []avp
 		}
 		agent.State = avp.StateReady
 		agent.PageTable = s.cvm.PageTable(spec.AgentID).PageIDs
+		if s.resourceSampler != nil && agent.CgroupPath != "" {
+			enriched, pressure, err := s.resourceSampler.Enrich(agent)
+			if err == nil {
+				agent = enriched
+				combined = maxResourcePressure(combined, pressure)
+				sampled = true
+			}
+		}
 		candidates = append(candidates, agent)
 	}
+	if sampled {
+		s.scheduler.SetResourcePressure(combined)
+	}
 	return candidates
+}
+
+func maxResourcePressure(left, right scheduler.ResourcePressure) scheduler.ResourcePressure {
+	out := left
+	if right.MemoryPressure > out.MemoryPressure {
+		out.MemoryPressure = right.MemoryPressure
+	}
+	if right.PidsPressure > out.PidsPressure {
+		out.PidsPressure = right.PidsPressure
+	}
+	if right.CPUThrottlePressure > out.CPUThrottlePressure {
+		out.CPUThrottlePressure = right.CPUThrottlePressure
+	}
+	if right.PSIPressure > out.PSIPressure {
+		out.PSIPressure = right.PSIPressure
+	}
+	if right.EvidenceMode != "" {
+		out.EvidenceMode = right.EvidenceMode
+	}
+	if right.FallbackReason != "" {
+		out.FallbackReason = right.FallbackReason
+	}
+	return out
 }
 
 func (s *Server) publishSchedulerDecision(decision scheduler.DecisionLog) {

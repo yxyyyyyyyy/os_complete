@@ -13,6 +13,7 @@ import (
 	"time"
 
 	"aort-r/internal/avp"
+	"aort-r/internal/capsule"
 	"aort-r/internal/cvm"
 	"aort-r/internal/ipc"
 	"aort-r/internal/scheduler"
@@ -571,18 +572,30 @@ func RunE2RealFaultIsolation(runs int) []E2RealFaultResult {
 			agent:     "reviewer",
 			action:    "restart_agent_capsule_from_checkpoint",
 			run: func() map[string]any {
-				resp := gateway.Handle(ctx, syscallgw.Request{
-					RequestID: "e2-kill-capsule",
-					TaskID:    "e2-real-fault",
-					AgentID:   "reviewer",
-					Name:      "tool.exec",
-					Args: map[string]any{
-						"command":    "sh",
-						"args":       []string{"-c", "kill -TERM $$"},
-						"timeout_ms": 1000,
-					},
+				manager := capsule.NewManager(capsule.Config{
+					Root:          filepath.Join(os.TempDir(), "aort-e2-capsule-kill"),
+					ForceReal:     true,
+					AllowDegraded: false,
 				})
-				return map[string]any{"syscall_status": resp.Status, "exit_error": resp.Error, "capsule_signal": "cgroup.kill invoked"}
+				runtime, prepareErr := manager.Prepare("reviewer", os.Getpid())
+				if prepareErr != nil {
+					return map[string]any{
+						"kill_method":     capsule.KillMethodPidSignalFallback,
+						"evidence_mode":   "degraded",
+						"fallback_reason": prepareErr.Error(),
+					}
+				}
+				result, killErr := manager.Kill("reviewer")
+				out := map[string]any{
+					"kill_method":     result.KillMethod,
+					"evidence_mode":   result.EvidenceMode,
+					"fallback_reason": result.FallbackReason,
+					"cgroup_path":     runtime.CgroupPath,
+				}
+				if killErr != nil {
+					out["error"] = killErr.Error()
+				}
+				return out
 			},
 		},
 		{

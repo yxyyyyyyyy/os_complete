@@ -86,6 +86,38 @@ func TestCapsuleDetailAndActionsUseCapsuleRoutes(t *testing.T) {
 	}
 }
 
+func TestCapsuleKillActionReturnsKillMethodEvidence(t *testing.T) {
+	srv := NewServer(config.Config{HTTPAddr: "127.0.0.1:8080", Mode: "mock", DataDir: t.TempDir()})
+	server := srv.(*Server)
+	server.registry = worker.NewRegistry(server.sink)
+	server.capsules = capsule.NewManager(capsule.Config{
+		Root:          t.TempDir(),
+		ForceReal:     true,
+		AllowDegraded: false,
+	})
+	server.registry.CreateAgent("agent-capsule", "Coder", "task-1")
+	rt, err := server.capsules.Prepare("agent-capsule", 12345)
+	if err != nil {
+		t.Fatalf("Prepare: %v", err)
+	}
+	server.registry.SetCapsule("agent-capsule", rt.CgroupPath, rt.Mode)
+
+	killReq := httptest.NewRequest(http.MethodPost, "/api/capsules/agent-capsule/kill", nil)
+	killRec := httptest.NewRecorder()
+	srv.ServeHTTP(killRec, killReq)
+	if killRec.Code != http.StatusOK {
+		t.Fatalf("kill status=%d body=%s", killRec.Code, killRec.Body.String())
+	}
+	var body map[string]any
+	if err := json.Unmarshal(killRec.Body.Bytes(), &body); err != nil {
+		t.Fatalf("decode kill response: %v", err)
+	}
+	if body["kill_method"] != capsule.KillMethodCgroupKill {
+		t.Fatalf("kill response missing cgroup.kill evidence: %#v", body)
+	}
+	assertFileContains(t, filepath.Join(rt.CgroupPath, "cgroup.kill"), "1")
+}
+
 func degradedCapsuleManager(t *testing.T) *capsule.Manager {
 	t.Helper()
 	root := filepath.Join(t.TempDir(), "not-a-cgroup-dir")
@@ -97,4 +129,15 @@ func degradedCapsuleManager(t *testing.T) *capsule.Manager {
 		ForceReal:     true,
 		AllowDegraded: true,
 	})
+}
+
+func assertFileContains(t *testing.T, path string, want string) {
+	t.Helper()
+	data, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatalf("ReadFile(%s): %v", path, err)
+	}
+	if strings.TrimSpace(string(data)) != want {
+		t.Fatalf("%s = %q want %q", path, strings.TrimSpace(string(data)), want)
+	}
 }

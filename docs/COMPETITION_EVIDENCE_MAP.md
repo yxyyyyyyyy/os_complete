@@ -66,7 +66,7 @@ IPC 为 `real-partial`；LLM provider 默认 `mock`，不能宣称真实 DeepSee
 | Checkpoint | `/api/checkpoints`, `/api/recovery/status` |
 | cgroup stats | `memory.current`, `pids.current`, `cpu.stat`, `cgroup.events` |
 | Runtime control | `freeze`, `unfreeze`, `kill` API |
-| Workspace isolation | `/api/workspaces`, `POST /api/demo/fault/workspace-rmrf`, `workspace_isolation_evidence.json` |
+| Workspace isolation | `/api/workspaces`, `POST /api/demo/fault/workspace-rmrf`, `workspace_probe.json`, `workspace_isolation_evidence.json` |
 | Final verification | `scripts/competition_verify.sh`, `experiments/results/final/FINAL_EVIDENCE_INDEX.json` |
 
 当前证据模式：openEuler real cgroup v2 smoke 已验证 freeze/unfreeze/kill 为
@@ -89,8 +89,10 @@ IPC 为 `real-partial`；LLM provider 默认 `mock`，不能宣称真实 DeepSee
 | eBPF Observer | `planned` |
 | LLM Provider | `mock` |
 
-当前 checked-in workspace evidence 为 `real-overlayfs`；只有 Linux/root 主机
-成功 mount overlayfs 后才可保持该标签，其他环境复跑必须写 `degraded-copy`。
+当前 workspace evidence 以 `workspace_probe.json` 和
+`workspace_isolation_evidence.json` 为准；只有 Linux/root 主机成功 mount
+overlayfs 且 probe 证明 merged 是 mountpoint 后才可保持 `real-overlayfs`，
+其他环境复跑必须写 `degraded-copy`。
 
 ## P0/P1/P2 Evidence Files
 
@@ -100,4 +102,5 @@ IPC 为 `real-partial`；LLM provider 默认 `mock`，不能宣称真实 DeepSee
 | P0 final index | `experiments/results/final/FINAL_EVIDENCE_INDEX.json` |
 | P0 final summary | `experiments/results/final/FINAL_SUMMARY.md` |
 | P1 resource-aware E1 | `experiments/results/e1/e1_resource_aware.json` |
+| P2 workspace overlay probe | `experiments/results/workspace_probe.json` |
 | P2 workspace rmrf fault | `experiments/results/workspace_isolation_evidence.json` |

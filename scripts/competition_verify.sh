@@ -134,6 +134,12 @@ if run_step software_real_demo go run ./cmd/aortctl demo software-real --out exp
 fi
 record_step_status software_real_demo "$software_real_demo" "$LAST_STEP_LOG" "$LAST_STEP_COMMAND" "$LAST_STEP_CODE"
 
+workspace_probe="failed"
+if run_step workspace_probe go run ./cmd/aortctl workspace probe --out experiments/results/workspace_probe.json; then
+  workspace_probe="passed"
+fi
+record_step_status workspace_probe "$workspace_probe" "$LAST_STEP_LOG" "$LAST_STEP_COMMAND" "$LAST_STEP_CODE"
+
 workspace_isolation="failed"
 if run_step workspace_isolation go run ./cmd/aortctl demo fault workspace-rmrf --out experiments/results; then
   workspace_isolation="passed"
@@ -141,7 +147,7 @@ fi
 record_step_status workspace_isolation "$workspace_isolation" "$LAST_STEP_LOG" "$LAST_STEP_COMMAND" "$LAST_STEP_CODE"
 
 export kernel os_release cgroup_fs_type go_version_output
-export env_check go_test smoke e1_scheduler e2_fault_isolation software_real_demo workspace_isolation
+export env_check go_test smoke e1_scheduler e2_fault_isolation software_real_demo workspace_probe workspace_isolation
 
 python3 - "$FINAL_DIR/FINAL_EVIDENCE_INDEX.json" "$FINAL_DIR/FINAL_SUMMARY.md" <<'PY'
 import json
@@ -176,6 +182,7 @@ generated_candidates = [
     root / "experiments/results/e2-real-fault.json",
     root / "experiments/results/e2-real-fault.csv",
     root / "experiments/results/software_real_demo/result.json",
+    root / "experiments/results/workspace_probe.json",
     root / "experiments/results/workspace_isolation_evidence.json",
 ]
 generated_files = [rel(path) for path in generated_candidates if path.exists()]
@@ -192,6 +199,7 @@ e2_required = [
     root / "experiments/results/e2-real-fault.csv",
 ]
 software_required = [root / "experiments/results/software_real_demo/result.json"]
+workspace_probe_required = [root / "experiments/results/workspace_probe.json"]
 workspace_required = [root / "experiments/results/workspace_isolation_evidence.json"]
 
 def status_with_missing(name: str, paths: list[pathlib.Path]) -> str:
@@ -201,6 +209,7 @@ def status_with_missing(name: str, paths: list[pathlib.Path]) -> str:
     return status
 
 env_data = read_json(root / "experiments/results/final/env_check.json") or {}
+workspace_probe_data = read_json(root / "experiments/results/workspace_probe.json") or {}
 workspace_data = read_json(root / "experiments/results/workspace_isolation_evidence.json") or {}
 e1_data = read_json(root / "experiments/results/e1/e1_resource_aware.json") or {}
 e1_decisions = read_json(root / "experiments/results/e1/e1_resource_aware_decisions.json") or []
@@ -211,6 +220,9 @@ if os.environ.get("env_check") == "degraded" or env_data.get("evidence_mode") ==
     known_limits.append("local host did not prove live openEuler cgroup v2; cgroup evidence is degraded or archived")
 if workspace_data.get("evidence_mode") == "degraded-copy":
     known_limits.append("overlayfs mount was unavailable or not attempted; workspace isolation used degraded-copy fallback")
+if workspace_probe_data.get("evidence_mode") == "degraded-copy":
+    reason = workspace_probe_data.get("fallback_reason") or "overlayfs probe used degraded-copy fallback"
+    known_limits.append("overlayfs probe degraded: " + reason)
 if os.environ.get("smoke") == "degraded":
     known_limits.append("openEuler smoke ran in degraded mode on this host")
 resource_pressure_fallback = ""
@@ -242,6 +254,7 @@ index = {
     "e1_scheduler": status_with_missing("e1_scheduler", e1_required),
     "e2_fault_isolation": status_with_missing("e2_fault_isolation", e2_required),
     "software_real_demo": status_with_missing("software_real_demo", software_required),
+    "workspace_probe": status_with_missing("workspace_probe", workspace_probe_required),
     "workspace_isolation": status_with_missing("workspace_isolation", workspace_required),
     "generated_files": generated_files,
     "missing_files": missing_files,
@@ -252,7 +265,7 @@ index = {
         "ipc": "real-partial",
         "llm": "mock",
         "ebpf": "planned",
-        "overlayfs": workspace_data.get("evidence_mode", "degraded-copy"),
+        "overlayfs": workspace_probe_data.get("evidence_mode") or workspace_data.get("evidence_mode", "degraded-copy"),
     },
     "known_limits": known_limits,
 }
@@ -268,6 +281,7 @@ summary_lines = [
     f"- e1_scheduler: {index['e1_scheduler']}",
     f"- e2_fault_isolation: {index['e2_fault_isolation']}",
     f"- software_real_demo: {index['software_real_demo']}",
+    f"- workspace_probe: {index['workspace_probe']}",
     f"- workspace_isolation: {index['workspace_isolation']}",
     "",
     "## Generated Files",
@@ -305,6 +319,7 @@ if [ "$go_test" != "passed" ] ||
   [ "$e1_scheduler" != "passed" ] ||
   [ "$e2_fault_isolation" != "passed" ] ||
   [ "$software_real_demo" != "passed" ] ||
+  [ "$workspace_probe" != "passed" ] ||
   [ "$workspace_isolation" != "passed" ]; then
   exit 1
 fi

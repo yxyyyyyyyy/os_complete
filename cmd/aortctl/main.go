@@ -19,13 +19,15 @@ func main() {
 
 func run(args []string) error {
 	if len(args) == 0 {
-		return fmt.Errorf("usage: aortctl experiment|demo ...")
+		return fmt.Errorf("usage: aortctl experiment|demo|workspace ...")
 	}
 	switch args[0] {
 	case "experiment":
 		return runExperiment(args[1:])
 	case "demo":
 		return runDemo(args[1:])
+	case "workspace":
+		return runWorkspace(args[1:])
 	default:
 		return fmt.Errorf("unknown command %q", args[0])
 	}
@@ -63,6 +65,25 @@ func runExperiment(args []string) error {
 		return experiment.WriteCSV(filepath.Join(*out, "e2-real-fault.csv"), experiment.E2RealCSV(results))
 	default:
 		return fmt.Errorf("unknown experiment %q", args[0])
+	}
+}
+
+func runWorkspace(args []string) error {
+	if len(args) == 0 {
+		return fmt.Errorf("usage: aortctl workspace probe")
+	}
+	switch args[0] {
+	case "probe":
+		fs := flag.NewFlagSet("workspace probe", flag.ContinueOnError)
+		out := fs.String("out", filepath.Join("experiments", "results", "workspace_probe.json"), "output JSON path")
+		root := fs.String("root", "", "runtime root for the probe workspace")
+		if err := fs.Parse(args[1:]); err != nil {
+			return err
+		}
+		result := workspace.ProbeOverlay(*root)
+		return experiment.WriteJSON(*out, result)
+	default:
+		return fmt.Errorf("unknown workspace command %q", args[0])
 	}
 }
 

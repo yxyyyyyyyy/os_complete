@@ -4,6 +4,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"syscall"
 	"testing"
 )
 
@@ -88,6 +89,66 @@ func TestFreezeAndUnfreezeWriteCgroupFreeze(t *testing.T) {
 		t.Fatalf("Unfreeze: %v", err)
 	}
 	assertFileContains(t, filepath.Join(runtime.CgroupPath, "cgroup.freeze"), "0")
+}
+
+func TestKillPrefersCgroupKillForRealCapsule(t *testing.T) {
+	root := t.TempDir()
+	mgr := NewManager(Config{Root: root, ForceReal: true, AllowDegraded: false})
+	runtime, err := mgr.Prepare("agent-1", 12345)
+	if err != nil {
+		t.Fatalf("Prepare: %v", err)
+	}
+
+	result, err := mgr.Kill("agent-1")
+	if err != nil {
+		t.Fatalf("Kill: %v", err)
+	}
+	if result.KillMethod != KillMethodCgroupKill {
+		t.Fatalf("kill method = %q, want %q", result.KillMethod, KillMethodCgroupKill)
+	}
+	if result.EvidenceMode != "real-cgroup-v2" {
+		t.Fatalf("evidence mode = %q", result.EvidenceMode)
+	}
+	assertFileContains(t, filepath.Join(runtime.CgroupPath, "cgroup.kill"), "1")
+}
+
+func TestKillFallsBackToPidSignalWhenCgroupKillFails(t *testing.T) {
+	root := t.TempDir()
+	var signaled []syscall.Signal
+	mgr := NewManager(Config{
+		Root:          root,
+		ForceReal:     true,
+		AllowDegraded: false,
+		SignalFunc: func(pid int, signal syscall.Signal) error {
+			if pid != 12345 {
+				t.Fatalf("pid = %d, want 12345", pid)
+			}
+			signaled = append(signaled, signal)
+			return nil
+		},
+		SignalGracePeriod: 0,
+	})
+	runtime, err := mgr.Prepare("agent-1", 12345)
+	if err != nil {
+		t.Fatalf("Prepare: %v", err)
+	}
+	if err := os.Mkdir(filepath.Join(runtime.CgroupPath, "cgroup.kill"), 0o755); err != nil {
+		t.Fatalf("create cgroup.kill directory: %v", err)
+	}
+
+	result, err := mgr.Kill("agent-1")
+	if err != nil {
+		t.Fatalf("Kill: %v", err)
+	}
+	if result.KillMethod != KillMethodPidSignalFallback {
+		t.Fatalf("kill method = %q, want %q", result.KillMethod, KillMethodPidSignalFallback)
+	}
+	if result.FallbackReason == "" {
+		t.Fatalf("fallback reason should explain cgroup.kill failure: %#v", result)
+	}
+	if len(signaled) != 2 || signaled[0] != syscall.SIGTERM || signaled[1] != syscall.SIGKILL {
+		t.Fatalf("signals = %#v", signaled)
+	}
 }
 
 func TestPrepareReturnsDegradedWhenUnavailable(t *testing.T) {

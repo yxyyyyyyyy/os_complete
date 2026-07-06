@@ -23,10 +23,12 @@ Modes:
 - `real-overlayfs`: Linux root host, overlayfs is listed in `/proc/filesystems`, and the mount succeeds.
 - `degraded-copy`: fallback mode for macOS, non-root Linux, missing overlayfs, or mount failure.
 
-Current checked-in evidence is `real-overlayfs` from a Linux/root verification
-run where overlayfs mounted successfully. If this demo is rerun on macOS,
-non-root Linux, or a host without overlayfs mount support, the evidence must
-remain `degraded-copy` and include the concrete `fallback_reason`.
+Current evidence is determined by `workspace_probe.json` and
+`workspace_isolation_evidence.json`. `real-overlayfs` is valid only when the
+probe records `mount_test_success=true`, `merged_is_mountpoint=true`, and
+`evidence_mode=real-overlayfs`. If the demo is rerun on macOS, non-root Linux,
+or a host without overlayfs mount support, the evidence must remain
+`degraded-copy` and include the concrete `fallback_reason`.
 
 Real overlayfs mount:
 
@@ -51,6 +53,7 @@ Safety boundary:
 Fault demo:
 
 ```bash
+go run ./cmd/aortctl workspace probe --out experiments/results/workspace_probe.json
 go run ./cmd/aortctl demo fault workspace-rmrf --out experiments/results
 ```
 
@@ -59,6 +62,7 @@ The demo creates `planner`, `coder`, and `reviewer` workspaces, deletes
 back `coder`, commits the restored workspace, destroys all demo workspaces, and
 writes:
 
+- `experiments/results/workspace_probe.json`
 - `experiments/results/workspace_isolation_evidence.json`
 
 Current limits:

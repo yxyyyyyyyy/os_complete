@@ -1,0 +1,14 @@
+{
+  "success": true,
+  "linux": true,
+  "uid": 0,
+  "overlay_in_proc_filesystems": true,
+  "mount_test_success": true,
+  "merged_is_mountpoint": true,
+  "selected_mode": "overlayfs",
+  "mode": "overlayfs",
+  "evidence_mode": "real-overlayfs",
+  "runtime_root": "/tmp/aort-runtime/workspaces",
+  "fallback_reason": "",
+  "timestamp": "2026-07-06T07:02:29.246007754Z"
+}

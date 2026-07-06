@@ -10,20 +10,27 @@ import (
 	"sync"
 	"syscall"
 	"time"
+
+	"aort-r/internal/evidence"
 )
 
 const (
 	ModeReal     = "real"
 	ModeDegraded = "degraded"
+
+	KillMethodCgroupKill        = "cgroup.kill"
+	KillMethodPidSignalFallback = "pid-signal-fallback"
 )
 
 type Config struct {
-	Root          string
-	ForceReal     bool
-	AllowDegraded bool
-	MemoryMax     string
-	PidsMax       string
-	CPUMax        string
+	Root              string
+	ForceReal         bool
+	AllowDegraded     bool
+	MemoryMax         string
+	PidsMax           string
+	CPUMax            string
+	SignalFunc        func(pid int, signal syscall.Signal) error
+	SignalGracePeriod time.Duration
 }
 
 type Runtime struct {
@@ -41,6 +48,13 @@ type Stats struct {
 	Frozen        bool              `json:"frozen"`
 	Mode          string            `json:"capsule_mode"`
 	Error         string            `json:"error,omitempty"`
+}
+
+type KillResult struct {
+	AgentID        string        `json:"agent_id"`
+	KillMethod     string        `json:"kill_method"`
+	EvidenceMode   evidence.Mode `json:"evidence_mode"`
+	FallbackReason string        `json:"fallback_reason,omitempty"`
 }
 
 type Manager struct {
@@ -62,6 +76,12 @@ func NewManager(cfg Config) *Manager {
 	}
 	if cfg.CPUMax == "" {
 		cfg.CPUMax = "100000 100000"
+	}
+	if cfg.SignalFunc == nil {
+		cfg.SignalFunc = syscall.Kill
+	}
+	if cfg.SignalGracePeriod == 0 {
+		cfg.SignalGracePeriod = 500 * time.Millisecond
 	}
 	return &Manager{
 		cfg:      cfg,
@@ -148,19 +168,37 @@ func (m *Manager) Unfreeze(agentID string) error {
 	return m.writeFreeze(agentID, "0")
 }
 
-func (m *Manager) Kill(agentID string) error {
+func (m *Manager) Kill(agentID string) (KillResult, error) {
+	result := KillResult{
+		AgentID:      agentID,
+		KillMethod:   KillMethodPidSignalFallback,
+		EvidenceMode: evidence.ModeDegraded,
+	}
+	rt, ok := m.Runtime(agentID)
+	if ok && rt.Mode == ModeReal {
+		killFile := filepath.Join(rt.CgroupPath, "cgroup.kill")
+		if err := os.WriteFile(killFile, []byte("1\n"), 0o644); err == nil {
+			result.KillMethod = KillMethodCgroupKill
+			result.EvidenceMode = evidence.ModeRealCgroupV2
+			return result, nil
+		} else {
+			result.FallbackReason = "cgroup.kill failed: " + err.Error()
+		}
+	}
 	m.mu.RLock()
 	pid := m.pids[agentID]
 	m.mu.RUnlock()
 	if pid == 0 {
-		return fmt.Errorf("agent %q has no pid", agentID)
+		return result, fmt.Errorf("agent %q has no pid", agentID)
 	}
-	if err := syscall.Kill(pid, syscall.SIGTERM); err != nil && err != syscall.ESRCH {
-		return err
+	if err := m.cfg.SignalFunc(pid, syscall.SIGTERM); err != nil && err != syscall.ESRCH {
+		return result, err
 	}
-	time.Sleep(500 * time.Millisecond)
-	_ = syscall.Kill(pid, syscall.SIGKILL)
-	return nil
+	if m.cfg.SignalGracePeriod > 0 {
+		time.Sleep(m.cfg.SignalGracePeriod)
+	}
+	_ = m.cfg.SignalFunc(pid, syscall.SIGKILL)
+	return result, nil
 }
 
 func (m *Manager) Destroy(agentID string) error {

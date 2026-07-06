@@ -80,8 +80,13 @@ func TestRunRealExperimentSuiteProducesP0Artifacts(t *testing.T) {
 		if result.FaultEvidence == nil {
 			t.Fatalf("missing E2 fault evidence: %#v", result)
 		}
-		if result.FaultType != "workspace_rmrf" && result.FaultEvidence["syscall_status"] == nil {
+		if result.FaultType != "workspace_rmrf" && result.FaultType != "kill_capsule" && result.FaultEvidence["syscall_status"] == nil {
 			t.Fatalf("missing syscall status evidence: %#v", result)
+		}
+		if result.FaultType == "kill_capsule" &&
+			result.FaultEvidence["kill_method"] != "cgroup.kill" &&
+			result.FaultEvidence["kill_method"] != "pid-signal-fallback" {
+			t.Fatalf("kill capsule evidence incomplete: %#v", result)
 		}
 		if result.FaultType == "workspace_rmrf" && (result.FaultEvidence["rollback_success"] != true || fmt.Sprint(result.FaultEvidence["evidence_mode"]) != "degraded-copy") {
 			t.Fatalf("workspace rmrf evidence incomplete: %#v", result)
