@@ -19,7 +19,18 @@ func TestSoftwareRealDemoRunProducesRuntimeEvidence(t *testing.T) {
 	if err := os.WriteFile(filepath.Join(artifactRoot, "go.mod"), []byte("module isolated-api-test\n"), 0o644); err != nil {
 		t.Fatalf("write temp go.mod: %v", err)
 	}
-	t.Chdir(artifactRoot)
+	wd, err := os.Getwd()
+	if err != nil {
+		t.Fatalf("get working directory: %v", err)
+	}
+	if err := os.Chdir(artifactRoot); err != nil {
+		t.Fatalf("change to isolated artifact root: %v", err)
+	}
+	t.Cleanup(func() {
+		if err := os.Chdir(wd); err != nil {
+			t.Fatalf("restore working directory: %v", err)
+		}
+	})
 
 	srv := NewServer(config.Config{HTTPAddr: "127.0.0.1:8080", Mode: "mock", DataDir: t.TempDir()})
 	server := srv.(*Server)
