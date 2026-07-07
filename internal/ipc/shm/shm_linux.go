@@ -9,7 +9,10 @@ import (
 	"unsafe"
 )
 
-const memfdCloexec = 0x0001
+const (
+	memfdCloexec   = 0x0001
+	sysMemfdCreate = 319
+)
 
 func exerciseMemoryTransport(payload []byte, workerCount int) (SmokeResult, error) {
 	if workerCount <= 0 {
@@ -107,7 +110,7 @@ func workerReadViaFDPassing(fd int, want []byte) (bool, error) {
 
 func memfdCreate(name string) (int, error) {
 	raw := append([]byte(name), 0)
-	fd, _, errno := syscall.Syscall(syscall.SYS_MEMFD_CREATE, uintptr(unsafe.Pointer(&raw[0])), memfdCloexec, 0)
+	fd, _, errno := syscall.Syscall(sysMemfdCreate, uintptr(unsafe.Pointer(&raw[0])), memfdCloexec, 0)
 	if errno != 0 {
 		return -1, errno
 	}

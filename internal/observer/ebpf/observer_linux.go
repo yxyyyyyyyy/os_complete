@@ -4,7 +4,6 @@ package ebpf
 
 import (
 	"bytes"
-	"fmt"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -26,6 +25,8 @@ const (
 
 	perfEventIOCEnable = 0x2400
 	perfEventIOCSetBPF = 0x40042408
+
+	sysBPF = 321
 )
 
 type bpfInsn struct {
@@ -178,7 +179,7 @@ func platformSmoke() SmokeResult {
 func createPIDMap() (int, error) {
 	attr := bpfMapCreateAttr{MapType: bpfMapTypeHash, KeySize: 4, ValueSize: 8, MaxEntries: 256}
 	copy(attr.MapName[:], "aort_pids")
-	fd, _, errno := syscall.Syscall(syscall.SYS_BPF, bpfMapCreate, uintptr(unsafe.Pointer(&attr)), unsafe.Sizeof(attr))
+	fd, _, errno := syscall.Syscall(sysBPF, bpfMapCreate, uintptr(unsafe.Pointer(&attr)), unsafe.Sizeof(attr))
 	if errno != 0 {
 		return -1, errno
 	}
@@ -216,7 +217,7 @@ func loadTracepointProgram(mapFD int) (int, string, error) {
 		KernVersion: 0,
 	}
 	copy(attr.ProgName[:], "aort_exit")
-	fd, _, errno := syscall.Syscall(syscall.SYS_BPF, bpfProgLoad, uintptr(unsafe.Pointer(&attr)), unsafe.Sizeof(attr))
+	fd, _, errno := syscall.Syscall(sysBPF, bpfProgLoad, uintptr(unsafe.Pointer(&attr)), unsafe.Sizeof(attr))
 	logText := strings.TrimRight(string(logBuf), "\x00")
 	if errno != 0 {
 		return -1, logText, errno
@@ -264,7 +265,7 @@ func lookupPID(mapFD int, pid uint32) bool {
 		Key:   uint64(uintptr(unsafe.Pointer(&pid))),
 		Value: uint64(uintptr(unsafe.Pointer(&value))),
 	}
-	_, _, errno := syscall.Syscall(syscall.SYS_BPF, bpfMapLookupElem, uintptr(unsafe.Pointer(&attr)), unsafe.Sizeof(attr))
+	_, _, errno := syscall.Syscall(sysBPF, bpfMapLookupElem, uintptr(unsafe.Pointer(&attr)), unsafe.Sizeof(attr))
 	return errno == 0 && value > 0
 }
 
