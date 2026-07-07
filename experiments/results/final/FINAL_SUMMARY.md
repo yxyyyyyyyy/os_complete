@@ -2,7 +2,7 @@
 
 ## Overall conclusion
 - Real-only openEuler evidence is present and all required real checks passed.
-- Git commit: `95e79c9fe703b6222fab3163b057b3235d325009`
+- Git commit: `ae42e870d29a4070e31dc5b3f5c8f62af4314c47`
 - Git branch: `codex/aort-r-upgrade`
 - git_dirty: `false`
 
