@@ -703,7 +703,7 @@ func evidenceModeFromPath(path, fallback string) string {
 func collectGitInfo(root string) FinalGitInfo {
 	commit := commandOutput(root, "git", "rev-parse", "HEAD")
 	branch := commandOutput(root, "git", "branch", "--show-current")
-	dirty := gitDirtyFromPorcelain(commandOutput(root, "git", "status", "--porcelain", "--untracked-files=no"))
+	dirty := gitDirtyFromPorcelain(commandOutput(root, "git", "status", "--porcelain", "--untracked-files=no", "--", ".", ":(exclude)experiments/results/**"))
 	return FinalGitInfo{Commit: fallbackOr(commit, "missing"), Branch: fallbackOr(branch, "missing"), Dirty: dirty}
 }
 
