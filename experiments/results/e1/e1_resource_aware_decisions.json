@@ -1,8 +1,8 @@
 [
   {
-    "id": "20260707181201.965662558",
-    "decision_id": "20260707181201.965662558",
-    "timestamp": "2026-07-07T10:12:01.965662558Z",
+    "id": "20260707183016.858769039",
+    "decision_id": "20260707183016.858769039",
+    "timestamp": "2026-07-07T10:30:16.858769039Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -43,12 +43,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121965
+    "created_at": 1783420216858
   },
   {
-    "id": "20260707181201.965713522",
-    "decision_id": "20260707181201.965713522",
-    "timestamp": "2026-07-07T10:12:01.965713522Z",
+    "id": "20260707183016.858808091",
+    "decision_id": "20260707183016.858808091",
+    "timestamp": "2026-07-07T10:30:16.858808091Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -89,12 +89,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121965
+    "created_at": 1783420216858
   },
   {
-    "id": "20260707181201.965732814",
-    "decision_id": "20260707181201.965732814",
-    "timestamp": "2026-07-07T10:12:01.965732814Z",
+    "id": "20260707183016.858828058",
+    "decision_id": "20260707183016.858828058",
+    "timestamp": "2026-07-07T10:30:16.858828058Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -135,12 +135,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121965
+    "created_at": 1783420216858
   },
   {
-    "id": "20260707181201.965742499",
-    "decision_id": "20260707181201.965742499",
-    "timestamp": "2026-07-07T10:12:01.965742499Z",
+    "id": "20260707183016.858838321",
+    "decision_id": "20260707183016.858838321",
+    "timestamp": "2026-07-07T10:30:16.858838321Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -181,12 +181,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121965
+    "created_at": 1783420216858
   },
   {
-    "id": "20260707181201.965753608",
-    "decision_id": "20260707181201.965753608",
-    "timestamp": "2026-07-07T10:12:01.965753608Z",
+    "id": "20260707183016.858848874",
+    "decision_id": "20260707183016.858848874",
+    "timestamp": "2026-07-07T10:30:16.858848874Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -227,12 +227,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121965
+    "created_at": 1783420216858
   },
   {
-    "id": "20260707181201.965764396",
-    "decision_id": "20260707181201.965764396",
-    "timestamp": "2026-07-07T10:12:01.965764396Z",
+    "id": "20260707183016.858858791",
+    "decision_id": "20260707183016.858858791",
+    "timestamp": "2026-07-07T10:30:16.858858791Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -273,12 +273,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121965
+    "created_at": 1783420216858
   },
   {
-    "id": "20260707181201.965769643",
-    "decision_id": "20260707181201.965769643",
-    "timestamp": "2026-07-07T10:12:01.965769643Z",
+    "id": "20260707183016.858863760",
+    "decision_id": "20260707183016.858863760",
+    "timestamp": "2026-07-07T10:30:16.85886376Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -319,12 +319,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121965
+    "created_at": 1783420216858
   },
   {
-    "id": "20260707181201.965774733",
-    "decision_id": "20260707181201.965774733",
-    "timestamp": "2026-07-07T10:12:01.965774733Z",
+    "id": "20260707183016.858868837",
+    "decision_id": "20260707183016.858868837",
+    "timestamp": "2026-07-07T10:30:16.858868837Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -365,12 +365,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121965
+    "created_at": 1783420216858
   },
   {
-    "id": "20260707181201.965779437",
-    "decision_id": "20260707181201.965779437",
-    "timestamp": "2026-07-07T10:12:01.965779437Z",
+    "id": "20260707183016.858873431",
+    "decision_id": "20260707183016.858873431",
+    "timestamp": "2026-07-07T10:30:16.858873431Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -411,12 +411,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121965
+    "created_at": 1783420216858
   },
   {
-    "id": "20260707181201.965792273",
-    "decision_id": "20260707181201.965792273",
-    "timestamp": "2026-07-07T10:12:01.965792273Z",
+    "id": "20260707183016.858883800",
+    "decision_id": "20260707183016.858883800",
+    "timestamp": "2026-07-07T10:30:16.8588838Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -457,12 +457,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121965
+    "created_at": 1783420216858
   },
   {
-    "id": "20260707181201.965798053",
-    "decision_id": "20260707181201.965798053",
-    "timestamp": "2026-07-07T10:12:01.965798053Z",
+    "id": "20260707183016.858889643",
+    "decision_id": "20260707183016.858889643",
+    "timestamp": "2026-07-07T10:30:16.858889643Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -503,12 +503,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121965
+    "created_at": 1783420216858
   },
   {
-    "id": "20260707181201.965803471",
-    "decision_id": "20260707181201.965803471",
-    "timestamp": "2026-07-07T10:12:01.965803471Z",
+    "id": "20260707183016.858894756",
+    "decision_id": "20260707183016.858894756",
+    "timestamp": "2026-07-07T10:30:16.858894756Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -549,12 +549,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121965
+    "created_at": 1783420216858
   },
   {
-    "id": "20260707181201.965808007",
-    "decision_id": "20260707181201.965808007",
-    "timestamp": "2026-07-07T10:12:01.965808007Z",
+    "id": "20260707183016.858899245",
+    "decision_id": "20260707183016.858899245",
+    "timestamp": "2026-07-07T10:30:16.858899245Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -595,12 +595,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121965
+    "created_at": 1783420216858
   },
   {
-    "id": "20260707181201.965813096",
-    "decision_id": "20260707181201.965813096",
-    "timestamp": "2026-07-07T10:12:01.965813096Z",
+    "id": "20260707183016.858904281",
+    "decision_id": "20260707183016.858904281",
+    "timestamp": "2026-07-07T10:30:16.858904281Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -641,12 +641,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121965
+    "created_at": 1783420216858
   },
   {
-    "id": "20260707181201.965817799",
-    "decision_id": "20260707181201.965817799",
-    "timestamp": "2026-07-07T10:12:01.965817799Z",
+    "id": "20260707183016.858909031",
+    "decision_id": "20260707183016.858909031",
+    "timestamp": "2026-07-07T10:30:16.858909031Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -687,12 +687,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121965
+    "created_at": 1783420216858
   },
   {
-    "id": "20260707181201.965822690",
-    "decision_id": "20260707181201.965822690",
-    "timestamp": "2026-07-07T10:12:01.96582269Z",
+    "id": "20260707183016.858913720",
+    "decision_id": "20260707183016.858913720",
+    "timestamp": "2026-07-07T10:30:16.85891372Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -733,12 +733,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121965
+    "created_at": 1783420216858
   },
   {
-    "id": "20260707181201.965829801",
-    "decision_id": "20260707181201.965829801",
-    "timestamp": "2026-07-07T10:12:01.965829801Z",
+    "id": "20260707183016.858921125",
+    "decision_id": "20260707183016.858921125",
+    "timestamp": "2026-07-07T10:30:16.858921125Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -779,12 +779,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121965
+    "created_at": 1783420216858
   },
   {
-    "id": "20260707181201.965836036",
-    "decision_id": "20260707181201.965836036",
-    "timestamp": "2026-07-07T10:12:01.965836036Z",
+    "id": "20260707183016.858927196",
+    "decision_id": "20260707183016.858927196",
+    "timestamp": "2026-07-07T10:30:16.858927196Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -825,12 +825,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121965
+    "created_at": 1783420216858
   },
   {
-    "id": "20260707181201.965840846",
-    "decision_id": "20260707181201.965840846",
-    "timestamp": "2026-07-07T10:12:01.965840846Z",
+    "id": "20260707183016.858931752",
+    "decision_id": "20260707183016.858931752",
+    "timestamp": "2026-07-07T10:30:16.858931752Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -871,12 +871,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121965
+    "created_at": 1783420216858
   },
   {
-    "id": "20260707181201.965849658",
-    "decision_id": "20260707181201.965849658",
-    "timestamp": "2026-07-07T10:12:01.965849658Z",
+    "id": "20260707183016.858940578",
+    "decision_id": "20260707183016.858940578",
+    "timestamp": "2026-07-07T10:30:16.858940578Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -917,12 +917,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121965
+    "created_at": 1783420216858
   },
   {
-    "id": "20260707181201.965854336",
-    "decision_id": "20260707181201.965854336",
-    "timestamp": "2026-07-07T10:12:01.965854336Z",
+    "id": "20260707183016.858944729",
+    "decision_id": "20260707183016.858944729",
+    "timestamp": "2026-07-07T10:30:16.858944729Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -963,12 +963,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121965
+    "created_at": 1783420216858
   },
   {
-    "id": "20260707181201.965859003",
-    "decision_id": "20260707181201.965859003",
-    "timestamp": "2026-07-07T10:12:01.965859003Z",
+    "id": "20260707183016.858949013",
+    "decision_id": "20260707183016.858949013",
+    "timestamp": "2026-07-07T10:30:16.858949013Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -1009,12 +1009,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121965
+    "created_at": 1783420216858
   },
   {
-    "id": "20260707181201.965863941",
-    "decision_id": "20260707181201.965863941",
-    "timestamp": "2026-07-07T10:12:01.965863941Z",
+    "id": "20260707183016.858953622",
+    "decision_id": "20260707183016.858953622",
+    "timestamp": "2026-07-07T10:30:16.858953622Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -1055,12 +1055,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121965
+    "created_at": 1783420216858
   },
   {
-    "id": "20260707181201.965868326",
-    "decision_id": "20260707181201.965868326",
-    "timestamp": "2026-07-07T10:12:01.965868326Z",
+    "id": "20260707183016.858957973",
+    "decision_id": "20260707183016.858957973",
+    "timestamp": "2026-07-07T10:30:16.858957973Z",
     "task_id": "e1-resource-fifo",
     "selected_task": "e1-resource-fifo",
     "candidates": [
@@ -1101,12 +1101,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121965
+    "created_at": 1783420216858
   },
   {
-    "id": "20260707181201.967061197",
-    "decision_id": "20260707181201.967061197",
-    "timestamp": "2026-07-07T10:12:01.967061197Z",
+    "id": "20260707183016.860785087",
+    "decision_id": "20260707183016.860785087",
+    "timestamp": "2026-07-07T10:30:16.860785087Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -1147,12 +1147,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121967
+    "created_at": 1783420216860
   },
   {
-    "id": "20260707181201.967076937",
-    "decision_id": "20260707181201.967076937",
-    "timestamp": "2026-07-07T10:12:01.967076937Z",
+    "id": "20260707183016.860862152",
+    "decision_id": "20260707183016.860862152",
+    "timestamp": "2026-07-07T10:30:16.860862152Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -1193,12 +1193,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121967
+    "created_at": 1783420216860
   },
   {
-    "id": "20260707181201.967091342",
-    "decision_id": "20260707181201.967091342",
-    "timestamp": "2026-07-07T10:12:01.967091342Z",
+    "id": "20260707183016.860874557",
+    "decision_id": "20260707183016.860874557",
+    "timestamp": "2026-07-07T10:30:16.860874557Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -1239,12 +1239,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121967
+    "created_at": 1783420216860
   },
   {
-    "id": "20260707181201.967102423",
-    "decision_id": "20260707181201.967102423",
-    "timestamp": "2026-07-07T10:12:01.967102423Z",
+    "id": "20260707183016.860885357",
+    "decision_id": "20260707183016.860885357",
+    "timestamp": "2026-07-07T10:30:16.860885357Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -1285,12 +1285,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121967
+    "created_at": 1783420216860
   },
   {
-    "id": "20260707181201.967114412",
-    "decision_id": "20260707181201.967114412",
-    "timestamp": "2026-07-07T10:12:01.967114412Z",
+    "id": "20260707183016.860897397",
+    "decision_id": "20260707183016.860897397",
+    "timestamp": "2026-07-07T10:30:16.860897397Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -1331,12 +1331,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121967
+    "created_at": 1783420216860
   },
   {
-    "id": "20260707181201.967125814",
-    "decision_id": "20260707181201.967125814",
-    "timestamp": "2026-07-07T10:12:01.967125814Z",
+    "id": "20260707183016.860909075",
+    "decision_id": "20260707183016.860909075",
+    "timestamp": "2026-07-07T10:30:16.860909075Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -1377,12 +1377,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121967
+    "created_at": 1783420216860
   },
   {
-    "id": "20260707181201.967133236",
-    "decision_id": "20260707181201.967133236",
-    "timestamp": "2026-07-07T10:12:01.967133236Z",
+    "id": "20260707183016.860915491",
+    "decision_id": "20260707183016.860915491",
+    "timestamp": "2026-07-07T10:30:16.860915491Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -1423,12 +1423,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121967
+    "created_at": 1783420216860
   },
   {
-    "id": "20260707181201.967140428",
-    "decision_id": "20260707181201.967140428",
-    "timestamp": "2026-07-07T10:12:01.967140428Z",
+    "id": "20260707183016.860921654",
+    "decision_id": "20260707183016.860921654",
+    "timestamp": "2026-07-07T10:30:16.860921654Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -1469,12 +1469,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121967
+    "created_at": 1783420216860
   },
   {
-    "id": "20260707181201.967147509",
-    "decision_id": "20260707181201.967147509",
-    "timestamp": "2026-07-07T10:12:01.967147509Z",
+    "id": "20260707183016.860930424",
+    "decision_id": "20260707183016.860930424",
+    "timestamp": "2026-07-07T10:30:16.860930424Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -1515,12 +1515,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121967
+    "created_at": 1783420216860
   },
   {
-    "id": "20260707181201.967155834",
-    "decision_id": "20260707181201.967155834",
-    "timestamp": "2026-07-07T10:12:01.967155834Z",
+    "id": "20260707183016.860946421",
+    "decision_id": "20260707183016.860946421",
+    "timestamp": "2026-07-07T10:30:16.860946421Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -1561,12 +1561,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121967
+    "created_at": 1783420216860
   },
   {
-    "id": "20260707181201.967163236",
-    "decision_id": "20260707181201.967163236",
-    "timestamp": "2026-07-07T10:12:01.967163236Z",
+    "id": "20260707183016.860953551",
+    "decision_id": "20260707183016.860953551",
+    "timestamp": "2026-07-07T10:30:16.860953551Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -1607,12 +1607,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121967
+    "created_at": 1783420216860
   },
   {
-    "id": "20260707181201.967170966",
-    "decision_id": "20260707181201.967170966",
-    "timestamp": "2026-07-07T10:12:01.967170966Z",
+    "id": "20260707183016.860959586",
+    "decision_id": "20260707183016.860959586",
+    "timestamp": "2026-07-07T10:30:16.860959586Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -1653,12 +1653,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121967
+    "created_at": 1783420216860
   },
   {
-    "id": "20260707181201.967177725",
-    "decision_id": "20260707181201.967177725",
-    "timestamp": "2026-07-07T10:12:01.967177725Z",
+    "id": "20260707183016.860965377",
+    "decision_id": "20260707183016.860965377",
+    "timestamp": "2026-07-07T10:30:16.860965377Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -1699,12 +1699,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121967
+    "created_at": 1783420216860
   },
   {
-    "id": "20260707181201.967185297",
-    "decision_id": "20260707181201.967185297",
-    "timestamp": "2026-07-07T10:12:01.967185297Z",
+    "id": "20260707183016.860972019",
+    "decision_id": "20260707183016.860972019",
+    "timestamp": "2026-07-07T10:30:16.860972019Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -1745,12 +1745,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121967
+    "created_at": 1783420216860
   },
   {
-    "id": "20260707181201.967192463",
-    "decision_id": "20260707181201.967192463",
-    "timestamp": "2026-07-07T10:12:01.967192463Z",
+    "id": "20260707183016.860976836",
+    "decision_id": "20260707183016.860976836",
+    "timestamp": "2026-07-07T10:30:16.860976836Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -1791,12 +1791,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121967
+    "created_at": 1783420216860
   },
   {
-    "id": "20260707181201.967201934",
-    "decision_id": "20260707181201.967201934",
-    "timestamp": "2026-07-07T10:12:01.967201934Z",
+    "id": "20260707183016.860982816",
+    "decision_id": "20260707183016.860982816",
+    "timestamp": "2026-07-07T10:30:16.860982816Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -1837,12 +1837,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121967
+    "created_at": 1783420216860
   },
   {
-    "id": "20260707181201.967211645",
-    "decision_id": "20260707181201.967211645",
-    "timestamp": "2026-07-07T10:12:01.967211645Z",
+    "id": "20260707183016.860994370",
+    "decision_id": "20260707183016.860994370",
+    "timestamp": "2026-07-07T10:30:16.86099437Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -1883,12 +1883,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121967
+    "created_at": 1783420216860
   },
   {
-    "id": "20260707181201.967222483",
-    "decision_id": "20260707181201.967222483",
-    "timestamp": "2026-07-07T10:12:01.967222483Z",
+    "id": "20260707183016.861000409",
+    "decision_id": "20260707183016.861000409",
+    "timestamp": "2026-07-07T10:30:16.861000409Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -1929,12 +1929,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121967
+    "created_at": 1783420216861
   },
   {
-    "id": "20260707181201.967231831",
-    "decision_id": "20260707181201.967231831",
-    "timestamp": "2026-07-07T10:12:01.967231831Z",
+    "id": "20260707183016.861006430",
+    "decision_id": "20260707183016.861006430",
+    "timestamp": "2026-07-07T10:30:16.86100643Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -1975,12 +1975,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121967
+    "created_at": 1783420216861
   },
   {
-    "id": "20260707181201.967241439",
-    "decision_id": "20260707181201.967241439",
-    "timestamp": "2026-07-07T10:12:01.967241439Z",
+    "id": "20260707183016.861011108",
+    "decision_id": "20260707183016.861011108",
+    "timestamp": "2026-07-07T10:30:16.861011108Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -2021,12 +2021,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121967
+    "created_at": 1783420216861
   },
   {
-    "id": "20260707181201.967249386",
-    "decision_id": "20260707181201.967249386",
-    "timestamp": "2026-07-07T10:12:01.967249386Z",
+    "id": "20260707183016.861016191",
+    "decision_id": "20260707183016.861016191",
+    "timestamp": "2026-07-07T10:30:16.861016191Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -2067,12 +2067,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121967
+    "created_at": 1783420216861
   },
   {
-    "id": "20260707181201.967256371",
-    "decision_id": "20260707181201.967256371",
-    "timestamp": "2026-07-07T10:12:01.967256371Z",
+    "id": "20260707183016.861020566",
+    "decision_id": "20260707183016.861020566",
+    "timestamp": "2026-07-07T10:30:16.861020566Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -2113,12 +2113,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121967
+    "created_at": 1783420216861
   },
   {
-    "id": "20260707181201.967265806",
-    "decision_id": "20260707181201.967265806",
-    "timestamp": "2026-07-07T10:12:01.967265806Z",
+    "id": "20260707183016.861025139",
+    "decision_id": "20260707183016.861025139",
+    "timestamp": "2026-07-07T10:30:16.861025139Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -2159,12 +2159,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121967
+    "created_at": 1783420216861
   },
   {
-    "id": "20260707181201.967273020",
-    "decision_id": "20260707181201.967273020",
-    "timestamp": "2026-07-07T10:12:01.96727302Z",
+    "id": "20260707183016.861032415",
+    "decision_id": "20260707183016.861032415",
+    "timestamp": "2026-07-07T10:30:16.861032415Z",
     "task_id": "e1-resource-token-cfs",
     "selected_task": "e1-resource-token-cfs",
     "candidates": [
@@ -2205,12 +2205,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121967
+    "created_at": 1783420216861
   },
   {
-    "id": "20260707181201.968600106",
-    "decision_id": "20260707181201.968600106",
-    "timestamp": "2026-07-07T10:12:01.968600106Z",
+    "id": "20260707183016.862941987",
+    "decision_id": "20260707183016.862941987",
+    "timestamp": "2026-07-07T10:30:16.862941987Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -2255,12 +2255,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121968
+    "created_at": 1783420216862
   },
   {
-    "id": "20260707181201.968616461",
-    "decision_id": "20260707181201.968616461",
-    "timestamp": "2026-07-07T10:12:01.968616461Z",
+    "id": "20260707183016.862970580",
+    "decision_id": "20260707183016.862970580",
+    "timestamp": "2026-07-07T10:30:16.86297058Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -2305,12 +2305,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121968
+    "created_at": 1783420216862
   },
   {
-    "id": "20260707181201.968641727",
-    "decision_id": "20260707181201.968641727",
-    "timestamp": "2026-07-07T10:12:01.968641727Z",
+    "id": "20260707183016.862999813",
+    "decision_id": "20260707183016.862999813",
+    "timestamp": "2026-07-07T10:30:16.862999813Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -2355,12 +2355,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121968
+    "created_at": 1783420216862
   },
   {
-    "id": "20260707181201.968654699",
-    "decision_id": "20260707181201.968654699",
-    "timestamp": "2026-07-07T10:12:01.968654699Z",
+    "id": "20260707183016.863026302",
+    "decision_id": "20260707183016.863026302",
+    "timestamp": "2026-07-07T10:30:16.863026302Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -2405,12 +2405,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121968
+    "created_at": 1783420216863
   },
   {
-    "id": "20260707181201.968671281",
-    "decision_id": "20260707181201.968671281",
-    "timestamp": "2026-07-07T10:12:01.968671281Z",
+    "id": "20260707183016.863047764",
+    "decision_id": "20260707183016.863047764",
+    "timestamp": "2026-07-07T10:30:16.863047764Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -2455,12 +2455,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121968
+    "created_at": 1783420216863
   },
   {
-    "id": "20260707181201.968682770",
-    "decision_id": "20260707181201.968682770",
-    "timestamp": "2026-07-07T10:12:01.96868277Z",
+    "id": "20260707183016.863066356",
+    "decision_id": "20260707183016.863066356",
+    "timestamp": "2026-07-07T10:30:16.863066356Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -2505,12 +2505,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121968
+    "created_at": 1783420216863
   },
   {
-    "id": "20260707181201.968689234",
-    "decision_id": "20260707181201.968689234",
-    "timestamp": "2026-07-07T10:12:01.968689234Z",
+    "id": "20260707183016.863076876",
+    "decision_id": "20260707183016.863076876",
+    "timestamp": "2026-07-07T10:30:16.863076876Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -2555,12 +2555,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121968
+    "created_at": 1783420216863
   },
   {
-    "id": "20260707181201.968707982",
-    "decision_id": "20260707181201.968707982",
-    "timestamp": "2026-07-07T10:12:01.968707982Z",
+    "id": "20260707183016.863088248",
+    "decision_id": "20260707183016.863088248",
+    "timestamp": "2026-07-07T10:30:16.863088248Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -2605,12 +2605,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121968
+    "created_at": 1783420216863
   },
   {
-    "id": "20260707181201.968714759",
-    "decision_id": "20260707181201.968714759",
-    "timestamp": "2026-07-07T10:12:01.968714759Z",
+    "id": "20260707183016.863098675",
+    "decision_id": "20260707183016.863098675",
+    "timestamp": "2026-07-07T10:30:16.863098675Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -2655,12 +2655,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121968
+    "created_at": 1783420216863
   },
   {
-    "id": "20260707181201.968727972",
-    "decision_id": "20260707181201.968727972",
-    "timestamp": "2026-07-07T10:12:01.968727972Z",
+    "id": "20260707183016.863111675",
+    "decision_id": "20260707183016.863111675",
+    "timestamp": "2026-07-07T10:30:16.863111675Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -2705,12 +2705,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121968
+    "created_at": 1783420216863
   },
   {
-    "id": "20260707181201.968734785",
-    "decision_id": "20260707181201.968734785",
-    "timestamp": "2026-07-07T10:12:01.968734785Z",
+    "id": "20260707183016.863122734",
+    "decision_id": "20260707183016.863122734",
+    "timestamp": "2026-07-07T10:30:16.863122734Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -2755,12 +2755,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121968
+    "created_at": 1783420216863
   },
   {
-    "id": "20260707181201.968741226",
-    "decision_id": "20260707181201.968741226",
-    "timestamp": "2026-07-07T10:12:01.968741226Z",
+    "id": "20260707183016.863133552",
+    "decision_id": "20260707183016.863133552",
+    "timestamp": "2026-07-07T10:30:16.863133552Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -2805,12 +2805,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121968
+    "created_at": 1783420216863
   },
   {
-    "id": "20260707181201.968747117",
-    "decision_id": "20260707181201.968747117",
-    "timestamp": "2026-07-07T10:12:01.968747117Z",
+    "id": "20260707183016.863143858",
+    "decision_id": "20260707183016.863143858",
+    "timestamp": "2026-07-07T10:30:16.863143858Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -2855,12 +2855,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121968
+    "created_at": 1783420216863
   },
   {
-    "id": "20260707181201.968753640",
-    "decision_id": "20260707181201.968753640",
-    "timestamp": "2026-07-07T10:12:01.96875364Z",
+    "id": "20260707183016.863155327",
+    "decision_id": "20260707183016.863155327",
+    "timestamp": "2026-07-07T10:30:16.863155327Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -2905,12 +2905,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121968
+    "created_at": 1783420216863
   },
   {
-    "id": "20260707181201.968759535",
-    "decision_id": "20260707181201.968759535",
-    "timestamp": "2026-07-07T10:12:01.968759535Z",
+    "id": "20260707183016.863165683",
+    "decision_id": "20260707183016.863165683",
+    "timestamp": "2026-07-07T10:30:16.863165683Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -2955,12 +2955,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121968
+    "created_at": 1783420216863
   },
   {
-    "id": "20260707181201.968764995",
-    "decision_id": "20260707181201.968764995",
-    "timestamp": "2026-07-07T10:12:01.968764995Z",
+    "id": "20260707183016.863175884",
+    "decision_id": "20260707183016.863175884",
+    "timestamp": "2026-07-07T10:30:16.863175884Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -3005,12 +3005,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121968
+    "created_at": 1783420216863
   },
   {
-    "id": "20260707181201.968771448",
-    "decision_id": "20260707181201.968771448",
-    "timestamp": "2026-07-07T10:12:01.968771448Z",
+    "id": "20260707183016.863186962",
+    "decision_id": "20260707183016.863186962",
+    "timestamp": "2026-07-07T10:30:16.863186962Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -3055,12 +3055,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121968
+    "created_at": 1783420216863
   },
   {
-    "id": "20260707181201.968779116",
-    "decision_id": "20260707181201.968779116",
-    "timestamp": "2026-07-07T10:12:01.968779116Z",
+    "id": "20260707183016.863197706",
+    "decision_id": "20260707183016.863197706",
+    "timestamp": "2026-07-07T10:30:16.863197706Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -3105,12 +3105,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121968
+    "created_at": 1783420216863
   },
   {
-    "id": "20260707181201.968784821",
-    "decision_id": "20260707181201.968784821",
-    "timestamp": "2026-07-07T10:12:01.968784821Z",
+    "id": "20260707183016.863208076",
+    "decision_id": "20260707183016.863208076",
+    "timestamp": "2026-07-07T10:30:16.863208076Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -3155,12 +3155,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121968
+    "created_at": 1783420216863
   },
   {
-    "id": "20260707181201.968790560",
-    "decision_id": "20260707181201.968790560",
-    "timestamp": "2026-07-07T10:12:01.96879056Z",
+    "id": "20260707183016.863218890",
+    "decision_id": "20260707183016.863218890",
+    "timestamp": "2026-07-07T10:30:16.86321889Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -3205,12 +3205,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121968
+    "created_at": 1783420216863
   },
   {
-    "id": "20260707181201.968796467",
-    "decision_id": "20260707181201.968796467",
-    "timestamp": "2026-07-07T10:12:01.968796467Z",
+    "id": "20260707183016.863229464",
+    "decision_id": "20260707183016.863229464",
+    "timestamp": "2026-07-07T10:30:16.863229464Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -3255,12 +3255,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121968
+    "created_at": 1783420216863
   },
   {
-    "id": "20260707181201.968801706",
-    "decision_id": "20260707181201.968801706",
-    "timestamp": "2026-07-07T10:12:01.968801706Z",
+    "id": "20260707183016.863239696",
+    "decision_id": "20260707183016.863239696",
+    "timestamp": "2026-07-07T10:30:16.863239696Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -3305,12 +3305,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121968
+    "created_at": 1783420216863
   },
   {
-    "id": "20260707181201.968807445",
-    "decision_id": "20260707181201.968807445",
-    "timestamp": "2026-07-07T10:12:01.968807445Z",
+    "id": "20260707183016.863250598",
+    "decision_id": "20260707183016.863250598",
+    "timestamp": "2026-07-07T10:30:16.863250598Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -3355,12 +3355,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121968
+    "created_at": 1783420216863
   },
   {
-    "id": "20260707181201.968813574",
-    "decision_id": "20260707181201.968813574",
-    "timestamp": "2026-07-07T10:12:01.968813574Z",
+    "id": "20260707183016.863260879",
+    "decision_id": "20260707183016.863260879",
+    "timestamp": "2026-07-07T10:30:16.863260879Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity",
     "selected_task": "e1-resource-token-cfs-prefix-affinity",
     "candidates": [
@@ -3405,12 +3405,12 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783419121968
+    "created_at": 1783420216863
   },
   {
-    "id": "20260707181201.970157549",
-    "decision_id": "20260707181201.970157549",
-    "timestamp": "2026-07-07T10:12:01.970157549Z",
+    "id": "20260707183016.864751481",
+    "decision_id": "20260707183016.864751481",
+    "timestamp": "2026-07-07T10:30:16.864751481Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -3537,12 +3537,12 @@
         "final_score": 113.611
       }
     },
-    "created_at": 1783419121970
+    "created_at": 1783420216864
   },
   {
-    "id": "20260707181201.970214238",
-    "decision_id": "20260707181201.970214238",
-    "timestamp": "2026-07-07T10:12:01.970214238Z",
+    "id": "20260707183016.864775674",
+    "decision_id": "20260707183016.864775674",
+    "timestamp": "2026-07-07T10:30:16.864775674Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -3669,12 +3669,12 @@
         "final_score": 102.16
       }
     },
-    "created_at": 1783419121970
+    "created_at": 1783420216864
   },
   {
-    "id": "20260707181201.970242702",
-    "decision_id": "20260707181201.970242702",
-    "timestamp": "2026-07-07T10:12:01.970242702Z",
+    "id": "20260707183016.864796946",
+    "decision_id": "20260707183016.864796946",
+    "timestamp": "2026-07-07T10:30:16.864796946Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -3801,12 +3801,12 @@
         "final_score": 91.874
       }
     },
-    "created_at": 1783419121970
+    "created_at": 1783420216864
   },
   {
-    "id": "20260707181201.970330908",
-    "decision_id": "20260707181201.970330908",
-    "timestamp": "2026-07-07T10:12:01.970330908Z",
+    "id": "20260707183016.864890403",
+    "decision_id": "20260707183016.864890403",
+    "timestamp": "2026-07-07T10:30:16.864890403Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -3933,12 +3933,12 @@
         "final_score": 101.984
       }
     },
-    "created_at": 1783419121970
+    "created_at": 1783420216864
   },
   {
-    "id": "20260707181201.970346712",
-    "decision_id": "20260707181201.970346712",
-    "timestamp": "2026-07-07T10:12:01.970346712Z",
+    "id": "20260707183016.864916429",
+    "decision_id": "20260707183016.864916429",
+    "timestamp": "2026-07-07T10:30:16.864916429Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -4065,12 +4065,12 @@
         "final_score": 90.533
       }
     },
-    "created_at": 1783419121970
+    "created_at": 1783420216864
   },
   {
-    "id": "20260707181201.970360340",
-    "decision_id": "20260707181201.970360340",
-    "timestamp": "2026-07-07T10:12:01.97036034Z",
+    "id": "20260707183016.864932680",
+    "decision_id": "20260707183016.864932680",
+    "timestamp": "2026-07-07T10:30:16.86493268Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -4197,12 +4197,12 @@
         "final_score": 80.247
       }
     },
-    "created_at": 1783419121970
+    "created_at": 1783420216864
   },
   {
-    "id": "20260707181201.970367748",
-    "decision_id": "20260707181201.970367748",
-    "timestamp": "2026-07-07T10:12:01.970367748Z",
+    "id": "20260707183016.864939434",
+    "decision_id": "20260707183016.864939434",
+    "timestamp": "2026-07-07T10:30:16.864939434Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -4329,12 +4329,12 @@
         "final_score": 90.357
       }
     },
-    "created_at": 1783419121970
+    "created_at": 1783420216864
   },
   {
-    "id": "20260707181201.970374825",
-    "decision_id": "20260707181201.970374825",
-    "timestamp": "2026-07-07T10:12:01.970374825Z",
+    "id": "20260707183016.864946470",
+    "decision_id": "20260707183016.864946470",
+    "timestamp": "2026-07-07T10:30:16.86494647Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -4461,12 +4461,12 @@
         "final_score": 78.905
       }
     },
-    "created_at": 1783419121970
+    "created_at": 1783420216864
   },
   {
-    "id": "20260707181201.970380730",
-    "decision_id": "20260707181201.970380730",
-    "timestamp": "2026-07-07T10:12:01.97038073Z",
+    "id": "20260707183016.864958001",
+    "decision_id": "20260707183016.864958001",
+    "timestamp": "2026-07-07T10:30:16.864958001Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -4593,12 +4593,12 @@
         "final_score": 68.619
       }
     },
-    "created_at": 1783419121970
+    "created_at": 1783420216864
   },
   {
-    "id": "20260707181201.970388472",
-    "decision_id": "20260707181201.970388472",
-    "timestamp": "2026-07-07T10:12:01.970388472Z",
+    "id": "20260707183016.864966208",
+    "decision_id": "20260707183016.864966208",
+    "timestamp": "2026-07-07T10:30:16.864966208Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -4725,12 +4725,12 @@
         "final_score": 78.729
       }
     },
-    "created_at": 1783419121970
+    "created_at": 1783420216864
   },
   {
-    "id": "20260707181201.970398365",
-    "decision_id": "20260707181201.970398365",
-    "timestamp": "2026-07-07T10:12:01.970398365Z",
+    "id": "20260707183016.864973558",
+    "decision_id": "20260707183016.864973558",
+    "timestamp": "2026-07-07T10:30:16.864973558Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -4857,12 +4857,12 @@
         "final_score": 67.278
       }
     },
-    "created_at": 1783419121970
+    "created_at": 1783420216864
   },
   {
-    "id": "20260707181201.970405230",
-    "decision_id": "20260707181201.970405230",
-    "timestamp": "2026-07-07T10:12:01.97040523Z",
+    "id": "20260707183016.864981120",
+    "decision_id": "20260707183016.864981120",
+    "timestamp": "2026-07-07T10:30:16.86498112Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -4989,12 +4989,12 @@
         "final_score": 56.992
       }
     },
-    "created_at": 1783419121970
+    "created_at": 1783420216864
   },
   {
-    "id": "20260707181201.970421470",
-    "decision_id": "20260707181201.970421470",
-    "timestamp": "2026-07-07T10:12:01.97042147Z",
+    "id": "20260707183016.864987644",
+    "decision_id": "20260707183016.864987644",
+    "timestamp": "2026-07-07T10:30:16.864987644Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -5121,12 +5121,12 @@
         "final_score": 67.102
       }
     },
-    "created_at": 1783419121970
+    "created_at": 1783420216864
   },
   {
-    "id": "20260707181201.970427363",
-    "decision_id": "20260707181201.970427363",
-    "timestamp": "2026-07-07T10:12:01.970427363Z",
+    "id": "20260707183016.864993683",
+    "decision_id": "20260707183016.864993683",
+    "timestamp": "2026-07-07T10:30:16.864993683Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -5253,12 +5253,12 @@
         "final_score": 55.651
       }
     },
-    "created_at": 1783419121970
+    "created_at": 1783420216864
   },
   {
-    "id": "20260707181201.970435769",
-    "decision_id": "20260707181201.970435769",
-    "timestamp": "2026-07-07T10:12:01.970435769Z",
+    "id": "20260707183016.864999643",
+    "decision_id": "20260707183016.864999643",
+    "timestamp": "2026-07-07T10:30:16.864999643Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -5385,12 +5385,12 @@
         "final_score": 45.364
       }
     },
-    "created_at": 1783419121970
+    "created_at": 1783420216864
   },
   {
-    "id": "20260707181201.970443870",
-    "decision_id": "20260707181201.970443870",
-    "timestamp": "2026-07-07T10:12:01.97044387Z",
+    "id": "20260707183016.865006399",
+    "decision_id": "20260707183016.865006399",
+    "timestamp": "2026-07-07T10:30:16.865006399Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -5517,12 +5517,12 @@
         "final_score": 55.475
       }
     },
-    "created_at": 1783419121970
+    "created_at": 1783420216865
   },
   {
-    "id": "20260707181201.970456137",
-    "decision_id": "20260707181201.970456137",
-    "timestamp": "2026-07-07T10:12:01.970456137Z",
+    "id": "20260707183016.865013088",
+    "decision_id": "20260707183016.865013088",
+    "timestamp": "2026-07-07T10:30:16.865013088Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -5649,12 +5649,12 @@
         "final_score": 44.023
       }
     },
-    "created_at": 1783419121970
+    "created_at": 1783420216865
   },
   {
-    "id": "20260707181201.970468512",
-    "decision_id": "20260707181201.970468512",
-    "timestamp": "2026-07-07T10:12:01.970468512Z",
+    "id": "20260707183016.865021474",
+    "decision_id": "20260707183016.865021474",
+    "timestamp": "2026-07-07T10:30:16.865021474Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -5781,12 +5781,12 @@
         "final_score": 33.737
       }
     },
-    "created_at": 1783419121970
+    "created_at": 1783420216865
   },
   {
-    "id": "20260707181201.970474578",
-    "decision_id": "20260707181201.970474578",
-    "timestamp": "2026-07-07T10:12:01.970474578Z",
+    "id": "20260707183016.865027486",
+    "decision_id": "20260707183016.865027486",
+    "timestamp": "2026-07-07T10:30:16.865027486Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -5913,12 +5913,12 @@
         "final_score": 43.847
       }
     },
-    "created_at": 1783419121970
+    "created_at": 1783420216865
   },
   {
-    "id": "20260707181201.970480580",
-    "decision_id": "20260707181201.970480580",
-    "timestamp": "2026-07-07T10:12:01.97048058Z",
+    "id": "20260707183016.865033219",
+    "decision_id": "20260707183016.865033219",
+    "timestamp": "2026-07-07T10:30:16.865033219Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -6045,12 +6045,12 @@
         "final_score": 32.396
       }
     },
-    "created_at": 1783419121970
+    "created_at": 1783420216865
   },
   {
-    "id": "20260707181201.970487614",
-    "decision_id": "20260707181201.970487614",
-    "timestamp": "2026-07-07T10:12:01.970487614Z",
+    "id": "20260707183016.865039834",
+    "decision_id": "20260707183016.865039834",
+    "timestamp": "2026-07-07T10:30:16.865039834Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -6177,12 +6177,12 @@
         "final_score": 22.11
       }
     },
-    "created_at": 1783419121970
+    "created_at": 1783420216865
   },
   {
-    "id": "20260707181201.970494068",
-    "decision_id": "20260707181201.970494068",
-    "timestamp": "2026-07-07T10:12:01.970494068Z",
+    "id": "20260707183016.865045501",
+    "decision_id": "20260707183016.865045501",
+    "timestamp": "2026-07-07T10:30:16.865045501Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -6309,12 +6309,12 @@
         "final_score": 32.22
       }
     },
-    "created_at": 1783419121970
+    "created_at": 1783420216865
   },
   {
-    "id": "20260707181201.970500183",
-    "decision_id": "20260707181201.970500183",
-    "timestamp": "2026-07-07T10:12:01.970500183Z",
+    "id": "20260707183016.865051858",
+    "decision_id": "20260707183016.865051858",
+    "timestamp": "2026-07-07T10:30:16.865051858Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -6441,12 +6441,12 @@
         "final_score": 20.768
       }
     },
-    "created_at": 1783419121970
+    "created_at": 1783420216865
   },
   {
-    "id": "20260707181201.970505912",
-    "decision_id": "20260707181201.970505912",
-    "timestamp": "2026-07-07T10:12:01.970505912Z",
+    "id": "20260707183016.865057497",
+    "decision_id": "20260707183016.865057497",
+    "timestamp": "2026-07-07T10:30:16.865057497Z",
     "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
     "candidates": [
@@ -6573,6 +6573,6 @@
         "final_score": 10.482
       }
     },
-    "created_at": 1783419121970
+    "created_at": 1783420216865
   }
 ]

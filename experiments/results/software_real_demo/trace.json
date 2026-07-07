@@ -1,7 +1,7 @@
 [
   {
-    "event_id": "20260707181201.595898199",
-    "timestamp": "2026-07-07T10:12:01.595Z",
+    "event_id": "20260707183016.474109772",
+    "timestamp": "2026-07-07T10:30:16.474Z",
     "type": "context.page.created",
     "payload": {
       "kind": "system",
@@ -10,8 +10,8 @@
     }
   },
   {
-    "event_id": "20260707181201.595918417",
-    "timestamp": "2026-07-07T10:12:01.595Z",
+    "event_id": "20260707183016.474130228",
+    "timestamp": "2026-07-07T10:30:16.474Z",
     "type": "context.page.created",
     "payload": {
       "kind": "project",
@@ -20,8 +20,8 @@
     }
   },
   {
-    "event_id": "20260707181201.595920578",
-    "timestamp": "2026-07-07T10:12:01.595Z",
+    "event_id": "20260707183016.474132423",
+    "timestamp": "2026-07-07T10:30:16.474Z",
     "type": "context.page.created",
     "payload": {
       "kind": "task",
@@ -30,8 +30,8 @@
     }
   },
   {
-    "event_id": "20260707181201.595923249",
-    "timestamp": "2026-07-07T10:12:01.595Z",
+    "event_id": "20260707183016.474135288",
+    "timestamp": "2026-07-07T10:30:16.474Z",
     "type": "context.page.created",
     "payload": {
       "kind": "summary",
@@ -40,8 +40,8 @@
     }
   },
   {
-    "event_id": "20260707181201.595925942",
-    "timestamp": "2026-07-07T10:12:01.595Z",
+    "event_id": "20260707183016.474138394",
+    "timestamp": "2026-07-07T10:30:16.474Z",
     "type": "context.page.mounted",
     "agent_id": "e5-planner",
     "payload": {
@@ -51,8 +51,8 @@
     }
   },
   {
-    "event_id": "20260707181201.595927681",
-    "timestamp": "2026-07-07T10:12:01.595Z",
+    "event_id": "20260707183016.474140232",
+    "timestamp": "2026-07-07T10:30:16.474Z",
     "type": "context.page.mounted",
     "agent_id": "e5-planner",
     "payload": {
@@ -62,8 +62,8 @@
     }
   },
   {
-    "event_id": "20260707181201.595929158",
-    "timestamp": "2026-07-07T10:12:01.595Z",
+    "event_id": "20260707183016.474141794",
+    "timestamp": "2026-07-07T10:30:16.474Z",
     "type": "context.page.mounted",
     "agent_id": "e5-planner",
     "payload": {
@@ -73,8 +73,8 @@
     }
   },
   {
-    "event_id": "20260707181201.595930732",
-    "timestamp": "2026-07-07T10:12:01.595Z",
+    "event_id": "20260707183016.474143205",
+    "timestamp": "2026-07-07T10:30:16.474Z",
     "type": "context.page.mounted",
     "agent_id": "e5-coder",
     "payload": {
@@ -84,8 +84,8 @@
     }
   },
   {
-    "event_id": "20260707181201.595932083",
-    "timestamp": "2026-07-07T10:12:01.595Z",
+    "event_id": "20260707183016.474144440",
+    "timestamp": "2026-07-07T10:30:16.474Z",
     "type": "context.page.mounted",
     "agent_id": "e5-coder",
     "payload": {
@@ -95,8 +95,8 @@
     }
   },
   {
-    "event_id": "20260707181201.595933658",
-    "timestamp": "2026-07-07T10:12:01.595Z",
+    "event_id": "20260707183016.474146128",
+    "timestamp": "2026-07-07T10:30:16.474Z",
     "type": "context.page.mounted",
     "agent_id": "e5-coder",
     "payload": {
@@ -106,8 +106,8 @@
     }
   },
   {
-    "event_id": "20260707181201.595935076",
-    "timestamp": "2026-07-07T10:12:01.595Z",
+    "event_id": "20260707183016.474147651",
+    "timestamp": "2026-07-07T10:30:16.474Z",
     "type": "context.page.mounted",
     "agent_id": "e5-tester",
     "payload": {
@@ -117,8 +117,8 @@
     }
   },
   {
-    "event_id": "20260707181201.595936202",
-    "timestamp": "2026-07-07T10:12:01.595Z",
+    "event_id": "20260707183016.474148945",
+    "timestamp": "2026-07-07T10:30:16.474Z",
     "type": "context.page.mounted",
     "agent_id": "e5-tester",
     "payload": {
@@ -128,8 +128,8 @@
     }
   },
   {
-    "event_id": "20260707181201.595937334",
-    "timestamp": "2026-07-07T10:12:01.595Z",
+    "event_id": "20260707183016.474154075",
+    "timestamp": "2026-07-07T10:30:16.474Z",
     "type": "context.page.mounted",
     "agent_id": "e5-tester",
     "payload": {
@@ -139,8 +139,8 @@
     }
   },
   {
-    "event_id": "20260707181201.595940764",
-    "timestamp": "2026-07-07T10:12:01.595Z",
+    "event_id": "20260707183016.474155685",
+    "timestamp": "2026-07-07T10:30:16.474Z",
     "type": "context.page.mounted",
     "agent_id": "e5-reviewer",
     "payload": {
@@ -150,8 +150,8 @@
     }
   },
   {
-    "event_id": "20260707181201.595942172",
-    "timestamp": "2026-07-07T10:12:01.595Z",
+    "event_id": "20260707183016.474156870",
+    "timestamp": "2026-07-07T10:30:16.474Z",
     "type": "context.page.mounted",
     "agent_id": "e5-reviewer",
     "payload": {
@@ -161,8 +161,8 @@
     }
   },
   {
-    "event_id": "20260707181201.595943215",
-    "timestamp": "2026-07-07T10:12:01.595Z",
+    "event_id": "20260707183016.474157907",
+    "timestamp": "2026-07-07T10:30:16.474Z",
     "type": "context.page.mounted",
     "agent_id": "e5-reviewer",
     "payload": {
@@ -172,8 +172,8 @@
     }
   },
   {
-    "event_id": "20260707181201.595945071",
-    "timestamp": "2026-07-07T10:12:01.595Z",
+    "event_id": "20260707183016.474159714",
+    "timestamp": "2026-07-07T10:30:16.474Z",
     "type": "context.page.mounted",
     "agent_id": "e5-fixer",
     "payload": {
@@ -183,8 +183,8 @@
     }
   },
   {
-    "event_id": "20260707181201.595946373",
-    "timestamp": "2026-07-07T10:12:01.595Z",
+    "event_id": "20260707183016.474161071",
+    "timestamp": "2026-07-07T10:30:16.474Z",
     "type": "context.page.mounted",
     "agent_id": "e5-fixer",
     "payload": {
@@ -194,8 +194,8 @@
     }
   },
   {
-    "event_id": "20260707181201.595948274",
-    "timestamp": "2026-07-07T10:12:01.595Z",
+    "event_id": "20260707183016.474162910",
+    "timestamp": "2026-07-07T10:30:16.474Z",
     "type": "context.page.mounted",
     "agent_id": "e5-fixer",
     "payload": {
@@ -205,8 +205,8 @@
     }
   },
   {
-    "event_id": "20260707181201.595949500",
-    "timestamp": "2026-07-07T10:12:01.595Z",
+    "event_id": "20260707183016.474164167",
+    "timestamp": "2026-07-07T10:30:16.474Z",
     "type": "context.page.mounted",
     "agent_id": "e5-reporter",
     "payload": {
@@ -216,8 +216,8 @@
     }
   },
   {
-    "event_id": "20260707181201.595950693",
-    "timestamp": "2026-07-07T10:12:01.595Z",
+    "event_id": "20260707183016.474165451",
+    "timestamp": "2026-07-07T10:30:16.474Z",
     "type": "context.page.mounted",
     "agent_id": "e5-reporter",
     "payload": {
@@ -227,8 +227,8 @@
     }
   },
   {
-    "event_id": "20260707181201.595952424",
-    "timestamp": "2026-07-07T10:12:01.595Z",
+    "event_id": "20260707183016.474166487",
+    "timestamp": "2026-07-07T10:30:16.474Z",
     "type": "context.page.mounted",
     "agent_id": "e5-reporter",
     "payload": {
@@ -239,7 +239,7 @@
   },
   {
     "event_id": "e5-planner-materialize",
-    "timestamp": "2026-07-07T10:12:01.595Z",
+    "timestamp": "2026-07-07T10:30:16.474Z",
     "type": "syscall.started",
     "agent_id": "e5-planner",
     "task_id": "e5",
@@ -250,8 +250,8 @@
     }
   },
   {
-    "event_id": "20260707181201.596024477",
-    "timestamp": "2026-07-07T10:12:01.596Z",
+    "event_id": "20260707183016.474245790",
+    "timestamp": "2026-07-07T10:30:16.474Z",
     "type": "context.materialized",
     "agent_id": "e5-planner",
     "payload": {
@@ -261,7 +261,7 @@
   },
   {
     "event_id": "e5-planner-materialize",
-    "timestamp": "2026-07-07T10:12:01.596Z",
+    "timestamp": "2026-07-07T10:30:16.474Z",
     "type": "syscall.finished",
     "agent_id": "e5-planner",
     "task_id": "e5",
@@ -277,7 +277,7 @@
   },
   {
     "event_id": "e5-planner-delta",
-    "timestamp": "2026-07-07T10:12:01.596Z",
+    "timestamp": "2026-07-07T10:30:16.474Z",
     "type": "syscall.started",
     "agent_id": "e5-planner",
     "task_id": "e5",
@@ -288,8 +288,8 @@
     }
   },
   {
-    "event_id": "20260707181201.596042516",
-    "timestamp": "2026-07-07T10:12:01.596Z",
+    "event_id": "20260707183016.474263835",
+    "timestamp": "2026-07-07T10:30:16.474Z",
     "type": "context.page.created",
     "payload": {
       "kind": "delta",
@@ -298,8 +298,8 @@
     }
   },
   {
-    "event_id": "20260707181201.596043944",
-    "timestamp": "2026-07-07T10:12:01.596Z",
+    "event_id": "20260707183016.474265139",
+    "timestamp": "2026-07-07T10:30:16.474Z",
     "type": "context.page.mounted",
     "agent_id": "e5-planner",
     "payload": {
@@ -310,7 +310,7 @@
   },
   {
     "event_id": "e5-planner-delta",
-    "timestamp": "2026-07-07T10:12:01.596Z",
+    "timestamp": "2026-07-07T10:30:16.474Z",
     "type": "syscall.finished",
     "agent_id": "e5-planner",
     "task_id": "e5",
@@ -326,7 +326,7 @@
   },
   {
     "event_id": "e5-coder-materialize",
-    "timestamp": "2026-07-07T10:12:01.596Z",
+    "timestamp": "2026-07-07T10:30:16.474Z",
     "type": "syscall.started",
     "agent_id": "e5-coder",
     "task_id": "e5",
@@ -337,8 +337,8 @@
     }
   },
   {
-    "event_id": "20260707181201.596050092",
-    "timestamp": "2026-07-07T10:12:01.596Z",
+    "event_id": "20260707183016.474271210",
+    "timestamp": "2026-07-07T10:30:16.474Z",
     "type": "context.materialized",
     "agent_id": "e5-coder",
     "payload": {
@@ -348,7 +348,7 @@
   },
   {
     "event_id": "e5-coder-materialize",
-    "timestamp": "2026-07-07T10:12:01.596Z",
+    "timestamp": "2026-07-07T10:30:16.474Z",
     "type": "syscall.finished",
     "agent_id": "e5-coder",
     "task_id": "e5",
@@ -364,7 +364,7 @@
   },
   {
     "event_id": "e5-coder-delta",
-    "timestamp": "2026-07-07T10:12:01.596Z",
+    "timestamp": "2026-07-07T10:30:16.474Z",
     "type": "syscall.started",
     "agent_id": "e5-coder",
     "task_id": "e5",
@@ -375,8 +375,8 @@
     }
   },
   {
-    "event_id": "20260707181201.596061244",
-    "timestamp": "2026-07-07T10:12:01.596Z",
+    "event_id": "20260707183016.474281557",
+    "timestamp": "2026-07-07T10:30:16.474Z",
     "type": "context.page.created",
     "payload": {
       "kind": "delta",
@@ -385,8 +385,8 @@
     }
   },
   {
-    "event_id": "20260707181201.596062471",
-    "timestamp": "2026-07-07T10:12:01.596Z",
+    "event_id": "20260707183016.474282802",
+    "timestamp": "2026-07-07T10:30:16.474Z",
     "type": "context.page.mounted",
     "agent_id": "e5-coder",
     "payload": {
@@ -397,7 +397,7 @@
   },
   {
     "event_id": "e5-coder-delta",
-    "timestamp": "2026-07-07T10:12:01.596Z",
+    "timestamp": "2026-07-07T10:30:16.474Z",
     "type": "syscall.finished",
     "agent_id": "e5-coder",
     "task_id": "e5",
@@ -413,7 +413,7 @@
   },
   {
     "event_id": "e5-tester-tool",
-    "timestamp": "2026-07-07T10:12:01.596Z",
+    "timestamp": "2026-07-07T10:30:16.474Z",
     "type": "syscall.started",
     "agent_id": "e5-tester",
     "task_id": "e5",
@@ -425,7 +425,7 @@
   },
   {
     "event_id": "e5-tester-tool",
-    "timestamp": "2026-07-07T10:12:01.597Z",
+    "timestamp": "2026-07-07T10:30:16.475Z",
     "type": "syscall.finished",
     "agent_id": "e5-tester",
     "task_id": "e5",
@@ -441,7 +441,7 @@
   },
   {
     "event_id": "e5-reviewer-delta",
-    "timestamp": "2026-07-07T10:12:01.597Z",
+    "timestamp": "2026-07-07T10:30:16.475Z",
     "type": "syscall.started",
     "agent_id": "e5-reviewer",
     "task_id": "e5",
@@ -452,8 +452,8 @@
     }
   },
   {
-    "event_id": "20260707181201.597219080",
-    "timestamp": "2026-07-07T10:12:01.597Z",
+    "event_id": "20260707183016.475464806",
+    "timestamp": "2026-07-07T10:30:16.475Z",
     "type": "context.page.created",
     "payload": {
       "kind": "delta",
@@ -462,8 +462,8 @@
     }
   },
   {
-    "event_id": "20260707181201.597220693",
-    "timestamp": "2026-07-07T10:12:01.597Z",
+    "event_id": "20260707183016.475467636",
+    "timestamp": "2026-07-07T10:30:16.475Z",
     "type": "context.page.mounted",
     "agent_id": "e5-reviewer",
     "payload": {
@@ -474,7 +474,7 @@
   },
   {
     "event_id": "e5-reviewer-delta",
-    "timestamp": "2026-07-07T10:12:01.597Z",
+    "timestamp": "2026-07-07T10:30:16.475Z",
     "type": "syscall.finished",
     "agent_id": "e5-reviewer",
     "task_id": "e5",
@@ -490,7 +490,7 @@
   },
   {
     "event_id": "e5-reviewer-ipc",
-    "timestamp": "2026-07-07T10:12:01.597Z",
+    "timestamp": "2026-07-07T10:30:16.475Z",
     "type": "syscall.started",
     "agent_id": "e5-reviewer",
     "task_id": "e5",
@@ -501,8 +501,8 @@
     }
   },
   {
-    "event_id": "20260707181201.597296459",
-    "timestamp": "2026-07-07T10:12:01.597Z",
+    "event_id": "20260707183016.475548248",
+    "timestamp": "2026-07-07T10:30:16.475Z",
     "type": "ipc.published",
     "agent_id": "e5-reviewer",
     "task_id": "e5",
@@ -518,7 +518,7 @@
   },
   {
     "event_id": "e5-reviewer-ipc",
-    "timestamp": "2026-07-07T10:12:01.597Z",
+    "timestamp": "2026-07-07T10:30:16.475Z",
     "type": "syscall.finished",
     "agent_id": "e5-reviewer",
     "task_id": "e5",
@@ -534,7 +534,7 @@
   },
   {
     "event_id": "e5-fixer-ipc",
-    "timestamp": "2026-07-07T10:12:01.597Z",
+    "timestamp": "2026-07-07T10:30:16.475Z",
     "type": "syscall.started",
     "agent_id": "e5-fixer",
     "task_id": "e5",
@@ -545,8 +545,8 @@
     }
   },
   {
-    "event_id": "20260707181201.597315447",
-    "timestamp": "2026-07-07T10:12:01.597Z",
+    "event_id": "20260707183016.475567533",
+    "timestamp": "2026-07-07T10:30:16.475Z",
     "type": "context.page.mounted",
     "agent_id": "e5-fixer",
     "payload": {
@@ -556,8 +556,8 @@
     }
   },
   {
-    "event_id": "20260707181201.597317400",
-    "timestamp": "2026-07-07T10:12:01.597Z",
+    "event_id": "20260707183016.475568861",
+    "timestamp": "2026-07-07T10:30:16.475Z",
     "type": "ipc.polled",
     "agent_id": "e5-fixer",
     "task_id": "e5",
@@ -575,7 +575,7 @@
   },
   {
     "event_id": "e5-fixer-ipc",
-    "timestamp": "2026-07-07T10:12:01.597Z",
+    "timestamp": "2026-07-07T10:30:16.475Z",
     "type": "syscall.finished",
     "agent_id": "e5-fixer",
     "task_id": "e5",
@@ -591,7 +591,7 @@
   },
   {
     "event_id": "e5-timeout",
-    "timestamp": "2026-07-07T10:12:01.597Z",
+    "timestamp": "2026-07-07T10:30:16.475Z",
     "type": "syscall.started",
     "agent_id": "e5-tester",
     "task_id": "e5",
@@ -603,7 +603,7 @@
   },
   {
     "event_id": "e5-timeout",
-    "timestamp": "2026-07-07T10:12:01.607Z",
+    "timestamp": "2026-07-07T10:30:16.485Z",
     "type": "syscall.finished",
     "agent_id": "e5-tester",
     "task_id": "e5",
@@ -619,7 +619,7 @@
   },
   {
     "event_id": "e5-fixer-tool",
-    "timestamp": "2026-07-07T10:12:01.607Z",
+    "timestamp": "2026-07-07T10:30:16.485Z",
     "type": "syscall.started",
     "agent_id": "e5-fixer",
     "task_id": "e5",
@@ -631,7 +631,7 @@
   },
   {
     "event_id": "e5-fixer-tool",
-    "timestamp": "2026-07-07T10:12:01.608Z",
+    "timestamp": "2026-07-07T10:30:16.486Z",
     "type": "syscall.finished",
     "agent_id": "e5-fixer",
     "task_id": "e5",
@@ -647,7 +647,7 @@
   },
   {
     "event_id": "e5-reporter-report",
-    "timestamp": "2026-07-07T10:12:01.608Z",
+    "timestamp": "2026-07-07T10:30:16.487Z",
     "type": "syscall.started",
     "agent_id": "e5-reporter",
     "task_id": "e5",
@@ -659,7 +659,7 @@
   },
   {
     "event_id": "e5-reporter-report",
-    "timestamp": "2026-07-07T10:12:01.608Z",
+    "timestamp": "2026-07-07T10:30:16.487Z",
     "type": "syscall.finished",
     "agent_id": "e5-reporter",
     "task_id": "e5",
@@ -675,7 +675,7 @@
   },
   {
     "event_id": "e5-task-completed",
-    "timestamp": "2026-07-07T10:12:01.608960857Z",
+    "timestamp": "2026-07-07T10:30:16.487006727Z",
     "type": "task.completed",
     "agent_id": "runtime",
     "task_id": "e5",

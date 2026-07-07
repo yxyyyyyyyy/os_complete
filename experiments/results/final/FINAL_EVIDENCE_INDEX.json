@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-07-07T10:12:04.263281546Z",
+  "timestamp": "2026-07-07T10:30:19.255682296Z",
   "git": {
-    "commit": "8f44532f4498dc50382bdd6c0a152d6ab0db18f1",
+    "commit": "aaa669dbf1b7d7e0c1ecc805928c0de925c3d238",
     "branch": "codex/aort-r-upgrade",
     "dirty": false
   },
@@ -11,7 +11,7 @@
     "cgroup_fs_type": "cgroup2fs",
     "go_version": "go1.22.12"
   },
-  "git_commit": "8f44532f4498dc50382bdd6c0a152d6ab0db18f1",
+  "git_commit": "aaa669dbf1b7d7e0c1ecc805928c0de925c3d238",
   "git_branch": "codex/aort-r-upgrade",
   "git_dirty": false,
   "os_release": "NAME=\"openEuler\"\nVERSION=\"24.03 (LTS)\"\nID=\"openEuler\"\nVERSION_ID=\"24.03\"\nPRETTY_NAME=\"openEuler 24.03 (LTS)\"\nANSI_COLOR=\"0;31\"",
@@ -37,7 +37,7 @@
     "real_all": "passed",
     "real_cgroup_smoke": "passed",
     "real_env": "passed",
-    "real_pressure_smoke": "passed",
+    "real_pressure_smoke": "failed",
     "tool_workspace": "passed",
     "workspace_probe": "passed",
     "workspace_rmrf": "passed"
@@ -49,7 +49,7 @@
     "ipc": "real-partial + real-shm-ipc",
     "llm": "mock",
     "replay": "real-runtime",
-    "resource_sampler": "real-cgroup-v2",
+    "resource_sampler": "degraded",
     "scheduler": "real-runtime",
     "tool_workspace": "real-overlayfs",
     "worker_process": "real-runtime",
@@ -63,7 +63,7 @@
     "overlayfs_mount_success": true,
     "real_cgroup_v2": true,
     "real_overlayfs": true,
-    "real_resource_sampler": true,
+    "real_resource_sampler": false,
     "real_workspace_tool_exec": true,
     "root": true
   },
@@ -98,6 +98,7 @@
   "missing_files": [],
   "known_limits": [
     "Portable E1 benchmark may use degraded pressure fallback; real-pressure-smoke proves real-cgroup-v2 ResourceSampler on openEuler.",
+    "Current local final evidence does not prove real-pressure-smoke; run scripts/competition_verify_real.sh on root openEuler.",
     "eBPF observer experimental path implemented; current submitted evidence is degraded unless openEuler/Linux smoke reports real-ebpf."
   ]
 }

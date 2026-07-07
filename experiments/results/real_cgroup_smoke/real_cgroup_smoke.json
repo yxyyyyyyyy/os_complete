@@ -2,7 +2,7 @@
   "experiment": "real_cgroup_smoke",
   "evidence_mode": "real-cgroup-v2",
   "cgroup_path": "/sys/fs/cgroup/aort.slice/real-cgroup-smoke-worker",
-  "worker_pid": 42862,
+  "worker_pid": 51821,
   "worker_pid_attached": true,
   "memory_max_written": true,
   "pids_max_written": true,
