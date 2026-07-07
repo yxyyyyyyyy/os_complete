@@ -331,6 +331,36 @@ func TestAllowedDegradedEvidenceReportsEBPFReason(t *testing.T) {
 	}
 }
 
+func TestRealAllWorkspaceRootIsUniqueAndCleanedUp(t *testing.T) {
+	first, cleanupFirst, err := realAllWorkspaceRoot("workspace-rmrf")
+	if err != nil {
+		t.Fatalf("first realAllWorkspaceRoot: %v", err)
+	}
+	second, cleanupSecond, err := realAllWorkspaceRoot("workspace-rmrf")
+	if err != nil {
+		cleanupFirst()
+		t.Fatalf("second realAllWorkspaceRoot: %v", err)
+	}
+	if first == second {
+		cleanupFirst()
+		cleanupSecond()
+		t.Fatalf("real-all workspace roots should be unique, got %q", first)
+	}
+	if !strings.Contains(filepath.Base(first), "aort-real-all-workspace-rmrf-") ||
+		!strings.Contains(filepath.Base(second), "aort-real-all-workspace-rmrf-") {
+		cleanupFirst()
+		cleanupSecond()
+		t.Fatalf("unexpected real-all workspace root names: %q %q", first, second)
+	}
+	cleanupFirst()
+	cleanupSecond()
+	for _, path := range []string{first, second} {
+		if _, statErr := os.Stat(path); !os.IsNotExist(statErr) {
+			t.Fatalf("cleanup should remove %s, stat err=%v", path, statErr)
+		}
+	}
+}
+
 func TestGitDirtyFromPorcelainIgnoresUntrackedFiles(t *testing.T) {
 	if gitDirtyFromPorcelain("?? scratch.txt\n?? experiments/results/audit_all/summary.json\n") {
 		t.Fatalf("untracked files should not mark final evidence dirty")

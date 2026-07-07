@@ -623,11 +623,21 @@ func RunRealAll(runs int, outDir string) (RealAllIndex, error) {
 	if pressureErr != nil {
 		reasons = append(reasons, pressureErr.Error())
 	}
-	probe := workspace.ProbeOverlay(filepath.Join(os.TempDir(), "aort-real-all-workspace-probe"))
+	probeRoot, cleanupProbe, probeRootErr := realAllWorkspaceRoot("workspace-probe")
+	if probeRootErr != nil {
+		reasons = append(reasons, probeRootErr.Error())
+	}
+	defer cleanupProbe()
+	probe := workspace.ProbeOverlay(probeRoot)
 	if err := WriteJSON(filepath.Join(outDir, "workspace_probe.json"), probe); err != nil {
 		reasons = append(reasons, err.Error())
 	}
-	rmFault, rmErr := workspace.RunRMFaultDemo(workspace.Config{Root: filepath.Join(os.TempDir(), "aort-real-all-workspace-rmrf")})
+	rmRoot, cleanupRM, rmRootErr := realAllWorkspaceRoot("workspace-rmrf")
+	if rmRootErr != nil {
+		reasons = append(reasons, rmRootErr.Error())
+	}
+	defer cleanupRM()
+	rmFault, rmErr := workspace.RunRMFaultDemo(workspace.Config{Root: rmRoot})
 	if rmErr != nil {
 		reasons = append(reasons, rmErr.Error())
 	}
@@ -638,7 +648,12 @@ func RunRealAll(runs int, outDir string) (RealAllIndex, error) {
 	if err := WriteJSON(filepath.Join(outDir, "workspace_isolation_evidence.json"), rmFault); err != nil {
 		reasons = append(reasons, err.Error())
 	}
-	toolWorkspace, toolErr := RunToolWorkspaceDemo(workspace.Config{Root: filepath.Join(os.TempDir(), "aort-real-all-tool-workspace")}, outDir, true)
+	toolRoot, cleanupTool, toolRootErr := realAllWorkspaceRoot("tool-workspace")
+	if toolRootErr != nil {
+		reasons = append(reasons, toolRootErr.Error())
+	}
+	defer cleanupTool()
+	toolWorkspace, toolErr := RunToolWorkspaceDemo(workspace.Config{Root: toolRoot}, outDir, true)
 	if toolErr != nil {
 		reasons = append(reasons, toolErr.Error())
 	}
@@ -674,6 +689,14 @@ func RunRealAll(runs int, outDir string) (RealAllIndex, error) {
 		return index, fmt.Errorf("real-all failed: %s", strings.Join(index.FailureReasons, "; "))
 	}
 	return index, nil
+}
+
+func realAllWorkspaceRoot(label string) (string, func(), error) {
+	root, err := os.MkdirTemp("", "aort-real-all-"+label+"-")
+	if err != nil {
+		return "", func() {}, fmt.Errorf("create real-all workspace root: %w", err)
+	}
+	return root, func() { _ = os.RemoveAll(root) }, nil
 }
 
 type pressureHog struct {
