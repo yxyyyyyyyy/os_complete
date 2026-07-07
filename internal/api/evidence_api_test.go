@@ -68,7 +68,7 @@ func TestEvidenceEndpointReportsModuleModes(t *testing.T) {
 	if statuses["LLM Provider"] != "mock" {
 		t.Fatalf("llm provider status=%q", statuses["LLM Provider"])
 	}
-	if statuses["eBPF Observer"] != "planned" {
+	if statuses["eBPF Observer"] != "degraded" && statuses["eBPF Observer"] != "real" && statuses["eBPF Observer"] != "real-ebpf" {
 		t.Fatalf("ebpf observer status=%q", statuses["eBPF Observer"])
 	}
 	if statuses["Software Real Demo"] != "real-runtime" || endpoints["Software Real Demo"] != "/api/demo/software-real/run" {

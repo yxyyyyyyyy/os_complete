@@ -28,6 +28,10 @@ function realBarWidth(value: number): string {
 function formatPercent(value: number): string {
   return `${(value * 100).toFixed(1)}%`
 }
+
+function ok(value: boolean): string {
+  return value ? t.value.common.success : t.value.common.failed
+}
 </script>
 
 <template>
@@ -52,6 +56,56 @@ function formatPercent(value: number): string {
         <MetricCard :label="t.experiments.finalStatus" :value="runtimeStore.experimentResults.e5_end_to_end.final_success ? t.common.success : t.common.pending" />
       </div>
       <div class="recovery-note">{{ t.experiments.smokeHint }}</div>
+    </section>
+
+    <section class="section-block">
+      <div class="section-title">
+        <h2>{{ t.experiments.cvmMemory }}</h2>
+        <span class="subtle-text">{{ runtimeStore.experimentResults.cvm_memory.evidence_mode || t.common.pending }}</span>
+      </div>
+      <div class="metrics-grid compact-metrics">
+        <MetricCard :label="t.context.compressedPages" :value="runtimeStore.experimentResults.cvm_memory.compressed_pages" />
+        <MetricCard :label="t.context.evictedPages" :value="runtimeStore.experimentResults.cvm_memory.evicted_pages" />
+        <MetricCard :label="t.context.pinnedPages" :value="runtimeStore.experimentResults.cvm_memory.pinned_pages" />
+        <MetricCard :label="t.context.memorySavedBytes" :value="runtimeStore.experimentResults.cvm_memory.memory_saved_bytes" />
+        <MetricCard :label="t.context.compressionSavedBytes" :value="runtimeStore.experimentResults.cvm_memory.compression_saved_bytes" />
+        <MetricCard :label="t.experiments.cacheHitRate" :value="formatPercent(runtimeStore.experimentResults.cvm_memory.cache_hit_rate)" />
+      </div>
+    </section>
+
+    <section class="section-block">
+      <div class="section-title">
+        <h2>{{ t.experiments.ipcShm }}</h2>
+        <span class="subtle-text">{{ runtimeStore.experimentResults.ipc_shm.evidence_mode || t.common.pending }}</span>
+      </div>
+      <div class="metrics-grid compact-metrics">
+        <MetricCard :label="t.context.ipcMode" :value="runtimeStore.experimentResults.ipc_shm.ipc_mode || t.common.pending" />
+        <MetricCard :label="t.experiments.memfd" :value="ok(runtimeStore.experimentResults.ipc_shm.memfd_create_success)" />
+        <MetricCard :label="t.experiments.mmap" :value="ok(runtimeStore.experimentResults.ipc_shm.mmap_success)" />
+        <MetricCard :label="t.experiments.fdPassing" :value="ok(runtimeStore.experimentResults.ipc_shm.fd_passing_success)" />
+        <MetricCard :label="t.experiments.workerMmap" :value="ok(runtimeStore.experimentResults.ipc_shm.worker_mmap_success)" />
+        <MetricCard :label="t.experiments.avoidedCopy" :value="runtimeStore.experimentResults.ipc_shm.avoided_copy_bytes" />
+      </div>
+      <div v-if="runtimeStore.experimentResults.ipc_shm.fallback_reason" class="recovery-note">
+        {{ runtimeStore.experimentResults.ipc_shm.fallback_reason }}
+      </div>
+    </section>
+
+    <section class="section-block">
+      <div class="section-title">
+        <h2>{{ t.experiments.replay }}</h2>
+        <span class="subtle-text">{{ runtimeStore.experimentResults.replay.evidence_mode || t.common.pending }}</span>
+      </div>
+      <div class="metrics-grid compact-metrics">
+        <MetricCard :label="t.experiments.replaySuccess" :value="ok(runtimeStore.experimentResults.replay.replay_success)" />
+        <MetricCard :label="t.experiments.eventCount" :value="runtimeStore.experimentResults.replay.event_count" />
+        <MetricCard :label="t.experiments.divergence" :value="runtimeStore.experimentResults.replay.divergence ? t.common.failed : t.common.success" />
+        <MetricCard :label="t.experiments.originalStatus" :value="runtimeStore.experimentResults.replay.original_final_status || t.common.pending" />
+        <MetricCard :label="t.experiments.replayStatus" :value="runtimeStore.experimentResults.replay.replay_final_status || t.common.pending" />
+      </div>
+      <div v-if="runtimeStore.experimentResults.replay.divergence_reason" class="recovery-note">
+        {{ runtimeStore.experimentResults.replay.divergence_reason }}
+      </div>
     </section>
 
     <section class="section-block">

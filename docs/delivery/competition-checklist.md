@@ -7,9 +7,13 @@
 | worker PID | real-runtime smoke passed | `experiments/results/openeuler_smoke/agents.json` | `agents.json` 中包含真实 worker PID；汇总也见 `manual_smoke_summary.json`。 |
 | syscall | real-runtime smoke passed | `experiments/results/openeuler_smoke/syscalls.json` | syscall gateway 有 21 条记录。 |
 | CVM | real-runtime smoke passed | `experiments/results/openeuler_smoke/context_stats.json` | CVM API 返回 page / shared / saved metrics。 |
+| CVM memory | real-partial smoke | `experiments/results/cvm_memory/cvm_memory_smoke.json` | 覆盖 hot page、compression、LRU eviction、pin/refcount 和 materialize correctness。 |
 | scheduler | real-runtime smoke passed | `experiments/results/openeuler_smoke/scheduler_decisions.json` | scheduler decision API 返回 token-CFS-prefix-affinity 决策。 |
 | fault | real-runtime smoke passed | `experiments/results/openeuler_smoke/fault_tool_timeout.json` | tool-timeout fault 返回 `202`，状态 `RECOVERED`。 |
 | cgroup real | real-cgroup-v2 smoke passed | `experiments/results/openeuler_smoke/agent_summary.json`, `experiments/results/openeuler_cgroupv2_multi/`, `experiments/results/openeuler_cgroupv2_limits/` | 当前 openEuler 24.03 LTS 证据为 `stat -fc %T /sys/fs/cgroup = cgroup2fs`、`capsule_mode=real`、`real_cgroup_v2=true`，并包含 memory/pids/cpu limit enforcement。历史 degraded 结果只作为旧环境对照。 |
+| eBPF observer | real-ebpf or degraded smoke | `experiments/results/ebpf_smoke/ebpf_smoke.json` | eBPF observer experimental path implemented; current submitted evidence is degraded unless openEuler/Linux smoke reports real-ebpf. |
+| IPC shm | real-shm-ipc or degraded smoke | `experiments/results/ipc_shm/ipc_shm_smoke.json` | memfd/mmap shared-memory IPC，不写 kernel zero-copy。 |
+| replay | real-runtime smoke | `experiments/results/replay/replay_result.json` | 从 software-real runtime trace replay。 |
 
 ## Minimum Runnable Evidence
 
@@ -29,14 +33,17 @@
 | [x] | `llm.call` is served through the syscall gateway with mock provider usage metrics. | `experiments/results/openeuler_smoke/syscalls.json` |
 | [x] | Worker requests `tool.exec` through the syscall gateway. | `experiments/results/openeuler_smoke/syscalls.json` |
 | [x] | `ipc.publish` and `ipc.poll` transfer CVM page IDs and track avoided copy bytes. | `experiments/results/openeuler_smoke/syscalls.json`, `experiments/results/e3-context.json` |
+| [x] | `ipc.publish` / `ipc.poll` can request `page-reference` or `memfd-mmap`; unsupported memfd/mmap writes degraded fallback evidence. | `experiments/results/ipc_shm/ipc_shm_smoke.json`, `/api/ipc/metrics` |
 | [x] | `agent.spawn` records Reviewer-triggered Fixer creation through the syscall gateway. | `experiments/results/openeuler_smoke/syscalls.json` |
 | [x] | Timeline sees `syscall.started` and `syscall.finished`. | `experiments/results/openeuler_smoke/aortd.log` |
 | [x] | Timeline sees `kernel.observer_disabled` and `kernel.exec` in honest degraded mode with `syscall-gateway-proxy` probe label. | `experiments/results/openeuler_smoke/aortd.log` |
+| [x] | eBPF smoke attempts real tracepoint load/attach and reports `real-ebpf` only when the worker PID is observed. | `experiments/results/ebpf_smoke/ebpf_smoke.json` |
 | [x] | Timeline sees `ipc.published`, `ipc.polled`, `llm.called`, `agent.spawn.requested`, and `agent.spawned`. | `experiments/results/openeuler_smoke/aortd.log` |
 | [x] | Scheduler supports FIFO, token-CFS, and token-CFS-prefix-affinity. | `experiments/results/e1-scheduler.json` |
 | [x] | Pressure monitor exposes PSI/degraded status through `GET /api/pressure/status`. | `experiments/results/openeuler_smoke/env_check.txt` and `/api/pressure/status` manual check |
 | [x] | Scheduler timeline events include pressure mode/throttle/avg10 evidence. | `experiments/results/openeuler_smoke/scheduler_decisions.json` |
 | [x] | Dashboard Overview, AVP, Context, Timeline, and Experiments pages use real APIs. | `dashboard/src/` and `docs/testing/manual-test-guide.md` |
+| [x] | Dashboard Experiments includes CVM memory, IPC shm, and Replay cards. | `dashboard/src/pages/Experiments.vue` |
 | [x] | Tool timeout fault demo exists at `POST /api/demo/fault/tool-timeout`. | `experiments/results/openeuler_smoke/fault_tool_timeout.json` |
 | [x] | Workspace rmrf rollback demo exists at `POST /api/demo/fault/rmrf`. | `docs/testing/manual-test-guide.md` fault injection check |
 | [x] | Lightweight checkpoint snapshots are exposed through `GET /api/checkpoints`. | `docs/testing/manual-test-guide.md` checkpoint check |
@@ -61,6 +68,10 @@
 | [x] | LLM Router abstraction with mock provider and llama.cpp timing parser. | `internal/llm/router.go` |
 | [x] | Kernel Observer API: `GET /api/kernel/status`, `GET /api/kernel/events`. | `docs/testing/manual-test-guide.md` |
 | [x] | Kernel exec evidence uses explicit `degraded` mode and `syscall-gateway-proxy` probe when true eBPF is unavailable. | `docs/phase_reports/PHASE_15_OPEN_EULER_SMOKE_REPORT.md` |
+| [x] | eBPF observer experimental path implemented with degraded fallback unless openEuler/Linux smoke reports `real-ebpf`. | `internal/observer/ebpf/`, `experiments/results/ebpf_smoke/ebpf_smoke.json` |
+| [x] | memfd/mmap shared-memory IPC smoke and evidence. | `internal/ipc/shm/`, `experiments/results/ipc_shm/ipc_shm_smoke.json` |
+| [x] | CVM memory smoke with compression, eviction, pin/refcount stats. | `internal/cvm/`, `experiments/results/cvm_memory/cvm_memory_smoke.json` |
+| [x] | Runtime trace replay evidence. | `internal/replay/`, `experiments/results/replay/replay_result.json` |
 | [x] | Checkpoint evidence API and `checkpoint.created` timeline event. | `docs/testing/manual-test-guide.md` |
 | [x] | Lightweight checkpoint startup recovery with `checkpoint.recovered` and `runtime.recovered` timeline events. | `docs/testing/manual-test-guide.md` |
 | [x] | Degraded-copy workspace rollback with `workspace.created`, `workspace.rmrf`, and `workspace.rollback` events. | `docs/testing/manual-test-guide.md` |
@@ -76,5 +87,5 @@
 | --- | --- | --- |
 | [ ] | Real overlayfs mount/commit path on openEuler root VM. | Not implemented; next-phase target |
 | [ ] | Supervisor retry policy beyond timeout fault recording. | Not implemented; next-phase target |
-| [ ] | True `sched_process_exec` eBPF attachment on openEuler root VM. | Not implemented; next-phase target |
+| [ ] | eBPF `real-ebpf` proof on openEuler/Linux root or capable VM. | Implemented smoke path; current status depends on `experiments/results/ebpf_smoke/ebpf_smoke.json` |
 | [ ] | Durable CVM page-content and overlay upper-layer checkpointing. | Not implemented; next-phase target |

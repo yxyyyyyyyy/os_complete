@@ -24,9 +24,9 @@ probe=syscall-gateway-proxy
 ```
 
 含义是：AORT-R 已经把 exec 证据纳入 kernel lane，但事件来源是
-syscall gateway 对 tool process 的观察，不是假装来自真实 eBPF。后续在
-openEuler root VM 上接入 `sched:sched_process_exec` 后，可将 probe 切换为
-真实 eBPF。
+syscall gateway 对 tool process 的观察，不假装来自 eBPF。当前升级分支已
+新增独立 eBPF smoke；只有 openEuler/Linux 复跑证明 load/attach、worker PID
+observed 和 cleanup 成功时，才能把 eBPF evidence 标为 `real-ebpf`。
 
 ## 4. 修改文件清单
 
@@ -78,5 +78,7 @@ scripts/run_experiments.sh 5
 
 ## 7. 当前风险和下一步
 
-- 真实 eBPF attachment 尚未实现，当前为明确标记的 `degraded`。
-- 下一步可在 openEuler 24.03 root VM 上实现 `sched_process_exec` eBPF 程序，并保留当前 proxy 作为 fallback。
+- 当前升级分支已实现 eBPF observer experimental path；提交证据仍必须在
+  openEuler/Linux smoke 报告 `real-ebpf` 前保持 `degraded`。
+- openEuler 24.03 root/capable VM 复跑 `observer ebpf-smoke` 后，只有真实
+  load/attach、worker PID observed 和 cleanup 成功时才能标记 `real-ebpf`。

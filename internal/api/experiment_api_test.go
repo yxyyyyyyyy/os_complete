@@ -29,6 +29,12 @@ func TestExperimentResultsEndpointReturnsLegacyAndRealBenchmarks(t *testing.T) {
 		"e3_real_context",
 		"e4_real_ipc",
 		"e5_end_to_end",
+		"cvm_memory",
+		"ipc_shm",
+		"replay",
+		"compressed_pages",
+		"memfd_create_success",
+		"replay_success",
 		"real-runtime",
 	} {
 		if !strings.Contains(body, expected) {

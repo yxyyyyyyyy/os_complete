@@ -39,27 +39,50 @@ export interface Task {
 
 export interface ContextPage {
   id: string
+  page_id?: string
   kind: string
   content: string
+  hash?: string
   bytes: number
+  size_bytes?: number
   token_count: number
   ref_count: number
+  pinned?: boolean
+  compressed?: boolean
+  compressed_size_bytes?: number
+  last_access_time?: number
+  access_count?: number
+  owner_agents?: string[]
   created_at: number
+  updated_at?: number
 }
 
 export interface ContextStats {
+  evidence_mode?: string
   total_pages: number
   shared_pages: number
+  hot_pages?: number
+  cold_pages?: number
+  compressed_pages?: number
+  evicted_pages?: number
+  pinned_pages?: number
+  ref_counted_pages?: number
   saved_bytes: number
   saved_tokens: number
+  memory_saved_bytes?: number
+  compression_saved_bytes?: number
+  dedup_saved_bytes?: number
+  dedup_saved_tokens?: number
 }
 
 export interface IPCMetric {
+  evidence_mode?: string
   topic?: string
   total_messages: number
   delivered_messages: number
   topic_depth: number
   avoided_copy_bytes: number
+  ipc_mode?: string
 }
 
 export interface IPCMessage {
@@ -68,6 +91,7 @@ export interface IPCMessage {
   publisher: string
   page_id: string
   size_bytes: number
+  ipc_mode?: string
   created_at: number
 }
 
@@ -278,6 +302,50 @@ export interface E5EndToEndResult {
   throughput_score: number
 }
 
+export interface CVMMemorySmokeResult {
+  experiment: string
+  evidence_mode: string
+  total_pages: number
+  dedup_pages: number
+  hot_pages: number
+  cold_pages: number
+  compressed_pages: number
+  evicted_pages: number
+  pinned_pages: number
+  ref_counted_pages: number
+  materialize_success: boolean
+  memory_saved_bytes: number
+  compression_saved_bytes: number
+  dedup_saved_bytes: number
+  cache_hit_rate: number
+}
+
+export interface IPCShmSmokeResult {
+  ipc_mode: string
+  evidence_mode: string
+  memfd_create_success: boolean
+  mmap_success: boolean
+  fd_passing_success: boolean
+  worker_mmap_success: boolean
+  shared_pages: number
+  payload_bytes_sent: number
+  referenced_context_bytes: number
+  avoided_copy_bytes: number
+  data_integrity_ok: boolean
+  cleanup_success: boolean
+  fallback_reason: string
+}
+
+export interface ReplayResult {
+  replay_success: boolean
+  event_count: number
+  divergence: boolean
+  divergence_reason?: string
+  original_final_status: string
+  replay_final_status: string
+  evidence_mode: string
+}
+
 export interface ExperimentResults {
   e1_scheduler: E1SchedulerResult[]
   e2_fault: E2FaultResult[]
@@ -287,6 +355,9 @@ export interface ExperimentResults {
   e3_real_context: E3RealContextResult[]
   e4_real_ipc: E4RealIPCResult[]
   e5_end_to_end: E5EndToEndResult
+  cvm_memory: CVMMemorySmokeResult
+  ipc_shm: IPCShmSmokeResult
+  replay: ReplayResult
 }
 
 export async function runDemo(): Promise<{ task_id: string }> {

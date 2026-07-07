@@ -16,6 +16,7 @@ import (
 	"aort-r/internal/cvm"
 	"aort-r/internal/events"
 	"aort-r/internal/ipc"
+	"aort-r/internal/ipc/shm"
 	"aort-r/internal/llm"
 )
 
@@ -303,19 +304,55 @@ func (g *Gateway) contextMaterialize(req Request) Response {
 	if g.cvm == nil {
 		return Response{RequestID: req.RequestID, Status: StatusError, Error: "cvm store is not configured"}
 	}
+	if err := g.applyCVMControls(req); err != nil {
+		return Response{RequestID: req.RequestID, Status: StatusError, Error: err.Error()}
+	}
 	content, err := g.cvm.Materialize(req.AgentID)
 	if err != nil {
 		return Response{RequestID: req.RequestID, Status: StatusError, Error: err.Error()}
 	}
+	stats := g.cvm.Stats()
 	return Response{
 		RequestID: req.RequestID,
 		Status:    StatusOK,
 		Payload: map[string]any{
-			"content": content,
-			"bytes":   len([]byte(content)),
-			"tokens":  estimateTokens(content),
+			"content":                 content,
+			"bytes":                   len([]byte(content)),
+			"tokens":                  estimateTokens(content),
+			"total_pages":             stats.TotalPages,
+			"shared_pages":            stats.SharedPages,
+			"hot_pages":               stats.HotPages,
+			"cold_pages":              stats.ColdPages,
+			"compressed_pages":        stats.CompressedPages,
+			"evicted_pages":           stats.EvictedPages,
+			"pinned_pages":            stats.PinnedPages,
+			"ref_counted_pages":       stats.RefCountedPages,
+			"memory_saved_bytes":      stats.MemorySavedBytes,
+			"compression_saved_bytes": stats.CompressionSavedBytes,
+			"dedup_saved_bytes":       stats.DedupSavedBytes,
 		},
 	}
+}
+
+func (g *Gateway) applyCVMControls(req Request) error {
+	if req.Args == nil {
+		return nil
+	}
+	for _, pageID := range stringSliceArg(req.Args, "pin_page_ids") {
+		if err := g.cvm.PinPage(pageID); err != nil {
+			return err
+		}
+	}
+	if boolArg(req.Args, "compress_cold") {
+		_, _, err := g.cvm.CompressColdPages(maxInt(1, intArg(req.Args, "compress_max_access_count")))
+		if err != nil {
+			return err
+		}
+	}
+	if maxBytes := intArg(req.Args, "evict_max_bytes"); maxBytes > 0 {
+		g.cvm.EvictColdPages(maxBytes)
+	}
+	return nil
 }
 
 func (g *Gateway) contextWriteDelta(req Request) Response {
@@ -346,6 +383,13 @@ func (g *Gateway) ipcPublish(req Request) Response {
 		return Response{RequestID: req.RequestID, Status: StatusDenied, Error: "page_id is required"}
 	}
 	sizeBytes := intArg(req.Args, "size_bytes")
+	requestedMode, _ := stringArg(req.Args, "ipc_mode")
+	if requestedMode == "" {
+		requestedMode = "page-reference"
+	}
+	actualMode := "page-reference"
+	fallbackReason := ""
+	var shmResult shm.SmokeResult
 	if g.cvm != nil {
 		page, exists := g.cvm.Page(pageID)
 		if !exists {
@@ -354,24 +398,52 @@ func (g *Gateway) ipcPublish(req Request) Response {
 		if sizeBytes <= 0 {
 			sizeBytes = page.Bytes
 		}
+		if requestedMode == "memfd-mmap" {
+			payload := []byte(page.Content)
+			if len(payload) == 0 {
+				payload = []byte(page.ID)
+			}
+			var err error
+			shmResult, err = shm.TransferPayload(payload, 1)
+			if err != nil || shmResult.EvidenceMode == "degraded" {
+				if err != nil {
+					fallbackReason = err.Error()
+				} else {
+					fallbackReason = shmResult.FallbackReason
+				}
+			} else {
+				actualMode = "memfd-mmap"
+			}
+		}
 	}
 	metric := g.ipc.Publish(ipc.PublishRequest{
 		Topic:     topic,
 		Publisher: req.AgentID,
 		PageID:    pageID,
 		SizeBytes: sizeBytes,
+		IPCMode:   actualMode,
 	})
 	g.publish("ipc.published", req, map[string]any{
 		"topic":              topic,
 		"page_id":            pageID,
+		"requested_ipc_mode": requestedMode,
+		"ipc_mode":           actualMode,
+		"fallback_reason":    fallbackReason,
 		"avoided_copy_bytes": metric.AvoidedCopyBytes,
 		"topic_depth":        metric.TopicDepth,
 	})
 	return Response{RequestID: req.RequestID, Status: StatusOK, Payload: map[string]any{
-		"topic":              topic,
-		"page_id":            pageID,
-		"avoided_copy_bytes": metric.AvoidedCopyBytes,
-		"topic_depth":        metric.TopicDepth,
+		"topic":                topic,
+		"page_id":              pageID,
+		"requested_ipc_mode":   requestedMode,
+		"ipc_mode":             actualMode,
+		"shm_evidence_mode":    shmResult.EvidenceMode,
+		"fallback_reason":      fallbackReason,
+		"avoided_copy_bytes":   metric.AvoidedCopyBytes,
+		"topic_depth":          metric.TopicDepth,
+		"memfd_create_success": shmResult.MemfdCreateSuccess,
+		"mmap_success":         shmResult.MmapSuccess,
+		"fd_passing_success":   shmResult.FDPassingSuccess,
 	}}
 }
 
@@ -385,8 +457,10 @@ func (g *Gateway) ipcPoll(req Request) Response {
 	}
 	messages, metric := g.ipc.Poll(topic, req.AgentID)
 	pageIDs := make([]string, 0, len(messages))
+	ipcModes := make([]string, 0, len(messages))
 	for _, message := range messages {
 		pageIDs = append(pageIDs, message.PageID)
+		ipcModes = append(ipcModes, message.IPCMode)
 		if g.cvm != nil {
 			if err := g.cvm.MountPage(req.AgentID, message.PageID); err != nil {
 				return Response{RequestID: req.RequestID, Status: StatusError, Error: err.Error()}
@@ -396,12 +470,14 @@ func (g *Gateway) ipcPoll(req Request) Response {
 	g.publish("ipc.polled", req, map[string]any{
 		"topic":              topic,
 		"page_ids":           pageIDs,
+		"ipc_modes":          ipcModes,
 		"delivered_messages": metric.DeliveredMessages,
 		"avoided_copy_bytes": metric.AvoidedCopyBytes,
 	})
 	return Response{RequestID: req.RequestID, Status: StatusOK, Payload: map[string]any{
 		"topic":              topic,
 		"page_ids":           pageIDs,
+		"ipc_modes":          ipcModes,
 		"delivered_messages": metric.DeliveredMessages,
 		"avoided_copy_bytes": metric.AvoidedCopyBytes,
 	}}
@@ -663,6 +739,28 @@ func intArg(args map[string]any, key string) int {
 	default:
 		return 0
 	}
+}
+
+func boolArg(args map[string]any, key string) bool {
+	value, ok := args[key]
+	if !ok {
+		return false
+	}
+	switch typed := value.(type) {
+	case bool:
+		return typed
+	case string:
+		return typed == "true"
+	default:
+		return false
+	}
+}
+
+func maxInt(left, right int) int {
+	if left > right {
+		return left
+	}
+	return right
 }
 
 func jsonSize(value any) int {

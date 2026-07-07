@@ -363,7 +363,7 @@ func WriteFinalEvidence(outDir string) (FinalEvidenceIndex, error) {
 			"real_workspace_tool_exec": realOnly["tool_workspace"] == "passed",
 			"all_passed":               boolField(realAll, "all_passed"),
 		},
-		EBPFObserver:   evidenceModeFromPath(filepath.Join(root, "experiments", "results", "ebpf_smoke", "ebpf_smoke.json"), "planned"),
+		EBPFObserver:   evidenceModeFromPath(filepath.Join(root, "experiments", "results", "ebpf_smoke", "ebpf_smoke.json"), string(evidence.ModeDegraded)),
 		IPCShm:         evidenceModeFromPath(filepath.Join(root, "experiments", "results", "ipc_shm", "ipc_shm_smoke.json"), "missing"),
 		CVMMemory:      evidenceModeFromPath(filepath.Join(root, "experiments", "results", "cvm_memory", "cvm_memory_smoke.json"), "missing"),
 		Replay:         evidenceModeFromPath(filepath.Join(root, "experiments", "results", "replay", "replay_result.json"), "missing"),
@@ -669,7 +669,7 @@ func buildEvidenceModeSummary(root string, realOnly map[string]string) map[strin
 		"cvm":                 evidenceModeFromPath(filepath.Join(root, "experiments", "results", "cvm_memory", "cvm_memory_smoke.json"), "real-partial"),
 		"ipc":                 "real-partial + " + evidenceModeFromPath(filepath.Join(root, "experiments", "results", "ipc_shm", "ipc_shm_smoke.json"), "real-shm-ipc optional"),
 		"llm":                 "mock",
-		"ebpf":                evidenceModeFromPath(filepath.Join(root, "experiments", "results", "ebpf_smoke", "ebpf_smoke.json"), "planned"),
+		"ebpf":                evidenceModeFromPath(filepath.Join(root, "experiments", "results", "ebpf_smoke", "ebpf_smoke.json"), string(evidence.ModeDegraded)),
 		"replay":              evidenceModeFromPath(filepath.Join(root, "experiments", "results", "replay", "replay_result.json"), string(evidence.ModeRealRuntime)),
 	}
 }
@@ -686,8 +686,8 @@ func buildKnownLimits(root string, realOnly, generic map[string]string) []string
 	if _, ok := readJSONMap(filepath.Join(root, "experiments", "results", "real_all", "REAL_EVIDENCE_INDEX.json")); !ok {
 		limits = append(limits, "real-all evidence is missing.")
 	}
-	if mode := evidenceModeFromPath(filepath.Join(root, "experiments", "results", "ebpf_smoke", "ebpf_smoke.json"), "planned"); mode != "real-ebpf" {
-		limits = append(limits, "eBPF observer is optional and reports degraded/planned unless a Linux host can load and attach the tracepoint program.")
+	if mode := evidenceModeFromPath(filepath.Join(root, "experiments", "results", "ebpf_smoke", "ebpf_smoke.json"), string(evidence.ModeDegraded)); mode != "real-ebpf" {
+		limits = append(limits, "eBPF observer experimental path implemented; current submitted evidence is degraded unless openEuler/Linux smoke reports real-ebpf.")
 	}
 	return appendUniqueStrings(limits)
 }
@@ -703,8 +703,32 @@ func evidenceModeFromPath(path, fallback string) string {
 func collectGitInfo(root string) FinalGitInfo {
 	commit := commandOutput(root, "git", "rev-parse", "HEAD")
 	branch := commandOutput(root, "git", "branch", "--show-current")
-	dirty := commandOutput(root, "git", "status", "--porcelain") != ""
+	dirty := gitDirtyFromPorcelain(commandOutput(root, "git", "status", "--porcelain", "--untracked-files=no"))
 	return FinalGitInfo{Commit: fallbackOr(commit, "missing"), Branch: fallbackOr(branch, "missing"), Dirty: dirty}
+}
+
+func gitDirtyFromPorcelain(status string) bool {
+	for _, line := range strings.Split(status, "\n") {
+		if strings.TrimSpace(line) == "" || strings.HasPrefix(line, "??") {
+			continue
+		}
+		if gitDirtyPathIsGeneratedEvidence(line) {
+			continue
+		}
+		return true
+	}
+	return false
+}
+
+func gitDirtyPathIsGeneratedEvidence(line string) bool {
+	if len(line) < 4 {
+		return false
+	}
+	path := strings.TrimSpace(line[3:])
+	if renamed, _, ok := strings.Cut(path, " -> "); ok {
+		path = strings.TrimSpace(renamed)
+	}
+	return strings.HasPrefix(path, "experiments/results/")
 }
 
 func collectSystemInfo() FinalSystemInfo {

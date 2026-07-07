@@ -57,5 +57,7 @@
 - 本地 macOS 无法现场证明 live overlayfs mount 或 live cgroup2fs；最终
   checked-in workspace evidence 来自 Linux/root 服务器复跑，必须与实际
   `workspace_probe.json` 和 `workspace_isolation_evidence.json` 保持一致。
-- eBPF 仍为 `planned`，不能宣传为已实现。
+- eBPF observer experimental path implemented; current submitted evidence is
+  degraded unless openEuler/Linux smoke reports real-ebpf. 不能在缺少真实
+  load/attach/worker PID evidence 时宣传为 `real-ebpf`。
 - LLM 默认 provider 仍为 `mock`；只有带环境变量的 DeepSeek smoke 才能标 `real-api`。

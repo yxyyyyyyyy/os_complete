@@ -12,6 +12,7 @@ type PublishRequest struct {
 	Publisher string `json:"publisher"`
 	PageID    string `json:"page_id"`
 	SizeBytes int    `json:"size_bytes"`
+	IPCMode   string `json:"ipc_mode,omitempty"`
 }
 
 type Message struct {
@@ -20,6 +21,7 @@ type Message struct {
 	Publisher string `json:"publisher"`
 	PageID    string `json:"page_id"`
 	SizeBytes int    `json:"size_bytes"`
+	IPCMode   string `json:"ipc_mode,omitempty"`
 	Content   string `json:"content,omitempty"`
 	CreatedAt int64  `json:"created_at"`
 }
@@ -31,6 +33,7 @@ type Metric struct {
 	DeliveredMessages int           `json:"delivered_messages"`
 	TopicDepth        int           `json:"topic_depth"`
 	AvoidedCopyBytes  int           `json:"avoided_copy_bytes"`
+	IPCMode           string        `json:"ipc_mode,omitempty"`
 }
 
 type Blackboard struct {
@@ -54,18 +57,24 @@ func (b *Blackboard) Publish(req PublishRequest) Metric {
 	if req.SizeBytes < 0 {
 		req.SizeBytes = 0
 	}
+	if req.IPCMode == "" {
+		req.IPCMode = "page-reference"
+	}
 	message := Message{
 		ID:        time.Now().Format("20060102150405.000000000"),
 		Topic:     req.Topic,
 		Publisher: req.Publisher,
 		PageID:    req.PageID,
 		SizeBytes: req.SizeBytes,
+		IPCMode:   req.IPCMode,
 		CreatedAt: time.Now().UnixMilli(),
 	}
 	b.topics[req.Topic] = append(b.topics[req.Topic], message)
 	b.total++
 	b.avoidedCopy += req.SizeBytes
-	return b.metricLocked(req.Topic, 0, req.SizeBytes)
+	metric := b.metricLocked(req.Topic, 0, req.SizeBytes)
+	metric.IPCMode = req.IPCMode
+	return metric
 }
 
 func (b *Blackboard) Poll(topic, subscriber string) ([]Message, Metric) {
@@ -85,7 +94,11 @@ func (b *Blackboard) Poll(topic, subscriber string) ([]Message, Metric) {
 	for _, message := range delivered {
 		avoided += message.SizeBytes
 	}
-	return delivered, b.metricLocked(topic, len(delivered), avoided)
+	metric := b.metricLocked(topic, len(delivered), avoided)
+	if len(delivered) > 0 {
+		metric.IPCMode = delivered[len(delivered)-1].IPCMode
+	}
+	return delivered, metric
 }
 
 func (b *Blackboard) Metrics() Metric {

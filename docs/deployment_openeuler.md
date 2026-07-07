@@ -24,8 +24,8 @@ Expected checks:
 - `cgroup.controllers` is readable.
 - overlayfs is listed in `/proc/filesystems` when available.
 - PSI files exist under `/proc/pressure` or cgroup pressure files when pressure-aware scheduling evidence is desired.
-- Kernel BTF is available at `/sys/kernel/btf/vmlinux` when true eBPF attachment is desired.
-- bpffs exists at `/sys/fs/bpf` when true eBPF attachment is desired.
+- Kernel BTF is available at `/sys/kernel/btf/vmlinux` when `real-ebpf` smoke proof is desired.
+- bpffs exists at `/sys/fs/bpf` when `real-ebpf` smoke proof is desired.
 
 Missing root, overlayfs, cgroup v2, BTF, or bpffs does not stop the local demo; it changes OS-backed modules to degraded mode.
 
@@ -129,7 +129,7 @@ Outputs:
 | Worker process runtime | `/api/agents`, PID fields, UDS registration events |
 | cgroup capsule | `capsule_mode`, `cgroup_path`, freeze/unfreeze/kill APIs |
 | Context optimization | `/api/context/pages`, `/api/context/stats`, E3 results |
-| Efficient communication | `ipc.publish`, `ipc.poll`, `/api/ipc/metrics` |
+| Efficient communication | `ipc.publish`, `ipc.poll`, `/api/ipc/metrics`, `experiments/results/ipc_shm/ipc_shm_smoke.json` |
 | Unified syscall abstraction | `/api/syscalls`, `tool.exec`, `llm.call`, `agent.spawn` |
 | Dynamic task generation | `agent.spawn.requested`, `agent.spawned` timeline events |
 | Fault isolation | `POST /api/demo/fault/tool-timeout`, `/api/faults`, E2 results |
@@ -138,12 +138,19 @@ Outputs:
 | Daemon recovery | `deploy/systemd/aortd.service`, `scripts/demo-daemonkill.sh`, `/api/recovery/status`, `runtime.recovered` |
 | Kernel observability | `/api/kernel/status`, `/api/kernel/events`, `kernel.observer_disabled`, `kernel.exec` |
 | Pressure-aware scheduling | `/api/pressure/status`, `pressure.sampled`, scheduler event `pressure_*` fields |
+| eBPF observer smoke | `go run ./cmd/aortctl observer ebpf-smoke --out experiments/results/ebpf_smoke` |
+| Replay trace | `go run ./cmd/aortctl replay --trace experiments/results/software_real_demo/trace.json --out experiments/results/replay` |
 
 ## Known Limits
 
-- Workspace rollback is implemented in degraded-copy mode and proves that an Agent workspace can be destroyed and restored from a base snapshot without touching the base. Real overlayfs mount/commit is the next openEuler-root enhancement.
+- Workspace rollback supports overlayfs plus degraded-copy fallback. Treat it as
+  `real-overlayfs` only when Linux/root evidence proves a successful mount and
+  mountpoint check.
 - Checkpoint recovery is lightweight in this iteration: AVP state, scheduler vruntime, and CVM page references are restored into the runtime index; durable CVM page contents and overlay upper-layer snapshots are the next enhancement.
-- Kernel observer currently uses `degraded` mode and records exec evidence from the syscall gateway with probe label `syscall-gateway-proxy`. True `sched_process_exec` eBPF attachment is the next openEuler-root enhancement.
+- Kernel observer currently uses `degraded` mode and records exec evidence from
+  the syscall gateway with probe label `syscall-gateway-proxy`. eBPF observer
+  experimental path implemented; current submitted evidence is degraded unless
+  openEuler/Linux smoke reports real-ebpf.
 - DeepSeek is implemented by `internal/llm/deepseek_provider.go` behind the
   `llm.Router` interface, with credentials read only from environment
   variables and mock fallback. The llama.cpp local provider path remains a

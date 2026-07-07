@@ -519,55 +519,15 @@ func RunSoftwareRealDemo(runs int, outDir string) (E5EndToEndResult, error) {
 	if outDir == "" {
 		outDir = filepath.Join("experiments", "results")
 	}
-	result := RunE5EndToEndBenchmark(runs)
+	result, traceEvents := RunE5EndToEndBenchmarkWithTrace(runs)
 	demoDir := filepath.Join(outDir, "software_real_demo")
 	if err := WriteJSON(filepath.Join(demoDir, "result.json"), result); err != nil {
 		return result, err
 	}
-	if err := trace.WriteTrace(filepath.Join(demoDir, "trace.json"), softwareRealTrace(result)); err != nil {
+	if err := trace.WriteTrace(filepath.Join(demoDir, "trace.json"), traceEvents); err != nil {
 		return result, err
 	}
 	return result, nil
-}
-
-func softwareRealTrace(result E5EndToEndResult) []trace.TraceEvent {
-	base := time.Now().UTC()
-	status := "completed"
-	if !result.FinalSuccess {
-		status = "failed"
-	}
-	rows := []struct {
-		eventType string
-		agentID   string
-		payload   map[string]any
-	}{
-		{"scheduler_decision", "e5-planner", map[string]any{"policy": "resource-aware", "status": "running"}},
-		{"admission_decision", "e5-planner", map[string]any{"accepted": true, "agents": result.Agents}},
-		{"resource_sampler_result", "runtime", map[string]any{"evidence_mode": result.EvidenceMode}},
-		{"syscall_request", "e5-planner", map[string]any{"name": "context.materialize"}},
-		{"syscall_response", "e5-planner", map[string]any{"name": "context.materialize", "status": "ok"}},
-		{"tool_exec_command", "e5-tester", map[string]any{"tool_exec_count": result.ToolExec}},
-		{"tool_exec_result", "e5-tester", map[string]any{"fault_recovered": result.FaultRecovered}},
-		{"workspace_commit", "e5-fixer", map[string]any{"status": "committed"}},
-		{"ipc_publish", "e5-reviewer", map[string]any{"messages": result.IPCMessages}},
-		{"ipc_poll", "e5-fixer", map[string]any{"messages": result.IPCMessages}},
-		{"cvm_materialize", "e5-planner", map[string]any{"context_saved_tokens": result.ContextSavedTokens}},
-		{"checkpoint", "runtime", map[string]any{"status": "saved"}},
-		{"recovery", "e5-fixer", map[string]any{"fault_recovered": result.FaultRecovered}},
-		{"task_completed", "runtime", map[string]any{"final_status": status}},
-	}
-	events := make([]trace.TraceEvent, 0, len(rows))
-	for i, row := range rows {
-		events = append(events, trace.TraceEvent{
-			EventID:   fmt.Sprintf("software-real-%03d", i+1),
-			Timestamp: base.Add(time.Duration(i) * time.Millisecond).Format(time.RFC3339Nano),
-			Type:      row.eventType,
-			AgentID:   row.agentID,
-			TaskID:    "software-real",
-			Payload:   row.payload,
-		})
-	}
-	return events
 }
 
 func BuildRealAllIndex(inputs RealAllInputs) RealAllIndex {

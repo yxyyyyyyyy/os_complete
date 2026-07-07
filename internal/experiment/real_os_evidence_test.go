@@ -1,12 +1,14 @@
 package experiment
 
 import (
+	"encoding/json"
 	"os"
 	"path/filepath"
 	"strings"
 	"testing"
 
 	"aort-r/internal/evidence"
+	"aort-r/internal/trace"
 	"aort-r/internal/workspace"
 )
 
@@ -120,5 +122,47 @@ func TestRunSoftwareRealDemoWritesCliArtifactPath(t *testing.T) {
 	}
 	if _, statErr := os.Stat(filepath.Join(outDir, "software_real_demo", "trace.json")); statErr != nil {
 		t.Fatalf("software-real trace artifact missing: %v", statErr)
+	}
+	rawTrace, err := os.ReadFile(filepath.Join(outDir, "software_real_demo", "trace.json"))
+	if err != nil {
+		t.Fatalf("read trace: %v", err)
+	}
+	var events []trace.TraceEvent
+	if err := json.Unmarshal(rawTrace, &events); err != nil {
+		t.Fatalf("decode trace: %v", err)
+	}
+	foundRuntimeSyscall := false
+	for _, event := range events {
+		if event.Type == "syscall.finished" && strings.HasPrefix(event.EventID, "e5-") {
+			foundRuntimeSyscall = true
+		}
+		if strings.HasPrefix(event.EventID, "software-real-") {
+			t.Fatalf("trace should come from runtime events, not manual software-real sequence: %#v", event)
+		}
+	}
+	if !foundRuntimeSyscall {
+		t.Fatalf("trace missing runtime syscall events: %#v", events)
+	}
+}
+
+func TestGitDirtyFromPorcelainIgnoresUntrackedFiles(t *testing.T) {
+	if gitDirtyFromPorcelain("?? scratch.txt\n?? experiments/results/audit_all/summary.json\n") {
+		t.Fatalf("untracked files should not mark final evidence dirty")
+	}
+	if !gitDirtyFromPorcelain(" M README.md\n") {
+		t.Fatalf("tracked modifications should mark final evidence dirty")
+	}
+	if !gitDirtyFromPorcelain("M  internal/cvm/store.go\n") {
+		t.Fatalf("staged tracked modifications should mark final evidence dirty")
+	}
+}
+
+func TestGitDirtyFromPorcelainIgnoresGeneratedEvidence(t *testing.T) {
+	status := " M experiments/results/final/FINAL_EVIDENCE_INDEX.json\n M experiments/results/replay/replay_result.json\n"
+	if gitDirtyFromPorcelain(status) {
+		t.Fatalf("generated evidence files should not mark final evidence dirty")
+	}
+	if !gitDirtyFromPorcelain(status + " M internal/syscall/gateway.go\n") {
+		t.Fatalf("source changes should still mark final evidence dirty")
 	}
 }

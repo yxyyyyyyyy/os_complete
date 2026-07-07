@@ -4,6 +4,7 @@ import (
 	"context"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"testing"
 
@@ -70,6 +71,9 @@ func TestGatewayMaterializesContextAndAuditsRecord(t *testing.T) {
 	}
 	if response.Payload["content"] != "system prompt\n" {
 		t.Fatalf("payload = %#v", response.Payload)
+	}
+	if response.Payload["total_pages"] != 1 || response.Payload["ref_counted_pages"] != 1 {
+		t.Fatalf("materialize should include CVM memory stats: %#v", response.Payload)
 	}
 	records := gateway.Records()
 	if len(records) != 1 {
@@ -299,6 +303,59 @@ func TestGatewayPublishesAndPollsPageReferenceIPC(t *testing.T) {
 	}
 	if !containsEventType(sink.events, "ipc.published") || !containsEventType(sink.events, "ipc.polled") {
 		t.Fatalf("expected IPC events, got %#v", sink.events)
+	}
+}
+
+func TestGatewayCanRequestMemfdMmapIPCMode(t *testing.T) {
+	store := cvm.NewStore(nil)
+	page, err := store.CreatePage(cvm.KindDelta, "review feedback content")
+	if err != nil {
+		t.Fatalf("CreatePage: %v", err)
+	}
+	gateway := NewGateway(Config{CVM: store, IPC: ipc.NewBlackboard(), WorkspaceRoot: t.TempDir()})
+
+	publish := gateway.Handle(context.Background(), Request{
+		RequestID: "pub-shm",
+		AgentID:   "reviewer-1",
+		TaskID:    "task-1",
+		Name:      "ipc.publish",
+		Args: map[string]any{
+			"topic":    "review.feedback",
+			"page_id":  page.ID,
+			"ipc_mode": "memfd-mmap",
+		},
+	})
+	if publish.Status != StatusOK {
+		t.Fatalf("publish status=%s error=%s", publish.Status, publish.Error)
+	}
+	if publish.Payload["requested_ipc_mode"] != "memfd-mmap" {
+		t.Fatalf("publish payload missing requested mode: %#v", publish.Payload)
+	}
+	if publish.Payload["ipc_mode"] == "" {
+		t.Fatalf("publish payload missing actual mode: %#v", publish.Payload)
+	}
+	if runtime.GOOS != "linux" && publish.Payload["ipc_mode"] != "page-reference" {
+		t.Fatalf("non-linux should fall back to page-reference: %#v", publish.Payload)
+	}
+	if runtime.GOOS != "linux" && publish.Payload["fallback_reason"] == "" {
+		t.Fatalf("non-linux fallback should report reason: %#v", publish.Payload)
+	}
+
+	poll := gateway.Handle(context.Background(), Request{
+		RequestID: "poll-shm",
+		AgentID:   "fixer-1",
+		TaskID:    "task-1",
+		Name:      "ipc.poll",
+		Args: map[string]any{
+			"topic": "review.feedback",
+		},
+	})
+	if poll.Status != StatusOK {
+		t.Fatalf("poll status=%s error=%s", poll.Status, poll.Error)
+	}
+	modes, ok := poll.Payload["ipc_modes"].([]string)
+	if !ok || len(modes) != 1 || modes[0] == "" {
+		t.Fatalf("poll payload missing ipc modes: %#v", poll.Payload)
 	}
 }
 

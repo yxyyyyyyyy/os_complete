@@ -21,9 +21,12 @@ import (
 	"aort-r/internal/evidence"
 	"aort-r/internal/experiment"
 	"aort-r/internal/ipc"
+	"aort-r/internal/ipc/shm"
 	"aort-r/internal/kernel"
 	"aort-r/internal/llm"
+	"aort-r/internal/observer/ebpf"
 	"aort-r/internal/pressure"
+	"aort-r/internal/replay"
 	"aort-r/internal/resource"
 	"aort-r/internal/scheduler"
 	"aort-r/internal/supervisor"
@@ -890,14 +893,7 @@ func (s *Server) evidenceReport() evidenceResponse {
 			Signals:      []string{"cpu.some", "memory.some", "io.some", "pressure_throttle"},
 			Reason:       pressureStatus.Reason,
 		},
-		{
-			Name:         "eBPF Observer",
-			Status:       "planned",
-			Mode:         "planned",
-			EvidenceMode: evidence.ModePlanned,
-			Signals:      []string{"sched_process_exec"},
-			Reason:       "Not implemented in this build; kernel observer reports degraded mode with syscall-gateway-proxy as the probe label.",
-		},
+		ebpfEvidenceModule(),
 		{
 			Name:         "Software Real Demo",
 			Status:       "real-runtime",
@@ -932,6 +928,39 @@ func (s *Server) evidenceReport() evidenceResponse {
 		},
 	}
 	return evidenceResponse{UpdatedAt: time.Now().UnixMilli(), Modules: modules}
+}
+
+func ebpfEvidenceModule() evidenceModule {
+	module := evidenceModule{
+		Name:         "eBPF Observer",
+		Status:       "degraded",
+		Mode:         string(evidence.ModeDegraded),
+		EvidenceMode: evidence.ModeDegraded,
+		Signals:      []string{"sched_process_exit", "worker_pid_observed", "cleanup_success"},
+		Reason:       "eBPF observer experimental path implemented; current submitted evidence is degraded unless openEuler/Linux smoke reports real-ebpf.",
+	}
+	var smoke ebpf.SmokeResult
+	if !readJSON(filepath.Join("experiments", "results", "ebpf_smoke", "ebpf_smoke.json"), &smoke) {
+		return module
+	}
+	module.Mode = fallbackString(smoke.EvidenceMode, string(evidence.ModeDegraded))
+	module.EvidenceMode = evidence.Mode(module.Mode)
+	module.Reason = fallbackString(smoke.FallbackReason, module.Reason)
+	if len(smoke.AttachedTracepoints) > 0 {
+		module.Signals = smoke.AttachedTracepoints
+	}
+	if smoke.EvidenceMode == string(evidence.ModeRealEBPF) {
+		module.Status = "real"
+		module.Reason = "Linux/openEuler smoke loaded and attached the eBPF tracepoint program and observed the worker PID."
+	}
+	return module
+}
+
+func fallbackString(value, fallback string) string {
+	if value != "" {
+		return value
+	}
+	return fallback
 }
 
 func llmEvidenceStatus() string {
@@ -1327,6 +1356,9 @@ type experimentResultsResponse struct {
 	E3RealContext  []experiment.E3RealContextResult   `json:"e3_real_context"`
 	E4RealIPC      []experiment.E4RealIPCResult       `json:"e4_real_ipc"`
 	E5EndToEnd     experiment.E5EndToEndResult        `json:"e5_end_to_end"`
+	CVMMemory      experiment.CVMMemorySmokeResult    `json:"cvm_memory"`
+	IPCShm         shm.SmokeResult                    `json:"ipc_shm"`
+	Replay         replay.Result                      `json:"replay"`
 }
 
 func loadExperimentResults() experimentResultsResponse {
@@ -1356,6 +1388,9 @@ func loadExperimentResults() experimentResultsResponse {
 	if !readJSON(filepath.Join(base, "e5-end-to-end.json"), &response.E5EndToEnd) {
 		response.E5EndToEnd = experiment.RunE5EndToEndBenchmark(5)
 	}
+	_ = readJSON(filepath.Join(base, "cvm_memory", "cvm_memory_smoke.json"), &response.CVMMemory)
+	_ = readJSON(filepath.Join(base, "ipc_shm", "ipc_shm_smoke.json"), &response.IPCShm)
+	_ = readJSON(filepath.Join(base, "replay", "replay_result.json"), &response.Replay)
 	return response
 }
 

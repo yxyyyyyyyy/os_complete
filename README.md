@@ -112,8 +112,7 @@ key it skips without failing and records explicit mock fallback.
 - `simulation`: The path is intentionally synthetic for unavailable OS
   capabilities or controlled experiment models. Simulation outputs must be
   labeled as `simulation`, not as real OS evidence.
-- `planned`: The design is documented but not implemented in this build, such
-  as true eBPF attachment.
+- `planned`: The design is documented but not implemented in this build.
 
 ## Implemented Mechanisms
 
@@ -276,7 +275,11 @@ See [docs/deployment_openeuler.md](docs/deployment_openeuler.md) for deployment 
 
 ## Known Limits
 
-- True eBPF attachment remains planned.
+- eBPF observer experimental path implemented; current submitted evidence is
+  degraded unless openEuler/Linux smoke reports real-ebpf.
+- memfd/mmap shared-memory IPC is implemented as an optional smoke and runtime
+  path; keep it `degraded` unless `ipc_shm_smoke.json` reports
+  `real-shm-ipc`.
 - Workspace isolation supports an overlayfs code path plus degraded-copy
   fallback. Treat `real-overlayfs` as current only when
   `workspace_probe.json` proves a successful mount and mountpoint check, and
@@ -284,7 +287,8 @@ See [docs/deployment_openeuler.md](docs/deployment_openeuler.md) for deployment 
   otherwise the evidence must be `degraded-copy`.
 - CVM remains page-level context reuse and materialization optimization, not
   true model KV Cache sharing.
-- IPC remains page-reference IPC, not kernel zero-copy.
+- IPC includes page-reference mode and optional memfd/mmap shared-memory mode;
+  neither should be described as kernel zero-copy.
 - Lightweight checkpoint startup recovery, PSI/degraded pressure monitoring,
   and honest degraded kernel exec evidence are implemented and test-covered.
 - DeepSeek provider is implemented with environment-only credentials, mock

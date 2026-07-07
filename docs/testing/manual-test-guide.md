@@ -79,7 +79,7 @@ Expected:
 - `/api/demo/run` starts Planner, Coder, and Tester worker processes.
 - `/api/agents` returns non-zero `pid` values.
 - `/api/syscalls` contains `context.materialize`, `llm.call`, `ipc.publish`, `ipc.poll`, `agent.spawn`, `tool.exec`, `context.write_delta`, and `agent.report`.
-- `/api/kernel/status` returns `mode=degraded` with probe `syscall-gateway-proxy` unless a future true eBPF attachment is enabled.
+- `/api/kernel/status` returns `mode=degraded` with probe `syscall-gateway-proxy`; eBPF observer evidence is verified separately by `go run ./cmd/aortctl observer ebpf-smoke --out experiments/results/ebpf_smoke` and is `real-ebpf` only when Linux/openEuler smoke proves load/attach and worker PID observation.
 - `/api/kernel/events` contains `kernel.exec` records after `tool.exec` runs.
 - `/api/pressure/status` returns Linux PSI metrics or degraded mode when PSI is unavailable.
 - `/api/ipc/metrics` reports positive `avoided_copy_bytes`.

@@ -72,8 +72,8 @@ func CompetitionSummary() map[string]string {
 		"cvm":            string(ModeRealPartial),
 		"ipc":            string(ModeRealPartial),
 		"llm":            string(ModeMock),
-		"ebpf":           string(ModePlanned),
-		"ipc_shm":        string(ModePlanned),
+		"ebpf":           string(ModeDegraded),
+		"ipc_shm":        string(ModeDegraded),
 		"replay":         string(ModeRealRuntime),
 		"overlayfs":      string(ModeDegradedCopy),
 	}

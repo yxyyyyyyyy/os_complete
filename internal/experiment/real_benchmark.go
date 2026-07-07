@@ -20,6 +20,7 @@ import (
 	"aort-r/internal/scheduler"
 	"aort-r/internal/supervisor"
 	syscallgw "aort-r/internal/syscall"
+	"aort-r/internal/trace"
 	"aort-r/internal/workspace"
 )
 
@@ -980,19 +981,29 @@ func RunE4RealIPCBenchmark(runs int) []E4RealIPCResult {
 }
 
 func RunE5EndToEndBenchmark(runs int) E5EndToEndResult {
+	result, _ := RunE5EndToEndBenchmarkWithTrace(runs)
+	return result
+}
+
+func RunE5EndToEndBenchmarkWithTrace(runs int) (E5EndToEndResult, []trace.TraceEvent) {
 	ctx := context.Background()
-	store := cvm.NewStore(nil)
+	traceSink := newRuntimeTraceCollector()
+	store := cvm.NewStore(traceSink)
 	board := ipc.NewBlackboard()
 	manager := supervisor.NewManager(nil)
 	gateway := syscallgw.NewGateway(syscallgw.Config{
 		CVM:           store,
 		IPC:           board,
+		Sink:          traceSink,
 		WorkspaceRoot: filepath.Join(os.TempDir(), "aort-e5-end-to-end"),
 	})
 	agents := []string{"planner", "coder", "tester", "reviewer", "fixer", "reporter"}
 	system, _ := store.CreatePage(cvm.KindSystem, "system: e5 software-real benchmark\n")
 	project, _ := store.CreatePage(cvm.KindProject, "project: string utility package with tests\n")
 	task, _ := store.CreatePage(cvm.KindTask, "task: implement NormalizeSpace with recovered timeout fault\n")
+	cold, _ := store.CreatePage(cvm.KindSummary, strings.Repeat("cold e5 summary page ", 8))
+	_ = store.PinPage(system.ID)
+	_ = store.ReleasePage("", cold.ID)
 	start := time.Now()
 	for _, agent := range agents {
 		agentID := "e5-" + agent
@@ -1000,8 +1011,14 @@ func RunE5EndToEndBenchmark(runs int) E5EndToEndResult {
 		_ = store.MountPage(agentID, project.ID)
 		_ = store.MountPage(agentID, task.ID)
 	}
+	materializeArgs := map[string]any{
+		"pin_page_ids":              []string{system.ID},
+		"compress_cold":             true,
+		"compress_max_access_count": 4,
+		"evict_max_bytes":           1,
+	}
 	syscalls := []syscallgw.Request{
-		{RequestID: "e5-planner-materialize", TaskID: "e5", AgentID: "e5-planner", Name: "context.materialize"},
+		{RequestID: "e5-planner-materialize", TaskID: "e5", AgentID: "e5-planner", Name: "context.materialize", Args: materializeArgs},
 		{RequestID: "e5-planner-delta", TaskID: "e5", AgentID: "e5-planner", Name: "context.write_delta", Args: map[string]any{"content": "plan: code, test, review, fix, report\n"}},
 		{RequestID: "e5-coder-materialize", TaskID: "e5", AgentID: "e5-coder", Name: "context.materialize"},
 		{RequestID: "e5-coder-delta", TaskID: "e5", AgentID: "e5-coder", Name: "context.write_delta", Args: map[string]any{"content": "code: NormalizeSpace uses strings.Fields and strings.Join\n"}},
@@ -1014,7 +1031,7 @@ func RunE5EndToEndBenchmark(runs int) E5EndToEndResult {
 	reviewPages := store.PageTable("e5-reviewer").PageIDs
 	reviewPageID := reviewPages[len(reviewPages)-1]
 	reviewPage, _ := store.Page(reviewPageID)
-	gateway.Handle(ctx, syscallgw.Request{RequestID: "e5-reviewer-ipc", TaskID: "e5", AgentID: "e5-reviewer", Name: "ipc.publish", Args: map[string]any{"topic": "e5.review", "page_id": reviewPageID, "size_bytes": reviewPage.Bytes}})
+	gateway.Handle(ctx, syscallgw.Request{RequestID: "e5-reviewer-ipc", TaskID: "e5", AgentID: "e5-reviewer", Name: "ipc.publish", Args: map[string]any{"topic": "e5.review", "page_id": reviewPageID, "size_bytes": reviewPage.Bytes, "ipc_mode": "memfd-mmap"}})
 	gateway.Handle(ctx, syscallgw.Request{RequestID: "e5-fixer-ipc", TaskID: "e5", AgentID: "e5-fixer", Name: "ipc.poll", Args: map[string]any{"topic": "e5.review"}})
 	timeout := gateway.Handle(ctx, syscallgw.Request{RequestID: "e5-timeout", TaskID: "e5", AgentID: "e5-tester", Name: "tool.exec", Args: map[string]any{"command": "sh", "args": []string{"-c", "sleep 1"}, "timeout_ms": 10}})
 	fault := manager.Record(supervisor.Fault{
@@ -1032,7 +1049,7 @@ func RunE5EndToEndBenchmark(runs int) E5EndToEndResult {
 	}
 	records := gateway.Records()
 	stats := store.Stats()
-	return E5EndToEndResult{
+	result := E5EndToEndResult{
 		Experiment:         "E5_end_to_end",
 		Demo:               "software-real",
 		EvidenceMode:       "real-runtime",
@@ -1046,6 +1063,18 @@ func RunE5EndToEndBenchmark(runs int) E5EndToEndResult {
 		FinalSuccess:       timeout.Status == syscallgw.StatusTimeout,
 		ThroughputScore:    float64(len(records)) / (float64(wall) / 1000.0),
 	}
+	traceSink.Append(trace.TraceEvent{
+		EventID:   "e5-task-completed",
+		Timestamp: time.Now().UTC().Format(time.RFC3339Nano),
+		Type:      "task.completed",
+		AgentID:   "runtime",
+		TaskID:    "e5",
+		Payload: map[string]any{
+			"final_status": "completed",
+			"status":       "completed",
+		},
+	})
+	return result, traceSink.Events()
 }
 
 func E1RealCSV(results []E1RealSchedulerResult) [][]string {

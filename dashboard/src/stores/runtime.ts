@@ -37,16 +37,29 @@ export const runtimeStore = reactive({
   events: [] as RuntimeEvent[],
   contextPages: [] as ContextPage[],
   contextStats: {
+    evidence_mode: 'real-partial',
     total_pages: 0,
     shared_pages: 0,
+    hot_pages: 0,
+    cold_pages: 0,
+    compressed_pages: 0,
+    evicted_pages: 0,
+    pinned_pages: 0,
+    ref_counted_pages: 0,
     saved_bytes: 0,
-    saved_tokens: 0
+    saved_tokens: 0,
+    memory_saved_bytes: 0,
+    compression_saved_bytes: 0,
+    dedup_saved_bytes: 0,
+    dedup_saved_tokens: 0
   } as ContextStats,
   ipcMetrics: {
+    evidence_mode: 'real-partial',
     total_messages: 0,
     delivered_messages: 0,
     topic_depth: 0,
-    avoided_copy_bytes: 0
+    avoided_copy_bytes: 0,
+    ipc_mode: 'page-reference'
   } as IPCMetric,
   ipcTopics: {} as IPCTopics,
   schedulerDecisions: [] as SchedulerDecision[],
@@ -123,6 +136,47 @@ export const runtimeStore = reactive({
       fault_recovered: false,
       final_success: false,
       throughput_score: 0
+    },
+    cvm_memory: {
+      experiment: '',
+      evidence_mode: '',
+      total_pages: 0,
+      dedup_pages: 0,
+      hot_pages: 0,
+      cold_pages: 0,
+      compressed_pages: 0,
+      evicted_pages: 0,
+      pinned_pages: 0,
+      ref_counted_pages: 0,
+      materialize_success: false,
+      memory_saved_bytes: 0,
+      compression_saved_bytes: 0,
+      dedup_saved_bytes: 0,
+      cache_hit_rate: 0
+    },
+    ipc_shm: {
+      ipc_mode: '',
+      evidence_mode: '',
+      memfd_create_success: false,
+      mmap_success: false,
+      fd_passing_success: false,
+      worker_mmap_success: false,
+      shared_pages: 0,
+      payload_bytes_sent: 0,
+      referenced_context_bytes: 0,
+      avoided_copy_bytes: 0,
+      data_integrity_ok: false,
+      cleanup_success: false,
+      fallback_reason: ''
+    },
+    replay: {
+      replay_success: false,
+      event_count: 0,
+      divergence: false,
+      divergence_reason: '',
+      original_final_status: '',
+      replay_final_status: '',
+      evidence_mode: ''
     }
   } as ExperimentResults,
   selectedTaskID: '',

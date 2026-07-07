@@ -27,7 +27,7 @@ func RunSmoke(outDir string) (SmokeResult, error) {
 		outDir = filepath.Join("experiments", "results", "ipc_shm")
 	}
 	payload := []byte("AORT-R shared context page via memfd/mmap")
-	result, err := exerciseMemoryTransport(payload, 2)
+	result, err := TransferPayload(payload, 2)
 	if err != nil {
 		result = SmokeResult{
 			IPCMode:          "page-reference",
@@ -44,6 +44,10 @@ func RunSmoke(outDir string) (SmokeResult, error) {
 		return result, err
 	}
 	return result, nil
+}
+
+func TransferPayload(payload []byte, workerCount int) (SmokeResult, error) {
+	return exerciseMemoryTransport(payload, workerCount)
 }
 
 func writeJSON(path string, value any) error {
