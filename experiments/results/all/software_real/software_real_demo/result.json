@@ -1,0 +1,14 @@
+{
+  "experiment": "E5_end_to_end",
+  "demo": "software-real",
+  "evidence_mode": "real-runtime",
+  "wall_time_ms": 23,
+  "agents": 6,
+  "syscalls": 11,
+  "tool_exec": 3,
+  "ipc_messages": 1,
+  "context_saved_tokens": 175,
+  "fault_recovered": true,
+  "final_success": true,
+  "throughput_score": 478.2608695652174
+}

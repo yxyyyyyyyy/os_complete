@@ -1,0 +1,15 @@
+{
+  "experiment": "real_cgroup_smoke",
+  "evidence_mode": "missing",
+  "worker_pid_attached": false,
+  "memory_max_written": false,
+  "pids_max_written": false,
+  "memory_current_readable": false,
+  "pids_current_readable": false,
+  "cpu_stat_readable": false,
+  "freeze_success": false,
+  "unfreeze_success": false,
+  "cgroup_kill_success": false,
+  "destroy_success": false,
+  "failure_reason": "cgroup fs is not cgroup2fs: requires linux, got darwin"
+}

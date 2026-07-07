@@ -1,43 +1,59 @@
 # AORT-R Final Evidence Summary
 
-- timestamp: 2026-07-06T07:26:14.389374+00:00
-- evidence_mode: real-runtime
-- go_test: passed
-- smoke: passed
-- e1_scheduler: passed
-- e1_pressure: passed
-- e2_fault_isolation: passed
-- e2_pressure_fault: passed
-- software_real_demo: passed
-- workspace_probe: passed
-- workspace_isolation: passed
+## Overall conclusion
+- Real-only openEuler evidence is present and all required real checks passed.
+- Git commit: `1c8574d9577b06bf6882633579fc26fd987619ca`
+- Git branch: `main`
+- git_dirty: `true`
 
-## Generated Files
-- `experiments/results/final/step_status.tsv`
-- `experiments/results/final/env_check.json`
-- `experiments/results/e1/e1_resource_aware.json`
-- `experiments/results/e1/e1_resource_aware.csv`
-- `experiments/results/e1/e1_resource_aware_decisions.json`
-- `experiments/results/e1/e1_resource_aware_summary.md`
-- `experiments/results/e1_pressure/e1_pressure.json`
-- `experiments/results/e2-real-fault.json`
-- `experiments/results/e2-real-fault.csv`
-- `experiments/results/e2_pressure_fault/e2_pressure_fault.json`
-- `experiments/results/software_real_demo/result.json`
-- `experiments/results/workspace_probe.json`
-- `experiments/results/workspace_isolation_evidence.json`
+## generic evidence
+| evidence | status |
+| --- | --- |
+| e1_pressure | passed |
+| e1_scheduler | passed |
+| e2_fault_isolation | passed |
+| e2_pressure_fault | passed |
+| go_test | passed |
+| smoke | passed |
+| software_real_demo | passed |
+| workspace_isolation | passed |
+| workspace_probe | passed |
 
-## Missing Files
-- none
+## real-only openEuler evidence
+| evidence | status |
+| --- | --- |
+| real_all | passed |
+| real_cgroup_smoke | passed |
+| real_env | passed |
+| real_pressure_smoke | passed |
+| tool_workspace | passed |
+| workspace_probe | passed |
+| workspace_rmrf | passed |
 
-## Evidence Mode Summary
+## evidence_mode_summary
 - cgroup_capsule: real-cgroup-v2
-- worker_process: real-runtime
 - cvm: real-partial
+- ebpf: planned
 - ipc: real-partial
 - llm: mock
-- ebpf: planned
-- overlayfs: real-overlayfs
+- resource_sampler: real-cgroup-v2
+- scheduler: real-runtime
+- tool_workspace: real-overlayfs
+- worker_process: real-runtime
+- workspace_overlayfs: real-overlayfs
 
-## Known Limits
-- resource-aware pressure sampler degraded: resource pressure sampler not configured or local cgroup pressure files unavailable
+## known_limits
+- Portable E1 benchmark may use degraded pressure fallback; real-pressure-smoke proves real-cgroup-v2 ResourceSampler on openEuler.
+
+## Key file paths
+- `experiments/results/final/FINAL_EVIDENCE_INDEX.json`
+- `experiments/results/final/FINAL_SUMMARY.md`
+- `experiments/results/real_all/REAL_EVIDENCE_INDEX.json`
+- `experiments/results/real_all/REAL_VERIFY_SUMMARY.json`
+
+## fresh clone verification
+```bash
+git clone git@github.com:yxyyyyyyyy/os_complete.git
+cd os_complete
+bash scripts/competition_verify_real.sh
+```

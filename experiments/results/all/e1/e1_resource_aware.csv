@@ -1,0 +1,5 @@
+policy,evidence_mode,wall_time_ms,avg_task_latency_ms,p95_task_latency_ms,materialize_count,materialize_cost_ms,saved_tokens,saved_bytes,avoided_copy_bytes,memory_peak_bytes,pids_peak,cpu_throttle_count,scheduler_decisions_count,decision_evidence_mode,fallback_reason
+fifo,real-runtime,325,38,42,8,309,2880,11520,8192,133169152,11,28,8,degraded,resource pressure sampler not configured or local cgroup pressure files unavailable
+token-cfs,real-runtime,253,29,33,8,237,4320,17280,12288,171966464,14,116,8,degraded,resource pressure sampler not configured or local cgroup pressure files unavailable
+token-cfs-prefix-affinity,real-runtime,181,20,24,8,165,8640,34560,24576,210763776,17,204,8,degraded,resource pressure sampler not configured or local cgroup pressure files unavailable
+token-cfs-prefix-affinity-resource-aware,degraded,218,25,29,8,202,8640,34560,24576,210763776,17,204,8,degraded,resource pressure sampler not configured or local cgroup pressure files unavailable

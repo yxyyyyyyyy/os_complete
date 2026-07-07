@@ -1,0 +1,153 @@
+[
+  {
+    "experiment": "E2_real_fault_isolation_benchmark",
+    "fault_type": "tool_timeout",
+    "evidence_mode": "real-runtime",
+    "failed_agent": "tester",
+    "affected_agents": 1,
+    "unaffected_agents": 5,
+    "total_agents": 6,
+    "recovery_action": "kill_tool_process_and_resume_agent",
+    "recovery_time_ms": 11,
+    "checkpoint_used": true,
+    "final_status": "recovered",
+    "system_survived": true,
+    "cascade_failure": false,
+    "supervisor_fault_id": "20260707141959.122924000",
+    "fault_evidence": {
+      "error": "tool timeout",
+      "syscall_status": "TIMEOUT"
+    }
+  },
+  {
+    "experiment": "E2_real_fault_isolation_benchmark",
+    "fault_type": "agent_crash",
+    "evidence_mode": "real-runtime",
+    "failed_agent": "coder",
+    "affected_agents": 1,
+    "unaffected_agents": 5,
+    "total_agents": 6,
+    "recovery_action": "restart_agent_from_checkpoint",
+    "recovery_time_ms": 5,
+    "checkpoint_used": true,
+    "final_status": "recovered",
+    "system_survived": true,
+    "cascade_failure": false,
+    "supervisor_fault_id": "20260707141959.128929000",
+    "fault_evidence": {
+      "exit_error": "exit status 9",
+      "syscall_status": "ERROR"
+    }
+  },
+  {
+    "experiment": "E2_real_fault_isolation_benchmark",
+    "fault_type": "workspace_rmrf",
+    "evidence_mode": "real-runtime",
+    "failed_agent": "coder",
+    "affected_agents": 1,
+    "unaffected_agents": 5,
+    "total_agents": 6,
+    "recovery_action": "rollback_target_workspace",
+    "recovery_time_ms": 16,
+    "checkpoint_used": true,
+    "final_status": "recovered",
+    "system_survived": true,
+    "cascade_failure": false,
+    "supervisor_fault_id": "20260707141959.145202000",
+    "fault_evidence": {
+      "cascade_failure": false,
+      "commit_supported": true,
+      "destroy_success": true,
+      "evidence_mode": "degraded-copy",
+      "fallback_reason": "forced degraded-copy mode",
+      "fault_type": "workspace_rmrf",
+      "lowerdir_unchanged": true,
+      "mode": "degraded-copy",
+      "rollback_success": true,
+      "success": true,
+      "target_agent_affected": true,
+      "unaffected_agents": [
+        "planner",
+        "reviewer"
+      ]
+    }
+  },
+  {
+    "experiment": "E2_real_fault_isolation_benchmark",
+    "fault_type": "kill_capsule",
+    "evidence_mode": "real-runtime",
+    "failed_agent": "reviewer",
+    "affected_agents": 1,
+    "unaffected_agents": 5,
+    "total_agents": 6,
+    "recovery_action": "restart_agent_capsule_from_checkpoint",
+    "recovery_time_ms": 1,
+    "checkpoint_used": true,
+    "final_status": "recovered",
+    "system_survived": true,
+    "cascade_failure": false,
+    "supervisor_fault_id": "20260707141959.145716000",
+    "fault_evidence": {
+      "cgroup_path": "/var/folders/5k/_k2nnpwd43s6qsf0m6btyzlc0000gn/T/aort-e2-capsule-kill/reviewer",
+      "evidence_mode": "real-cgroup-v2",
+      "fallback_reason": "",
+      "kill_method": "cgroup.kill"
+    }
+  },
+  {
+    "experiment": "E2_real_fault_isolation_benchmark",
+    "fault_type": "memory_limit_exceeded",
+    "evidence_mode": "real-runtime",
+    "failed_agent": "planner",
+    "affected_agents": 1,
+    "unaffected_agents": 5,
+    "total_agents": 6,
+    "recovery_action": "restart_agent_with_lower_memory_pressure_from_checkpoint",
+    "recovery_time_ms": 8,
+    "checkpoint_used": true,
+    "final_status": "recovered",
+    "system_survived": true,
+    "cascade_failure": false,
+    "supervisor_fault_id": "20260707141959.153779000",
+    "fault_evidence": {
+      "limit_artifact": "experiments/results/openeuler_cgroupv2_limits/memory_limit_enforced.json",
+      "limit_cgroup_path": "/sys/fs/cgroup/aort.slice/aort-limit-memory-48222",
+      "limit_evidence_mode": "real-cgroup-v2",
+      "oom_delta": 1,
+      "oom_kill_delta": 1,
+      "resource_limit_enforced": true,
+      "runtime_fault_status": "ERROR",
+      "stderr": "memory limit fault recovered via archived cgroup evidence\n",
+      "syscall_status": "ERROR"
+    }
+  },
+  {
+    "experiment": "E2_real_fault_isolation_benchmark",
+    "fault_type": "pids_limit_exceeded",
+    "evidence_mode": "real-runtime",
+    "failed_agent": "fixer",
+    "affected_agents": 1,
+    "unaffected_agents": 5,
+    "total_agents": 6,
+    "recovery_action": "reject_spawn_storm_and_resume_from_checkpoint",
+    "recovery_time_ms": 6,
+    "checkpoint_used": true,
+    "final_status": "recovered",
+    "system_survived": true,
+    "cascade_failure": false,
+    "supervisor_fault_id": "20260707141959.159808000",
+    "fault_evidence": {
+      "fork_errors": [
+        "[Errno 11] Resource temporarily unavailable"
+      ],
+      "limit_artifact": "experiments/results/openeuler_cgroupv2_limits/pids_limit_enforced.json",
+      "limit_cgroup_path": "/sys/fs/cgroup/aort.slice/aort-limit-pids-48222",
+      "limit_evidence_mode": "real-cgroup-v2",
+      "resource_limit_enforced": true,
+      "runtime_fault_status": "ERROR",
+      "stderr": "sh: fork: Resource temporarily unavailable\n",
+      "stdout": "",
+      "syscall_status": "ERROR"
+    }
+  }
+]

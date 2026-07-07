@@ -1,0 +1,22 @@
+{
+  "experiment": "real_all",
+  "evidence_mode": "real-openeuler",
+  "real_cgroup_v2": false,
+  "real_resource_sampler": false,
+  "real_overlayfs": false,
+  "real_workspace_tool_exec": false,
+  "cgroup_kill_success": false,
+  "resource_aware_scheduler_real_pressure": false,
+  "cascade_failure": false,
+  "all_passed": false,
+  "failure_reasons": [
+    "real cgroup v2 smoke did not pass",
+    "real resource sampler pressure smoke did not pass",
+    "real overlayfs workspace evidence did not pass",
+    "real overlayfs tool.exec evidence did not pass",
+    "real env check failed: real openEuler environment check failed:\n- no root permission\n- not openEuler\n- cgroup fs is not cgroup2fs\n- cgroup path is not writable\n- overlayfs not listed",
+    "cgroup fs is not cgroup2fs: requires linux, got darwin",
+    "cgroup fs is not cgroup2fs: requires linux, got darwin",
+    "real-overlayfs required: overlayfs requires linux, got darwin"
+  ]
+}

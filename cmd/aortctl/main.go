@@ -30,6 +30,8 @@ func run(args []string) error {
 		return runHog(args[1:])
 	case "experiment":
 		return runExperiment(args[1:])
+	case "evidence":
+		return runEvidence(args[1:])
 	case "demo":
 		return runDemo(args[1:])
 	case "workspace":
@@ -41,9 +43,21 @@ func run(args []string) error {
 
 func runExperiment(args []string) error {
 	if len(args) == 0 {
-		return fmt.Errorf("usage: aortctl experiment e1|e1-pressure|e2|e2-pressure-fault|real-cgroup-smoke|real-pressure-smoke|real-all")
+		return fmt.Errorf("usage: aortctl experiment all|e1|e1-pressure|e2|e2-pressure-fault|real-cgroup-smoke|real-pressure-smoke|real-all")
 	}
 	switch args[0] {
+	case "all":
+		fs := flag.NewFlagSet("experiment all", flag.ContinueOnError)
+		runs := fs.Int("runs", 1, "number of runs")
+		out := fs.String("out", filepath.Join("experiments", "results", "all"), "output directory")
+		if err := fs.Parse(args[1:]); err != nil {
+			return err
+		}
+		_, err := experiment.RunAllExperiments(experiment.AllExperimentsConfig{
+			Runs:   *runs,
+			OutDir: *out,
+		})
+		return err
 	case "e1":
 		fs := flag.NewFlagSet("experiment e1", flag.ContinueOnError)
 		policy := fs.String("policy", "resource-aware", "scheduler policy: resource-aware or all")
@@ -138,6 +152,24 @@ func runExperiment(args []string) error {
 		return err
 	default:
 		return fmt.Errorf("unknown experiment %q", args[0])
+	}
+}
+
+func runEvidence(args []string) error {
+	if len(args) == 0 {
+		return fmt.Errorf("usage: aortctl evidence final")
+	}
+	switch args[0] {
+	case "final":
+		fs := flag.NewFlagSet("evidence final", flag.ContinueOnError)
+		out := fs.String("out", filepath.Join("experiments", "results", "final"), "output directory")
+		if err := fs.Parse(args[1:]); err != nil {
+			return err
+		}
+		_, err := experiment.WriteFinalEvidence(*out)
+		return err
+	default:
+		return fmt.Errorf("unknown evidence command %q", args[0])
 	}
 }
 

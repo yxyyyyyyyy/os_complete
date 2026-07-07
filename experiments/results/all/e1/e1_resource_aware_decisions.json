@@ -1,0 +1,2194 @@
+[
+  {
+    "id": "20260707141959.104216000",
+    "decision_id": "20260707141959.104216000",
+    "timestamp": "2026-07-07T06:19:59.104216Z",
+    "task_id": "e1-resource-fifo",
+    "selected_task": "e1-resource-fifo",
+    "candidates": [
+      "e1-fifo-fifo-cold-00",
+      "e1-fifo-token-mid-00",
+      "e1-fifo-prefix-hot-00"
+    ],
+    "selected_agent": "e1-fifo-fifo-cold-00",
+    "policy": "fifo",
+    "reason": "earliest ready agent",
+    "vruntime_before": {
+      "e1-fifo-fifo-cold-00": 90,
+      "e1-fifo-prefix-hot-00": 28,
+      "e1-fifo-token-mid-00": 10
+    },
+    "vruntime_after": {
+      "e1-fifo-fifo-cold-00": 90,
+      "e1-fifo-prefix-hot-00": 28,
+      "e1-fifo-token-mid-00": 10
+    },
+    "shared_pages": {},
+    "vruntime_score": 0,
+    "context_affinity_score": 0,
+    "memory_pressure": 0,
+    "pids_pressure": 0,
+    "cpu_throttle_pressure": 0,
+    "psi_pressure": 0,
+    "dependency_ready": true,
+    "dynamic_spawn_priority": 0,
+    "final_score": 0,
+    "evidence_mode": "degraded",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
+    "resource_pressure": {
+      "memory_pressure": 0,
+      "pids_pressure": 0,
+      "cpu_throttle_pressure": 0,
+      "psi_pressure": 0,
+      "evidence_mode": "degraded",
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
+    },
+    "created_at": 1783405199104
+  },
+  {
+    "id": "20260707141959.104570000",
+    "decision_id": "20260707141959.104570000",
+    "timestamp": "2026-07-07T06:19:59.10457Z",
+    "task_id": "e1-resource-fifo",
+    "selected_task": "e1-resource-fifo",
+    "candidates": [
+      "e1-fifo-fifo-cold-01",
+      "e1-fifo-token-mid-01",
+      "e1-fifo-prefix-hot-01"
+    ],
+    "selected_agent": "e1-fifo-fifo-cold-01",
+    "policy": "fifo",
+    "reason": "earliest ready agent",
+    "vruntime_before": {
+      "e1-fifo-fifo-cold-01": 91,
+      "e1-fifo-prefix-hot-01": 29,
+      "e1-fifo-token-mid-01": 11
+    },
+    "vruntime_after": {
+      "e1-fifo-fifo-cold-01": 91,
+      "e1-fifo-prefix-hot-01": 29,
+      "e1-fifo-token-mid-01": 11
+    },
+    "shared_pages": {},
+    "vruntime_score": 0,
+    "context_affinity_score": 0,
+    "memory_pressure": 0,
+    "pids_pressure": 0,
+    "cpu_throttle_pressure": 0,
+    "psi_pressure": 0,
+    "dependency_ready": true,
+    "dynamic_spawn_priority": 0,
+    "final_score": 0,
+    "evidence_mode": "degraded",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
+    "resource_pressure": {
+      "memory_pressure": 0,
+      "pids_pressure": 0,
+      "cpu_throttle_pressure": 0,
+      "psi_pressure": 0,
+      "evidence_mode": "degraded",
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
+    },
+    "created_at": 1783405199104
+  },
+  {
+    "id": "20260707141959.104583000",
+    "decision_id": "20260707141959.104583000",
+    "timestamp": "2026-07-07T06:19:59.104583Z",
+    "task_id": "e1-resource-fifo",
+    "selected_task": "e1-resource-fifo",
+    "candidates": [
+      "e1-fifo-fifo-cold-02",
+      "e1-fifo-token-mid-02",
+      "e1-fifo-prefix-hot-02"
+    ],
+    "selected_agent": "e1-fifo-fifo-cold-02",
+    "policy": "fifo",
+    "reason": "earliest ready agent",
+    "vruntime_before": {
+      "e1-fifo-fifo-cold-02": 92,
+      "e1-fifo-prefix-hot-02": 30,
+      "e1-fifo-token-mid-02": 12
+    },
+    "vruntime_after": {
+      "e1-fifo-fifo-cold-02": 92,
+      "e1-fifo-prefix-hot-02": 30,
+      "e1-fifo-token-mid-02": 12
+    },
+    "shared_pages": {},
+    "vruntime_score": 0,
+    "context_affinity_score": 0,
+    "memory_pressure": 0,
+    "pids_pressure": 0,
+    "cpu_throttle_pressure": 0,
+    "psi_pressure": 0,
+    "dependency_ready": true,
+    "dynamic_spawn_priority": 0,
+    "final_score": 0,
+    "evidence_mode": "degraded",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
+    "resource_pressure": {
+      "memory_pressure": 0,
+      "pids_pressure": 0,
+      "cpu_throttle_pressure": 0,
+      "psi_pressure": 0,
+      "evidence_mode": "degraded",
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
+    },
+    "created_at": 1783405199104
+  },
+  {
+    "id": "20260707141959.104591000",
+    "decision_id": "20260707141959.104591000",
+    "timestamp": "2026-07-07T06:19:59.104591Z",
+    "task_id": "e1-resource-fifo",
+    "selected_task": "e1-resource-fifo",
+    "candidates": [
+      "e1-fifo-fifo-cold-03",
+      "e1-fifo-token-mid-03",
+      "e1-fifo-prefix-hot-03"
+    ],
+    "selected_agent": "e1-fifo-fifo-cold-03",
+    "policy": "fifo",
+    "reason": "earliest ready agent",
+    "vruntime_before": {
+      "e1-fifo-fifo-cold-03": 93,
+      "e1-fifo-prefix-hot-03": 31,
+      "e1-fifo-token-mid-03": 10
+    },
+    "vruntime_after": {
+      "e1-fifo-fifo-cold-03": 93,
+      "e1-fifo-prefix-hot-03": 31,
+      "e1-fifo-token-mid-03": 10
+    },
+    "shared_pages": {},
+    "vruntime_score": 0,
+    "context_affinity_score": 0,
+    "memory_pressure": 0,
+    "pids_pressure": 0,
+    "cpu_throttle_pressure": 0,
+    "psi_pressure": 0,
+    "dependency_ready": true,
+    "dynamic_spawn_priority": 0,
+    "final_score": 0,
+    "evidence_mode": "degraded",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
+    "resource_pressure": {
+      "memory_pressure": 0,
+      "pids_pressure": 0,
+      "cpu_throttle_pressure": 0,
+      "psi_pressure": 0,
+      "evidence_mode": "degraded",
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
+    },
+    "created_at": 1783405199104
+  },
+  {
+    "id": "20260707141959.104600000",
+    "decision_id": "20260707141959.104600000",
+    "timestamp": "2026-07-07T06:19:59.1046Z",
+    "task_id": "e1-resource-fifo",
+    "selected_task": "e1-resource-fifo",
+    "candidates": [
+      "e1-fifo-fifo-cold-04",
+      "e1-fifo-token-mid-04",
+      "e1-fifo-prefix-hot-04"
+    ],
+    "selected_agent": "e1-fifo-fifo-cold-04",
+    "policy": "fifo",
+    "reason": "earliest ready agent",
+    "vruntime_before": {
+      "e1-fifo-fifo-cold-04": 94,
+      "e1-fifo-prefix-hot-04": 32,
+      "e1-fifo-token-mid-04": 11
+    },
+    "vruntime_after": {
+      "e1-fifo-fifo-cold-04": 94,
+      "e1-fifo-prefix-hot-04": 32,
+      "e1-fifo-token-mid-04": 11
+    },
+    "shared_pages": {},
+    "vruntime_score": 0,
+    "context_affinity_score": 0,
+    "memory_pressure": 0,
+    "pids_pressure": 0,
+    "cpu_throttle_pressure": 0,
+    "psi_pressure": 0,
+    "dependency_ready": true,
+    "dynamic_spawn_priority": 0,
+    "final_score": 0,
+    "evidence_mode": "degraded",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
+    "resource_pressure": {
+      "memory_pressure": 0,
+      "pids_pressure": 0,
+      "cpu_throttle_pressure": 0,
+      "psi_pressure": 0,
+      "evidence_mode": "degraded",
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
+    },
+    "created_at": 1783405199104
+  },
+  {
+    "id": "20260707141959.104608000",
+    "decision_id": "20260707141959.104608000",
+    "timestamp": "2026-07-07T06:19:59.104608Z",
+    "task_id": "e1-resource-fifo",
+    "selected_task": "e1-resource-fifo",
+    "candidates": [
+      "e1-fifo-fifo-cold-05",
+      "e1-fifo-token-mid-05",
+      "e1-fifo-prefix-hot-05"
+    ],
+    "selected_agent": "e1-fifo-fifo-cold-05",
+    "policy": "fifo",
+    "reason": "earliest ready agent",
+    "vruntime_before": {
+      "e1-fifo-fifo-cold-05": 95,
+      "e1-fifo-prefix-hot-05": 28,
+      "e1-fifo-token-mid-05": 12
+    },
+    "vruntime_after": {
+      "e1-fifo-fifo-cold-05": 95,
+      "e1-fifo-prefix-hot-05": 28,
+      "e1-fifo-token-mid-05": 12
+    },
+    "shared_pages": {},
+    "vruntime_score": 0,
+    "context_affinity_score": 0,
+    "memory_pressure": 0,
+    "pids_pressure": 0,
+    "cpu_throttle_pressure": 0,
+    "psi_pressure": 0,
+    "dependency_ready": true,
+    "dynamic_spawn_priority": 0,
+    "final_score": 0,
+    "evidence_mode": "degraded",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
+    "resource_pressure": {
+      "memory_pressure": 0,
+      "pids_pressure": 0,
+      "cpu_throttle_pressure": 0,
+      "psi_pressure": 0,
+      "evidence_mode": "degraded",
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
+    },
+    "created_at": 1783405199104
+  },
+  {
+    "id": "20260707141959.104614000",
+    "decision_id": "20260707141959.104614000",
+    "timestamp": "2026-07-07T06:19:59.104614Z",
+    "task_id": "e1-resource-fifo",
+    "selected_task": "e1-resource-fifo",
+    "candidates": [
+      "e1-fifo-fifo-cold-00",
+      "e1-fifo-token-mid-00",
+      "e1-fifo-prefix-hot-00"
+    ],
+    "selected_agent": "e1-fifo-fifo-cold-00",
+    "policy": "fifo",
+    "reason": "earliest ready agent",
+    "vruntime_before": {
+      "e1-fifo-fifo-cold-00": 96,
+      "e1-fifo-prefix-hot-00": 29,
+      "e1-fifo-token-mid-00": 10
+    },
+    "vruntime_after": {
+      "e1-fifo-fifo-cold-00": 96,
+      "e1-fifo-prefix-hot-00": 29,
+      "e1-fifo-token-mid-00": 10
+    },
+    "shared_pages": {},
+    "vruntime_score": 0,
+    "context_affinity_score": 0,
+    "memory_pressure": 0,
+    "pids_pressure": 0,
+    "cpu_throttle_pressure": 0,
+    "psi_pressure": 0,
+    "dependency_ready": true,
+    "dynamic_spawn_priority": 0,
+    "final_score": 0,
+    "evidence_mode": "degraded",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
+    "resource_pressure": {
+      "memory_pressure": 0,
+      "pids_pressure": 0,
+      "cpu_throttle_pressure": 0,
+      "psi_pressure": 0,
+      "evidence_mode": "degraded",
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
+    },
+    "created_at": 1783405199104
+  },
+  {
+    "id": "20260707141959.104619000",
+    "decision_id": "20260707141959.104619000",
+    "timestamp": "2026-07-07T06:19:59.104619Z",
+    "task_id": "e1-resource-fifo",
+    "selected_task": "e1-resource-fifo",
+    "candidates": [
+      "e1-fifo-fifo-cold-01",
+      "e1-fifo-token-mid-01",
+      "e1-fifo-prefix-hot-01"
+    ],
+    "selected_agent": "e1-fifo-fifo-cold-01",
+    "policy": "fifo",
+    "reason": "earliest ready agent",
+    "vruntime_before": {
+      "e1-fifo-fifo-cold-01": 90,
+      "e1-fifo-prefix-hot-01": 30,
+      "e1-fifo-token-mid-01": 11
+    },
+    "vruntime_after": {
+      "e1-fifo-fifo-cold-01": 90,
+      "e1-fifo-prefix-hot-01": 30,
+      "e1-fifo-token-mid-01": 11
+    },
+    "shared_pages": {},
+    "vruntime_score": 0,
+    "context_affinity_score": 0,
+    "memory_pressure": 0,
+    "pids_pressure": 0,
+    "cpu_throttle_pressure": 0,
+    "psi_pressure": 0,
+    "dependency_ready": true,
+    "dynamic_spawn_priority": 0,
+    "final_score": 0,
+    "evidence_mode": "degraded",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
+    "resource_pressure": {
+      "memory_pressure": 0,
+      "pids_pressure": 0,
+      "cpu_throttle_pressure": 0,
+      "psi_pressure": 0,
+      "evidence_mode": "degraded",
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
+    },
+    "created_at": 1783405199104
+  },
+  {
+    "id": "20260707141959.106020000",
+    "decision_id": "20260707141959.106020000",
+    "timestamp": "2026-07-07T06:19:59.10602Z",
+    "task_id": "e1-resource-token-cfs",
+    "selected_task": "e1-resource-token-cfs",
+    "candidates": [
+      "e1-token-cfs-fifo-cold-00",
+      "e1-token-cfs-token-mid-00",
+      "e1-token-cfs-prefix-hot-00"
+    ],
+    "selected_agent": "e1-token-cfs-token-mid-00",
+    "policy": "token-cfs",
+    "reason": "lowest vruntime",
+    "vruntime_before": {
+      "e1-token-cfs-fifo-cold-00": 90,
+      "e1-token-cfs-prefix-hot-00": 28,
+      "e1-token-cfs-token-mid-00": 10
+    },
+    "vruntime_after": {
+      "e1-token-cfs-fifo-cold-00": 90,
+      "e1-token-cfs-prefix-hot-00": 28,
+      "e1-token-cfs-token-mid-00": 10
+    },
+    "shared_pages": {},
+    "vruntime_score": 0,
+    "context_affinity_score": 0,
+    "memory_pressure": 0,
+    "pids_pressure": 0,
+    "cpu_throttle_pressure": 0,
+    "psi_pressure": 0,
+    "dependency_ready": true,
+    "dynamic_spawn_priority": 0,
+    "final_score": 0,
+    "evidence_mode": "degraded",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
+    "resource_pressure": {
+      "memory_pressure": 0,
+      "pids_pressure": 0,
+      "cpu_throttle_pressure": 0,
+      "psi_pressure": 0,
+      "evidence_mode": "degraded",
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
+    },
+    "created_at": 1783405199106
+  },
+  {
+    "id": "20260707141959.106034000",
+    "decision_id": "20260707141959.106034000",
+    "timestamp": "2026-07-07T06:19:59.106034Z",
+    "task_id": "e1-resource-token-cfs",
+    "selected_task": "e1-resource-token-cfs",
+    "candidates": [
+      "e1-token-cfs-fifo-cold-01",
+      "e1-token-cfs-token-mid-01",
+      "e1-token-cfs-prefix-hot-01"
+    ],
+    "selected_agent": "e1-token-cfs-token-mid-01",
+    "policy": "token-cfs",
+    "reason": "lowest vruntime",
+    "vruntime_before": {
+      "e1-token-cfs-fifo-cold-01": 91,
+      "e1-token-cfs-prefix-hot-01": 29,
+      "e1-token-cfs-token-mid-01": 11
+    },
+    "vruntime_after": {
+      "e1-token-cfs-fifo-cold-01": 91,
+      "e1-token-cfs-prefix-hot-01": 29,
+      "e1-token-cfs-token-mid-01": 11
+    },
+    "shared_pages": {},
+    "vruntime_score": 0,
+    "context_affinity_score": 0,
+    "memory_pressure": 0,
+    "pids_pressure": 0,
+    "cpu_throttle_pressure": 0,
+    "psi_pressure": 0,
+    "dependency_ready": true,
+    "dynamic_spawn_priority": 0,
+    "final_score": 0,
+    "evidence_mode": "degraded",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
+    "resource_pressure": {
+      "memory_pressure": 0,
+      "pids_pressure": 0,
+      "cpu_throttle_pressure": 0,
+      "psi_pressure": 0,
+      "evidence_mode": "degraded",
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
+    },
+    "created_at": 1783405199106
+  },
+  {
+    "id": "20260707141959.106046000",
+    "decision_id": "20260707141959.106046000",
+    "timestamp": "2026-07-07T06:19:59.106046Z",
+    "task_id": "e1-resource-token-cfs",
+    "selected_task": "e1-resource-token-cfs",
+    "candidates": [
+      "e1-token-cfs-fifo-cold-02",
+      "e1-token-cfs-token-mid-02",
+      "e1-token-cfs-prefix-hot-02"
+    ],
+    "selected_agent": "e1-token-cfs-token-mid-02",
+    "policy": "token-cfs",
+    "reason": "lowest vruntime",
+    "vruntime_before": {
+      "e1-token-cfs-fifo-cold-02": 92,
+      "e1-token-cfs-prefix-hot-02": 30,
+      "e1-token-cfs-token-mid-02": 12
+    },
+    "vruntime_after": {
+      "e1-token-cfs-fifo-cold-02": 92,
+      "e1-token-cfs-prefix-hot-02": 30,
+      "e1-token-cfs-token-mid-02": 12
+    },
+    "shared_pages": {},
+    "vruntime_score": 0,
+    "context_affinity_score": 0,
+    "memory_pressure": 0,
+    "pids_pressure": 0,
+    "cpu_throttle_pressure": 0,
+    "psi_pressure": 0,
+    "dependency_ready": true,
+    "dynamic_spawn_priority": 0,
+    "final_score": 0,
+    "evidence_mode": "degraded",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
+    "resource_pressure": {
+      "memory_pressure": 0,
+      "pids_pressure": 0,
+      "cpu_throttle_pressure": 0,
+      "psi_pressure": 0,
+      "evidence_mode": "degraded",
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
+    },
+    "created_at": 1783405199106
+  },
+  {
+    "id": "20260707141959.106054000",
+    "decision_id": "20260707141959.106054000",
+    "timestamp": "2026-07-07T06:19:59.106054Z",
+    "task_id": "e1-resource-token-cfs",
+    "selected_task": "e1-resource-token-cfs",
+    "candidates": [
+      "e1-token-cfs-fifo-cold-03",
+      "e1-token-cfs-token-mid-03",
+      "e1-token-cfs-prefix-hot-03"
+    ],
+    "selected_agent": "e1-token-cfs-token-mid-03",
+    "policy": "token-cfs",
+    "reason": "lowest vruntime",
+    "vruntime_before": {
+      "e1-token-cfs-fifo-cold-03": 93,
+      "e1-token-cfs-prefix-hot-03": 31,
+      "e1-token-cfs-token-mid-03": 10
+    },
+    "vruntime_after": {
+      "e1-token-cfs-fifo-cold-03": 93,
+      "e1-token-cfs-prefix-hot-03": 31,
+      "e1-token-cfs-token-mid-03": 10
+    },
+    "shared_pages": {},
+    "vruntime_score": 0,
+    "context_affinity_score": 0,
+    "memory_pressure": 0,
+    "pids_pressure": 0,
+    "cpu_throttle_pressure": 0,
+    "psi_pressure": 0,
+    "dependency_ready": true,
+    "dynamic_spawn_priority": 0,
+    "final_score": 0,
+    "evidence_mode": "degraded",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
+    "resource_pressure": {
+      "memory_pressure": 0,
+      "pids_pressure": 0,
+      "cpu_throttle_pressure": 0,
+      "psi_pressure": 0,
+      "evidence_mode": "degraded",
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
+    },
+    "created_at": 1783405199106
+  },
+  {
+    "id": "20260707141959.106067000",
+    "decision_id": "20260707141959.106067000",
+    "timestamp": "2026-07-07T06:19:59.106067Z",
+    "task_id": "e1-resource-token-cfs",
+    "selected_task": "e1-resource-token-cfs",
+    "candidates": [
+      "e1-token-cfs-fifo-cold-04",
+      "e1-token-cfs-token-mid-04",
+      "e1-token-cfs-prefix-hot-04"
+    ],
+    "selected_agent": "e1-token-cfs-token-mid-04",
+    "policy": "token-cfs",
+    "reason": "lowest vruntime",
+    "vruntime_before": {
+      "e1-token-cfs-fifo-cold-04": 94,
+      "e1-token-cfs-prefix-hot-04": 32,
+      "e1-token-cfs-token-mid-04": 11
+    },
+    "vruntime_after": {
+      "e1-token-cfs-fifo-cold-04": 94,
+      "e1-token-cfs-prefix-hot-04": 32,
+      "e1-token-cfs-token-mid-04": 11
+    },
+    "shared_pages": {},
+    "vruntime_score": 0,
+    "context_affinity_score": 0,
+    "memory_pressure": 0,
+    "pids_pressure": 0,
+    "cpu_throttle_pressure": 0,
+    "psi_pressure": 0,
+    "dependency_ready": true,
+    "dynamic_spawn_priority": 0,
+    "final_score": 0,
+    "evidence_mode": "degraded",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
+    "resource_pressure": {
+      "memory_pressure": 0,
+      "pids_pressure": 0,
+      "cpu_throttle_pressure": 0,
+      "psi_pressure": 0,
+      "evidence_mode": "degraded",
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
+    },
+    "created_at": 1783405199106
+  },
+  {
+    "id": "20260707141959.106075000",
+    "decision_id": "20260707141959.106075000",
+    "timestamp": "2026-07-07T06:19:59.106075Z",
+    "task_id": "e1-resource-token-cfs",
+    "selected_task": "e1-resource-token-cfs",
+    "candidates": [
+      "e1-token-cfs-fifo-cold-05",
+      "e1-token-cfs-token-mid-05",
+      "e1-token-cfs-prefix-hot-05"
+    ],
+    "selected_agent": "e1-token-cfs-token-mid-05",
+    "policy": "token-cfs",
+    "reason": "lowest vruntime",
+    "vruntime_before": {
+      "e1-token-cfs-fifo-cold-05": 95,
+      "e1-token-cfs-prefix-hot-05": 28,
+      "e1-token-cfs-token-mid-05": 12
+    },
+    "vruntime_after": {
+      "e1-token-cfs-fifo-cold-05": 95,
+      "e1-token-cfs-prefix-hot-05": 28,
+      "e1-token-cfs-token-mid-05": 12
+    },
+    "shared_pages": {},
+    "vruntime_score": 0,
+    "context_affinity_score": 0,
+    "memory_pressure": 0,
+    "pids_pressure": 0,
+    "cpu_throttle_pressure": 0,
+    "psi_pressure": 0,
+    "dependency_ready": true,
+    "dynamic_spawn_priority": 0,
+    "final_score": 0,
+    "evidence_mode": "degraded",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
+    "resource_pressure": {
+      "memory_pressure": 0,
+      "pids_pressure": 0,
+      "cpu_throttle_pressure": 0,
+      "psi_pressure": 0,
+      "evidence_mode": "degraded",
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
+    },
+    "created_at": 1783405199106
+  },
+  {
+    "id": "20260707141959.106082000",
+    "decision_id": "20260707141959.106082000",
+    "timestamp": "2026-07-07T06:19:59.106082Z",
+    "task_id": "e1-resource-token-cfs",
+    "selected_task": "e1-resource-token-cfs",
+    "candidates": [
+      "e1-token-cfs-fifo-cold-00",
+      "e1-token-cfs-token-mid-00",
+      "e1-token-cfs-prefix-hot-00"
+    ],
+    "selected_agent": "e1-token-cfs-token-mid-00",
+    "policy": "token-cfs",
+    "reason": "lowest vruntime",
+    "vruntime_before": {
+      "e1-token-cfs-fifo-cold-00": 96,
+      "e1-token-cfs-prefix-hot-00": 29,
+      "e1-token-cfs-token-mid-00": 10
+    },
+    "vruntime_after": {
+      "e1-token-cfs-fifo-cold-00": 96,
+      "e1-token-cfs-prefix-hot-00": 29,
+      "e1-token-cfs-token-mid-00": 10
+    },
+    "shared_pages": {},
+    "vruntime_score": 0,
+    "context_affinity_score": 0,
+    "memory_pressure": 0,
+    "pids_pressure": 0,
+    "cpu_throttle_pressure": 0,
+    "psi_pressure": 0,
+    "dependency_ready": true,
+    "dynamic_spawn_priority": 0,
+    "final_score": 0,
+    "evidence_mode": "degraded",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
+    "resource_pressure": {
+      "memory_pressure": 0,
+      "pids_pressure": 0,
+      "cpu_throttle_pressure": 0,
+      "psi_pressure": 0,
+      "evidence_mode": "degraded",
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
+    },
+    "created_at": 1783405199106
+  },
+  {
+    "id": "20260707141959.106087000",
+    "decision_id": "20260707141959.106087000",
+    "timestamp": "2026-07-07T06:19:59.106087Z",
+    "task_id": "e1-resource-token-cfs",
+    "selected_task": "e1-resource-token-cfs",
+    "candidates": [
+      "e1-token-cfs-fifo-cold-01",
+      "e1-token-cfs-token-mid-01",
+      "e1-token-cfs-prefix-hot-01"
+    ],
+    "selected_agent": "e1-token-cfs-token-mid-01",
+    "policy": "token-cfs",
+    "reason": "lowest vruntime",
+    "vruntime_before": {
+      "e1-token-cfs-fifo-cold-01": 90,
+      "e1-token-cfs-prefix-hot-01": 30,
+      "e1-token-cfs-token-mid-01": 11
+    },
+    "vruntime_after": {
+      "e1-token-cfs-fifo-cold-01": 90,
+      "e1-token-cfs-prefix-hot-01": 30,
+      "e1-token-cfs-token-mid-01": 11
+    },
+    "shared_pages": {},
+    "vruntime_score": 0,
+    "context_affinity_score": 0,
+    "memory_pressure": 0,
+    "pids_pressure": 0,
+    "cpu_throttle_pressure": 0,
+    "psi_pressure": 0,
+    "dependency_ready": true,
+    "dynamic_spawn_priority": 0,
+    "final_score": 0,
+    "evidence_mode": "degraded",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
+    "resource_pressure": {
+      "memory_pressure": 0,
+      "pids_pressure": 0,
+      "cpu_throttle_pressure": 0,
+      "psi_pressure": 0,
+      "evidence_mode": "degraded",
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
+    },
+    "created_at": 1783405199106
+  },
+  {
+    "id": "20260707141959.107383000",
+    "decision_id": "20260707141959.107383000",
+    "timestamp": "2026-07-07T06:19:59.107383Z",
+    "task_id": "e1-resource-token-cfs-prefix-affinity",
+    "selected_task": "e1-resource-token-cfs-prefix-affinity",
+    "candidates": [
+      "e1-token-cfs-prefix-affinity-fifo-cold-00",
+      "e1-token-cfs-prefix-affinity-token-mid-00",
+      "e1-token-cfs-prefix-affinity-prefix-hot-00"
+    ],
+    "selected_agent": "e1-token-cfs-prefix-affinity-prefix-hot-00",
+    "policy": "token-cfs-prefix-affinity",
+    "reason": "prefix affinity shared_pages=6 within threshold=100",
+    "vruntime_before": {
+      "e1-token-cfs-prefix-affinity-fifo-cold-00": 90,
+      "e1-token-cfs-prefix-affinity-prefix-hot-00": 28,
+      "e1-token-cfs-prefix-affinity-token-mid-00": 10
+    },
+    "vruntime_after": {
+      "e1-token-cfs-prefix-affinity-fifo-cold-00": 90,
+      "e1-token-cfs-prefix-affinity-prefix-hot-00": 28,
+      "e1-token-cfs-prefix-affinity-token-mid-00": 10
+    },
+    "shared_pages": {
+      "e1-token-cfs-prefix-affinity-fifo-cold-00": 2,
+      "e1-token-cfs-prefix-affinity-prefix-hot-00": 6,
+      "e1-token-cfs-prefix-affinity-token-mid-00": 3
+    },
+    "vruntime_score": 0,
+    "context_affinity_score": 0,
+    "memory_pressure": 0,
+    "pids_pressure": 0,
+    "cpu_throttle_pressure": 0,
+    "psi_pressure": 0,
+    "dependency_ready": true,
+    "dynamic_spawn_priority": 0,
+    "final_score": 0,
+    "evidence_mode": "degraded",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
+    "resource_pressure": {
+      "memory_pressure": 0,
+      "pids_pressure": 0,
+      "cpu_throttle_pressure": 0,
+      "psi_pressure": 0,
+      "evidence_mode": "degraded",
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
+    },
+    "created_at": 1783405199107
+  },
+  {
+    "id": "20260707141959.107400000",
+    "decision_id": "20260707141959.107400000",
+    "timestamp": "2026-07-07T06:19:59.1074Z",
+    "task_id": "e1-resource-token-cfs-prefix-affinity",
+    "selected_task": "e1-resource-token-cfs-prefix-affinity",
+    "candidates": [
+      "e1-token-cfs-prefix-affinity-fifo-cold-01",
+      "e1-token-cfs-prefix-affinity-token-mid-01",
+      "e1-token-cfs-prefix-affinity-prefix-hot-01"
+    ],
+    "selected_agent": "e1-token-cfs-prefix-affinity-prefix-hot-01",
+    "policy": "token-cfs-prefix-affinity",
+    "reason": "prefix affinity shared_pages=6 within threshold=100",
+    "vruntime_before": {
+      "e1-token-cfs-prefix-affinity-fifo-cold-01": 91,
+      "e1-token-cfs-prefix-affinity-prefix-hot-01": 29,
+      "e1-token-cfs-prefix-affinity-token-mid-01": 11
+    },
+    "vruntime_after": {
+      "e1-token-cfs-prefix-affinity-fifo-cold-01": 91,
+      "e1-token-cfs-prefix-affinity-prefix-hot-01": 29,
+      "e1-token-cfs-prefix-affinity-token-mid-01": 11
+    },
+    "shared_pages": {
+      "e1-token-cfs-prefix-affinity-fifo-cold-01": 2,
+      "e1-token-cfs-prefix-affinity-prefix-hot-01": 6,
+      "e1-token-cfs-prefix-affinity-token-mid-01": 3
+    },
+    "vruntime_score": 0,
+    "context_affinity_score": 0,
+    "memory_pressure": 0,
+    "pids_pressure": 0,
+    "cpu_throttle_pressure": 0,
+    "psi_pressure": 0,
+    "dependency_ready": true,
+    "dynamic_spawn_priority": 0,
+    "final_score": 0,
+    "evidence_mode": "degraded",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
+    "resource_pressure": {
+      "memory_pressure": 0,
+      "pids_pressure": 0,
+      "cpu_throttle_pressure": 0,
+      "psi_pressure": 0,
+      "evidence_mode": "degraded",
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
+    },
+    "created_at": 1783405199107
+  },
+  {
+    "id": "20260707141959.107413000",
+    "decision_id": "20260707141959.107413000",
+    "timestamp": "2026-07-07T06:19:59.107413Z",
+    "task_id": "e1-resource-token-cfs-prefix-affinity",
+    "selected_task": "e1-resource-token-cfs-prefix-affinity",
+    "candidates": [
+      "e1-token-cfs-prefix-affinity-fifo-cold-02",
+      "e1-token-cfs-prefix-affinity-token-mid-02",
+      "e1-token-cfs-prefix-affinity-prefix-hot-02"
+    ],
+    "selected_agent": "e1-token-cfs-prefix-affinity-prefix-hot-02",
+    "policy": "token-cfs-prefix-affinity",
+    "reason": "prefix affinity shared_pages=6 within threshold=100",
+    "vruntime_before": {
+      "e1-token-cfs-prefix-affinity-fifo-cold-02": 92,
+      "e1-token-cfs-prefix-affinity-prefix-hot-02": 30,
+      "e1-token-cfs-prefix-affinity-token-mid-02": 12
+    },
+    "vruntime_after": {
+      "e1-token-cfs-prefix-affinity-fifo-cold-02": 92,
+      "e1-token-cfs-prefix-affinity-prefix-hot-02": 30,
+      "e1-token-cfs-prefix-affinity-token-mid-02": 12
+    },
+    "shared_pages": {
+      "e1-token-cfs-prefix-affinity-fifo-cold-02": 2,
+      "e1-token-cfs-prefix-affinity-prefix-hot-02": 6,
+      "e1-token-cfs-prefix-affinity-token-mid-02": 3
+    },
+    "vruntime_score": 0,
+    "context_affinity_score": 0,
+    "memory_pressure": 0,
+    "pids_pressure": 0,
+    "cpu_throttle_pressure": 0,
+    "psi_pressure": 0,
+    "dependency_ready": true,
+    "dynamic_spawn_priority": 0,
+    "final_score": 0,
+    "evidence_mode": "degraded",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
+    "resource_pressure": {
+      "memory_pressure": 0,
+      "pids_pressure": 0,
+      "cpu_throttle_pressure": 0,
+      "psi_pressure": 0,
+      "evidence_mode": "degraded",
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
+    },
+    "created_at": 1783405199107
+  },
+  {
+    "id": "20260707141959.107422000",
+    "decision_id": "20260707141959.107422000",
+    "timestamp": "2026-07-07T06:19:59.107422Z",
+    "task_id": "e1-resource-token-cfs-prefix-affinity",
+    "selected_task": "e1-resource-token-cfs-prefix-affinity",
+    "candidates": [
+      "e1-token-cfs-prefix-affinity-fifo-cold-03",
+      "e1-token-cfs-prefix-affinity-token-mid-03",
+      "e1-token-cfs-prefix-affinity-prefix-hot-03"
+    ],
+    "selected_agent": "e1-token-cfs-prefix-affinity-prefix-hot-03",
+    "policy": "token-cfs-prefix-affinity",
+    "reason": "prefix affinity shared_pages=6 within threshold=100",
+    "vruntime_before": {
+      "e1-token-cfs-prefix-affinity-fifo-cold-03": 93,
+      "e1-token-cfs-prefix-affinity-prefix-hot-03": 31,
+      "e1-token-cfs-prefix-affinity-token-mid-03": 10
+    },
+    "vruntime_after": {
+      "e1-token-cfs-prefix-affinity-fifo-cold-03": 93,
+      "e1-token-cfs-prefix-affinity-prefix-hot-03": 31,
+      "e1-token-cfs-prefix-affinity-token-mid-03": 10
+    },
+    "shared_pages": {
+      "e1-token-cfs-prefix-affinity-fifo-cold-03": 2,
+      "e1-token-cfs-prefix-affinity-prefix-hot-03": 6,
+      "e1-token-cfs-prefix-affinity-token-mid-03": 3
+    },
+    "vruntime_score": 0,
+    "context_affinity_score": 0,
+    "memory_pressure": 0,
+    "pids_pressure": 0,
+    "cpu_throttle_pressure": 0,
+    "psi_pressure": 0,
+    "dependency_ready": true,
+    "dynamic_spawn_priority": 0,
+    "final_score": 0,
+    "evidence_mode": "degraded",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
+    "resource_pressure": {
+      "memory_pressure": 0,
+      "pids_pressure": 0,
+      "cpu_throttle_pressure": 0,
+      "psi_pressure": 0,
+      "evidence_mode": "degraded",
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
+    },
+    "created_at": 1783405199107
+  },
+  {
+    "id": "20260707141959.107431000",
+    "decision_id": "20260707141959.107431000",
+    "timestamp": "2026-07-07T06:19:59.107431Z",
+    "task_id": "e1-resource-token-cfs-prefix-affinity",
+    "selected_task": "e1-resource-token-cfs-prefix-affinity",
+    "candidates": [
+      "e1-token-cfs-prefix-affinity-fifo-cold-04",
+      "e1-token-cfs-prefix-affinity-token-mid-04",
+      "e1-token-cfs-prefix-affinity-prefix-hot-04"
+    ],
+    "selected_agent": "e1-token-cfs-prefix-affinity-prefix-hot-04",
+    "policy": "token-cfs-prefix-affinity",
+    "reason": "prefix affinity shared_pages=6 within threshold=100",
+    "vruntime_before": {
+      "e1-token-cfs-prefix-affinity-fifo-cold-04": 94,
+      "e1-token-cfs-prefix-affinity-prefix-hot-04": 32,
+      "e1-token-cfs-prefix-affinity-token-mid-04": 11
+    },
+    "vruntime_after": {
+      "e1-token-cfs-prefix-affinity-fifo-cold-04": 94,
+      "e1-token-cfs-prefix-affinity-prefix-hot-04": 32,
+      "e1-token-cfs-prefix-affinity-token-mid-04": 11
+    },
+    "shared_pages": {
+      "e1-token-cfs-prefix-affinity-fifo-cold-04": 2,
+      "e1-token-cfs-prefix-affinity-prefix-hot-04": 6,
+      "e1-token-cfs-prefix-affinity-token-mid-04": 3
+    },
+    "vruntime_score": 0,
+    "context_affinity_score": 0,
+    "memory_pressure": 0,
+    "pids_pressure": 0,
+    "cpu_throttle_pressure": 0,
+    "psi_pressure": 0,
+    "dependency_ready": true,
+    "dynamic_spawn_priority": 0,
+    "final_score": 0,
+    "evidence_mode": "degraded",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
+    "resource_pressure": {
+      "memory_pressure": 0,
+      "pids_pressure": 0,
+      "cpu_throttle_pressure": 0,
+      "psi_pressure": 0,
+      "evidence_mode": "degraded",
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
+    },
+    "created_at": 1783405199107
+  },
+  {
+    "id": "20260707141959.107441000",
+    "decision_id": "20260707141959.107441000",
+    "timestamp": "2026-07-07T06:19:59.107441Z",
+    "task_id": "e1-resource-token-cfs-prefix-affinity",
+    "selected_task": "e1-resource-token-cfs-prefix-affinity",
+    "candidates": [
+      "e1-token-cfs-prefix-affinity-fifo-cold-05",
+      "e1-token-cfs-prefix-affinity-token-mid-05",
+      "e1-token-cfs-prefix-affinity-prefix-hot-05"
+    ],
+    "selected_agent": "e1-token-cfs-prefix-affinity-prefix-hot-05",
+    "policy": "token-cfs-prefix-affinity",
+    "reason": "prefix affinity shared_pages=6 within threshold=100",
+    "vruntime_before": {
+      "e1-token-cfs-prefix-affinity-fifo-cold-05": 95,
+      "e1-token-cfs-prefix-affinity-prefix-hot-05": 28,
+      "e1-token-cfs-prefix-affinity-token-mid-05": 12
+    },
+    "vruntime_after": {
+      "e1-token-cfs-prefix-affinity-fifo-cold-05": 95,
+      "e1-token-cfs-prefix-affinity-prefix-hot-05": 28,
+      "e1-token-cfs-prefix-affinity-token-mid-05": 12
+    },
+    "shared_pages": {
+      "e1-token-cfs-prefix-affinity-fifo-cold-05": 2,
+      "e1-token-cfs-prefix-affinity-prefix-hot-05": 6,
+      "e1-token-cfs-prefix-affinity-token-mid-05": 3
+    },
+    "vruntime_score": 0,
+    "context_affinity_score": 0,
+    "memory_pressure": 0,
+    "pids_pressure": 0,
+    "cpu_throttle_pressure": 0,
+    "psi_pressure": 0,
+    "dependency_ready": true,
+    "dynamic_spawn_priority": 0,
+    "final_score": 0,
+    "evidence_mode": "degraded",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
+    "resource_pressure": {
+      "memory_pressure": 0,
+      "pids_pressure": 0,
+      "cpu_throttle_pressure": 0,
+      "psi_pressure": 0,
+      "evidence_mode": "degraded",
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
+    },
+    "created_at": 1783405199107
+  },
+  {
+    "id": "20260707141959.107448000",
+    "decision_id": "20260707141959.107448000",
+    "timestamp": "2026-07-07T06:19:59.107448Z",
+    "task_id": "e1-resource-token-cfs-prefix-affinity",
+    "selected_task": "e1-resource-token-cfs-prefix-affinity",
+    "candidates": [
+      "e1-token-cfs-prefix-affinity-fifo-cold-00",
+      "e1-token-cfs-prefix-affinity-token-mid-00",
+      "e1-token-cfs-prefix-affinity-prefix-hot-00"
+    ],
+    "selected_agent": "e1-token-cfs-prefix-affinity-prefix-hot-00",
+    "policy": "token-cfs-prefix-affinity",
+    "reason": "prefix affinity shared_pages=6 within threshold=100",
+    "vruntime_before": {
+      "e1-token-cfs-prefix-affinity-fifo-cold-00": 96,
+      "e1-token-cfs-prefix-affinity-prefix-hot-00": 29,
+      "e1-token-cfs-prefix-affinity-token-mid-00": 10
+    },
+    "vruntime_after": {
+      "e1-token-cfs-prefix-affinity-fifo-cold-00": 96,
+      "e1-token-cfs-prefix-affinity-prefix-hot-00": 29,
+      "e1-token-cfs-prefix-affinity-token-mid-00": 10
+    },
+    "shared_pages": {
+      "e1-token-cfs-prefix-affinity-fifo-cold-00": 2,
+      "e1-token-cfs-prefix-affinity-prefix-hot-00": 6,
+      "e1-token-cfs-prefix-affinity-token-mid-00": 3
+    },
+    "vruntime_score": 0,
+    "context_affinity_score": 0,
+    "memory_pressure": 0,
+    "pids_pressure": 0,
+    "cpu_throttle_pressure": 0,
+    "psi_pressure": 0,
+    "dependency_ready": true,
+    "dynamic_spawn_priority": 0,
+    "final_score": 0,
+    "evidence_mode": "degraded",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
+    "resource_pressure": {
+      "memory_pressure": 0,
+      "pids_pressure": 0,
+      "cpu_throttle_pressure": 0,
+      "psi_pressure": 0,
+      "evidence_mode": "degraded",
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
+    },
+    "created_at": 1783405199107
+  },
+  {
+    "id": "20260707141959.107455000",
+    "decision_id": "20260707141959.107455000",
+    "timestamp": "2026-07-07T06:19:59.107455Z",
+    "task_id": "e1-resource-token-cfs-prefix-affinity",
+    "selected_task": "e1-resource-token-cfs-prefix-affinity",
+    "candidates": [
+      "e1-token-cfs-prefix-affinity-fifo-cold-01",
+      "e1-token-cfs-prefix-affinity-token-mid-01",
+      "e1-token-cfs-prefix-affinity-prefix-hot-01"
+    ],
+    "selected_agent": "e1-token-cfs-prefix-affinity-prefix-hot-01",
+    "policy": "token-cfs-prefix-affinity",
+    "reason": "prefix affinity shared_pages=6 within threshold=100",
+    "vruntime_before": {
+      "e1-token-cfs-prefix-affinity-fifo-cold-01": 90,
+      "e1-token-cfs-prefix-affinity-prefix-hot-01": 30,
+      "e1-token-cfs-prefix-affinity-token-mid-01": 11
+    },
+    "vruntime_after": {
+      "e1-token-cfs-prefix-affinity-fifo-cold-01": 90,
+      "e1-token-cfs-prefix-affinity-prefix-hot-01": 30,
+      "e1-token-cfs-prefix-affinity-token-mid-01": 11
+    },
+    "shared_pages": {
+      "e1-token-cfs-prefix-affinity-fifo-cold-01": 2,
+      "e1-token-cfs-prefix-affinity-prefix-hot-01": 6,
+      "e1-token-cfs-prefix-affinity-token-mid-01": 3
+    },
+    "vruntime_score": 0,
+    "context_affinity_score": 0,
+    "memory_pressure": 0,
+    "pids_pressure": 0,
+    "cpu_throttle_pressure": 0,
+    "psi_pressure": 0,
+    "dependency_ready": true,
+    "dynamic_spawn_priority": 0,
+    "final_score": 0,
+    "evidence_mode": "degraded",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
+    "resource_pressure": {
+      "memory_pressure": 0,
+      "pids_pressure": 0,
+      "cpu_throttle_pressure": 0,
+      "psi_pressure": 0,
+      "evidence_mode": "degraded",
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
+    },
+    "created_at": 1783405199107
+  },
+  {
+    "id": "20260707141959.108743000",
+    "decision_id": "20260707141959.108743000",
+    "timestamp": "2026-07-07T06:19:59.108743Z",
+    "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
+    "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
+    "candidates": [
+      "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-00",
+      "e1-token-cfs-prefix-affinity-resource-aware-token-mid-00",
+      "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-00"
+    ],
+    "candidate_details": [
+      {
+        "agent_id": "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-00",
+        "task_id": "e1",
+        "vruntime_score": 10.989,
+        "context_affinity_score": 2,
+        "memory_pressure": 0.117,
+        "pids_pressure": 0.063,
+        "cpu_throttle_pressure": 0,
+        "psi_pressure": 0.1,
+        "dependency_ready": true,
+        "dynamic_spawn_priority": 0,
+        "final_score": 30.895
+      },
+      {
+        "agent_id": "e1-token-cfs-prefix-affinity-resource-aware-token-mid-00",
+        "task_id": "e1",
+        "vruntime_score": 90.909,
+        "context_affinity_score": 3,
+        "memory_pressure": 0.153,
+        "pids_pressure": 0.109,
+        "cpu_throttle_pressure": 0.11,
+        "psi_pressure": 0.1,
+        "dependency_ready": true,
+        "dynamic_spawn_priority": 0,
+        "final_score": 113.611
+      },
+      {
+        "agent_id": "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-00",
+        "task_id": "e1",
+        "vruntime_score": 34.483,
+        "context_affinity_score": 6,
+        "memory_pressure": 0.189,
+        "pids_pressure": 0.156,
+        "cpu_throttle_pressure": 0.22,
+        "psi_pressure": 0.1,
+        "dependency_ready": true,
+        "dynamic_spawn_priority": 0,
+        "final_score": 119.981
+      }
+    ],
+    "selected_agent": "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-00",
+    "policy": "token-cfs-prefix-affinity-resource-aware",
+    "reason": "selected due to low vruntime + high context affinity + low resource pressure",
+    "vruntime_before": {
+      "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-00": 90,
+      "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-00": 28,
+      "e1-token-cfs-prefix-affinity-resource-aware-token-mid-00": 10
+    },
+    "vruntime_after": {
+      "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-00": 90,
+      "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-00": 28,
+      "e1-token-cfs-prefix-affinity-resource-aware-token-mid-00": 10
+    },
+    "shared_pages": {
+      "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-00": 2,
+      "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-00": 6,
+      "e1-token-cfs-prefix-affinity-resource-aware-token-mid-00": 3
+    },
+    "vruntime_score": 34.483,
+    "context_affinity_score": 6,
+    "memory_pressure": 0.189,
+    "pids_pressure": 0.156,
+    "cpu_throttle_pressure": 0.22,
+    "psi_pressure": 0.1,
+    "dependency_ready": true,
+    "dynamic_spawn_priority": 0,
+    "final_score": 119.981,
+    "evidence_mode": "degraded",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
+    "resource_pressure": {
+      "memory_pressure": 0.189,
+      "pids_pressure": 0.156,
+      "cpu_throttle_pressure": 0.22,
+      "psi_pressure": 0.1,
+      "evidence_mode": "degraded",
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
+    },
+    "score_by_agent": {
+      "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-00": {
+        "agent_id": "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-00",
+        "task_id": "e1",
+        "vruntime_score": 10.989,
+        "context_affinity_score": 2,
+        "memory_pressure": 0.117,
+        "pids_pressure": 0.063,
+        "cpu_throttle_pressure": 0,
+        "psi_pressure": 0.1,
+        "dependency_ready": true,
+        "dynamic_spawn_priority": 0,
+        "final_score": 30.895
+      },
+      "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-00": {
+        "agent_id": "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-00",
+        "task_id": "e1",
+        "vruntime_score": 34.483,
+        "context_affinity_score": 6,
+        "memory_pressure": 0.189,
+        "pids_pressure": 0.156,
+        "cpu_throttle_pressure": 0.22,
+        "psi_pressure": 0.1,
+        "dependency_ready": true,
+        "dynamic_spawn_priority": 0,
+        "final_score": 119.981
+      },
+      "e1-token-cfs-prefix-affinity-resource-aware-token-mid-00": {
+        "agent_id": "e1-token-cfs-prefix-affinity-resource-aware-token-mid-00",
+        "task_id": "e1",
+        "vruntime_score": 90.909,
+        "context_affinity_score": 3,
+        "memory_pressure": 0.153,
+        "pids_pressure": 0.109,
+        "cpu_throttle_pressure": 0.11,
+        "psi_pressure": 0.1,
+        "dependency_ready": true,
+        "dynamic_spawn_priority": 0,
+        "final_score": 113.611
+      }
+    },
+    "created_at": 1783405199108
+  },
+  {
+    "id": "20260707141959.108753000",
+    "decision_id": "20260707141959.108753000",
+    "timestamp": "2026-07-07T06:19:59.108753Z",
+    "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
+    "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
+    "candidates": [
+      "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-01",
+      "e1-token-cfs-prefix-affinity-resource-aware-token-mid-01",
+      "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-01"
+    ],
+    "candidate_details": [
+      {
+        "agent_id": "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-01",
+        "task_id": "e1",
+        "vruntime_score": 10.87,
+        "context_affinity_score": 2,
+        "memory_pressure": 0.118,
+        "pids_pressure": 0.078,
+        "cpu_throttle_pressure": 0.01,
+        "psi_pressure": 0.1,
+        "dependency_ready": true,
+        "dynamic_spawn_priority": 0,
+        "final_score": 26.9
+      },
+      {
+        "agent_id": "e1-token-cfs-prefix-affinity-resource-aware-token-mid-01",
+        "task_id": "e1",
+        "vruntime_score": 83.333,
+        "context_affinity_score": 3,
+        "memory_pressure": 0.154,
+        "pids_pressure": 0.125,
+        "cpu_throttle_pressure": 0.12,
+        "psi_pressure": 0.1,
+        "dependency_ready": true,
+        "dynamic_spawn_priority": 0,
+        "final_score": 102.16
+      },
+      {
+        "agent_id": "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-01",
+        "task_id": "e1",
+        "vruntime_score": 33.333,
+        "context_affinity_score": 6,
+        "memory_pressure": 0.19,
+        "pids_pressure": 0.172,
+        "cpu_throttle_pressure": 0.23,
+        "psi_pressure": 0.1,
+        "dependency_ready": true,
+        "dynamic_spawn_priority": 0,
+        "final_score": 114.956
+      }
+    ],
+    "selected_agent": "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-01",
+    "policy": "token-cfs-prefix-affinity-resource-aware",
+    "reason": "selected due to low vruntime + high context affinity + low resource pressure",
+    "vruntime_before": {
+      "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-01": 91,
+      "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-01": 29,
+      "e1-token-cfs-prefix-affinity-resource-aware-token-mid-01": 11
+    },
+    "vruntime_after": {
+      "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-01": 91,
+      "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-01": 29,
+      "e1-token-cfs-prefix-affinity-resource-aware-token-mid-01": 11
+    },
+    "shared_pages": {
+      "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-01": 2,
+      "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-01": 6,
+      "e1-token-cfs-prefix-affinity-resource-aware-token-mid-01": 3
+    },
+    "vruntime_score": 33.333,
+    "context_affinity_score": 6,
+    "memory_pressure": 0.19,
+    "pids_pressure": 0.172,
+    "cpu_throttle_pressure": 0.23,
+    "psi_pressure": 0.1,
+    "dependency_ready": true,
+    "dynamic_spawn_priority": 0,
+    "final_score": 114.956,
+    "evidence_mode": "degraded",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
+    "resource_pressure": {
+      "memory_pressure": 0.19,
+      "pids_pressure": 0.172,
+      "cpu_throttle_pressure": 0.23,
+      "psi_pressure": 0.1,
+      "evidence_mode": "degraded",
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
+    },
+    "score_by_agent": {
+      "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-01": {
+        "agent_id": "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-01",
+        "task_id": "e1",
+        "vruntime_score": 10.87,
+        "context_affinity_score": 2,
+        "memory_pressure": 0.118,
+        "pids_pressure": 0.078,
+        "cpu_throttle_pressure": 0.01,
+        "psi_pressure": 0.1,
+        "dependency_ready": true,
+        "dynamic_spawn_priority": 0,
+        "final_score": 26.9
+      },
+      "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-01": {
+        "agent_id": "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-01",
+        "task_id": "e1",
+        "vruntime_score": 33.333,
+        "context_affinity_score": 6,
+        "memory_pressure": 0.19,
+        "pids_pressure": 0.172,
+        "cpu_throttle_pressure": 0.23,
+        "psi_pressure": 0.1,
+        "dependency_ready": true,
+        "dynamic_spawn_priority": 0,
+        "final_score": 114.956
+      },
+      "e1-token-cfs-prefix-affinity-resource-aware-token-mid-01": {
+        "agent_id": "e1-token-cfs-prefix-affinity-resource-aware-token-mid-01",
+        "task_id": "e1",
+        "vruntime_score": 83.333,
+        "context_affinity_score": 3,
+        "memory_pressure": 0.154,
+        "pids_pressure": 0.125,
+        "cpu_throttle_pressure": 0.12,
+        "psi_pressure": 0.1,
+        "dependency_ready": true,
+        "dynamic_spawn_priority": 0,
+        "final_score": 102.16
+      }
+    },
+    "created_at": 1783405199108
+  },
+  {
+    "id": "20260707141959.108762000",
+    "decision_id": "20260707141959.108762000",
+    "timestamp": "2026-07-07T06:19:59.108762Z",
+    "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
+    "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
+    "candidates": [
+      "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-02",
+      "e1-token-cfs-prefix-affinity-resource-aware-token-mid-02",
+      "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-02"
+    ],
+    "candidate_details": [
+      {
+        "agent_id": "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-02",
+        "task_id": "e1",
+        "vruntime_score": 10.753,
+        "context_affinity_score": 2,
+        "memory_pressure": 0.119,
+        "pids_pressure": 0.094,
+        "cpu_throttle_pressure": 0.02,
+        "psi_pressure": 0.1,
+        "dependency_ready": true,
+        "dynamic_spawn_priority": 0,
+        "final_score": 22.907
+      },
+      {
+        "agent_id": "e1-token-cfs-prefix-affinity-resource-aware-token-mid-02",
+        "task_id": "e1",
+        "vruntime_score": 76.923,
+        "context_affinity_score": 3,
+        "memory_pressure": 0.155,
+        "pids_pressure": 0.141,
+        "cpu_throttle_pressure": 0.13,
+        "psi_pressure": 0.1,
+        "dependency_ready": true,
+        "dynamic_spawn_priority": 0,
+        "final_score": 91.874
+      },
+      {
+        "agent_id": "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-02",
+        "task_id": "e1",
+        "vruntime_score": 32.258,
+        "context_affinity_score": 6,
+        "memory_pressure": 0.191,
+        "pids_pressure": 0.188,
+        "cpu_throttle_pressure": 0.24,
+        "psi_pressure": 0.1,
+        "dependency_ready": true,
+        "dynamic_spawn_priority": 0,
+        "final_score": 110.005
+      }
+    ],
+    "selected_agent": "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-02",
+    "policy": "token-cfs-prefix-affinity-resource-aware",
+    "reason": "selected due to low vruntime + high context affinity + low resource pressure",
+    "vruntime_before": {
+      "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-02": 92,
+      "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-02": 30,
+      "e1-token-cfs-prefix-affinity-resource-aware-token-mid-02": 12
+    },
+    "vruntime_after": {
+      "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-02": 92,
+      "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-02": 30,
+      "e1-token-cfs-prefix-affinity-resource-aware-token-mid-02": 12
+    },
+    "shared_pages": {
+      "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-02": 2,
+      "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-02": 6,
+      "e1-token-cfs-prefix-affinity-resource-aware-token-mid-02": 3
+    },
+    "vruntime_score": 32.258,
+    "context_affinity_score": 6,
+    "memory_pressure": 0.191,
+    "pids_pressure": 0.188,
+    "cpu_throttle_pressure": 0.24,
+    "psi_pressure": 0.1,
+    "dependency_ready": true,
+    "dynamic_spawn_priority": 0,
+    "final_score": 110.005,
+    "evidence_mode": "degraded",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
+    "resource_pressure": {
+      "memory_pressure": 0.191,
+      "pids_pressure": 0.188,
+      "cpu_throttle_pressure": 0.24,
+      "psi_pressure": 0.1,
+      "evidence_mode": "degraded",
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
+    },
+    "score_by_agent": {
+      "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-02": {
+        "agent_id": "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-02",
+        "task_id": "e1",
+        "vruntime_score": 10.753,
+        "context_affinity_score": 2,
+        "memory_pressure": 0.119,
+        "pids_pressure": 0.094,
+        "cpu_throttle_pressure": 0.02,
+        "psi_pressure": 0.1,
+        "dependency_ready": true,
+        "dynamic_spawn_priority": 0,
+        "final_score": 22.907
+      },
+      "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-02": {
+        "agent_id": "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-02",
+        "task_id": "e1",
+        "vruntime_score": 32.258,
+        "context_affinity_score": 6,
+        "memory_pressure": 0.191,
+        "pids_pressure": 0.188,
+        "cpu_throttle_pressure": 0.24,
+        "psi_pressure": 0.1,
+        "dependency_ready": true,
+        "dynamic_spawn_priority": 0,
+        "final_score": 110.005
+      },
+      "e1-token-cfs-prefix-affinity-resource-aware-token-mid-02": {
+        "agent_id": "e1-token-cfs-prefix-affinity-resource-aware-token-mid-02",
+        "task_id": "e1",
+        "vruntime_score": 76.923,
+        "context_affinity_score": 3,
+        "memory_pressure": 0.155,
+        "pids_pressure": 0.141,
+        "cpu_throttle_pressure": 0.13,
+        "psi_pressure": 0.1,
+        "dependency_ready": true,
+        "dynamic_spawn_priority": 0,
+        "final_score": 91.874
+      }
+    },
+    "created_at": 1783405199108
+  },
+  {
+    "id": "20260707141959.108771000",
+    "decision_id": "20260707141959.108771000",
+    "timestamp": "2026-07-07T06:19:59.108771Z",
+    "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
+    "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
+    "candidates": [
+      "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-03",
+      "e1-token-cfs-prefix-affinity-resource-aware-token-mid-03",
+      "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-03"
+    ],
+    "candidate_details": [
+      {
+        "agent_id": "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-03",
+        "task_id": "e1",
+        "vruntime_score": 10.638,
+        "context_affinity_score": 2,
+        "memory_pressure": 0.12,
+        "pids_pressure": 0.109,
+        "cpu_throttle_pressure": 0.03,
+        "psi_pressure": 0.1,
+        "dependency_ready": true,
+        "dynamic_spawn_priority": 0,
+        "final_score": 18.917
+      },
+      {
+        "agent_id": "e1-token-cfs-prefix-affinity-resource-aware-token-mid-03",
+        "task_id": "e1",
+        "vruntime_score": 90.909,
+        "context_affinity_score": 3,
+        "memory_pressure": 0.156,
+        "pids_pressure": 0.156,
+        "cpu_throttle_pressure": 0.14,
+        "psi_pressure": 0.1,
+        "dependency_ready": true,
+        "dynamic_spawn_priority": 0,
+        "final_score": 101.984
+      },
+      {
+        "agent_id": "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-03",
+        "task_id": "e1",
+        "vruntime_score": 31.25,
+        "context_affinity_score": 6,
+        "memory_pressure": 0.192,
+        "pids_pressure": 0.203,
+        "cpu_throttle_pressure": 0.25,
+        "psi_pressure": 0.1,
+        "dependency_ready": true,
+        "dynamic_spawn_priority": 0,
+        "final_score": 105.121
+      }
+    ],
+    "selected_agent": "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-03",
+    "policy": "token-cfs-prefix-affinity-resource-aware",
+    "reason": "selected due to low vruntime + high context affinity + low resource pressure",
+    "vruntime_before": {
+      "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-03": 93,
+      "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-03": 31,
+      "e1-token-cfs-prefix-affinity-resource-aware-token-mid-03": 10
+    },
+    "vruntime_after": {
+      "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-03": 93,
+      "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-03": 31,
+      "e1-token-cfs-prefix-affinity-resource-aware-token-mid-03": 10
+    },
+    "shared_pages": {
+      "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-03": 2,
+      "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-03": 6,
+      "e1-token-cfs-prefix-affinity-resource-aware-token-mid-03": 3
+    },
+    "vruntime_score": 31.25,
+    "context_affinity_score": 6,
+    "memory_pressure": 0.192,
+    "pids_pressure": 0.203,
+    "cpu_throttle_pressure": 0.25,
+    "psi_pressure": 0.1,
+    "dependency_ready": true,
+    "dynamic_spawn_priority": 0,
+    "final_score": 105.121,
+    "evidence_mode": "degraded",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
+    "resource_pressure": {
+      "memory_pressure": 0.192,
+      "pids_pressure": 0.203,
+      "cpu_throttle_pressure": 0.25,
+      "psi_pressure": 0.1,
+      "evidence_mode": "degraded",
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
+    },
+    "score_by_agent": {
+      "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-03": {
+        "agent_id": "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-03",
+        "task_id": "e1",
+        "vruntime_score": 10.638,
+        "context_affinity_score": 2,
+        "memory_pressure": 0.12,
+        "pids_pressure": 0.109,
+        "cpu_throttle_pressure": 0.03,
+        "psi_pressure": 0.1,
+        "dependency_ready": true,
+        "dynamic_spawn_priority": 0,
+        "final_score": 18.917
+      },
+      "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-03": {
+        "agent_id": "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-03",
+        "task_id": "e1",
+        "vruntime_score": 31.25,
+        "context_affinity_score": 6,
+        "memory_pressure": 0.192,
+        "pids_pressure": 0.203,
+        "cpu_throttle_pressure": 0.25,
+        "psi_pressure": 0.1,
+        "dependency_ready": true,
+        "dynamic_spawn_priority": 0,
+        "final_score": 105.121
+      },
+      "e1-token-cfs-prefix-affinity-resource-aware-token-mid-03": {
+        "agent_id": "e1-token-cfs-prefix-affinity-resource-aware-token-mid-03",
+        "task_id": "e1",
+        "vruntime_score": 90.909,
+        "context_affinity_score": 3,
+        "memory_pressure": 0.156,
+        "pids_pressure": 0.156,
+        "cpu_throttle_pressure": 0.14,
+        "psi_pressure": 0.1,
+        "dependency_ready": true,
+        "dynamic_spawn_priority": 0,
+        "final_score": 101.984
+      }
+    },
+    "created_at": 1783405199108
+  },
+  {
+    "id": "20260707141959.108780000",
+    "decision_id": "20260707141959.108780000",
+    "timestamp": "2026-07-07T06:19:59.10878Z",
+    "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
+    "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
+    "candidates": [
+      "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-04",
+      "e1-token-cfs-prefix-affinity-resource-aware-token-mid-04",
+      "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-04"
+    ],
+    "candidate_details": [
+      {
+        "agent_id": "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-04",
+        "task_id": "e1",
+        "vruntime_score": 10.526,
+        "context_affinity_score": 2,
+        "memory_pressure": 0.121,
+        "pids_pressure": 0.125,
+        "cpu_throttle_pressure": 0.04,
+        "psi_pressure": 0.1,
+        "dependency_ready": true,
+        "dynamic_spawn_priority": 0,
+        "final_score": 14.929
+      },
+      {
+        "agent_id": "e1-token-cfs-prefix-affinity-resource-aware-token-mid-04",
+        "task_id": "e1",
+        "vruntime_score": 83.333,
+        "context_affinity_score": 3,
+        "memory_pressure": 0.157,
+        "pids_pressure": 0.172,
+        "cpu_throttle_pressure": 0.15,
+        "psi_pressure": 0.1,
+        "dependency_ready": true,
+        "dynamic_spawn_priority": 0,
+        "final_score": 90.533
+      },
+      {
+        "agent_id": "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-04",
+        "task_id": "e1",
+        "vruntime_score": 30.303,
+        "context_affinity_score": 6,
+        "memory_pressure": 0.193,
+        "pids_pressure": 0.219,
+        "cpu_throttle_pressure": 0.26,
+        "psi_pressure": 0.1,
+        "dependency_ready": true,
+        "dynamic_spawn_priority": 0,
+        "final_score": 100.298
+      }
+    ],
+    "selected_agent": "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-04",
+    "policy": "token-cfs-prefix-affinity-resource-aware",
+    "reason": "selected due to low vruntime + high context affinity + low resource pressure",
+    "vruntime_before": {
+      "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-04": 94,
+      "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-04": 32,
+      "e1-token-cfs-prefix-affinity-resource-aware-token-mid-04": 11
+    },
+    "vruntime_after": {
+      "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-04": 94,
+      "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-04": 32,
+      "e1-token-cfs-prefix-affinity-resource-aware-token-mid-04": 11
+    },
+    "shared_pages": {
+      "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-04": 2,
+      "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-04": 6,
+      "e1-token-cfs-prefix-affinity-resource-aware-token-mid-04": 3
+    },
+    "vruntime_score": 30.303,
+    "context_affinity_score": 6,
+    "memory_pressure": 0.193,
+    "pids_pressure": 0.219,
+    "cpu_throttle_pressure": 0.26,
+    "psi_pressure": 0.1,
+    "dependency_ready": true,
+    "dynamic_spawn_priority": 0,
+    "final_score": 100.298,
+    "evidence_mode": "degraded",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
+    "resource_pressure": {
+      "memory_pressure": 0.193,
+      "pids_pressure": 0.219,
+      "cpu_throttle_pressure": 0.26,
+      "psi_pressure": 0.1,
+      "evidence_mode": "degraded",
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
+    },
+    "score_by_agent": {
+      "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-04": {
+        "agent_id": "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-04",
+        "task_id": "e1",
+        "vruntime_score": 10.526,
+        "context_affinity_score": 2,
+        "memory_pressure": 0.121,
+        "pids_pressure": 0.125,
+        "cpu_throttle_pressure": 0.04,
+        "psi_pressure": 0.1,
+        "dependency_ready": true,
+        "dynamic_spawn_priority": 0,
+        "final_score": 14.929
+      },
+      "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-04": {
+        "agent_id": "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-04",
+        "task_id": "e1",
+        "vruntime_score": 30.303,
+        "context_affinity_score": 6,
+        "memory_pressure": 0.193,
+        "pids_pressure": 0.219,
+        "cpu_throttle_pressure": 0.26,
+        "psi_pressure": 0.1,
+        "dependency_ready": true,
+        "dynamic_spawn_priority": 0,
+        "final_score": 100.298
+      },
+      "e1-token-cfs-prefix-affinity-resource-aware-token-mid-04": {
+        "agent_id": "e1-token-cfs-prefix-affinity-resource-aware-token-mid-04",
+        "task_id": "e1",
+        "vruntime_score": 83.333,
+        "context_affinity_score": 3,
+        "memory_pressure": 0.157,
+        "pids_pressure": 0.172,
+        "cpu_throttle_pressure": 0.15,
+        "psi_pressure": 0.1,
+        "dependency_ready": true,
+        "dynamic_spawn_priority": 0,
+        "final_score": 90.533
+      }
+    },
+    "created_at": 1783405199108
+  },
+  {
+    "id": "20260707141959.108788000",
+    "decision_id": "20260707141959.108788000",
+    "timestamp": "2026-07-07T06:19:59.108788Z",
+    "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
+    "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
+    "candidates": [
+      "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-05",
+      "e1-token-cfs-prefix-affinity-resource-aware-token-mid-05",
+      "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-05"
+    ],
+    "candidate_details": [
+      {
+        "agent_id": "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-05",
+        "task_id": "e1",
+        "vruntime_score": 10.417,
+        "context_affinity_score": 2,
+        "memory_pressure": 0.122,
+        "pids_pressure": 0.141,
+        "cpu_throttle_pressure": 0.05,
+        "psi_pressure": 0.1,
+        "dependency_ready": true,
+        "dynamic_spawn_priority": 0,
+        "final_score": 10.944
+      },
+      {
+        "agent_id": "e1-token-cfs-prefix-affinity-resource-aware-token-mid-05",
+        "task_id": "e1",
+        "vruntime_score": 76.923,
+        "context_affinity_score": 3,
+        "memory_pressure": 0.158,
+        "pids_pressure": 0.188,
+        "cpu_throttle_pressure": 0.16,
+        "psi_pressure": 0.1,
+        "dependency_ready": true,
+        "dynamic_spawn_priority": 0,
+        "final_score": 80.247
+      },
+      {
+        "agent_id": "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-05",
+        "task_id": "e1",
+        "vruntime_score": 34.483,
+        "context_affinity_score": 6,
+        "memory_pressure": 0.194,
+        "pids_pressure": 0.234,
+        "cpu_throttle_pressure": 0.27,
+        "psi_pressure": 0.1,
+        "dependency_ready": true,
+        "dynamic_spawn_priority": 0,
+        "final_score": 100.602
+      }
+    ],
+    "selected_agent": "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-05",
+    "policy": "token-cfs-prefix-affinity-resource-aware",
+    "reason": "selected due to low vruntime + high context affinity + low resource pressure",
+    "vruntime_before": {
+      "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-05": 95,
+      "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-05": 28,
+      "e1-token-cfs-prefix-affinity-resource-aware-token-mid-05": 12
+    },
+    "vruntime_after": {
+      "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-05": 95,
+      "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-05": 28,
+      "e1-token-cfs-prefix-affinity-resource-aware-token-mid-05": 12
+    },
+    "shared_pages": {
+      "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-05": 2,
+      "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-05": 6,
+      "e1-token-cfs-prefix-affinity-resource-aware-token-mid-05": 3
+    },
+    "vruntime_score": 34.483,
+    "context_affinity_score": 6,
+    "memory_pressure": 0.194,
+    "pids_pressure": 0.234,
+    "cpu_throttle_pressure": 0.27,
+    "psi_pressure": 0.1,
+    "dependency_ready": true,
+    "dynamic_spawn_priority": 0,
+    "final_score": 100.602,
+    "evidence_mode": "degraded",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
+    "resource_pressure": {
+      "memory_pressure": 0.194,
+      "pids_pressure": 0.234,
+      "cpu_throttle_pressure": 0.27,
+      "psi_pressure": 0.1,
+      "evidence_mode": "degraded",
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
+    },
+    "score_by_agent": {
+      "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-05": {
+        "agent_id": "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-05",
+        "task_id": "e1",
+        "vruntime_score": 10.417,
+        "context_affinity_score": 2,
+        "memory_pressure": 0.122,
+        "pids_pressure": 0.141,
+        "cpu_throttle_pressure": 0.05,
+        "psi_pressure": 0.1,
+        "dependency_ready": true,
+        "dynamic_spawn_priority": 0,
+        "final_score": 10.944
+      },
+      "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-05": {
+        "agent_id": "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-05",
+        "task_id": "e1",
+        "vruntime_score": 34.483,
+        "context_affinity_score": 6,
+        "memory_pressure": 0.194,
+        "pids_pressure": 0.234,
+        "cpu_throttle_pressure": 0.27,
+        "psi_pressure": 0.1,
+        "dependency_ready": true,
+        "dynamic_spawn_priority": 0,
+        "final_score": 100.602
+      },
+      "e1-token-cfs-prefix-affinity-resource-aware-token-mid-05": {
+        "agent_id": "e1-token-cfs-prefix-affinity-resource-aware-token-mid-05",
+        "task_id": "e1",
+        "vruntime_score": 76.923,
+        "context_affinity_score": 3,
+        "memory_pressure": 0.158,
+        "pids_pressure": 0.188,
+        "cpu_throttle_pressure": 0.16,
+        "psi_pressure": 0.1,
+        "dependency_ready": true,
+        "dynamic_spawn_priority": 0,
+        "final_score": 80.247
+      }
+    },
+    "created_at": 1783405199108
+  },
+  {
+    "id": "20260707141959.108794000",
+    "decision_id": "20260707141959.108794000",
+    "timestamp": "2026-07-07T06:19:59.108794Z",
+    "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
+    "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
+    "candidates": [
+      "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-00",
+      "e1-token-cfs-prefix-affinity-resource-aware-token-mid-00",
+      "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-00"
+    ],
+    "candidate_details": [
+      {
+        "agent_id": "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-00",
+        "task_id": "e1",
+        "vruntime_score": 10.309,
+        "context_affinity_score": 2,
+        "memory_pressure": 0.123,
+        "pids_pressure": 0.156,
+        "cpu_throttle_pressure": 0.06,
+        "psi_pressure": 0.1,
+        "dependency_ready": true,
+        "dynamic_spawn_priority": 0,
+        "final_score": 6.961
+      },
+      {
+        "agent_id": "e1-token-cfs-prefix-affinity-resource-aware-token-mid-00",
+        "task_id": "e1",
+        "vruntime_score": 90.909,
+        "context_affinity_score": 3,
+        "memory_pressure": 0.159,
+        "pids_pressure": 0.203,
+        "cpu_throttle_pressure": 0.17,
+        "psi_pressure": 0.1,
+        "dependency_ready": true,
+        "dynamic_spawn_priority": 0,
+        "final_score": 90.357
+      },
+      {
+        "agent_id": "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-00",
+        "task_id": "e1",
+        "vruntime_score": 33.333,
+        "context_affinity_score": 6,
+        "memory_pressure": 0.195,
+        "pids_pressure": 0.25,
+        "cpu_throttle_pressure": 0.28,
+        "psi_pressure": 0.1,
+        "dependency_ready": true,
+        "dynamic_spawn_priority": 0,
+        "final_score": 95.577
+      }
+    ],
+    "selected_agent": "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-00",
+    "policy": "token-cfs-prefix-affinity-resource-aware",
+    "reason": "selected due to low vruntime + high context affinity + low resource pressure",
+    "vruntime_before": {
+      "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-00": 96,
+      "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-00": 29,
+      "e1-token-cfs-prefix-affinity-resource-aware-token-mid-00": 10
+    },
+    "vruntime_after": {
+      "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-00": 96,
+      "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-00": 29,
+      "e1-token-cfs-prefix-affinity-resource-aware-token-mid-00": 10
+    },
+    "shared_pages": {
+      "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-00": 2,
+      "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-00": 6,
+      "e1-token-cfs-prefix-affinity-resource-aware-token-mid-00": 3
+    },
+    "vruntime_score": 33.333,
+    "context_affinity_score": 6,
+    "memory_pressure": 0.195,
+    "pids_pressure": 0.25,
+    "cpu_throttle_pressure": 0.28,
+    "psi_pressure": 0.1,
+    "dependency_ready": true,
+    "dynamic_spawn_priority": 0,
+    "final_score": 95.577,
+    "evidence_mode": "degraded",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
+    "resource_pressure": {
+      "memory_pressure": 0.195,
+      "pids_pressure": 0.25,
+      "cpu_throttle_pressure": 0.28,
+      "psi_pressure": 0.1,
+      "evidence_mode": "degraded",
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
+    },
+    "score_by_agent": {
+      "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-00": {
+        "agent_id": "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-00",
+        "task_id": "e1",
+        "vruntime_score": 10.309,
+        "context_affinity_score": 2,
+        "memory_pressure": 0.123,
+        "pids_pressure": 0.156,
+        "cpu_throttle_pressure": 0.06,
+        "psi_pressure": 0.1,
+        "dependency_ready": true,
+        "dynamic_spawn_priority": 0,
+        "final_score": 6.961
+      },
+      "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-00": {
+        "agent_id": "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-00",
+        "task_id": "e1",
+        "vruntime_score": 33.333,
+        "context_affinity_score": 6,
+        "memory_pressure": 0.195,
+        "pids_pressure": 0.25,
+        "cpu_throttle_pressure": 0.28,
+        "psi_pressure": 0.1,
+        "dependency_ready": true,
+        "dynamic_spawn_priority": 0,
+        "final_score": 95.577
+      },
+      "e1-token-cfs-prefix-affinity-resource-aware-token-mid-00": {
+        "agent_id": "e1-token-cfs-prefix-affinity-resource-aware-token-mid-00",
+        "task_id": "e1",
+        "vruntime_score": 90.909,
+        "context_affinity_score": 3,
+        "memory_pressure": 0.159,
+        "pids_pressure": 0.203,
+        "cpu_throttle_pressure": 0.17,
+        "psi_pressure": 0.1,
+        "dependency_ready": true,
+        "dynamic_spawn_priority": 0,
+        "final_score": 90.357
+      }
+    },
+    "created_at": 1783405199108
+  },
+  {
+    "id": "20260707141959.108800000",
+    "decision_id": "20260707141959.108800000",
+    "timestamp": "2026-07-07T06:19:59.1088Z",
+    "task_id": "e1-resource-token-cfs-prefix-affinity-resource-aware",
+    "selected_task": "e1-resource-token-cfs-prefix-affinity-resource-aware",
+    "candidates": [
+      "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-01",
+      "e1-token-cfs-prefix-affinity-resource-aware-token-mid-01",
+      "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-01"
+    ],
+    "candidate_details": [
+      {
+        "agent_id": "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-01",
+        "task_id": "e1",
+        "vruntime_score": 10.989,
+        "context_affinity_score": 2,
+        "memory_pressure": 0.124,
+        "pids_pressure": 0.172,
+        "cpu_throttle_pressure": 0.07,
+        "psi_pressure": 0.1,
+        "dependency_ready": true,
+        "dynamic_spawn_priority": 0,
+        "final_score": 3.765
+      },
+      {
+        "agent_id": "e1-token-cfs-prefix-affinity-resource-aware-token-mid-01",
+        "task_id": "e1",
+        "vruntime_score": 83.333,
+        "context_affinity_score": 3,
+        "memory_pressure": 0.16,
+        "pids_pressure": 0.219,
+        "cpu_throttle_pressure": 0.18,
+        "psi_pressure": 0.1,
+        "dependency_ready": true,
+        "dynamic_spawn_priority": 0,
+        "final_score": 78.905
+      },
+      {
+        "agent_id": "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-01",
+        "task_id": "e1",
+        "vruntime_score": 32.258,
+        "context_affinity_score": 6,
+        "memory_pressure": 0.196,
+        "pids_pressure": 0.266,
+        "cpu_throttle_pressure": 0.29,
+        "psi_pressure": 0.1,
+        "dependency_ready": true,
+        "dynamic_spawn_priority": 0,
+        "final_score": 90.626
+      }
+    ],
+    "selected_agent": "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-01",
+    "policy": "token-cfs-prefix-affinity-resource-aware",
+    "reason": "selected due to low vruntime + high context affinity + low resource pressure",
+    "vruntime_before": {
+      "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-01": 90,
+      "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-01": 30,
+      "e1-token-cfs-prefix-affinity-resource-aware-token-mid-01": 11
+    },
+    "vruntime_after": {
+      "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-01": 90,
+      "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-01": 30,
+      "e1-token-cfs-prefix-affinity-resource-aware-token-mid-01": 11
+    },
+    "shared_pages": {
+      "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-01": 2,
+      "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-01": 6,
+      "e1-token-cfs-prefix-affinity-resource-aware-token-mid-01": 3
+    },
+    "vruntime_score": 32.258,
+    "context_affinity_score": 6,
+    "memory_pressure": 0.196,
+    "pids_pressure": 0.266,
+    "cpu_throttle_pressure": 0.29,
+    "psi_pressure": 0.1,
+    "dependency_ready": true,
+    "dynamic_spawn_priority": 0,
+    "final_score": 90.626,
+    "evidence_mode": "degraded",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
+    "resource_pressure": {
+      "memory_pressure": 0.196,
+      "pids_pressure": 0.266,
+      "cpu_throttle_pressure": 0.29,
+      "psi_pressure": 0.1,
+      "evidence_mode": "degraded",
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
+    },
+    "score_by_agent": {
+      "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-01": {
+        "agent_id": "e1-token-cfs-prefix-affinity-resource-aware-fifo-cold-01",
+        "task_id": "e1",
+        "vruntime_score": 10.989,
+        "context_affinity_score": 2,
+        "memory_pressure": 0.124,
+        "pids_pressure": 0.172,
+        "cpu_throttle_pressure": 0.07,
+        "psi_pressure": 0.1,
+        "dependency_ready": true,
+        "dynamic_spawn_priority": 0,
+        "final_score": 3.765
+      },
+      "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-01": {
+        "agent_id": "e1-token-cfs-prefix-affinity-resource-aware-prefix-hot-01",
+        "task_id": "e1",
+        "vruntime_score": 32.258,
+        "context_affinity_score": 6,
+        "memory_pressure": 0.196,
+        "pids_pressure": 0.266,
+        "cpu_throttle_pressure": 0.29,
+        "psi_pressure": 0.1,
+        "dependency_ready": true,
+        "dynamic_spawn_priority": 0,
+        "final_score": 90.626
+      },
+      "e1-token-cfs-prefix-affinity-resource-aware-token-mid-01": {
+        "agent_id": "e1-token-cfs-prefix-affinity-resource-aware-token-mid-01",
+        "task_id": "e1",
+        "vruntime_score": 83.333,
+        "context_affinity_score": 3,
+        "memory_pressure": 0.16,
+        "pids_pressure": 0.219,
+        "cpu_throttle_pressure": 0.18,
+        "psi_pressure": 0.1,
+        "dependency_ready": true,
+        "dynamic_spawn_priority": 0,
+        "final_score": 78.905
+      }
+    },
+    "created_at": 1783405199108
+  }
+]

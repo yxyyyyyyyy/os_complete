@@ -1,8 +1,12 @@
 package main
 
 import (
+	"encoding/json"
 	"os"
 	"path/filepath"
+	"runtime"
+	"slices"
+	"strings"
 	"testing"
 )
 
@@ -80,4 +84,159 @@ func TestAortctlRealOnlyCommandsWriteFailureEvidenceForNonCgroupRoot(t *testing.
 	if _, err := os.Stat(filepath.Join(pressureDir, "real_pressure_smoke.json")); err != nil {
 		t.Fatalf("real-pressure-smoke failure evidence missing: %v", err)
 	}
+}
+
+func TestAortctlExperimentAllWritesStepSummary(t *testing.T) {
+	outDir := t.TempDir()
+	if err := run([]string{"experiment", "all", "--runs", "1", "--out", outDir}); err != nil {
+		t.Fatalf("experiment all: %v", err)
+	}
+	summaryPath := filepath.Join(outDir, "all_experiments_summary.json")
+	rawSummary, err := os.ReadFile(summaryPath)
+	if err != nil {
+		t.Fatalf("read all summary: %v", err)
+	}
+	for _, want := range []string{`"failed": []`, `"missing": []`} {
+		if !strings.Contains(string(rawSummary), want) {
+			t.Fatalf("all summary should encode empty lists as [] and include %s:\n%s", want, rawSummary)
+		}
+	}
+
+	var summary struct {
+		Experiment        string `json:"experiment"`
+		Runs              int    `json:"runs"`
+		EvidenceMode      string `json:"evidence_mode"`
+		AllRequiredPassed bool   `json:"all_required_passed"`
+		Steps             []struct {
+			Name           string   `json:"name"`
+			Command        string   `json:"command"`
+			Status         string   `json:"status"`
+			GeneratedFiles []string `json:"generated_files"`
+			Error          string   `json:"error"`
+			FallbackReason string   `json:"fallback_reason,omitempty"`
+		} `json:"steps"`
+		Passed    []string `json:"passed"`
+		Failed    []string `json:"failed"`
+		Degraded  []string `json:"degraded"`
+		Missing   []string `json:"missing"`
+		Generated []string `json:"generated_files"`
+	}
+	decodeJSONFile(t, filepath.Join(outDir, "all_experiments_summary.json"), &summary)
+	if summary.Experiment != "all" || summary.Runs != 1 {
+		t.Fatalf("unexpected all summary header: %#v", summary)
+	}
+	wantNames := []string{"e1", "e1-pressure", "e2", "e2-pressure-fault", "software-real", "workspace probe", "workspace-rmrf", "tool-workspace", "real-cgroup-smoke", "real-pressure-smoke", "real-all"}
+	if got := stepNames(summary.Steps); !slices.Equal(got, wantNames) {
+		t.Fatalf("step order mismatch\ngot  %v\nwant %v", got, wantNames)
+	}
+	for _, step := range summary.Steps {
+		if step.Command == "" {
+			t.Fatalf("step %q missing command", step.Name)
+		}
+		switch step.Status {
+		case "passed", "failed", "degraded", "missing":
+		default:
+			t.Fatalf("step %q has invalid status %q", step.Name, step.Status)
+		}
+		if step.Status == "degraded" && step.FallbackReason == "" {
+			t.Fatalf("degraded step %q missing fallback_reason: %#v", step.Name, step)
+		}
+		if step.Status == "degraded" && step.FallbackReason == "degraded" {
+			t.Fatalf("degraded step %q should have a clear fallback_reason: %#v", step.Name, step)
+		}
+	}
+	if runtime.GOOS != "linux" && containsName(summary.Passed, "real-cgroup-smoke") {
+		t.Fatalf("real-cgroup-smoke must not be passed on non-linux hosts: %#v", summary)
+	}
+	if len(summary.Generated) == 0 {
+		t.Fatalf("summary should list generated files: %#v", summary)
+	}
+	if !summary.AllRequiredPassed && len(summary.Failed) == 0 && len(summary.Missing) == 0 {
+		t.Fatalf("all_required_passed should allow degraded-only runs: %#v", summary)
+	}
+}
+
+func TestAortctlEvidenceFinalWritesIndexAndSummary(t *testing.T) {
+	outDir := t.TempDir()
+	if err := run([]string{"evidence", "final", "--out", outDir}); err != nil {
+		t.Fatalf("evidence final: %v", err)
+	}
+
+	var index map[string]any
+	decodeJSONFile(t, filepath.Join(outDir, "FINAL_EVIDENCE_INDEX.json"), &index)
+	for _, key := range []string{"timestamp", "git", "system", "generic_competition_verify", "real_only_openEuler", "evidence_mode_summary", "real_only_summary", "generated_files", "missing_files", "known_limits"} {
+		if _, ok := index[key]; !ok {
+			t.Fatalf("final evidence index missing %q: %#v", key, index)
+		}
+	}
+	generic := index["generic_competition_verify"].(map[string]any)
+	for _, key := range []string{"go_test", "smoke", "e1_scheduler", "e1_pressure", "e2_fault_isolation", "e2_pressure_fault", "software_real_demo", "workspace_probe", "workspace_isolation"} {
+		if _, ok := generic[key]; !ok {
+			t.Fatalf("generic evidence missing %q: %#v", key, generic)
+		}
+	}
+	realOnly := index["real_only_openEuler"].(map[string]any)
+	for _, key := range []string{"real_env", "real_cgroup_smoke", "real_pressure_smoke", "workspace_probe", "workspace_rmrf", "tool_workspace", "real_all"} {
+		if _, ok := realOnly[key]; !ok {
+			t.Fatalf("real-only evidence missing %q: %#v", key, realOnly)
+		}
+	}
+	knownLimits, ok := index["known_limits"].([]any)
+	if !ok {
+		t.Fatalf("known_limits has unexpected type: %#v", index["known_limits"])
+	}
+	foundPortablePressureLimit := false
+	for _, item := range knownLimits {
+		if strings.Contains(item.(string), "Portable E1 benchmark may use degraded pressure fallback") &&
+			strings.Contains(item.(string), "real-pressure-smoke proves real-cgroup-v2 ResourceSampler on openEuler") {
+			foundPortablePressureLimit = true
+		}
+	}
+	if !foundPortablePressureLimit {
+		t.Fatalf("known_limits does not distinguish portable E1 degraded pressure from real-pressure-smoke: %#v", knownLimits)
+	}
+	summary, err := os.ReadFile(filepath.Join(outDir, "FINAL_SUMMARY.md"))
+	if err != nil {
+		t.Fatalf("read FINAL_SUMMARY.md: %v", err)
+	}
+	for _, want := range []string{"generic evidence", "real-only openEuler evidence", "evidence_mode_summary", "known_limits", "Git commit", "fresh clone"} {
+		if !strings.Contains(string(summary), want) {
+			t.Fatalf("FINAL_SUMMARY.md missing %q:\n%s", want, summary)
+		}
+	}
+}
+
+func decodeJSONFile(t *testing.T, path string, out any) {
+	t.Helper()
+	data, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatalf("read %s: %v", path, err)
+	}
+	if err := json.Unmarshal(data, out); err != nil {
+		t.Fatalf("decode %s: %v\n%s", path, err, data)
+	}
+}
+
+func stepNames(steps []struct {
+	Name           string   `json:"name"`
+	Command        string   `json:"command"`
+	Status         string   `json:"status"`
+	GeneratedFiles []string `json:"generated_files"`
+	Error          string   `json:"error"`
+	FallbackReason string   `json:"fallback_reason,omitempty"`
+}) []string {
+	names := make([]string, 0, len(steps))
+	for _, step := range steps {
+		names = append(names, step.Name)
+	}
+	return names
+}
+
+func containsName(names []string, want string) bool {
+	for _, name := range names {
+		if name == want {
+			return true
+		}
+	}
+	return false
 }

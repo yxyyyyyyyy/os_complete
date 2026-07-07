@@ -1,0 +1,14 @@
+{
+  "success": true,
+  "linux": false,
+  "uid": 501,
+  "overlay_in_proc_filesystems": false,
+  "mount_test_success": false,
+  "merged_is_mountpoint": false,
+  "selected_mode": "degraded-copy",
+  "mode": "degraded-copy",
+  "evidence_mode": "degraded-copy",
+  "runtime_root": "/var/folders/5k/_k2nnpwd43s6qsf0m6btyzlc0000gn/T/aort-runtime/workspaces",
+  "fallback_reason": "overlayfs requires linux, got darwin",
+  "timestamp": "2026-07-07T06:19:59.200553Z"
+}

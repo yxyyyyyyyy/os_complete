@@ -113,6 +113,68 @@ func TestVerifyRealOpenEulerEnvScriptContract(t *testing.T) {
 	}
 }
 
+func TestCompetitionVerifyRealScriptContract(t *testing.T) {
+	path := filepath.Join("..", "..", "scripts", "competition_verify_real.sh")
+	data, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatalf("read real competition verifier: %v", err)
+	}
+	text := string(data)
+	for _, want := range []string{
+		"#!/usr/bin/env bash",
+		"set -euo pipefail",
+		"command -v go",
+		"command -v python3",
+		"experiments/results/real_all/logs",
+		"REAL_VERIFY_SUMMARY.json",
+		"REAL_VERIFY_SUMMARY.md",
+		"verify_real_openeuler_env.sh",
+		"go test ./...",
+		"go run ./cmd/aortctl experiment real-cgroup-smoke --out experiments/results/real_cgroup_smoke",
+		"go run ./cmd/aortctl experiment real-pressure-smoke --runs 3 --out experiments/results/real_pressure_smoke --require-real",
+		"go run ./cmd/aortctl workspace probe --out experiments/results/workspace_probe.json --require-real",
+		"go run ./cmd/aortctl demo fault workspace-rmrf --out experiments/results --require-real-overlayfs",
+		"go run ./cmd/aortctl demo tool-workspace --out experiments/results --require-real-overlayfs",
+		"go run ./cmd/aortctl experiment real-all --runs 3 --out experiments/results/real_all",
+		"go run ./cmd/aortctl evidence final --out experiments/results/final",
+		"real_required",
+		"all_passed",
+		"failed_steps",
+		"exit 1",
+	} {
+		if !strings.Contains(text, want) {
+			t.Fatalf("real verifier missing %q", want)
+		}
+	}
+	assertOrderedSubstrings(t, text, []string{
+		"verify_real_openeuler_env.sh",
+		"go test ./...",
+		"experiment real-cgroup-smoke",
+		"experiment real-pressure-smoke",
+		"workspace probe",
+		"workspace-rmrf",
+		"tool-workspace",
+		"experiment real-all",
+		"evidence final",
+	})
+	cmd := exec.Command("bash", "-n", path)
+	if output, err := cmd.CombinedOutput(); err != nil {
+		t.Fatalf("bash -n failed: %v\n%s", err, output)
+	}
+}
+
+func assertOrderedSubstrings(t *testing.T, text string, wants []string) {
+	t.Helper()
+	offset := 0
+	for _, want := range wants {
+		next := strings.Index(text[offset:], want)
+		if next < 0 {
+			t.Fatalf("%q not found in order after offset %d", want, offset)
+		}
+		offset += next + len(want)
+	}
+}
+
 func TestSmokeOpenEulerSelectsCapsuleWithLiveCounters(t *testing.T) {
 	python, err := exec.LookPath("python3")
 	if err != nil {

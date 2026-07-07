@@ -1,0 +1,17 @@
+{
+  "experiment": "real_pressure_smoke",
+  "evidence_mode": "missing",
+  "runs": 1,
+  "memory_hog_detected": false,
+  "pids_hog_detected": false,
+  "cpu_pressure_detected": false,
+  "resource_sampler_mode": "missing",
+  "resource_aware_avoided_high_pressure_agent": false,
+  "selected_high_pressure_agent_count": 0,
+  "cascade_failure": false,
+  "cleanup_success": true,
+  "memory_hog_limit_bytes": 67108864,
+  "pids_hog_limit": 8,
+  "cpu_hog_timeout_ms": 2000,
+  "failure_reason": "cgroup fs is not cgroup2fs: requires linux, got darwin"
+}

@@ -1,0 +1,20 @@
+{
+  "openEuler": false,
+  "cgroup2fs": false,
+  "root": false,
+  "cgroup_writable": false,
+  "memory_current_readable": false,
+  "pids_current_readable": false,
+  "cpu_stat_readable": false,
+  "cgroup_kill_supported": false,
+  "overlayfs_available": false,
+  "overlayfs_mount_success": false,
+  "evidence_mode": "real-openeuler",
+  "failure_reasons": [
+    "no root permission",
+    "not openEuler",
+    "cgroup fs is not cgroup2fs",
+    "cgroup path is not writable",
+    "overlayfs not listed"
+  ]
+}
