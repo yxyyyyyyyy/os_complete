@@ -624,9 +624,11 @@ func RunE2PressureFault(runs int, outDir string) (E2PressureFaultReport, error) 
 	if !ok {
 		return E2PressureFaultReport{}, fmt.Errorf("no recovery agent selected")
 	}
-	workspaceEvidence, err := workspace.RunRMFaultDemo(workspace.Config{
-		Root: filepath.Join(os.TempDir(), "aort-e2-pressure-fault"),
-	})
+	workspaceRoot := filepath.Join(outDir, "workspace_rmrf_runtime")
+	if outDir == "" {
+		workspaceRoot = filepath.Join(os.TempDir(), fmt.Sprintf("aort-e2-pressure-fault-%d", time.Now().UnixNano()))
+	}
+	workspaceEvidence, err := workspace.RunRMFaultDemo(workspace.Config{Root: workspaceRoot})
 	if err != nil {
 		return E2PressureFaultReport{}, err
 	}

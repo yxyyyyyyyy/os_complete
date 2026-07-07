@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"path/filepath"
 	"strings"
 	"testing"
 
@@ -37,7 +38,8 @@ func TestSchedulerPoliciesAndResourcePressureEndpoints(t *testing.T) {
 }
 
 func TestWorkspaceEndpointsAndFaultDemoReturnEvidenceMode(t *testing.T) {
-	srv := NewServer(config.Config{HTTPAddr: "127.0.0.1:8080", Mode: "mock", DataDir: t.TempDir()})
+	dataDir := t.TempDir()
+	srv := NewServer(config.Config{HTTPAddr: "127.0.0.1:8080", Mode: "mock", DataDir: dataDir})
 
 	listReq := httptest.NewRequest(http.MethodGet, "/api/workspaces", nil)
 	listRec := httptest.NewRecorder()
@@ -59,6 +61,10 @@ func TestWorkspaceEndpointsAndFaultDemoReturnEvidenceMode(t *testing.T) {
 	}
 	if demo["success"] != true || demo["fault_type"] != "workspace_rmrf" {
 		t.Fatalf("workspace demo identity missing: %#v", demo)
+	}
+	runtimeRoot, _ := demo["runtime_root"].(string)
+	if !strings.HasPrefix(runtimeRoot, filepath.Join(dataDir, "runtime", "workspaces")) {
+		t.Fatalf("workspace demo should use server data dir root, got %q", runtimeRoot)
 	}
 	mode, _ := demo["evidence_mode"].(string)
 	if mode != string(evidence.ModeDegradedCopy) && mode != string(evidence.ModeRealOverlayFS) {

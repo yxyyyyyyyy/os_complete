@@ -520,7 +520,9 @@ func (s *Server) runWorkspaceRMFault() supervisor.Record {
 }
 
 func (s *Server) runWorkspaceRMFaultEvidence() workspace.RMFaultEvidence {
-	result, err := workspace.RunRMFaultDemo(workspace.Config{Root: workspace.DefaultRoot(), Sink: s.sink})
+	workspaceRoot := runtimeWorkspaceRoot(s.cfg.DataDir)
+	forceDegraded := s.cfg.WorkerCommand == "" && s.cfg.SocketPath == "" && workspaceRoot != workspace.DefaultRoot()
+	result, err := workspace.RunRMFaultDemo(workspace.Config{Root: workspaceRoot, Sink: s.sink, ForceDegraded: forceDegraded})
 	if err != nil {
 		result.Success = false
 		result.Error = err.Error()

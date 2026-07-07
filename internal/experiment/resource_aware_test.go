@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 
 	"aort-r/internal/evidence"
@@ -126,6 +127,9 @@ func TestRunE2PressureFaultCombinesPressureAndWorkspaceFault(t *testing.T) {
 	}
 	if report.EvidenceMode == "" || !evidence.IsValid(evidence.Mode(report.EvidenceMode)) {
 		t.Fatalf("invalid evidence mode: %#v", report)
+	}
+	if !strings.HasPrefix(report.WorkspaceFaultEvidence.RuntimeRoot, filepath.Join(outDir, "workspace_rmrf_runtime")) {
+		t.Fatalf("workspace fault should use outDir-scoped runtime root, got %q", report.WorkspaceFaultEvidence.RuntimeRoot)
 	}
 	if info, err := os.Stat(filepath.Join(outDir, "e2_pressure_fault.json")); err != nil || info.Size() == 0 {
 		t.Fatalf("missing e2 pressure fault artifact info=%#v err=%v", info, err)
