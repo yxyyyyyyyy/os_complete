@@ -57,6 +57,10 @@ type FinalEvidenceIndex struct {
 	RealOnlyOpenEuler        map[string]string `json:"real_only_openEuler"`
 	EvidenceModeSummary      map[string]string `json:"evidence_mode_summary"`
 	RealOnlySummary          map[string]bool   `json:"real_only_summary"`
+	EBPFObserver             string            `json:"ebpf_observer"`
+	IPCShm                   string            `json:"ipc_shm"`
+	CVMMemory                string            `json:"cvm_memory"`
+	Replay                   string            `json:"replay"`
 	GeneratedFiles           []string          `json:"generated_files"`
 	MissingFiles             []string          `json:"missing_files"`
 	KnownLimits              []string          `json:"known_limits"`
@@ -193,6 +197,33 @@ func RunAllExperiments(cfg AllExperimentsConfig) (AllExperimentsSummary, error) 
 			},
 		},
 		{
+			name:     "ebpf-smoke",
+			command:  []string{"go", "run", "./cmd/aortctl", "observer", "ebpf-smoke", "--out", filepath.Join(cfg.OutDir, "ebpf_smoke")},
+			expected: []string{filepath.Join(cfg.OutDir, "ebpf_smoke", "ebpf_smoke.json")},
+			run: func() error {
+				_, err := RunEBPFSmoke(filepath.Join(cfg.OutDir, "ebpf_smoke"))
+				return err
+			},
+		},
+		{
+			name:     "ipc shm-smoke",
+			command:  []string{"go", "run", "./cmd/aortctl", "ipc", "shm-smoke", "--out", filepath.Join(cfg.OutDir, "ipc_shm")},
+			expected: []string{filepath.Join(cfg.OutDir, "ipc_shm", "ipc_shm_smoke.json")},
+			run: func() error {
+				_, err := RunIPCShmSmoke(filepath.Join(cfg.OutDir, "ipc_shm"))
+				return err
+			},
+		},
+		{
+			name:     "cvm memory-smoke",
+			command:  []string{"go", "run", "./cmd/aortctl", "cvm", "memory-smoke", "--out", filepath.Join(cfg.OutDir, "cvm_memory")},
+			expected: []string{filepath.Join(cfg.OutDir, "cvm_memory", "cvm_memory_smoke.json")},
+			run: func() error {
+				_, err := RunCVMMemorySmoke(filepath.Join(cfg.OutDir, "cvm_memory"))
+				return err
+			},
+		},
+		{
 			name:     "real-all",
 			command:  []string{"go", "run", "./cmd/aortctl", "experiment", "real-all", "--runs", runText, "--out", filepath.Join(cfg.OutDir, "real_all")},
 			expected: []string{filepath.Join(cfg.OutDir, "real_all", "REAL_EVIDENCE_INDEX.json")},
@@ -287,6 +318,10 @@ func WriteFinalEvidence(outDir string) (FinalEvidenceIndex, error) {
 		"software_real_demo":  statusFromStepOrFiles(statuses, "software_real_demo", required["software_real_demo"], false),
 		"workspace_probe":     statusFromStepOrFiles(statuses, "workspace_probe", required["workspace_probe"], true),
 		"workspace_isolation": statusFromStepOrFiles(statuses, "workspace_isolation", required["workspace_rmrf"], true),
+		"ebpf_observer":       statusFromStepOrFiles(statuses, "ebpf_observer", required["ebpf_observer"], true),
+		"ipc_shm":             statusFromStepOrFiles(statuses, "ipc_shm", required["ipc_shm"], true),
+		"cvm_memory":          statusFromStepOrFiles(statuses, "cvm_memory", required["cvm_memory"], false),
+		"replay":              statusFromStepOrFiles(statuses, "replay", required["replay"], false),
 	}
 	realOnly := map[string]string{
 		"real_env":            statusFromJSON(filepath.Join(root, "experiments", "results", "real_env", "real_openeuler_env.json"), realEnvPassed),
@@ -328,6 +363,10 @@ func WriteFinalEvidence(outDir string) (FinalEvidenceIndex, error) {
 			"real_workspace_tool_exec": realOnly["tool_workspace"] == "passed",
 			"all_passed":               boolField(realAll, "all_passed"),
 		},
+		EBPFObserver:   evidenceModeFromPath(filepath.Join(root, "experiments", "results", "ebpf_smoke", "ebpf_smoke.json"), "planned"),
+		IPCShm:         evidenceModeFromPath(filepath.Join(root, "experiments", "results", "ipc_shm", "ipc_shm_smoke.json"), "missing"),
+		CVMMemory:      evidenceModeFromPath(filepath.Join(root, "experiments", "results", "cvm_memory", "cvm_memory_smoke.json"), "missing"),
+		Replay:         evidenceModeFromPath(filepath.Join(root, "experiments", "results", "replay", "replay_result.json"), "missing"),
 		GeneratedFiles: generated,
 		MissingFiles:   missing,
 		KnownLimits:    knownLimits,
@@ -459,6 +498,10 @@ func finalRequiredFiles(root string) map[string][]string {
 		"software_real_demo": {filepath.Join(results, "software_real_demo", "result.json")},
 		"workspace_probe":    {filepath.Join(results, "workspace_probe.json")},
 		"workspace_rmrf":     {filepath.Join(results, "workspace_isolation_evidence.json")},
+		"ebpf_observer":      {filepath.Join(results, "ebpf_smoke", "ebpf_smoke.json")},
+		"ipc_shm":            {filepath.Join(results, "ipc_shm", "ipc_shm_smoke.json")},
+		"cvm_memory":         {filepath.Join(results, "cvm_memory", "cvm_memory_smoke.json")},
+		"replay":             {filepath.Join(results, "replay", "replay_result.json")},
 	}
 }
 
@@ -471,6 +514,10 @@ func realOnlyFiles(root string) []string {
 		filepath.Join(results, "workspace_probe.json"),
 		filepath.Join(results, "workspace_isolation_evidence.json"),
 		filepath.Join(results, "tool_workspace_evidence.json"),
+		filepath.Join(results, "ebpf_smoke", "ebpf_smoke.json"),
+		filepath.Join(results, "ipc_shm", "ipc_shm_smoke.json"),
+		filepath.Join(results, "cvm_memory", "cvm_memory_smoke.json"),
+		filepath.Join(results, "replay", "replay_result.json"),
 		filepath.Join(results, "real_all", "REAL_EVIDENCE_INDEX.json"),
 	}
 }
@@ -619,10 +666,11 @@ func buildEvidenceModeSummary(root string, realOnly map[string]string) map[strin
 		"workspace_overlayfs": workspaceMode,
 		"tool_workspace":      toolMode,
 		"scheduler":           string(evidence.ModeRealRuntime),
-		"cvm":                 "real-partial",
-		"ipc":                 "real-partial",
+		"cvm":                 evidenceModeFromPath(filepath.Join(root, "experiments", "results", "cvm_memory", "cvm_memory_smoke.json"), "real-partial"),
+		"ipc":                 "real-partial + " + evidenceModeFromPath(filepath.Join(root, "experiments", "results", "ipc_shm", "ipc_shm_smoke.json"), "real-shm-ipc optional"),
 		"llm":                 "mock",
-		"ebpf":                "planned",
+		"ebpf":                evidenceModeFromPath(filepath.Join(root, "experiments", "results", "ebpf_smoke", "ebpf_smoke.json"), "planned"),
+		"replay":              evidenceModeFromPath(filepath.Join(root, "experiments", "results", "replay", "replay_result.json"), string(evidence.ModeRealRuntime)),
 	}
 }
 
@@ -638,7 +686,18 @@ func buildKnownLimits(root string, realOnly, generic map[string]string) []string
 	if _, ok := readJSONMap(filepath.Join(root, "experiments", "results", "real_all", "REAL_EVIDENCE_INDEX.json")); !ok {
 		limits = append(limits, "real-all evidence is missing.")
 	}
+	if mode := evidenceModeFromPath(filepath.Join(root, "experiments", "results", "ebpf_smoke", "ebpf_smoke.json"), "planned"); mode != "real-ebpf" {
+		limits = append(limits, "eBPF observer is optional and reports degraded/planned unless a Linux host can load and attach the tracepoint program.")
+	}
 	return appendUniqueStrings(limits)
+}
+
+func evidenceModeFromPath(path, fallback string) string {
+	data, ok := readJSONMap(path)
+	if !ok {
+		return fallback
+	}
+	return fallbackOr(stringField(data, "evidence_mode"), fallback)
 }
 
 func collectGitInfo(root string) FinalGitInfo {

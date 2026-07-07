@@ -10,6 +10,15 @@ import (
 	"aort-r/internal/events"
 )
 
+type TraceEvent struct {
+	EventID   string         `json:"event_id"`
+	Timestamp string         `json:"timestamp"`
+	Type      string         `json:"type"`
+	AgentID   string         `json:"agent_id,omitempty"`
+	TaskID    string         `json:"task_id,omitempty"`
+	Payload   map[string]any `json:"payload"`
+}
+
 type Recorder struct {
 	mu  sync.Mutex
 	dir string
@@ -44,4 +53,38 @@ func (r *Recorder) Append(event events.Event) error {
 		return err
 	}
 	return nil
+}
+
+func WriteTrace(path string, events []TraceEvent) error {
+	if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
+		return err
+	}
+	file, err := os.Create(path)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+	encoder := json.NewEncoder(file)
+	encoder.SetIndent("", "  ")
+	return encoder.Encode(events)
+}
+
+func ReadTrace(path string) ([]TraceEvent, error) {
+	data, err := os.ReadFile(path)
+	if err != nil {
+		if os.IsNotExist(err) {
+			return nil, fmt.Errorf("trace not found: %s", path)
+		}
+		return nil, err
+	}
+	var events []TraceEvent
+	if err := json.Unmarshal(data, &events); err != nil {
+		return nil, err
+	}
+	for i := range events {
+		if events[i].Payload == nil {
+			events[i].Payload = map[string]any{}
+		}
+	}
+	return events, nil
 }

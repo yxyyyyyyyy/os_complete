@@ -57,6 +57,46 @@ func TestAortctlPressureExperimentCommandsWriteEvidence(t *testing.T) {
 	}
 }
 
+func TestAortctlUpgradeSmokeCommandsWriteEvidence(t *testing.T) {
+	outDir := t.TempDir()
+	ebpfDir := filepath.Join(outDir, "ebpf")
+	if err := run([]string{"observer", "ebpf-smoke", "--out", ebpfDir}); err != nil {
+		t.Fatalf("ebpf-smoke: %v", err)
+	}
+	if _, err := os.Stat(filepath.Join(ebpfDir, "ebpf_smoke.json")); err != nil {
+		t.Fatalf("ebpf evidence missing: %v", err)
+	}
+
+	shmDir := filepath.Join(outDir, "ipc_shm")
+	if err := run([]string{"ipc", "shm-smoke", "--out", shmDir}); err != nil {
+		t.Fatalf("shm-smoke: %v", err)
+	}
+	if _, err := os.Stat(filepath.Join(shmDir, "ipc_shm_smoke.json")); err != nil {
+		t.Fatalf("shm evidence missing: %v", err)
+	}
+
+	cvmDir := filepath.Join(outDir, "cvm_memory")
+	if err := run([]string{"cvm", "memory-smoke", "--out", cvmDir}); err != nil {
+		t.Fatalf("cvm memory-smoke: %v", err)
+	}
+	if _, err := os.Stat(filepath.Join(cvmDir, "cvm_memory_smoke.json")); err != nil {
+		t.Fatalf("cvm evidence missing: %v", err)
+	}
+
+	tracePath := filepath.Join(outDir, "trace.json")
+	rawTrace := `[{"event_id":"e1","timestamp":"2026-07-07T00:00:00Z","type":"scheduler_decision","agent_id":"agent-1","task_id":"task-1","payload":{"status":"running"}},{"event_id":"e2","timestamp":"2026-07-07T00:00:01Z","type":"task_completed","agent_id":"agent-1","task_id":"task-1","payload":{"final_status":"completed"}}]`
+	if err := os.WriteFile(tracePath, []byte(rawTrace), 0o644); err != nil {
+		t.Fatalf("write trace: %v", err)
+	}
+	replayDir := filepath.Join(outDir, "replay")
+	if err := run([]string{"replay", "--trace", tracePath, "--out", replayDir}); err != nil {
+		t.Fatalf("replay: %v", err)
+	}
+	if _, err := os.Stat(filepath.Join(replayDir, "replay_result.json")); err != nil {
+		t.Fatalf("replay evidence missing: %v", err)
+	}
+}
+
 func TestAortctlSoftwareRealDemoCommandWritesResult(t *testing.T) {
 	outDir := t.TempDir()
 	if err := run([]string{"demo", "software-real", "--out", outDir}); err != nil {
@@ -125,7 +165,7 @@ func TestAortctlExperimentAllWritesStepSummary(t *testing.T) {
 	if summary.Experiment != "all" || summary.Runs != 1 {
 		t.Fatalf("unexpected all summary header: %#v", summary)
 	}
-	wantNames := []string{"e1", "e1-pressure", "e2", "e2-pressure-fault", "software-real", "workspace probe", "workspace-rmrf", "tool-workspace", "real-cgroup-smoke", "real-pressure-smoke", "real-all"}
+	wantNames := []string{"e1", "e1-pressure", "e2", "e2-pressure-fault", "software-real", "workspace probe", "workspace-rmrf", "tool-workspace", "real-cgroup-smoke", "real-pressure-smoke", "ebpf-smoke", "ipc shm-smoke", "cvm memory-smoke", "real-all"}
 	if got := stepNames(summary.Steps); !slices.Equal(got, wantNames) {
 		t.Fatalf("step order mismatch\ngot  %v\nwant %v", got, wantNames)
 	}
@@ -164,13 +204,13 @@ func TestAortctlEvidenceFinalWritesIndexAndSummary(t *testing.T) {
 
 	var index map[string]any
 	decodeJSONFile(t, filepath.Join(outDir, "FINAL_EVIDENCE_INDEX.json"), &index)
-	for _, key := range []string{"timestamp", "git", "system", "generic_competition_verify", "real_only_openEuler", "evidence_mode_summary", "real_only_summary", "generated_files", "missing_files", "known_limits"} {
+	for _, key := range []string{"timestamp", "git", "system", "generic_competition_verify", "real_only_openEuler", "evidence_mode_summary", "real_only_summary", "generated_files", "missing_files", "known_limits", "ebpf_observer", "ipc_shm", "cvm_memory", "replay"} {
 		if _, ok := index[key]; !ok {
 			t.Fatalf("final evidence index missing %q: %#v", key, index)
 		}
 	}
 	generic := index["generic_competition_verify"].(map[string]any)
-	for _, key := range []string{"go_test", "smoke", "e1_scheduler", "e1_pressure", "e2_fault_isolation", "e2_pressure_fault", "software_real_demo", "workspace_probe", "workspace_isolation"} {
+	for _, key := range []string{"go_test", "smoke", "e1_scheduler", "e1_pressure", "e2_fault_isolation", "e2_pressure_fault", "software_real_demo", "workspace_probe", "workspace_isolation", "ebpf_observer", "ipc_shm", "cvm_memory", "replay"} {
 		if _, ok := generic[key]; !ok {
 			t.Fatalf("generic evidence missing %q: %#v", key, generic)
 		}
@@ -179,6 +219,12 @@ func TestAortctlEvidenceFinalWritesIndexAndSummary(t *testing.T) {
 	for _, key := range []string{"real_env", "real_cgroup_smoke", "real_pressure_smoke", "workspace_probe", "workspace_rmrf", "tool_workspace", "real_all"} {
 		if _, ok := realOnly[key]; !ok {
 			t.Fatalf("real-only evidence missing %q: %#v", key, realOnly)
+		}
+	}
+	modeSummary := index["evidence_mode_summary"].(map[string]any)
+	for _, key := range []string{"ebpf", "ipc", "cvm", "replay"} {
+		if _, ok := modeSummary[key]; !ok {
+			t.Fatalf("mode summary missing %q: %#v", key, modeSummary)
 		}
 	}
 	knownLimits, ok := index["known_limits"].([]any)

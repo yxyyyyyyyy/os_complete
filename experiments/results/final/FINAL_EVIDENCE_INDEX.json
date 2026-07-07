@@ -1,8 +1,8 @@
 {
-  "timestamp": "2026-07-07T06:21:09.162316Z",
+  "timestamp": "2026-07-07T07:27:37.199296Z",
   "git": {
-    "commit": "1c8574d9577b06bf6882633579fc26fd987619ca",
-    "branch": "main",
+    "commit": "19c765bb9e534fae7588db4c0d65f2d25a14d574",
+    "branch": "codex/aort-r-upgrade",
     "dirty": true
   },
   "system": {
@@ -11,19 +11,23 @@
     "cgroup_fs_type": "missing",
     "go_version": "go1.25.3"
   },
-  "git_commit": "1c8574d9577b06bf6882633579fc26fd987619ca",
-  "git_branch": "main",
+  "git_commit": "19c765bb9e534fae7588db4c0d65f2d25a14d574",
+  "git_branch": "codex/aort-r-upgrade",
   "git_dirty": true,
   "os_release": "darwin",
   "kernel": "Darwin yinxinyudeMacBook-Air.local 25.5.0 Darwin Kernel Version 25.5.0: Mon Apr 27 20:41:26 PDT 2026; root:xnu-12377.121.6~2/RELEASE_ARM64_T8132 arm64",
   "cgroup_fs_type": "missing",
   "go_version": "go1.25.3",
   "generic_competition_verify": {
+    "cvm_memory": "passed",
     "e1_pressure": "passed",
     "e1_scheduler": "passed",
     "e2_fault_isolation": "passed",
     "e2_pressure_fault": "passed",
+    "ebpf_observer": "degraded",
     "go_test": "passed",
+    "ipc_shm": "degraded",
+    "replay": "passed",
     "smoke": "passed",
     "software_real_demo": "passed",
     "workspace_isolation": "passed",
@@ -41,9 +45,10 @@
   "evidence_mode_summary": {
     "cgroup_capsule": "real-cgroup-v2",
     "cvm": "real-partial",
-    "ebpf": "planned",
-    "ipc": "real-partial",
+    "ebpf": "degraded",
+    "ipc": "real-partial + degraded",
     "llm": "mock",
+    "replay": "real-runtime",
     "resource_sampler": "real-cgroup-v2",
     "scheduler": "real-runtime",
     "tool_workspace": "real-overlayfs",
@@ -62,6 +67,10 @@
     "real_workspace_tool_exec": true,
     "root": true
   },
+  "ebpf_observer": "degraded",
+  "ipc_shm": "degraded",
+  "cvm_memory": "real-partial",
+  "replay": "real-runtime",
   "generated_files": [
     "experiments/results/real_env/real_openeuler_env.json",
     "experiments/results/real_cgroup_smoke/real_cgroup_smoke.json",
@@ -69,6 +78,10 @@
     "experiments/results/workspace_probe.json",
     "experiments/results/workspace_isolation_evidence.json",
     "experiments/results/tool_workspace_evidence.json",
+    "experiments/results/ebpf_smoke/ebpf_smoke.json",
+    "experiments/results/ipc_shm/ipc_shm_smoke.json",
+    "experiments/results/cvm_memory/cvm_memory_smoke.json",
+    "experiments/results/replay/replay_result.json",
     "experiments/results/real_all/REAL_EVIDENCE_INDEX.json",
     "experiments/results/e1_pressure/e1_pressure.json",
     "experiments/results/e1/e1_resource_aware.json",
@@ -84,6 +97,7 @@
   ],
   "missing_files": [],
   "known_limits": [
-    "Portable E1 benchmark may use degraded pressure fallback; real-pressure-smoke proves real-cgroup-v2 ResourceSampler on openEuler."
+    "Portable E1 benchmark may use degraded pressure fallback; real-pressure-smoke proves real-cgroup-v2 ResourceSampler on openEuler.",
+    "eBPF observer is optional and reports degraded/planned unless a Linux host can load and attach the tracepoint program."
   ]
 }

@@ -23,7 +23,7 @@ func main() {
 
 func run(args []string) error {
 	if len(args) == 0 {
-		return fmt.Errorf("usage: aortctl experiment|demo|workspace ...")
+		return fmt.Errorf("usage: aortctl experiment|demo|workspace|observer|ipc|cvm|replay ...")
 	}
 	switch args[0] {
 	case "_hog":
@@ -36,6 +36,14 @@ func run(args []string) error {
 		return runDemo(args[1:])
 	case "workspace":
 		return runWorkspace(args[1:])
+	case "observer":
+		return runObserver(args[1:])
+	case "ipc":
+		return runIPC(args[1:])
+	case "cvm":
+		return runCVM(args[1:])
+	case "replay":
+		return runReplay(args[1:])
 	default:
 		return fmt.Errorf("unknown command %q", args[0])
 	}
@@ -153,6 +161,74 @@ func runExperiment(args []string) error {
 	default:
 		return fmt.Errorf("unknown experiment %q", args[0])
 	}
+}
+
+func runObserver(args []string) error {
+	if len(args) == 0 {
+		return fmt.Errorf("usage: aortctl observer ebpf-smoke")
+	}
+	switch args[0] {
+	case "ebpf-smoke":
+		fs := flag.NewFlagSet("observer ebpf-smoke", flag.ContinueOnError)
+		out := fs.String("out", filepath.Join("experiments", "results", "ebpf_smoke"), "output directory")
+		if err := fs.Parse(args[1:]); err != nil {
+			return err
+		}
+		_, err := experiment.RunEBPFSmoke(*out)
+		return err
+	default:
+		return fmt.Errorf("unknown observer command %q", args[0])
+	}
+}
+
+func runIPC(args []string) error {
+	if len(args) == 0 {
+		return fmt.Errorf("usage: aortctl ipc shm-smoke")
+	}
+	switch args[0] {
+	case "shm-smoke":
+		fs := flag.NewFlagSet("ipc shm-smoke", flag.ContinueOnError)
+		out := fs.String("out", filepath.Join("experiments", "results", "ipc_shm"), "output directory")
+		if err := fs.Parse(args[1:]); err != nil {
+			return err
+		}
+		_, err := experiment.RunIPCShmSmoke(*out)
+		return err
+	default:
+		return fmt.Errorf("unknown ipc command %q", args[0])
+	}
+}
+
+func runCVM(args []string) error {
+	if len(args) == 0 {
+		return fmt.Errorf("usage: aortctl cvm memory-smoke")
+	}
+	switch args[0] {
+	case "memory-smoke":
+		fs := flag.NewFlagSet("cvm memory-smoke", flag.ContinueOnError)
+		out := fs.String("out", filepath.Join("experiments", "results", "cvm_memory"), "output directory")
+		if err := fs.Parse(args[1:]); err != nil {
+			return err
+		}
+		_, err := experiment.RunCVMMemorySmoke(*out)
+		return err
+	default:
+		return fmt.Errorf("unknown cvm command %q", args[0])
+	}
+}
+
+func runReplay(args []string) error {
+	fs := flag.NewFlagSet("replay", flag.ContinueOnError)
+	tracePath := fs.String("trace", filepath.Join("experiments", "results", "software_real_demo", "trace.json"), "trace JSON path")
+	out := fs.String("out", filepath.Join("experiments", "results", "replay"), "output directory")
+	if err := fs.Parse(args); err != nil {
+		return err
+	}
+	if *tracePath == "" {
+		return fmt.Errorf("trace path is required")
+	}
+	_, err := experiment.RunReplay(*tracePath, *out)
+	return err
 }
 
 func runEvidence(args []string) error {

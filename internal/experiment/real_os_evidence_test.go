@@ -118,4 +118,7 @@ func TestRunSoftwareRealDemoWritesCliArtifactPath(t *testing.T) {
 	if _, statErr := os.Stat(filepath.Join(outDir, "software_real_demo", "result.json")); statErr != nil {
 		t.Fatalf("software-real result artifact missing: %v", statErr)
 	}
+	if _, statErr := os.Stat(filepath.Join(outDir, "software_real_demo", "trace.json")); statErr != nil {
+		t.Fatalf("software-real trace artifact missing: %v", statErr)
+	}
 }

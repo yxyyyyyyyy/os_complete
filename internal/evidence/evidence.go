@@ -14,6 +14,8 @@ const (
 	ModeRealAPI       Mode = "real-api"
 	ModeRealPartial   Mode = "real-partial"
 	ModeRealOverlayFS Mode = "real-overlayfs"
+	ModeRealEBPF      Mode = "real-ebpf"
+	ModeRealShmIPC    Mode = "real-shm-ipc"
 	ModeDegraded      Mode = "degraded"
 	ModeDegradedCopy  Mode = "degraded-copy"
 	ModeMock          Mode = "mock"
@@ -29,6 +31,8 @@ var validModes = map[Mode]struct{}{
 	ModeRealAPI:       {},
 	ModeRealPartial:   {},
 	ModeRealOverlayFS: {},
+	ModeRealEBPF:      {},
+	ModeRealShmIPC:    {},
 	ModeDegraded:      {},
 	ModeDegradedCopy:  {},
 	ModeMock:          {},
@@ -50,6 +54,8 @@ func AllModes() []Mode {
 		ModeRealAPI,
 		ModeRealPartial,
 		ModeRealOverlayFS,
+		ModeRealEBPF,
+		ModeRealShmIPC,
 		ModeDegraded,
 		ModeDegradedCopy,
 		ModeMock,
@@ -67,6 +73,8 @@ func CompetitionSummary() map[string]string {
 		"ipc":            string(ModeRealPartial),
 		"llm":            string(ModeMock),
 		"ebpf":           string(ModePlanned),
+		"ipc_shm":        string(ModePlanned),
+		"replay":         string(ModeRealRuntime),
 		"overlayfs":      string(ModeDegradedCopy),
 	}
 }
