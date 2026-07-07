@@ -1,18 +1,18 @@
 {
   "experiment": "e1_pressure_resource_risk",
-  "runs": 5,
+  "runs": 3,
   "evidence_mode": "real-runtime",
   "selected_high_pressure_agent_count": 0,
-  "avoided_high_pressure_agent_count": 10,
+  "avoided_high_pressure_agent_count": 6,
   "resource_aware_reduced_risk": true,
   "memory_risk_avoided": true,
   "pids_risk_avoided": true,
   "cascade_failure_risk_reduced": true,
   "decisions": [
     {
-      "id": "20260706152613.468362966",
-      "decision_id": "20260706152613.468362966",
-      "timestamp": "2026-07-06T07:26:13.468362966Z",
+      "id": "20260707181201.973153183",
+      "decision_id": "20260707181201.973153183",
+      "timestamp": "2026-07-07T10:12:01.973153183Z",
       "task_id": "e1-pressure-0-0",
       "selected_task": "e1-pressure-0-0",
       "candidates": [
@@ -106,12 +106,12 @@
           "final_score": 142.359
         }
       },
-      "created_at": 1783322773468
+      "created_at": 1783419121973
     },
     {
-      "id": "20260706152613.468368222",
-      "decision_id": "20260706152613.468368222",
-      "timestamp": "2026-07-06T07:26:13.468368222Z",
+      "id": "20260707181201.973157778",
+      "decision_id": "20260707181201.973157778",
+      "timestamp": "2026-07-07T10:12:01.973157778Z",
       "task_id": "e1-pressure-0-1",
       "selected_task": "e1-pressure-0-1",
       "candidates": [
@@ -205,12 +205,12 @@
           "final_score": 109.026
         }
       },
-      "created_at": 1783322773468
+      "created_at": 1783419121973
     },
     {
-      "id": "20260706152613.468372525",
-      "decision_id": "20260706152613.468372525",
-      "timestamp": "2026-07-06T07:26:13.468372525Z",
+      "id": "20260707181201.973165381",
+      "decision_id": "20260707181201.973165381",
+      "timestamp": "2026-07-07T10:12:01.973165381Z",
       "task_id": "e1-pressure-1-0",
       "selected_task": "e1-pressure-1-0",
       "candidates": [
@@ -304,12 +304,12 @@
           "final_score": 142.359
         }
       },
-      "created_at": 1783322773468
+      "created_at": 1783419121973
     },
     {
-      "id": "20260706152613.468382077",
-      "decision_id": "20260706152613.468382077",
-      "timestamp": "2026-07-06T07:26:13.468382077Z",
+      "id": "20260707181201.973169973",
+      "decision_id": "20260707181201.973169973",
+      "timestamp": "2026-07-07T10:12:01.973169973Z",
       "task_id": "e1-pressure-1-1",
       "selected_task": "e1-pressure-1-1",
       "candidates": [
@@ -403,12 +403,12 @@
           "final_score": 109.026
         }
       },
-      "created_at": 1783322773468
+      "created_at": 1783419121973
     },
     {
-      "id": "20260706152613.468386365",
-      "decision_id": "20260706152613.468386365",
-      "timestamp": "2026-07-06T07:26:13.468386365Z",
+      "id": "20260707181201.973173826",
+      "decision_id": "20260707181201.973173826",
+      "timestamp": "2026-07-07T10:12:01.973173826Z",
       "task_id": "e1-pressure-2-0",
       "selected_task": "e1-pressure-2-0",
       "candidates": [
@@ -502,12 +502,12 @@
           "final_score": 142.359
         }
       },
-      "created_at": 1783322773468
+      "created_at": 1783419121973
     },
     {
-      "id": "20260706152613.468390597",
-      "decision_id": "20260706152613.468390597",
-      "timestamp": "2026-07-06T07:26:13.468390597Z",
+      "id": "20260707181201.973178216",
+      "decision_id": "20260707181201.973178216",
+      "timestamp": "2026-07-07T10:12:01.973178216Z",
       "task_id": "e1-pressure-2-1",
       "selected_task": "e1-pressure-2-1",
       "candidates": [
@@ -601,403 +601,7 @@
           "final_score": 109.026
         }
       },
-      "created_at": 1783322773468
-    },
-    {
-      "id": "20260706152613.468394483",
-      "decision_id": "20260706152613.468394483",
-      "timestamp": "2026-07-06T07:26:13.468394483Z",
-      "task_id": "e1-pressure-3-0",
-      "selected_task": "e1-pressure-3-0",
-      "candidates": [
-        "high-pressure-3-0",
-        "low-pressure-3-0"
-      ],
-      "candidate_details": [
-        {
-          "agent_id": "high-pressure-3-0",
-          "task_id": "e1-pressure",
-          "vruntime_score": 500,
-          "context_affinity_score": 0,
-          "memory_pressure": 0.957,
-          "pids_pressure": 0.984,
-          "cpu_throttle_pressure": 0.9,
-          "psi_pressure": 0.04,
-          "dependency_ready": true,
-          "dynamic_spawn_priority": 0,
-          "final_score": 58.634
-        },
-        {
-          "agent_id": "low-pressure-3-0",
-          "task_id": "e1-pressure",
-          "vruntime_score": 200,
-          "context_affinity_score": 0,
-          "memory_pressure": 0.176,
-          "pids_pressure": 0.125,
-          "cpu_throttle_pressure": 0.02,
-          "psi_pressure": 0.04,
-          "dependency_ready": true,
-          "dynamic_spawn_priority": 0,
-          "final_score": 142.359
-        }
-      ],
-      "selected_agent": "low-pressure-3-0",
-      "policy": "token-cfs-prefix-affinity-resource-aware",
-      "reason": "selected due to low vruntime + high context affinity + low resource pressure",
-      "vruntime_before": {
-        "high-pressure-3-0": 1,
-        "low-pressure-3-0": 4
-      },
-      "vruntime_after": {
-        "high-pressure-3-0": 1,
-        "low-pressure-3-0": 4
-      },
-      "shared_pages": {},
-      "vruntime_score": 200,
-      "context_affinity_score": 0,
-      "memory_pressure": 0.957,
-      "pids_pressure": 0.984,
-      "cpu_throttle_pressure": 0.9,
-      "psi_pressure": 0.04,
-      "dependency_ready": true,
-      "dynamic_spawn_priority": 0,
-      "final_score": 142.359,
-      "evidence_mode": "real-runtime",
-      "fallback_reason": "",
-      "resource_pressure": {
-        "memory_pressure": 0.957,
-        "pids_pressure": 0.984,
-        "cpu_throttle_pressure": 0.9,
-        "psi_pressure": 0.04,
-        "evidence_mode": "real-runtime",
-        "fallback_reason": ""
-      },
-      "score_by_agent": {
-        "high-pressure-3-0": {
-          "agent_id": "high-pressure-3-0",
-          "task_id": "e1-pressure",
-          "vruntime_score": 500,
-          "context_affinity_score": 0,
-          "memory_pressure": 0.957,
-          "pids_pressure": 0.984,
-          "cpu_throttle_pressure": 0.9,
-          "psi_pressure": 0.04,
-          "dependency_ready": true,
-          "dynamic_spawn_priority": 0,
-          "final_score": 58.634
-        },
-        "low-pressure-3-0": {
-          "agent_id": "low-pressure-3-0",
-          "task_id": "e1-pressure",
-          "vruntime_score": 200,
-          "context_affinity_score": 0,
-          "memory_pressure": 0.176,
-          "pids_pressure": 0.125,
-          "cpu_throttle_pressure": 0.02,
-          "psi_pressure": 0.04,
-          "dependency_ready": true,
-          "dynamic_spawn_priority": 0,
-          "final_score": 142.359
-        }
-      },
-      "created_at": 1783322773468
-    },
-    {
-      "id": "20260706152613.468398487",
-      "decision_id": "20260706152613.468398487",
-      "timestamp": "2026-07-06T07:26:13.468398487Z",
-      "task_id": "e1-pressure-3-1",
-      "selected_task": "e1-pressure-3-1",
-      "candidates": [
-        "high-pressure-3-1",
-        "low-pressure-3-1"
-      ],
-      "candidate_details": [
-        {
-          "agent_id": "high-pressure-3-1",
-          "task_id": "e1-pressure",
-          "vruntime_score": 333.333,
-          "context_affinity_score": 0,
-          "memory_pressure": 0.957,
-          "pids_pressure": 0.984,
-          "cpu_throttle_pressure": 0.9,
-          "psi_pressure": 0.04,
-          "dependency_ready": true,
-          "dynamic_spawn_priority": 0,
-          "final_score": -108.032
-        },
-        {
-          "agent_id": "low-pressure-3-1",
-          "task_id": "e1-pressure",
-          "vruntime_score": 166.667,
-          "context_affinity_score": 0,
-          "memory_pressure": 0.176,
-          "pids_pressure": 0.125,
-          "cpu_throttle_pressure": 0.02,
-          "psi_pressure": 0.04,
-          "dependency_ready": true,
-          "dynamic_spawn_priority": 0,
-          "final_score": 109.026
-        }
-      ],
-      "selected_agent": "low-pressure-3-1",
-      "policy": "token-cfs-prefix-affinity-resource-aware",
-      "reason": "selected due to low vruntime + high context affinity + low resource pressure",
-      "vruntime_before": {
-        "high-pressure-3-1": 2,
-        "low-pressure-3-1": 5
-      },
-      "vruntime_after": {
-        "high-pressure-3-1": 2,
-        "low-pressure-3-1": 5
-      },
-      "shared_pages": {},
-      "vruntime_score": 166.667,
-      "context_affinity_score": 0,
-      "memory_pressure": 0.957,
-      "pids_pressure": 0.984,
-      "cpu_throttle_pressure": 0.9,
-      "psi_pressure": 0.04,
-      "dependency_ready": true,
-      "dynamic_spawn_priority": 0,
-      "final_score": 109.026,
-      "evidence_mode": "real-runtime",
-      "fallback_reason": "",
-      "resource_pressure": {
-        "memory_pressure": 0.957,
-        "pids_pressure": 0.984,
-        "cpu_throttle_pressure": 0.9,
-        "psi_pressure": 0.04,
-        "evidence_mode": "real-runtime",
-        "fallback_reason": ""
-      },
-      "score_by_agent": {
-        "high-pressure-3-1": {
-          "agent_id": "high-pressure-3-1",
-          "task_id": "e1-pressure",
-          "vruntime_score": 333.333,
-          "context_affinity_score": 0,
-          "memory_pressure": 0.957,
-          "pids_pressure": 0.984,
-          "cpu_throttle_pressure": 0.9,
-          "psi_pressure": 0.04,
-          "dependency_ready": true,
-          "dynamic_spawn_priority": 0,
-          "final_score": -108.032
-        },
-        "low-pressure-3-1": {
-          "agent_id": "low-pressure-3-1",
-          "task_id": "e1-pressure",
-          "vruntime_score": 166.667,
-          "context_affinity_score": 0,
-          "memory_pressure": 0.176,
-          "pids_pressure": 0.125,
-          "cpu_throttle_pressure": 0.02,
-          "psi_pressure": 0.04,
-          "dependency_ready": true,
-          "dynamic_spawn_priority": 0,
-          "final_score": 109.026
-        }
-      },
-      "created_at": 1783322773468
-    },
-    {
-      "id": "20260706152613.468408411",
-      "decision_id": "20260706152613.468408411",
-      "timestamp": "2026-07-06T07:26:13.468408411Z",
-      "task_id": "e1-pressure-4-0",
-      "selected_task": "e1-pressure-4-0",
-      "candidates": [
-        "high-pressure-4-0",
-        "low-pressure-4-0"
-      ],
-      "candidate_details": [
-        {
-          "agent_id": "high-pressure-4-0",
-          "task_id": "e1-pressure",
-          "vruntime_score": 500,
-          "context_affinity_score": 0,
-          "memory_pressure": 0.957,
-          "pids_pressure": 0.984,
-          "cpu_throttle_pressure": 0.9,
-          "psi_pressure": 0.04,
-          "dependency_ready": true,
-          "dynamic_spawn_priority": 0,
-          "final_score": 58.634
-        },
-        {
-          "agent_id": "low-pressure-4-0",
-          "task_id": "e1-pressure",
-          "vruntime_score": 200,
-          "context_affinity_score": 0,
-          "memory_pressure": 0.176,
-          "pids_pressure": 0.125,
-          "cpu_throttle_pressure": 0.02,
-          "psi_pressure": 0.04,
-          "dependency_ready": true,
-          "dynamic_spawn_priority": 0,
-          "final_score": 142.359
-        }
-      ],
-      "selected_agent": "low-pressure-4-0",
-      "policy": "token-cfs-prefix-affinity-resource-aware",
-      "reason": "selected due to low vruntime + high context affinity + low resource pressure",
-      "vruntime_before": {
-        "high-pressure-4-0": 1,
-        "low-pressure-4-0": 4
-      },
-      "vruntime_after": {
-        "high-pressure-4-0": 1,
-        "low-pressure-4-0": 4
-      },
-      "shared_pages": {},
-      "vruntime_score": 200,
-      "context_affinity_score": 0,
-      "memory_pressure": 0.957,
-      "pids_pressure": 0.984,
-      "cpu_throttle_pressure": 0.9,
-      "psi_pressure": 0.04,
-      "dependency_ready": true,
-      "dynamic_spawn_priority": 0,
-      "final_score": 142.359,
-      "evidence_mode": "real-runtime",
-      "fallback_reason": "",
-      "resource_pressure": {
-        "memory_pressure": 0.957,
-        "pids_pressure": 0.984,
-        "cpu_throttle_pressure": 0.9,
-        "psi_pressure": 0.04,
-        "evidence_mode": "real-runtime",
-        "fallback_reason": ""
-      },
-      "score_by_agent": {
-        "high-pressure-4-0": {
-          "agent_id": "high-pressure-4-0",
-          "task_id": "e1-pressure",
-          "vruntime_score": 500,
-          "context_affinity_score": 0,
-          "memory_pressure": 0.957,
-          "pids_pressure": 0.984,
-          "cpu_throttle_pressure": 0.9,
-          "psi_pressure": 0.04,
-          "dependency_ready": true,
-          "dynamic_spawn_priority": 0,
-          "final_score": 58.634
-        },
-        "low-pressure-4-0": {
-          "agent_id": "low-pressure-4-0",
-          "task_id": "e1-pressure",
-          "vruntime_score": 200,
-          "context_affinity_score": 0,
-          "memory_pressure": 0.176,
-          "pids_pressure": 0.125,
-          "cpu_throttle_pressure": 0.02,
-          "psi_pressure": 0.04,
-          "dependency_ready": true,
-          "dynamic_spawn_priority": 0,
-          "final_score": 142.359
-        }
-      },
-      "created_at": 1783322773468
-    },
-    {
-      "id": "20260706152613.468412890",
-      "decision_id": "20260706152613.468412890",
-      "timestamp": "2026-07-06T07:26:13.46841289Z",
-      "task_id": "e1-pressure-4-1",
-      "selected_task": "e1-pressure-4-1",
-      "candidates": [
-        "high-pressure-4-1",
-        "low-pressure-4-1"
-      ],
-      "candidate_details": [
-        {
-          "agent_id": "high-pressure-4-1",
-          "task_id": "e1-pressure",
-          "vruntime_score": 333.333,
-          "context_affinity_score": 0,
-          "memory_pressure": 0.957,
-          "pids_pressure": 0.984,
-          "cpu_throttle_pressure": 0.9,
-          "psi_pressure": 0.04,
-          "dependency_ready": true,
-          "dynamic_spawn_priority": 0,
-          "final_score": -108.032
-        },
-        {
-          "agent_id": "low-pressure-4-1",
-          "task_id": "e1-pressure",
-          "vruntime_score": 166.667,
-          "context_affinity_score": 0,
-          "memory_pressure": 0.176,
-          "pids_pressure": 0.125,
-          "cpu_throttle_pressure": 0.02,
-          "psi_pressure": 0.04,
-          "dependency_ready": true,
-          "dynamic_spawn_priority": 0,
-          "final_score": 109.026
-        }
-      ],
-      "selected_agent": "low-pressure-4-1",
-      "policy": "token-cfs-prefix-affinity-resource-aware",
-      "reason": "selected due to low vruntime + high context affinity + low resource pressure",
-      "vruntime_before": {
-        "high-pressure-4-1": 2,
-        "low-pressure-4-1": 5
-      },
-      "vruntime_after": {
-        "high-pressure-4-1": 2,
-        "low-pressure-4-1": 5
-      },
-      "shared_pages": {},
-      "vruntime_score": 166.667,
-      "context_affinity_score": 0,
-      "memory_pressure": 0.957,
-      "pids_pressure": 0.984,
-      "cpu_throttle_pressure": 0.9,
-      "psi_pressure": 0.04,
-      "dependency_ready": true,
-      "dynamic_spawn_priority": 0,
-      "final_score": 109.026,
-      "evidence_mode": "real-runtime",
-      "fallback_reason": "",
-      "resource_pressure": {
-        "memory_pressure": 0.957,
-        "pids_pressure": 0.984,
-        "cpu_throttle_pressure": 0.9,
-        "psi_pressure": 0.04,
-        "evidence_mode": "real-runtime",
-        "fallback_reason": ""
-      },
-      "score_by_agent": {
-        "high-pressure-4-1": {
-          "agent_id": "high-pressure-4-1",
-          "task_id": "e1-pressure",
-          "vruntime_score": 333.333,
-          "context_affinity_score": 0,
-          "memory_pressure": 0.957,
-          "pids_pressure": 0.984,
-          "cpu_throttle_pressure": 0.9,
-          "psi_pressure": 0.04,
-          "dependency_ready": true,
-          "dynamic_spawn_priority": 0,
-          "final_score": -108.032
-        },
-        "low-pressure-4-1": {
-          "agent_id": "low-pressure-4-1",
-          "task_id": "e1-pressure",
-          "vruntime_score": 166.667,
-          "context_affinity_score": 0,
-          "memory_pressure": 0.176,
-          "pids_pressure": 0.125,
-          "cpu_throttle_pressure": 0.02,
-          "psi_pressure": 0.04,
-          "dependency_ready": true,
-          "dynamic_spawn_priority": 0,
-          "final_score": 109.026
-        }
-      },
-      "created_at": 1783322773468
+      "created_at": 1783419121973
     }
   ]
 }

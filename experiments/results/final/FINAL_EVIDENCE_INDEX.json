@@ -1,23 +1,23 @@
 {
-  "timestamp": "2026-07-07T07:27:37.199296Z",
+  "timestamp": "2026-07-07T10:12:04.263281546Z",
   "git": {
-    "commit": "19c765bb9e534fae7588db4c0d65f2d25a14d574",
+    "commit": "8f44532f4498dc50382bdd6c0a152d6ab0db18f1",
     "branch": "codex/aort-r-upgrade",
-    "dirty": true
+    "dirty": false
   },
   "system": {
-    "os_release": "darwin",
-    "kernel": "Darwin yinxinyudeMacBook-Air.local 25.5.0 Darwin Kernel Version 25.5.0: Mon Apr 27 20:41:26 PDT 2026; root:xnu-12377.121.6~2/RELEASE_ARM64_T8132 arm64",
-    "cgroup_fs_type": "missing",
-    "go_version": "go1.25.3"
+    "os_release": "NAME=\"openEuler\"\nVERSION=\"24.03 (LTS)\"\nID=\"openEuler\"\nVERSION_ID=\"24.03\"\nPRETTY_NAME=\"openEuler 24.03 (LTS)\"\nANSI_COLOR=\"0;31\"",
+    "kernel": "Linux ecs-8937 6.6.0-112.0.0.104.oe2403.x86_64 #1 SMP Wed Oct 15 16:10:04 CST 2025 x86_64 x86_64 x86_64 GNU/Linux",
+    "cgroup_fs_type": "cgroup2fs",
+    "go_version": "go1.22.12"
   },
-  "git_commit": "19c765bb9e534fae7588db4c0d65f2d25a14d574",
+  "git_commit": "8f44532f4498dc50382bdd6c0a152d6ab0db18f1",
   "git_branch": "codex/aort-r-upgrade",
-  "git_dirty": true,
-  "os_release": "darwin",
-  "kernel": "Darwin yinxinyudeMacBook-Air.local 25.5.0 Darwin Kernel Version 25.5.0: Mon Apr 27 20:41:26 PDT 2026; root:xnu-12377.121.6~2/RELEASE_ARM64_T8132 arm64",
-  "cgroup_fs_type": "missing",
-  "go_version": "go1.25.3",
+  "git_dirty": false,
+  "os_release": "NAME=\"openEuler\"\nVERSION=\"24.03 (LTS)\"\nID=\"openEuler\"\nVERSION_ID=\"24.03\"\nPRETTY_NAME=\"openEuler 24.03 (LTS)\"\nANSI_COLOR=\"0;31\"",
+  "kernel": "Linux ecs-8937 6.6.0-112.0.0.104.oe2403.x86_64 #1 SMP Wed Oct 15 16:10:04 CST 2025 x86_64 x86_64 x86_64 GNU/Linux",
+  "cgroup_fs_type": "cgroup2fs",
+  "go_version": "go1.22.12",
   "generic_competition_verify": {
     "cvm_memory": "passed",
     "e1_pressure": "passed",
@@ -26,7 +26,7 @@
     "e2_pressure_fault": "passed",
     "ebpf_observer": "degraded",
     "go_test": "passed",
-    "ipc_shm": "degraded",
+    "ipc_shm": "passed",
     "replay": "passed",
     "smoke": "passed",
     "software_real_demo": "passed",
@@ -46,7 +46,7 @@
     "cgroup_capsule": "real-cgroup-v2",
     "cvm": "real-partial",
     "ebpf": "degraded",
-    "ipc": "real-partial + degraded",
+    "ipc": "real-partial + real-shm-ipc",
     "llm": "mock",
     "replay": "real-runtime",
     "resource_sampler": "real-cgroup-v2",
@@ -68,7 +68,7 @@
     "root": true
   },
   "ebpf_observer": "degraded",
-  "ipc_shm": "degraded",
+  "ipc_shm": "real-shm-ipc",
   "cvm_memory": "real-partial",
   "replay": "real-runtime",
   "generated_files": [
@@ -98,6 +98,6 @@
   "missing_files": [],
   "known_limits": [
     "Portable E1 benchmark may use degraded pressure fallback; real-pressure-smoke proves real-cgroup-v2 ResourceSampler on openEuler.",
-    "eBPF observer is optional and reports degraded/planned unless a Linux host can load and attach the tracepoint program."
+    "eBPF observer experimental path implemented; current submitted evidence is degraded unless openEuler/Linux smoke reports real-ebpf."
   ]
 }

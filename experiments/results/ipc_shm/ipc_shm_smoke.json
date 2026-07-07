@@ -1,15 +1,15 @@
 {
-  "ipc_mode": "page-reference",
-  "evidence_mode": "degraded",
-  "memfd_create_success": false,
-  "mmap_success": false,
-  "fd_passing_success": false,
-  "worker_mmap_success": false,
-  "shared_pages": 0,
+  "ipc_mode": "memfd-mmap",
+  "evidence_mode": "real-shm-ipc",
+  "memfd_create_success": true,
+  "mmap_success": true,
+  "fd_passing_success": true,
+  "worker_mmap_success": true,
+  "shared_pages": 1,
   "payload_bytes_sent": 41,
-  "referenced_context_bytes": 0,
-  "avoided_copy_bytes": 0,
-  "data_integrity_ok": false,
+  "referenced_context_bytes": 82,
+  "avoided_copy_bytes": 41,
+  "data_integrity_ok": true,
   "cleanup_success": true,
-  "fallback_reason": "not linux: memfd/mmap shared-memory IPC requires Linux"
+  "fallback_reason": ""
 }

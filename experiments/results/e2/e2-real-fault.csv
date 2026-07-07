@@ -1,0 +1,7 @@
+experiment,fault_type,evidence_mode,failed_agent,affected_agents,unaffected_agents,total_agents,cascade_failure,recovery_action,recovery_time_ms,checkpoint_used,final_status,system_survived,supervisor_fault_id
+E2_real_fault_isolation_benchmark,tool_timeout,real-runtime,tester,1,5,6,false,kill_tool_process_and_resume_agent,10,true,recovered,true,20260707181201.983978873
+E2_real_fault_isolation_benchmark,agent_crash,real-runtime,coder,1,5,6,false,restart_agent_from_checkpoint,1,true,recovered,true,20260707181201.985003737
+E2_real_fault_isolation_benchmark,workspace_rmrf,real-runtime,coder,1,5,6,false,rollback_target_workspace,1,true,recovered,true,20260707181201.986500529
+E2_real_fault_isolation_benchmark,kill_capsule,real-runtime,reviewer,1,5,6,false,restart_agent_capsule_from_checkpoint,3,true,recovered,true,20260707181201.986551690
+E2_real_fault_isolation_benchmark,memory_limit_exceeded,real-runtime,planner,1,5,6,false,restart_agent_with_lower_memory_pressure_from_checkpoint,1,true,recovered,true,20260707181201.987588829
+E2_real_fault_isolation_benchmark,pids_limit_exceeded,real-runtime,fixer,1,5,6,false,reject_spawn_storm_and_resume_from_checkpoint,1,true,recovered,true,20260707181201.989339824

@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"os"
+	"path/filepath"
 	"strings"
 	"testing"
 
@@ -13,6 +15,12 @@ import (
 )
 
 func TestSoftwareRealDemoRunProducesRuntimeEvidence(t *testing.T) {
+	artifactRoot := t.TempDir()
+	if err := os.WriteFile(filepath.Join(artifactRoot, "go.mod"), []byte("module isolated-api-test\n"), 0o644); err != nil {
+		t.Fatalf("write temp go.mod: %v", err)
+	}
+	t.Chdir(artifactRoot)
+
 	srv := NewServer(config.Config{HTTPAddr: "127.0.0.1:8080", Mode: "mock", DataDir: t.TempDir()})
 	server := srv.(*Server)
 	server.registry = worker.NewRegistry(server.sink)
@@ -85,6 +93,9 @@ func TestSoftwareRealDemoRunProducesRuntimeEvidence(t *testing.T) {
 	srv.ServeHTTP(resultRec, resultReq)
 	if resultRec.Code != http.StatusOK || !strings.Contains(resultRec.Body.String(), `"final_status":"success"`) {
 		t.Fatalf("result endpoint=%d body=%s", resultRec.Code, resultRec.Body.String())
+	}
+	if _, err := os.Stat(filepath.Join(artifactRoot, "experiments", "results", "software_real_demo", "result.json")); err != nil {
+		t.Fatalf("software-real result should be saved under isolated artifact root: %v", err)
 	}
 
 	for _, check := range []struct {

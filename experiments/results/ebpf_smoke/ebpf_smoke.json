@@ -1,14 +1,14 @@
 {
   "observer": "ebpf",
   "evidence_mode": "degraded",
-  "linux": false,
-  "root_or_capable": false,
-  "program_loaded": false,
+  "linux": true,
+  "root_or_capable": true,
+  "program_loaded": true,
   "attached_tracepoints": [],
   "events_collected": 0,
   "worker_pid_observed": false,
   "cleanup_success": true,
-  "fallback_reason": "not linux: real eBPF observer requires Linux tracepoints",
-  "tracefs_available": false,
+  "fallback_reason": "attach failed: invalid argument",
+  "tracefs_available": true,
   "supported_description": "optional real eBPF observer for process-level runtime events"
 }

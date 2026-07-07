@@ -1,0 +1,182 @@
+{
+  "experiment": "all",
+  "runs": 3,
+  "evidence_mode": "degraded",
+  "steps": [
+    {
+      "name": "e1",
+      "command": "go run ./cmd/aortctl experiment e1 --policy resource-aware --runs 3 --out experiments/results/e1",
+      "status": "degraded",
+      "generated_files": [
+        "experiments/results/e1/e1_resource_aware.json",
+        "experiments/results/e1/e1_resource_aware.csv",
+        "experiments/results/e1/e1_resource_aware_decisions.json",
+        "experiments/results/e1/e1_resource_aware_summary.md"
+      ],
+      "error": "",
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
+    },
+    {
+      "name": "e1-pressure",
+      "command": "go run ./cmd/aortctl experiment e1-pressure --runs 3 --out experiments/results/e1_pressure",
+      "status": "passed",
+      "generated_files": [
+        "experiments/results/e1_pressure/e1_pressure.json"
+      ],
+      "error": ""
+    },
+    {
+      "name": "e2",
+      "command": "go run ./cmd/aortctl experiment e2 --runs 3 --out experiments/results/e2",
+      "status": "degraded",
+      "generated_files": [
+        "experiments/results/e2/e2-real-fault.json",
+        "experiments/results/e2/e2-real-fault.csv"
+      ],
+      "error": "",
+      "fallback_reason": "tool timeout"
+    },
+    {
+      "name": "e2-pressure-fault",
+      "command": "go run ./cmd/aortctl experiment e2-pressure-fault --runs 3 --out experiments/results/e2_pressure_fault",
+      "status": "passed",
+      "generated_files": [
+        "experiments/results/e2_pressure_fault/e2_pressure_fault.json"
+      ],
+      "error": ""
+    },
+    {
+      "name": "software-real",
+      "command": "go run ./cmd/aortctl demo software-real --out experiments/results/software_real",
+      "status": "passed",
+      "generated_files": [
+        "experiments/results/software_real/software_real_demo/result.json"
+      ],
+      "error": ""
+    },
+    {
+      "name": "workspace probe",
+      "command": "go run ./cmd/aortctl workspace probe --out experiments/results/workspace_probe.json",
+      "status": "passed",
+      "generated_files": [
+        "experiments/results/workspace_probe.json"
+      ],
+      "error": ""
+    },
+    {
+      "name": "workspace-rmrf",
+      "command": "go run ./cmd/aortctl demo fault workspace-rmrf --out experiments/results/workspace_rmrf --root experiments/results/workspace_rmrf_runtime",
+      "status": "passed",
+      "generated_files": [
+        "experiments/results/workspace_rmrf/workspace_isolation_evidence.json"
+      ],
+      "error": ""
+    },
+    {
+      "name": "tool-workspace",
+      "command": "go run ./cmd/aortctl demo tool-workspace --out experiments/results/tool_workspace",
+      "status": "passed",
+      "generated_files": [
+        "experiments/results/tool_workspace/tool_workspace_evidence.json"
+      ],
+      "error": ""
+    },
+    {
+      "name": "real-cgroup-smoke",
+      "command": "go run ./cmd/aortctl experiment real-cgroup-smoke --out experiments/results/real_cgroup_smoke",
+      "status": "passed",
+      "generated_files": [
+        "experiments/results/real_cgroup_smoke/real_cgroup_smoke.json"
+      ],
+      "error": ""
+    },
+    {
+      "name": "real-pressure-smoke",
+      "command": "go run ./cmd/aortctl experiment real-pressure-smoke --runs 3 --out experiments/results/real_pressure_smoke",
+      "status": "passed",
+      "generated_files": [
+        "experiments/results/real_pressure_smoke/real_pressure_smoke.json"
+      ],
+      "error": ""
+    },
+    {
+      "name": "ebpf-smoke",
+      "command": "go run ./cmd/aortctl observer ebpf-smoke --out experiments/results/ebpf_smoke",
+      "status": "degraded",
+      "generated_files": [
+        "experiments/results/ebpf_smoke/ebpf_smoke.json"
+      ],
+      "error": "",
+      "fallback_reason": "attach failed: invalid argument"
+    },
+    {
+      "name": "ipc shm-smoke",
+      "command": "go run ./cmd/aortctl ipc shm-smoke --out experiments/results/ipc_shm",
+      "status": "passed",
+      "generated_files": [
+        "experiments/results/ipc_shm/ipc_shm_smoke.json"
+      ],
+      "error": ""
+    },
+    {
+      "name": "cvm memory-smoke",
+      "command": "go run ./cmd/aortctl cvm memory-smoke --out experiments/results/cvm_memory",
+      "status": "passed",
+      "generated_files": [
+        "experiments/results/cvm_memory/cvm_memory_smoke.json"
+      ],
+      "error": ""
+    },
+    {
+      "name": "real-all",
+      "command": "go run ./cmd/aortctl experiment real-all --runs 3 --out experiments/results/real_all",
+      "status": "passed",
+      "generated_files": [
+        "experiments/results/real_all/REAL_EVIDENCE_INDEX.json"
+      ],
+      "error": ""
+    }
+  ],
+  "passed": [
+    "e1-pressure",
+    "e2-pressure-fault",
+    "software-real",
+    "workspace probe",
+    "workspace-rmrf",
+    "tool-workspace",
+    "real-cgroup-smoke",
+    "real-pressure-smoke",
+    "ipc shm-smoke",
+    "cvm memory-smoke",
+    "real-all"
+  ],
+  "failed": [],
+  "degraded": [
+    "e1",
+    "e2",
+    "ebpf-smoke"
+  ],
+  "missing": [],
+  "generated_files": [
+    "experiments/results/e1/e1_resource_aware.json",
+    "experiments/results/e1/e1_resource_aware.csv",
+    "experiments/results/e1/e1_resource_aware_decisions.json",
+    "experiments/results/e1/e1_resource_aware_summary.md",
+    "experiments/results/e1_pressure/e1_pressure.json",
+    "experiments/results/e2/e2-real-fault.json",
+    "experiments/results/e2/e2-real-fault.csv",
+    "experiments/results/e2_pressure_fault/e2_pressure_fault.json",
+    "experiments/results/software_real/software_real_demo/result.json",
+    "experiments/results/workspace_probe.json",
+    "experiments/results/workspace_rmrf/workspace_isolation_evidence.json",
+    "experiments/results/tool_workspace/tool_workspace_evidence.json",
+    "experiments/results/real_cgroup_smoke/real_cgroup_smoke.json",
+    "experiments/results/real_pressure_smoke/real_pressure_smoke.json",
+    "experiments/results/ebpf_smoke/ebpf_smoke.json",
+    "experiments/results/ipc_shm/ipc_shm_smoke.json",
+    "experiments/results/cvm_memory/cvm_memory_smoke.json",
+    "experiments/results/real_all/REAL_EVIDENCE_INDEX.json",
+    "experiments/results/all_experiments_summary.json"
+  ],
+  "all_required_passed": true
+}

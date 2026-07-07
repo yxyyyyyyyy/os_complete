@@ -1,6 +1,6 @@
 {
   "experiment": "e2_pressure_fault_isolation",
-  "runs": 5,
+  "runs": 3,
   "evidence_mode": "real-runtime",
   "memory_pressure_injected": true,
   "pids_pressure_injected": true,
@@ -12,9 +12,9 @@
   "workspace_evidence_mode": "real-overlayfs",
   "workspace_fallback_reason": "",
   "pressure_decision": {
-    "id": "20260706152613.821486416",
-    "decision_id": "20260706152613.821486416",
-    "timestamp": "2026-07-06T07:26:13.821486416Z",
+    "id": "20260707181201.989652983",
+    "decision_id": "20260707181201.989652983",
+    "timestamp": "2026-07-07T10:12:01.989652983Z",
     "task_id": "e2-pressure-fault-recovery",
     "selected_task": "e2-pressure-fault-recovery",
     "candidates": [
@@ -108,7 +108,7 @@
         "final_score": 126
       }
     },
-    "created_at": 1783322773821
+    "created_at": 1783419121989
   },
   "workspace_fault_evidence": {
     "success": true,
@@ -116,7 +116,7 @@
     "target_agent": "coder",
     "mode": "overlayfs",
     "evidence_mode": "real-overlayfs",
-    "runtime_root": "/tmp/aort-e2-pressure-fault",
+    "runtime_root": "/root/aort-r-upgrade-8f44532-git/experiments/results/e2_pressure_fault/workspace_rmrf_runtime",
     "lowerdir_unchanged": true,
     "target_agent_affected": true,
     "unaffected_agents": [
@@ -125,6 +125,7 @@
     ],
     "cascade_failure": false,
     "rollback_success": true,
+    "merged_is_mountpoint": true,
     "commit_supported": true,
     "destroy_success": true,
     "fallback_reason": "",
@@ -184,6 +185,6 @@
       "repo_dir_untouched": true,
       "symlink_escape_blocked": true
     },
-    "timestamp": "2026-07-06T07:26:13.832544162Z"
+    "timestamp": "2026-07-07T10:12:02.063454702Z"
   }
 }

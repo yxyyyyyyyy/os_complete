@@ -2,9 +2,9 @@
 
 ## Overall conclusion
 - Real-only openEuler evidence is present and all required real checks passed.
-- Git commit: `19c765bb9e534fae7588db4c0d65f2d25a14d574`
+- Git commit: `8f44532f4498dc50382bdd6c0a152d6ab0db18f1`
 - Git branch: `codex/aort-r-upgrade`
-- git_dirty: `true`
+- git_dirty: `false`
 
 ## generic evidence
 | evidence | status |
@@ -16,7 +16,7 @@
 | e2_pressure_fault | passed |
 | ebpf_observer | degraded |
 | go_test | passed |
-| ipc_shm | degraded |
+| ipc_shm | passed |
 | replay | passed |
 | smoke | passed |
 | software_real_demo | passed |
@@ -38,7 +38,7 @@
 - cgroup_capsule: real-cgroup-v2
 - cvm: real-partial
 - ebpf: degraded
-- ipc: real-partial + degraded
+- ipc: real-partial + real-shm-ipc
 - llm: mock
 - replay: real-runtime
 - resource_sampler: real-cgroup-v2
@@ -49,7 +49,7 @@
 
 ## known_limits
 - Portable E1 benchmark may use degraded pressure fallback; real-pressure-smoke proves real-cgroup-v2 ResourceSampler on openEuler.
-- eBPF observer is optional and reports degraded/planned unless a Linux host can load and attach the tracepoint program.
+- eBPF observer experimental path implemented; current submitted evidence is degraded unless openEuler/Linux smoke reports real-ebpf.
 
 ## Key file paths
 - `experiments/results/final/FINAL_EVIDENCE_INDEX.json`
