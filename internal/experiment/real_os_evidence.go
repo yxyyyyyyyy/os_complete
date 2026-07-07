@@ -405,8 +405,6 @@ func RunToolWorkspaceDemo(cfg workspace.Config, outDir string, requireRealOverla
 	if outDir == "" {
 		outDir = filepath.Join("experiments", "results")
 	}
-	manager := workspace.NewManager(cfg)
-	ws, err := manager.Create("tool-agent")
 	result := ToolWorkspaceEvidence{
 		RepoDirUntouched: true,
 		EvidenceMode:     string(evidence.ModeMissing),
@@ -420,6 +418,13 @@ func RunToolWorkspaceDemo(cfg workspace.Config, outDir string, requireRealOverla
 		_ = WriteJSON(outPath, result)
 		return result, errors.New(reason)
 	}
+	runtimeCfg, cleanupRoot, rootErr := toolWorkspaceRuntimeConfig(cfg)
+	if rootErr != nil {
+		return fail(rootErr.Error())
+	}
+	defer cleanupRoot()
+	manager := workspace.NewManager(runtimeCfg)
+	ws, err := manager.Create("tool-agent")
 	if err != nil {
 		return fail("workspace create failed: " + err.Error())
 	}
@@ -510,6 +515,18 @@ func RunToolWorkspaceDemo(cfg workspace.Config, outDir string, requireRealOverla
 		return result, err
 	}
 	return result, nil
+}
+
+func toolWorkspaceRuntimeConfig(cfg workspace.Config) (workspace.Config, func(), error) {
+	if cfg.Root != "" {
+		return cfg, func() {}, nil
+	}
+	root, err := os.MkdirTemp("", "aort-tool-workspace-")
+	if err != nil {
+		return cfg, func() {}, fmt.Errorf("create tool workspace root: %w", err)
+	}
+	cfg.Root = root
+	return cfg, func() { _ = os.RemoveAll(root) }, nil
 }
 
 func RunSoftwareRealDemo(runs int, outDir string) (E5EndToEndResult, error) {

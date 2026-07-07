@@ -361,6 +361,39 @@ func TestRealAllWorkspaceRootIsUniqueAndCleanedUp(t *testing.T) {
 	}
 }
 
+func TestToolWorkspaceDefaultRootIsUniqueAndCleanedUp(t *testing.T) {
+	firstCfg, cleanupFirst, err := toolWorkspaceRuntimeConfig(workspace.Config{})
+	if err != nil {
+		t.Fatalf("first toolWorkspaceRuntimeConfig: %v", err)
+	}
+	secondCfg, cleanupSecond, err := toolWorkspaceRuntimeConfig(workspace.Config{})
+	if err != nil {
+		cleanupFirst()
+		t.Fatalf("second toolWorkspaceRuntimeConfig: %v", err)
+	}
+	if firstCfg.Root == "" || secondCfg.Root == "" || firstCfg.Root == secondCfg.Root {
+		cleanupFirst()
+		cleanupSecond()
+		t.Fatalf("default tool workspace roots should be unique, got %q and %q", firstCfg.Root, secondCfg.Root)
+	}
+	cleanupFirst()
+	cleanupSecond()
+	for _, path := range []string{firstCfg.Root, secondCfg.Root} {
+		if _, statErr := os.Stat(path); !os.IsNotExist(statErr) {
+			t.Fatalf("cleanup should remove %s, stat err=%v", path, statErr)
+		}
+	}
+	explicitRoot := filepath.Join(t.TempDir(), "explicit-root")
+	explicitCfg, explicitCleanup, err := toolWorkspaceRuntimeConfig(workspace.Config{Root: explicitRoot})
+	if err != nil {
+		t.Fatalf("explicit toolWorkspaceRuntimeConfig: %v", err)
+	}
+	explicitCleanup()
+	if explicitCfg.Root != explicitRoot {
+		t.Fatalf("explicit tool workspace root changed: got %q want %q", explicitCfg.Root, explicitRoot)
+	}
+}
+
 func TestGitDirtyFromPorcelainIgnoresUntrackedFiles(t *testing.T) {
 	if gitDirtyFromPorcelain("?? scratch.txt\n?? experiments/results/audit_all/summary.json\n") {
 		t.Fatalf("untracked files should not mark final evidence dirty")
