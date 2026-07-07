@@ -159,10 +159,10 @@ func RunAllExperiments(cfg AllExperimentsConfig) (AllExperimentsSummary, error) 
 		},
 		{
 			name:     "workspace-rmrf",
-			command:  []string{"go", "run", "./cmd/aortctl", "demo", "fault", "workspace-rmrf", "--out", filepath.Join(cfg.OutDir, "workspace_rmrf")},
+			command:  []string{"go", "run", "./cmd/aortctl", "demo", "fault", "workspace-rmrf", "--out", filepath.Join(cfg.OutDir, "workspace_rmrf"), "--root", filepath.Join(cfg.OutDir, "workspace_rmrf_runtime")},
 			expected: []string{filepath.Join(cfg.OutDir, "workspace_rmrf", "workspace_isolation_evidence.json")},
 			run: func() error {
-				result, err := workspace.RunRMFaultDemo(workspace.Config{})
+				result, err := workspace.RunRMFaultDemo(workspace.Config{Root: filepath.Join(cfg.OutDir, "workspace_rmrf_runtime")})
 				if err != nil {
 					return err
 				}

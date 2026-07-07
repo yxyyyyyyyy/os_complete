@@ -309,7 +309,11 @@ func runDemo(args []string) error {
 			if err := fs.Parse(args[2:]); err != nil {
 				return err
 			}
-			result, err := workspace.RunRMFaultDemo(workspace.Config{Root: *root, ForceDegraded: *forceDegraded})
+			workspaceRoot := *root
+			if workspaceRoot == "" {
+				workspaceRoot = filepath.Join(*out, "workspace_rmrf_runtime")
+			}
+			result, err := workspace.RunRMFaultDemo(workspace.Config{Root: workspaceRoot, ForceDegraded: *forceDegraded})
 			if err != nil {
 				return err
 			}

@@ -25,6 +25,13 @@ func TestAortctlResourceAwareExperimentAndWorkspaceFaultCommands(t *testing.T) {
 	if _, err := os.Stat(filepath.Join(outDir, "workspace_isolation_evidence.json")); err != nil {
 		t.Fatalf("workspace evidence missing: %v", err)
 	}
+	var workspaceEvidence struct {
+		RuntimeRoot string `json:"runtime_root"`
+	}
+	decodeJSONFile(t, filepath.Join(outDir, "workspace_isolation_evidence.json"), &workspaceEvidence)
+	if !strings.HasPrefix(workspaceEvidence.RuntimeRoot, filepath.Join(outDir, "workspace_rmrf_runtime")) {
+		t.Fatalf("workspace fault should use outDir-scoped runtime root, got %q", workspaceEvidence.RuntimeRoot)
+	}
 }
 
 func TestAortctlWorkspaceProbeCommandWritesEvidence(t *testing.T) {
