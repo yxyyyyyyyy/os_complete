@@ -151,6 +151,81 @@ func TestKillFallsBackToPidSignalWhenCgroupKillFails(t *testing.T) {
 	}
 }
 
+func TestKillFallbackSignalsAllCgroupProcsAndIgnoresMissingProcesses(t *testing.T) {
+	root := t.TempDir()
+	type signalCall struct {
+		pid    int
+		signal syscall.Signal
+	}
+	var calls []signalCall
+	mgr := NewManager(Config{
+		Root:          root,
+		ForceReal:     true,
+		AllowDegraded: false,
+		SignalFunc: func(pid int, signal syscall.Signal) error {
+			calls = append(calls, signalCall{pid: pid, signal: signal})
+			if pid == 22222 {
+				return syscall.ESRCH
+			}
+			return nil
+		},
+		SignalGracePeriod: 0,
+	})
+	runtime, err := mgr.Prepare("agent-1", 12345)
+	if err != nil {
+		t.Fatalf("Prepare: %v", err)
+	}
+	if err := os.Mkdir(filepath.Join(runtime.CgroupPath, "cgroup.kill"), 0o755); err != nil {
+		t.Fatalf("create cgroup.kill directory: %v", err)
+	}
+	writeFile(t, filepath.Join(runtime.CgroupPath, "cgroup.procs"), "12345\n22222\n33333\n")
+
+	result, err := mgr.Kill("agent-1")
+	if err != nil {
+		t.Fatalf("Kill should ignore ESRCH for already-exited processes: %v", err)
+	}
+	if result.KillMethod != KillMethodPidSignalFallback {
+		t.Fatalf("kill method = %q, want %q", result.KillMethod, KillMethodPidSignalFallback)
+	}
+	seen := map[int]map[syscall.Signal]bool{}
+	for _, call := range calls {
+		if seen[call.pid] == nil {
+			seen[call.pid] = map[syscall.Signal]bool{}
+		}
+		seen[call.pid][call.signal] = true
+	}
+	for _, pid := range []int{12345, 22222, 33333} {
+		if !seen[pid][syscall.SIGTERM] || !seen[pid][syscall.SIGKILL] {
+			t.Fatalf("pid %d was not signaled with TERM and KILL: %#v", pid, calls)
+		}
+	}
+}
+
+func TestDestroyRemovesNestedCgroups(t *testing.T) {
+	root := t.TempDir()
+	mgr := NewManager(Config{Root: root, ForceReal: true, AllowDegraded: false})
+	runtime, err := mgr.Prepare("agent-1", 12345)
+	if err != nil {
+		t.Fatalf("Prepare: %v", err)
+	}
+	for _, name := range []string{"memory.max", "pids.max", "cpu.max", "cgroup.procs"} {
+		if err := os.Remove(filepath.Join(runtime.CgroupPath, name)); err != nil {
+			t.Fatalf("remove fake cgroup control file %s: %v", name, err)
+		}
+	}
+	child := filepath.Join(runtime.CgroupPath, "worker-child", "grandchild")
+	if err := os.MkdirAll(child, 0o755); err != nil {
+		t.Fatalf("create child cgroup: %v", err)
+	}
+
+	if err := mgr.Destroy("agent-1"); err != nil {
+		t.Fatalf("Destroy should remove nested cgroups: %v", err)
+	}
+	if _, err := os.Stat(runtime.CgroupPath); !os.IsNotExist(err) {
+		t.Fatalf("cgroup path still exists or stat failed unexpectedly: %v", err)
+	}
+}
+
 func TestPrepareReturnsDegradedWhenUnavailable(t *testing.T) {
 	root := filepath.Join(t.TempDir(), "not-a-cgroup-dir")
 	writeFile(t, root, "file, not directory\n")

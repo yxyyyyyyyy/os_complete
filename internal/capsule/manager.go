@@ -5,6 +5,7 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
+	"sort"
 	"strconv"
 	"strings"
 	"sync"
@@ -186,18 +187,32 @@ func (m *Manager) Kill(agentID string) (KillResult, error) {
 		}
 	}
 	m.mu.RLock()
-	pid := m.pids[agentID]
+	primaryPID := m.pids[agentID]
 	m.mu.RUnlock()
-	if pid == 0 {
+	pids := []int{}
+	if ok && rt.Mode == ModeReal {
+		pids = append(pids, readCgroupPIDs(filepath.Join(rt.CgroupPath, "cgroup.procs"))...)
+	}
+	if primaryPID != 0 {
+		pids = append(pids, primaryPID)
+	}
+	pids = uniquePIDs(pids)
+	if len(pids) == 0 {
 		return result, fmt.Errorf("agent %q has no pid", agentID)
 	}
-	if err := m.cfg.SignalFunc(pid, syscall.SIGTERM); err != nil && err != syscall.ESRCH {
-		return result, err
+	for _, pid := range pids {
+		if err := m.cfg.SignalFunc(pid, syscall.SIGTERM); err != nil && err != syscall.ESRCH {
+			return result, err
+		}
 	}
 	if m.cfg.SignalGracePeriod > 0 {
 		time.Sleep(m.cfg.SignalGracePeriod)
 	}
-	_ = m.cfg.SignalFunc(pid, syscall.SIGKILL)
+	for _, pid := range pids {
+		if err := m.cfg.SignalFunc(pid, syscall.SIGKILL); err != nil && err != syscall.ESRCH {
+			return result, err
+		}
+	}
 	return result, nil
 }
 
@@ -206,17 +221,22 @@ func (m *Manager) Destroy(agentID string) error {
 	if !ok {
 		return fmt.Errorf("agent %q has no capsule", agentID)
 	}
-	m.mu.Lock()
-	delete(m.runtimes, agentID)
-	delete(m.pids, agentID)
-	m.mu.Unlock()
 	if rt.Mode != ModeReal {
+		m.forget(agentID)
 		return nil
 	}
-	if err := os.Remove(rt.CgroupPath); err != nil && !os.IsNotExist(err) {
+	if err := destroyCgroupTree(rt.CgroupPath, m.cfg.SignalFunc); err != nil {
 		return fmt.Errorf("destroy cgroup: %w", err)
 	}
+	m.forget(agentID)
 	return nil
+}
+
+func (m *Manager) forget(agentID string) {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	delete(m.runtimes, agentID)
+	delete(m.pids, agentID)
 }
 
 func (m *Manager) writeFreeze(agentID string, value string) error {
@@ -296,6 +316,118 @@ func readInt(path string) int64 {
 		return 0
 	}
 	return value
+}
+
+func readCgroupPIDs(path string) []int {
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return nil
+	}
+	pids := []int{}
+	for _, field := range strings.Fields(string(data)) {
+		pid, err := strconv.Atoi(field)
+		if err == nil && pid > 0 {
+			pids = append(pids, pid)
+		}
+	}
+	return pids
+}
+
+func uniquePIDs(values []int) []int {
+	seen := map[int]bool{}
+	out := []int{}
+	for _, value := range values {
+		if value <= 0 || seen[value] {
+			continue
+		}
+		seen[value] = true
+		out = append(out, value)
+	}
+	return out
+}
+
+func destroyCgroupTree(root string, signal func(int, syscall.Signal) error) error {
+	for attempt := 0; attempt < 8; attempt++ {
+		if err := drainCgroupTree(root, signal); err != nil && !os.IsNotExist(err) {
+			return err
+		}
+		dirs, err := cgroupDirs(root)
+		if err != nil {
+			if os.IsNotExist(err) {
+				return nil
+			}
+			return err
+		}
+		sort.Slice(dirs, func(i, j int) bool { return len(dirs[i]) > len(dirs[j]) })
+		var removeErr error
+		for _, dir := range dirs {
+			if err := os.Remove(dir); err != nil && !os.IsNotExist(err) {
+				removeErr = err
+			}
+		}
+		if removeErr == nil {
+			return nil
+		}
+		time.Sleep(time.Duration(attempt+1) * 50 * time.Millisecond)
+	}
+	if _, err := os.Stat(root); os.IsNotExist(err) {
+		return nil
+	}
+	return fmt.Errorf("remove cgroup tree %s after retries", root)
+}
+
+func drainCgroupTree(root string, signal func(int, syscall.Signal) error) error {
+	dirs, err := cgroupDirs(root)
+	if err != nil {
+		return err
+	}
+	sort.Slice(dirs, func(i, j int) bool { return len(dirs[i]) > len(dirs[j]) })
+	for _, dir := range dirs {
+		killFile := filepath.Join(dir, "cgroup.kill")
+		if info, err := os.Stat(killFile); err == nil && !info.IsDir() {
+			if err := os.WriteFile(killFile, []byte("1\n"), 0o644); err != nil && !os.IsNotExist(err) {
+				// Older kernels may reject cgroup.kill; fall through to
+				// signaling PIDs from cgroup.procs.
+			}
+		}
+		for _, pid := range readCgroupPIDs(filepath.Join(dir, "cgroup.procs")) {
+			if err := signal(pid, syscall.SIGTERM); err != nil && err != syscall.ESRCH {
+				return err
+			}
+		}
+	}
+	time.Sleep(50 * time.Millisecond)
+	for _, dir := range dirs {
+		for _, pid := range readCgroupPIDs(filepath.Join(dir, "cgroup.procs")) {
+			if err := signal(pid, syscall.SIGKILL); err != nil && err != syscall.ESRCH {
+				return err
+			}
+		}
+	}
+	return nil
+}
+
+func cgroupDirs(root string) ([]string, error) {
+	dirs := []string{}
+	err := filepath.WalkDir(root, func(path string, entry os.DirEntry, err error) error {
+		if err != nil {
+			if os.IsNotExist(err) {
+				return nil
+			}
+			return err
+		}
+		if entry.IsDir() {
+			dirs = append(dirs, path)
+		}
+		return nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	if len(dirs) == 0 {
+		return nil, os.ErrNotExist
+	}
+	return dirs, nil
 }
 
 func readKV(path string) map[string]uint64 {

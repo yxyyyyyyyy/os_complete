@@ -51,7 +51,7 @@ func run(args []string) error {
 
 func runExperiment(args []string) error {
 	if len(args) == 0 {
-		return fmt.Errorf("usage: aortctl experiment all|e1|e1-pressure|e2|e2-pressure-fault|real-cgroup-smoke|real-pressure-smoke|real-all")
+		return fmt.Errorf("usage: aortctl experiment all|e1|e1-pressure|e2|e2-pressure-fault|real-cgroup-smoke|real-pressure-smoke|deepseek-real-smoke|real-all")
 	}
 	switch args[0] {
 	case "all":
@@ -148,6 +148,14 @@ func runExperiment(args []string) error {
 			PidsHogCount:   *pids,
 			CPUHogDuration: time.Duration(*cpuMS) * time.Millisecond,
 		})
+		return err
+	case "deepseek-real-smoke":
+		fs := flag.NewFlagSet("experiment deepseek-real-smoke", flag.ContinueOnError)
+		out := fs.String("out", filepath.Join("experiments", "results", "deepseek_real"), "output directory")
+		if err := fs.Parse(args[1:]); err != nil {
+			return err
+		}
+		_, err := experiment.RunDeepSeekRealSmoke(experiment.DeepSeekRealSmokeConfigFromEnv(*out))
 		return err
 	case "real-all":
 		fs := flag.NewFlagSet("experiment real-all", flag.ContinueOnError)

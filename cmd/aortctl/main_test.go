@@ -165,6 +165,7 @@ func TestAortctlExperimentAllWritesStepSummary(t *testing.T) {
 		Passed    []string `json:"passed"`
 		Failed    []string `json:"failed"`
 		Degraded  []string `json:"degraded"`
+		Skipped   []string `json:"skipped"`
 		Missing   []string `json:"missing"`
 		Generated []string `json:"generated_files"`
 	}
@@ -172,7 +173,7 @@ func TestAortctlExperimentAllWritesStepSummary(t *testing.T) {
 	if summary.Experiment != "all" || summary.Runs != 1 {
 		t.Fatalf("unexpected all summary header: %#v", summary)
 	}
-	wantNames := []string{"e1", "e1-pressure", "e2", "e2-pressure-fault", "software-real", "workspace probe", "workspace-rmrf", "tool-workspace", "real-cgroup-smoke", "real-pressure-smoke", "ebpf-smoke", "ipc shm-smoke", "cvm memory-smoke", "real-all"}
+	wantNames := []string{"e1", "e1-pressure", "e2", "e2-pressure-fault", "software-real", "workspace probe", "workspace-rmrf", "tool-workspace", "real-cgroup-smoke", "real-pressure-smoke", "deepseek-real-smoke", "ebpf-smoke", "ipc shm-smoke", "cvm memory-smoke", "real-all"}
 	if got := stepNames(summary.Steps); !slices.Equal(got, wantNames) {
 		t.Fatalf("step order mismatch\ngot  %v\nwant %v", got, wantNames)
 	}
@@ -181,7 +182,7 @@ func TestAortctlExperimentAllWritesStepSummary(t *testing.T) {
 			t.Fatalf("step %q missing command", step.Name)
 		}
 		switch step.Status {
-		case "passed", "failed", "degraded", "missing":
+		case "passed", "failed", "degraded", "skipped", "missing":
 		default:
 			t.Fatalf("step %q has invalid status %q", step.Name, step.Status)
 		}
@@ -211,7 +212,7 @@ func TestAortctlEvidenceFinalWritesIndexAndSummary(t *testing.T) {
 
 	var index map[string]any
 	decodeJSONFile(t, filepath.Join(outDir, "FINAL_EVIDENCE_INDEX.json"), &index)
-	for _, key := range []string{"timestamp", "git", "system", "generic_competition_verify", "real_only_openEuler", "evidence_mode_summary", "real_only_summary", "generated_files", "missing_files", "known_limits", "ebpf_observer", "ipc_shm", "cvm_memory", "replay"} {
+	for _, key := range []string{"timestamp", "git", "system", "generic_competition_verify", "real_only_openEuler", "evidence_mode_summary", "real_only_summary", "generated_files", "missing_files", "known_limits", "ebpf_observer", "ipc_shm", "cvm_memory", "replay", "deepseek_real_smoke", "allowed_degraded"} {
 		if _, ok := index[key]; !ok {
 			t.Fatalf("final evidence index missing %q: %#v", key, index)
 		}
@@ -223,13 +224,13 @@ func TestAortctlEvidenceFinalWritesIndexAndSummary(t *testing.T) {
 		}
 	}
 	realOnly := index["real_only_openEuler"].(map[string]any)
-	for _, key := range []string{"real_env", "real_cgroup_smoke", "real_pressure_smoke", "workspace_probe", "workspace_rmrf", "tool_workspace", "real_all"} {
+	for _, key := range []string{"real_env", "real_cgroup_smoke", "real_pressure_smoke", "deepseek_real_smoke", "workspace_probe", "workspace_rmrf", "tool_workspace", "real_all"} {
 		if _, ok := realOnly[key]; !ok {
 			t.Fatalf("real-only evidence missing %q: %#v", key, realOnly)
 		}
 	}
 	modeSummary := index["evidence_mode_summary"].(map[string]any)
-	for _, key := range []string{"ebpf", "ipc", "cvm", "replay"} {
+	for _, key := range []string{"ebpf", "ipc", "cvm", "replay", "llm"} {
 		if _, ok := modeSummary[key]; !ok {
 			t.Fatalf("mode summary missing %q: %#v", key, modeSummary)
 		}

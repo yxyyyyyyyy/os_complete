@@ -37,6 +37,7 @@ type AllExperimentsSummary struct {
 	Passed            []string            `json:"passed"`
 	Failed            []string            `json:"failed"`
 	Degraded          []string            `json:"degraded"`
+	Skipped           []string            `json:"skipped"`
 	Missing           []string            `json:"missing"`
 	GeneratedFiles    []string            `json:"generated_files"`
 	AllRequiredPassed bool                `json:"all_required_passed"`
@@ -61,6 +62,8 @@ type FinalEvidenceIndex struct {
 	IPCShm                   string            `json:"ipc_shm"`
 	CVMMemory                string            `json:"cvm_memory"`
 	Replay                   string            `json:"replay"`
+	DeepSeekRealSmoke        string            `json:"deepseek_real_smoke"`
+	AllowedDegraded          map[string]string `json:"allowed_degraded"`
 	GeneratedFiles           []string          `json:"generated_files"`
 	MissingFiles             []string          `json:"missing_files"`
 	KnownLimits              []string          `json:"known_limits"`
@@ -197,6 +200,15 @@ func RunAllExperiments(cfg AllExperimentsConfig) (AllExperimentsSummary, error) 
 			},
 		},
 		{
+			name:     "deepseek-real-smoke",
+			command:  []string{"go", "run", "./cmd/aortctl", "experiment", "deepseek-real-smoke", "--out", filepath.Join(cfg.OutDir, "deepseek_real")},
+			expected: []string{filepath.Join(cfg.OutDir, "deepseek_real", "deepseek_real_smoke.json")},
+			run: func() error {
+				_, err := RunDeepSeekRealSmoke(DeepSeekRealSmokeConfigFromEnv(filepath.Join(cfg.OutDir, "deepseek_real")))
+				return err
+			},
+		},
+		{
 			name:     "ebpf-smoke",
 			command:  []string{"go", "run", "./cmd/aortctl", "observer", "ebpf-smoke", "--out", filepath.Join(cfg.OutDir, "ebpf_smoke")},
 			expected: []string{filepath.Join(cfg.OutDir, "ebpf_smoke", "ebpf_smoke.json")},
@@ -242,6 +254,7 @@ func RunAllExperiments(cfg AllExperimentsConfig) (AllExperimentsSummary, error) 
 		Passed:         []string{},
 		Failed:         []string{},
 		Degraded:       []string{},
+		Skipped:        []string{},
 		Missing:        []string{},
 		GeneratedFiles: []string{},
 	}
@@ -249,8 +262,12 @@ func RunAllExperiments(cfg AllExperimentsConfig) (AllExperimentsSummary, error) 
 		step := AllExperimentStep{Name: spec.name, Command: quoteCommand(spec.command)}
 		err := spec.run()
 		step.GeneratedFiles = existingFiles(spec.expected)
+		skipped, skipReason := inspectSkippedEvidence(step.GeneratedFiles)
 		degraded, fallback := inspectEvidenceFiles(step.GeneratedFiles)
 		switch {
+		case skipped:
+			step.Status = "skipped"
+			step.FallbackReason = skipReason
 		case len(step.GeneratedFiles) == 0:
 			step.Status = "missing"
 			step.Error = "expected output files were not generated"
@@ -279,6 +296,8 @@ func RunAllExperiments(cfg AllExperimentsConfig) (AllExperimentsSummary, error) 
 			summary.Failed = append(summary.Failed, step.Name)
 		case "degraded":
 			summary.Degraded = append(summary.Degraded, step.Name)
+		case "skipped":
+			summary.Skipped = append(summary.Skipped, step.Name)
 		case "missing":
 			summary.Missing = append(summary.Missing, step.Name)
 		}
@@ -323,10 +342,18 @@ func WriteFinalEvidence(outDir string) (FinalEvidenceIndex, error) {
 		"cvm_memory":          statusFromStepOrFiles(statuses, "cvm_memory", required["cvm_memory"], false),
 		"replay":              statusFromStepOrFiles(statuses, "replay", required["replay"], false),
 	}
+	allowedDegraded := allowedDegradedEvidence(root, generic)
+	for key := range allowedDegraded {
+		if generic[key] == "degraded" {
+			generic[key] = "allowed_degraded"
+		}
+	}
+	deepSeekRequired := os.Getenv("AORT_ENABLE_REAL_LLM") == "1"
 	realOnly := map[string]string{
 		"real_env":            statusFromJSON(filepath.Join(root, "experiments", "results", "real_env", "real_openeuler_env.json"), realEnvPassed),
 		"real_cgroup_smoke":   statusFromJSON(filepath.Join(root, "experiments", "results", "real_cgroup_smoke", "real_cgroup_smoke.json"), realCgroupSmokePassed),
 		"real_pressure_smoke": statusFromJSON(filepath.Join(root, "experiments", "results", "real_pressure_smoke", "real_pressure_smoke.json"), realPressureSmokePassed),
+		"deepseek_real_smoke": statusFromDeepSeekRealSmoke(filepath.Join(root, "experiments", "results", "deepseek_real", "deepseek_real_smoke.json"), deepSeekRequired),
 		"workspace_probe":     statusFromJSON(filepath.Join(root, "experiments", "results", "workspace_probe.json"), workspaceProbePassed),
 		"workspace_rmrf":      statusFromJSON(filepath.Join(root, "experiments", "results", "workspace_isolation_evidence.json"), workspaceRMFaultPassed),
 		"tool_workspace":      statusFromJSON(filepath.Join(root, "experiments", "results", "tool_workspace_evidence.json"), toolWorkspacePassed),
@@ -337,6 +364,7 @@ func WriteFinalEvidence(outDir string) (FinalEvidenceIndex, error) {
 	evidenceModeSummary := buildEvidenceModeSummary(root, realOnly)
 	generated, missing := splitExistingFiles(flattenRequired(required, realOnlyFiles(root)))
 	knownLimits := buildKnownLimits(root, realOnly, generic)
+	realOnlyAllPassed := allRealOnlyRequiredPassed(realOnly, boolField(realAll, "all_passed"), deepSeekRequired)
 	index := FinalEvidenceIndex{
 		Timestamp:                time.Now().UTC().Format(time.RFC3339Nano),
 		Git:                      git,
@@ -359,17 +387,20 @@ func WriteFinalEvidence(outDir string) (FinalEvidenceIndex, error) {
 			"overlayfs_mount_success":  boolField(realEnv, "overlayfs_mount_success"),
 			"real_cgroup_v2":           realOnly["real_cgroup_smoke"] == "passed",
 			"real_resource_sampler":    realOnly["real_pressure_smoke"] == "passed",
+			"deepseek_real_api":        realOnly["deepseek_real_smoke"] == "passed",
 			"real_overlayfs":           realOnly["workspace_probe"] == "passed" && realOnly["workspace_rmrf"] == "passed",
 			"real_workspace_tool_exec": realOnly["tool_workspace"] == "passed",
-			"all_passed":               boolField(realAll, "all_passed"),
+			"all_passed":               realOnlyAllPassed,
 		},
-		EBPFObserver:   evidenceModeFromPath(filepath.Join(root, "experiments", "results", "ebpf_smoke", "ebpf_smoke.json"), string(evidence.ModeDegraded)),
-		IPCShm:         evidenceModeFromPath(filepath.Join(root, "experiments", "results", "ipc_shm", "ipc_shm_smoke.json"), "missing"),
-		CVMMemory:      evidenceModeFromPath(filepath.Join(root, "experiments", "results", "cvm_memory", "cvm_memory_smoke.json"), "missing"),
-		Replay:         evidenceModeFromPath(filepath.Join(root, "experiments", "results", "replay", "replay_result.json"), "missing"),
-		GeneratedFiles: generated,
-		MissingFiles:   missing,
-		KnownLimits:    knownLimits,
+		EBPFObserver:      evidenceModeFromPath(filepath.Join(root, "experiments", "results", "ebpf_smoke", "ebpf_smoke.json"), string(evidence.ModeDegraded)),
+		IPCShm:            evidenceModeFromPath(filepath.Join(root, "experiments", "results", "ipc_shm", "ipc_shm_smoke.json"), "missing"),
+		CVMMemory:         evidenceModeFromPath(filepath.Join(root, "experiments", "results", "cvm_memory", "cvm_memory_smoke.json"), "missing"),
+		Replay:            evidenceModeFromPath(filepath.Join(root, "experiments", "results", "replay", "replay_result.json"), "missing"),
+		DeepSeekRealSmoke: realOnly["deepseek_real_smoke"],
+		AllowedDegraded:   allowedDegraded,
+		GeneratedFiles:    generated,
+		MissingFiles:      missing,
+		KnownLimits:       knownLimits,
 	}
 	indexPath := filepath.Join(outDir, "FINAL_EVIDENCE_INDEX.json")
 	summaryPath := filepath.Join(outDir, "FINAL_SUMMARY.md")
@@ -406,6 +437,44 @@ func inspectEvidenceFiles(paths []string) (bool, string) {
 		}
 		if degraded, fallback := inspectEvidenceValue(value); degraded {
 			return true, fallback
+		}
+	}
+	return false, ""
+}
+
+func inspectSkippedEvidence(paths []string) (bool, string) {
+	for _, path := range paths {
+		data, err := os.ReadFile(path)
+		if err != nil {
+			continue
+		}
+		var value any
+		if json.Unmarshal(data, &value) != nil {
+			continue
+		}
+		if skipped, reason := inspectSkippedValue(value); skipped {
+			return true, reason
+		}
+	}
+	return false, ""
+}
+
+func inspectSkippedValue(value any) (bool, string) {
+	switch typed := value.(type) {
+	case map[string]any:
+		if stringField(typed, "status") == "skipped" {
+			return true, fallbackOr(stringField(typed, "failure_reason"), "step skipped")
+		}
+		for _, child := range typed {
+			if skipped, reason := inspectSkippedValue(child); skipped {
+				return true, reason
+			}
+		}
+	case []any:
+		for _, child := range typed {
+			if skipped, reason := inspectSkippedValue(child); skipped {
+				return true, reason
+			}
 		}
 	}
 	return false, ""
@@ -491,17 +560,18 @@ func readStepStatuses(path string) map[string]string {
 func finalRequiredFiles(root string) map[string][]string {
 	results := filepath.Join(root, "experiments", "results")
 	return map[string][]string{
-		"e1_scheduler":       {filepath.Join(results, "e1", "e1_resource_aware.json"), filepath.Join(results, "e1", "e1_resource_aware.csv"), filepath.Join(results, "e1", "e1_resource_aware_decisions.json"), filepath.Join(results, "e1", "e1_resource_aware_summary.md")},
-		"e1_pressure":        {filepath.Join(results, "e1_pressure", "e1_pressure.json")},
-		"e2_fault_isolation": {filepath.Join(results, "e2-real-fault.json"), filepath.Join(results, "e2-real-fault.csv")},
-		"e2_pressure_fault":  {filepath.Join(results, "e2_pressure_fault", "e2_pressure_fault.json")},
-		"software_real_demo": {filepath.Join(results, "software_real_demo", "result.json")},
-		"workspace_probe":    {filepath.Join(results, "workspace_probe.json")},
-		"workspace_rmrf":     {filepath.Join(results, "workspace_isolation_evidence.json")},
-		"ebpf_observer":      {filepath.Join(results, "ebpf_smoke", "ebpf_smoke.json")},
-		"ipc_shm":            {filepath.Join(results, "ipc_shm", "ipc_shm_smoke.json")},
-		"cvm_memory":         {filepath.Join(results, "cvm_memory", "cvm_memory_smoke.json")},
-		"replay":             {filepath.Join(results, "replay", "replay_result.json")},
+		"e1_scheduler":        {filepath.Join(results, "e1", "e1_resource_aware.json"), filepath.Join(results, "e1", "e1_resource_aware.csv"), filepath.Join(results, "e1", "e1_resource_aware_decisions.json"), filepath.Join(results, "e1", "e1_resource_aware_summary.md")},
+		"e1_pressure":         {filepath.Join(results, "e1_pressure", "e1_pressure.json")},
+		"e2_fault_isolation":  {filepath.Join(results, "e2-real-fault.json"), filepath.Join(results, "e2-real-fault.csv")},
+		"e2_pressure_fault":   {filepath.Join(results, "e2_pressure_fault", "e2_pressure_fault.json")},
+		"software_real_demo":  {filepath.Join(results, "software_real_demo", "result.json")},
+		"workspace_probe":     {filepath.Join(results, "workspace_probe.json")},
+		"workspace_rmrf":      {filepath.Join(results, "workspace_isolation_evidence.json")},
+		"ebpf_observer":       {filepath.Join(results, "ebpf_smoke", "ebpf_smoke.json")},
+		"ipc_shm":             {filepath.Join(results, "ipc_shm", "ipc_shm_smoke.json")},
+		"cvm_memory":          {filepath.Join(results, "cvm_memory", "cvm_memory_smoke.json")},
+		"deepseek_real_smoke": {filepath.Join(results, "deepseek_real", "deepseek_real_smoke.json")},
+		"replay":              {filepath.Join(results, "replay", "replay_result.json")},
 	}
 }
 
@@ -511,6 +581,7 @@ func realOnlyFiles(root string) []string {
 		filepath.Join(results, "real_env", "real_openeuler_env.json"),
 		filepath.Join(results, "real_cgroup_smoke", "real_cgroup_smoke.json"),
 		filepath.Join(results, "real_pressure_smoke", "real_pressure_smoke.json"),
+		filepath.Join(results, "deepseek_real", "deepseek_real_smoke.json"),
 		filepath.Join(results, "workspace_probe.json"),
 		filepath.Join(results, "workspace_isolation_evidence.json"),
 		filepath.Join(results, "tool_workspace_evidence.json"),
@@ -642,6 +713,55 @@ func realAllPassed(data map[string]any) bool {
 	return stringField(data, "evidence_mode") == "real-openeuler" && boolField(data, "all_passed")
 }
 
+func statusFromDeepSeekRealSmoke(path string, required bool) string {
+	data, ok := readJSONMap(path)
+	if !ok {
+		if required {
+			return "missing"
+		}
+		return "skipped"
+	}
+	if deepSeekRealSmokePassed(data) {
+		return "passed"
+	}
+	if stringField(data, "status") == "skipped" && !required {
+		return "skipped"
+	}
+	return "failed"
+}
+
+func deepSeekRealSmokePassed(data map[string]any) bool {
+	return stringField(data, "experiment") == "deepseek_real_smoke" &&
+		stringField(data, "status") == "passed" &&
+		stringField(data, "evidence_mode") == string(evidence.ModeRealAPI) &&
+		stringField(data, "provider") == "deepseek" &&
+		!boolField(data, "llm_mock") &&
+		boolField(data, "request_success") &&
+		boolField(data, "response_non_empty") &&
+		numberField(data, "status_code") == 200 &&
+		numberField(data, "latency_ms") > 0 &&
+		stringField(data, "api_key_source") == "env" &&
+		boolField(data, "api_key_present") &&
+		boolField(data, "api_key_redacted") &&
+		boolField(data, "cleanup_success")
+}
+
+func allRealOnlyRequiredPassed(realOnly map[string]string, realAllPassed bool, deepSeekRequired bool) bool {
+	if !realAllPassed {
+		return false
+	}
+	required := []string{"real_env", "real_cgroup_smoke", "real_pressure_smoke", "workspace_probe", "workspace_rmrf", "tool_workspace", "real_all"}
+	if deepSeekRequired {
+		required = append(required, "deepseek_real_smoke")
+	}
+	for _, key := range required {
+		if realOnly[key] != "passed" {
+			return false
+		}
+	}
+	return true
+}
+
 func buildEvidenceModeSummary(root string, realOnly map[string]string) map[string]string {
 	workspaceMode := "missing"
 	if probe, ok := readJSONMap(filepath.Join(root, "experiments", "results", "workspace_probe.json")); ok {
@@ -659,6 +779,13 @@ func buildEvidenceModeSummary(root string, realOnly map[string]string) map[strin
 	if realOnly["real_pressure_smoke"] == "passed" {
 		samplerMode = string(evidence.ModeRealCgroupV2)
 	}
+	llmMode := string(evidence.ModeMock)
+	switch realOnly["deepseek_real_smoke"] {
+	case "passed":
+		llmMode = string(evidence.ModeRealAPI)
+	case "failed":
+		llmMode = "failed"
+	}
 	return map[string]string{
 		"cgroup_capsule":      cgroupMode,
 		"worker_process":      string(evidence.ModeRealRuntime),
@@ -668,10 +795,28 @@ func buildEvidenceModeSummary(root string, realOnly map[string]string) map[strin
 		"scheduler":           string(evidence.ModeRealRuntime),
 		"cvm":                 evidenceModeFromPath(filepath.Join(root, "experiments", "results", "cvm_memory", "cvm_memory_smoke.json"), "real-partial"),
 		"ipc":                 "real-partial + " + evidenceModeFromPath(filepath.Join(root, "experiments", "results", "ipc_shm", "ipc_shm_smoke.json"), "real-shm-ipc optional"),
-		"llm":                 "mock",
+		"llm":                 llmMode,
 		"ebpf":                evidenceModeFromPath(filepath.Join(root, "experiments", "results", "ebpf_smoke", "ebpf_smoke.json"), string(evidence.ModeDegraded)),
 		"replay":              evidenceModeFromPath(filepath.Join(root, "experiments", "results", "replay", "replay_result.json"), string(evidence.ModeRealRuntime)),
 	}
+}
+
+func allowedDegradedEvidence(root string, generic map[string]string) map[string]string {
+	allowed := map[string]string{}
+	if generic["ebpf_observer"] != "degraded" {
+		return allowed
+	}
+	path := filepath.Join(root, "experiments", "results", "ebpf_smoke", "ebpf_smoke.json")
+	data, ok := readJSONMap(path)
+	if !ok {
+		return allowed
+	}
+	if stringField(data, "evidence_mode") != string(evidence.ModeDegraded) {
+		return allowed
+	}
+	reason := fallbackOr(stringField(data, "fallback_reason"), "eBPF observer did not attach")
+	allowed["ebpf_observer"] = reason
+	return allowed
 }
 
 func buildKnownLimits(root string, realOnly, generic map[string]string) []string {
@@ -820,6 +965,12 @@ func renderFinalSummary(index FinalEvidenceIndex) string {
 		for _, item := range index.KnownLimits {
 			b.WriteString("- " + item + "\n")
 		}
+	}
+	b.WriteString("\n## allowed_degraded\n")
+	if len(index.AllowedDegraded) == 0 {
+		b.WriteString("- none\n")
+	} else {
+		writeKeyValueList(&b, index.AllowedDegraded)
 	}
 	b.WriteString("\n## Key file paths\n")
 	b.WriteString("- `experiments/results/final/FINAL_EVIDENCE_INDEX.json`\n")
