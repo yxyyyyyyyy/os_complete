@@ -1,0 +1,9 @@
+real_env	passed	0	experiments/results/real_all/logs/real_env.log	bash scripts/verify_real_openeuler_env.sh
+go_test	passed	0	experiments/results/real_all/logs/go_test.log	go test ./...
+real_cgroup_smoke	passed	0	experiments/results/real_all/logs/real_cgroup_smoke.log	go run ./cmd/aortctl experiment real-cgroup-smoke --out experiments/results/real_cgroup_smoke
+real_pressure_smoke	passed	0	experiments/results/real_all/logs/real_pressure_smoke.log	go run ./cmd/aortctl experiment real-pressure-smoke --runs 3 --out experiments/results/real_pressure_smoke --require-real
+workspace_probe	passed	0	experiments/results/real_all/logs/workspace_probe.log	go run ./cmd/aortctl workspace probe --out experiments/results/workspace_probe.json --require-real
+workspace_rmrf	passed	0	experiments/results/real_all/logs/workspace_rmrf.log	go run ./cmd/aortctl demo fault workspace-rmrf --out experiments/results --require-real-overlayfs
+tool_workspace	passed	0	experiments/results/real_all/logs/tool_workspace.log	go run ./cmd/aortctl demo tool-workspace --out experiments/results --require-real-overlayfs
+real_all	passed	0	experiments/results/real_all/logs/real_all.log	go run ./cmd/aortctl experiment real-all --runs 3 --out experiments/results/real_all
+evidence_final	passed	0	experiments/results/real_all/logs/evidence_final.log	go run ./cmd/aortctl evidence final --out experiments/results/final

@@ -1,0 +1,16 @@
+{
+  "experiment": "deepseek_real_smoke",
+  "status": "passed",
+  "evidence_mode": "real-api",
+  "provider": "deepseek",
+  "model": "deepseek-v4-flash",
+  "llm_mock": false,
+  "request_success": true,
+  "response_non_empty": true,
+  "status_code": 200,
+  "latency_ms": 385,
+  "api_key_source": "env",
+  "api_key_present": true,
+  "api_key_redacted": true,
+  "cleanup_success": true
+}

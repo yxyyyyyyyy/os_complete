@@ -1,0 +1,64 @@
+{
+  "script": "competition_verify_real",
+  "timestamp": "2026-07-07T11:22:39.639990+00:00",
+  "evidence_mode": "real-openeuler",
+  "steps": [
+    {
+      "name": "real_env",
+      "status": "passed",
+      "command": "bash scripts/verify_real_openeuler_env.sh",
+      "log_file": "experiments/results/real_all/logs/real_env.log"
+    },
+    {
+      "name": "go_test",
+      "status": "passed",
+      "command": "go test ./...",
+      "log_file": "experiments/results/real_all/logs/go_test.log"
+    },
+    {
+      "name": "real_cgroup_smoke",
+      "status": "passed",
+      "command": "go run ./cmd/aortctl experiment real-cgroup-smoke --out experiments/results/real_cgroup_smoke",
+      "log_file": "experiments/results/real_all/logs/real_cgroup_smoke.log"
+    },
+    {
+      "name": "real_pressure_smoke",
+      "status": "passed",
+      "command": "go run ./cmd/aortctl experiment real-pressure-smoke --runs 3 --out experiments/results/real_pressure_smoke --require-real",
+      "log_file": "experiments/results/real_all/logs/real_pressure_smoke.log"
+    },
+    {
+      "name": "workspace_probe",
+      "status": "passed",
+      "command": "go run ./cmd/aortctl workspace probe --out experiments/results/workspace_probe.json --require-real",
+      "log_file": "experiments/results/real_all/logs/workspace_probe.log"
+    },
+    {
+      "name": "workspace_rmrf",
+      "status": "passed",
+      "command": "go run ./cmd/aortctl demo fault workspace-rmrf --out experiments/results --require-real-overlayfs",
+      "log_file": "experiments/results/real_all/logs/workspace_rmrf.log"
+    },
+    {
+      "name": "tool_workspace",
+      "status": "passed",
+      "command": "go run ./cmd/aortctl demo tool-workspace --out experiments/results --require-real-overlayfs",
+      "log_file": "experiments/results/real_all/logs/tool_workspace.log"
+    },
+    {
+      "name": "real_all",
+      "status": "passed",
+      "command": "go run ./cmd/aortctl experiment real-all --runs 3 --out experiments/results/real_all",
+      "log_file": "experiments/results/real_all/logs/real_all.log"
+    },
+    {
+      "name": "evidence_final",
+      "status": "passed",
+      "command": "go run ./cmd/aortctl evidence final --out experiments/results/final",
+      "log_file": "experiments/results/real_all/logs/evidence_final.log"
+    }
+  ],
+  "all_passed": true,
+  "failed_steps": [],
+  "real_required": true
+}

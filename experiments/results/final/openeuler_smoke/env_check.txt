@@ -27,7 +27,12 @@ nodev	overlay
 [PASS] overlayfs listed in /proc/filesystems
 
 == PSI ==
-[WARN] /proc/pressure not available
+cpu
+io
+irq
+memory
+stat
+[PASS] /proc/pressure available
 
 == Go ==
 go version go1.22.12 linux/amd64
@@ -38,5 +43,5 @@ go version go1.22.12 linux/amd64
 [WARN] npm not found; frontend smoke is optional
 
 == Summary ==
-failures=0 warnings=3
-env_check_json=/root/aort-r-server-run-20260706-p0p1p2-memoryfix/experiments/results/final/openeuler_smoke/env_check.json
+failures=0 warnings=2
+env_check_json=/root/aort-r-upgrade-95e79c9-bundle-1783423297/repo/experiments/results/final/openeuler_smoke/env_check.json

@@ -4,7 +4,7 @@
   "target_agent": "coder",
   "mode": "overlayfs",
   "evidence_mode": "real-overlayfs",
-  "runtime_root": "/tmp/aort-real-all-workspace-rmrf",
+  "runtime_root": "/tmp/aort-real-all-workspace-rmrf-4198973326",
   "lowerdir_unchanged": true,
   "target_agent_affected": true,
   "unaffected_agents": [
@@ -73,5 +73,5 @@
     "repo_dir_untouched": true,
     "symlink_escape_blocked": true
   },
-  "timestamp": "2026-07-07T10:30:19.023853098Z"
+  "timestamp": "2026-07-07T11:22:39.36784686Z"
 }

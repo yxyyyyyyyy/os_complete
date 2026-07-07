@@ -9,7 +9,7 @@
   "resource_aware_avoided_high_pressure_agent": true,
   "selected_high_pressure_agent_count": 0,
   "cascade_failure": false,
-  "cleanup_success": false,
+  "cleanup_success": true,
   "memory_hog_limit_bytes": 67108864,
   "pids_hog_limit": 8,
   "cpu_hog_timeout_ms": 2000

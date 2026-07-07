@@ -16,12 +16,18 @@
     "supported": true
   },
   "psi": {
-    "available": false,
-    "files": []
+    "available": true,
+    "files": [
+      "cpu",
+      "io",
+      "irq",
+      "memory",
+      "stat"
+    ]
   },
   "go_version": "go version go1.22.12 linux/amd64",
   "node_version": "",
   "npm_version": "",
   "failures": 0,
-  "warnings": 3
+  "warnings": 2
 }

@@ -1,30 +1,30 @@
 [
   {
-    "id": "20260706133858.647084114",
-    "decision_id": "20260706133858.647084114",
-    "timestamp": "2026-07-06T05:38:58.647084114Z",
-    "task_id": "task-1783316338643864646",
-    "selected_task": "task-1783316338643864646",
+    "id": "20260707192212.624542583",
+    "decision_id": "20260707192212.624542583",
+    "timestamp": "2026-07-07T11:22:12.624542583Z",
+    "task_id": "task-1783423332619612750",
+    "selected_task": "task-1783423332619612750",
     "candidates": [
-      "task-1783316338643864646-planner",
-      "task-1783316338643864646-coder",
-      "task-1783316338643864646-tester",
-      "task-1783316338643864646-reviewer"
+      "task-1783423332619612750-planner",
+      "task-1783423332619612750-coder",
+      "task-1783423332619612750-tester",
+      "task-1783423332619612750-reviewer"
     ],
-    "selected_agent": "task-1783316338643864646-planner",
+    "selected_agent": "task-1783423332619612750-planner",
     "policy": "token-cfs-prefix-affinity",
     "reason": "lowest vruntime; no previous prefix group",
     "vruntime_before": {
-      "task-1783316338643864646-coder": 0,
-      "task-1783316338643864646-planner": 0,
-      "task-1783316338643864646-reviewer": 0,
-      "task-1783316338643864646-tester": 0
+      "task-1783423332619612750-coder": 0,
+      "task-1783423332619612750-planner": 0,
+      "task-1783423332619612750-reviewer": 0,
+      "task-1783423332619612750-tester": 0
     },
     "vruntime_after": {
-      "task-1783316338643864646-coder": 0,
-      "task-1783316338643864646-planner": 0,
-      "task-1783316338643864646-reviewer": 0,
-      "task-1783316338643864646-tester": 0
+      "task-1783423332619612750-coder": 0,
+      "task-1783423332619612750-planner": 0,
+      "task-1783423332619612750-reviewer": 0,
+      "task-1783423332619612750-tester": 0
     },
     "shared_pages": {},
     "vruntime_score": 0,
@@ -46,144 +46,144 @@
       "evidence_mode": "degraded",
       "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
     },
-    "created_at": 1783316338647
+    "created_at": 1783423332624
   },
   {
-    "id": "20260706133858.647955485",
-    "decision_id": "20260706133858.647955485",
-    "timestamp": "2026-07-06T05:38:58.647955485Z",
-    "task_id": "task-1783316338643864646",
-    "selected_task": "task-1783316338643864646",
+    "id": "20260707192212.629744822",
+    "decision_id": "20260707192212.629744822",
+    "timestamp": "2026-07-07T11:22:12.629744822Z",
+    "task_id": "task-1783423332619612750",
+    "selected_task": "task-1783423332619612750",
     "candidates": [
-      "task-1783316338643864646-coder",
-      "task-1783316338643864646-tester",
-      "task-1783316338643864646-reviewer"
+      "task-1783423332619612750-coder",
+      "task-1783423332619612750-tester",
+      "task-1783423332619612750-reviewer"
     ],
-    "selected_agent": "task-1783316338643864646-coder",
+    "selected_agent": "task-1783423332619612750-coder",
     "policy": "token-cfs-prefix-affinity",
     "reason": "lowest vruntime; no affinity candidate within threshold",
     "vruntime_before": {
-      "task-1783316338643864646-coder": 0,
-      "task-1783316338643864646-reviewer": 0,
-      "task-1783316338643864646-tester": 0
+      "task-1783423332619612750-coder": 0,
+      "task-1783423332619612750-reviewer": 0,
+      "task-1783423332619612750-tester": 0
     },
     "vruntime_after": {
-      "task-1783316338643864646-coder": 0,
-      "task-1783316338643864646-reviewer": 0,
-      "task-1783316338643864646-tester": 0
+      "task-1783423332619612750-coder": 0,
+      "task-1783423332619612750-reviewer": 0,
+      "task-1783423332619612750-tester": 0
     },
     "shared_pages": {
-      "task-1783316338643864646-coder": 3,
-      "task-1783316338643864646-reviewer": 3,
-      "task-1783316338643864646-tester": 3
+      "task-1783423332619612750-coder": 3,
+      "task-1783423332619612750-reviewer": 3,
+      "task-1783423332619612750-tester": 3
     },
     "vruntime_score": 0,
     "context_affinity_score": 0,
     "memory_pressure": 0,
     "pids_pressure": 0,
     "cpu_throttle_pressure": 0,
-    "psi_pressure": 0,
+    "psi_pressure": 0.472,
     "dependency_ready": true,
     "dynamic_spawn_priority": 0,
     "final_score": 0,
-    "evidence_mode": "degraded",
-    "fallback_reason": "cpu: open /proc/pressure/cpu.pressure: no such file or directory; memory: open /proc/pressure/memory.pressure: no such file or directory; io: open /proc/pressure/io.pressure: no such file or directory",
+    "evidence_mode": "real-cgroup-v2",
+    "fallback_reason": "",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
-      "psi_pressure": 0,
-      "evidence_mode": "degraded",
-      "fallback_reason": "cpu: open /proc/pressure/cpu.pressure: no such file or directory; memory: open /proc/pressure/memory.pressure: no such file or directory; io: open /proc/pressure/io.pressure: no such file or directory"
+      "psi_pressure": 0.472,
+      "evidence_mode": "real-cgroup-v2",
+      "fallback_reason": ""
     },
-    "created_at": 1783316338647
+    "created_at": 1783423332629
   },
   {
-    "id": "20260706133858.648814949",
-    "decision_id": "20260706133858.648814949",
-    "timestamp": "2026-07-06T05:38:58.648814949Z",
-    "task_id": "task-1783316338643864646",
-    "selected_task": "task-1783316338643864646",
+    "id": "20260707192212.630755084",
+    "decision_id": "20260707192212.630755084",
+    "timestamp": "2026-07-07T11:22:12.630755084Z",
+    "task_id": "task-1783423332619612750",
+    "selected_task": "task-1783423332619612750",
     "candidates": [
-      "task-1783316338643864646-tester",
-      "task-1783316338643864646-reviewer"
+      "task-1783423332619612750-tester",
+      "task-1783423332619612750-reviewer"
     ],
-    "selected_agent": "task-1783316338643864646-tester",
+    "selected_agent": "task-1783423332619612750-tester",
     "policy": "token-cfs-prefix-affinity",
     "reason": "lowest vruntime; no affinity candidate within threshold",
     "vruntime_before": {
-      "task-1783316338643864646-reviewer": 0,
-      "task-1783316338643864646-tester": 0
+      "task-1783423332619612750-reviewer": 0,
+      "task-1783423332619612750-tester": 0
     },
     "vruntime_after": {
-      "task-1783316338643864646-reviewer": 0,
-      "task-1783316338643864646-tester": 0
+      "task-1783423332619612750-reviewer": 0,
+      "task-1783423332619612750-tester": 0
     },
     "shared_pages": {
-      "task-1783316338643864646-reviewer": 3,
-      "task-1783316338643864646-tester": 3
+      "task-1783423332619612750-reviewer": 3,
+      "task-1783423332619612750-tester": 3
     },
     "vruntime_score": 0,
     "context_affinity_score": 0,
     "memory_pressure": 0,
     "pids_pressure": 0,
     "cpu_throttle_pressure": 0,
-    "psi_pressure": 0,
+    "psi_pressure": 0.472,
     "dependency_ready": true,
     "dynamic_spawn_priority": 0,
     "final_score": 0,
-    "evidence_mode": "degraded",
-    "fallback_reason": "cpu: open /proc/pressure/cpu.pressure: no such file or directory; memory: open /proc/pressure/memory.pressure: no such file or directory; io: open /proc/pressure/io.pressure: no such file or directory",
+    "evidence_mode": "real-cgroup-v2",
+    "fallback_reason": "",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
-      "psi_pressure": 0,
-      "evidence_mode": "degraded",
-      "fallback_reason": "cpu: open /proc/pressure/cpu.pressure: no such file or directory; memory: open /proc/pressure/memory.pressure: no such file or directory; io: open /proc/pressure/io.pressure: no such file or directory"
+      "psi_pressure": 0.472,
+      "evidence_mode": "real-cgroup-v2",
+      "fallback_reason": ""
     },
-    "created_at": 1783316338648
+    "created_at": 1783423332630
   },
   {
-    "id": "20260706133858.649653238",
-    "decision_id": "20260706133858.649653238",
-    "timestamp": "2026-07-06T05:38:58.649653238Z",
-    "task_id": "task-1783316338643864646",
-    "selected_task": "task-1783316338643864646",
+    "id": "20260707192212.631834028",
+    "decision_id": "20260707192212.631834028",
+    "timestamp": "2026-07-07T11:22:12.631834028Z",
+    "task_id": "task-1783423332619612750",
+    "selected_task": "task-1783423332619612750",
     "candidates": [
-      "task-1783316338643864646-reviewer"
+      "task-1783423332619612750-reviewer"
     ],
-    "selected_agent": "task-1783316338643864646-reviewer",
+    "selected_agent": "task-1783423332619612750-reviewer",
     "policy": "token-cfs-prefix-affinity",
     "reason": "lowest vruntime; no affinity candidate within threshold",
     "vruntime_before": {
-      "task-1783316338643864646-reviewer": 0
+      "task-1783423332619612750-reviewer": 0
     },
     "vruntime_after": {
-      "task-1783316338643864646-reviewer": 0
+      "task-1783423332619612750-reviewer": 0
     },
     "shared_pages": {
-      "task-1783316338643864646-reviewer": 3
+      "task-1783423332619612750-reviewer": 3
     },
     "vruntime_score": 0,
     "context_affinity_score": 0,
     "memory_pressure": 0,
     "pids_pressure": 0,
     "cpu_throttle_pressure": 0,
-    "psi_pressure": 0,
+    "psi_pressure": 0.472,
     "dependency_ready": true,
     "dynamic_spawn_priority": 0,
     "final_score": 0,
-    "evidence_mode": "degraded",
-    "fallback_reason": "cpu: open /proc/pressure/cpu.pressure: no such file or directory; memory: open /proc/pressure/memory.pressure: no such file or directory; io: open /proc/pressure/io.pressure: no such file or directory",
+    "evidence_mode": "real-cgroup-v2",
+    "fallback_reason": "",
     "resource_pressure": {
       "memory_pressure": 0,
       "pids_pressure": 0,
       "cpu_throttle_pressure": 0,
-      "psi_pressure": 0,
-      "evidence_mode": "degraded",
-      "fallback_reason": "cpu: open /proc/pressure/cpu.pressure: no such file or directory; memory: open /proc/pressure/memory.pressure: no such file or directory; io: open /proc/pressure/io.pressure: no such file or directory"
+      "psi_pressure": 0.472,
+      "evidence_mode": "real-cgroup-v2",
+      "fallback_reason": ""
     },
-    "created_at": 1783316338649
+    "created_at": 1783423332631
   }
 ]

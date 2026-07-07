@@ -2,7 +2,7 @@
 
 ## Overall conclusion
 - Real-only openEuler evidence is present and all required real checks passed.
-- Git commit: `aaa669dbf1b7d7e0c1ecc805928c0de925c3d238`
+- Git commit: `95e79c9fe703b6222fab3163b057b3235d325009`
 - Git branch: `codex/aort-r-upgrade`
 - git_dirty: `false`
 
@@ -14,7 +14,7 @@
 | e1_scheduler | passed |
 | e2_fault_isolation | passed |
 | e2_pressure_fault | passed |
-| ebpf_observer | degraded |
+| ebpf_observer | allowed_degraded |
 | go_test | passed |
 | ipc_shm | passed |
 | replay | passed |
@@ -26,10 +26,11 @@
 ## real-only openEuler evidence
 | evidence | status |
 | --- | --- |
+| deepseek_real_smoke | passed |
 | real_all | passed |
 | real_cgroup_smoke | passed |
 | real_env | passed |
-| real_pressure_smoke | failed |
+| real_pressure_smoke | passed |
 | tool_workspace | passed |
 | workspace_probe | passed |
 | workspace_rmrf | passed |
@@ -39,9 +40,9 @@
 - cvm: real-partial
 - ebpf: degraded
 - ipc: real-partial + real-shm-ipc
-- llm: mock
+- llm: real-api
 - replay: real-runtime
-- resource_sampler: degraded
+- resource_sampler: real-cgroup-v2
 - scheduler: real-runtime
 - tool_workspace: real-overlayfs
 - worker_process: real-runtime
@@ -49,8 +50,10 @@
 
 ## known_limits
 - Portable E1 benchmark may use degraded pressure fallback; real-pressure-smoke proves real-cgroup-v2 ResourceSampler on openEuler.
-- Current local final evidence does not prove real-pressure-smoke; run scripts/competition_verify_real.sh on root openEuler.
 - eBPF observer experimental path implemented; current submitted evidence is degraded unless openEuler/Linux smoke reports real-ebpf.
+
+## allowed_degraded
+- ebpf_observer: attach failed: invalid argument
 
 ## Key file paths
 - `experiments/results/final/FINAL_EVIDENCE_INDEX.json`

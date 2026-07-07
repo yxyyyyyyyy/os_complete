@@ -1,10 +1,10 @@
 {
   "evidence_mode": "real-cgroup-v2",
   "real_cgroup_v2": true,
-  "agent_id": "task-1783316338643864646-planner",
-  "pid": 59243,
+  "agent_id": "task-1783423332619612750-planner",
+  "pid": 78105,
   "capsule_mode": "real",
-  "cgroup_path": "/sys/fs/cgroup/aort.slice/task-1783316338643864646-planner",
+  "cgroup_path": "/sys/fs/cgroup/aort.slice/task-1783423332619612750-planner",
   "memory_current": 4096,
   "pids_current": 5,
   "cpu_stat": {
@@ -14,8 +14,8 @@
     "nr_throttled": 0,
     "system_usec": 0,
     "throttled_usec": 0,
-    "usage_usec": 334,
-    "user_usec": 334
+    "usage_usec": 373,
+    "user_usec": 373
   },
   "events": {
     "frozen": 0,

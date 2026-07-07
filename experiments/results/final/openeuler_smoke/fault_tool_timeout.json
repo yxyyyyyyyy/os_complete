@@ -1,8 +1,8 @@
 {
-  "id": "20260706133900.833387338",
+  "id": "20260707192214.325520981",
   "type": "TOOL_TIMEOUT",
-  "task_id": "fault-1783316340822824255",
-  "agent_id": "fault-1783316340822824255-agent",
+  "task_id": "fault-1783423334310151634",
+  "agent_id": "fault-1783423334310151634-agent",
   "status": "RECOVERED",
   "recovery_action": "tool process killed by timeout context",
   "details": {
@@ -10,5 +10,5 @@
     "syscall": "tool.exec",
     "syscall_status": "TIMEOUT"
   },
-  "detected_at": 1783316340833
+  "detected_at": 1783423334325
 }

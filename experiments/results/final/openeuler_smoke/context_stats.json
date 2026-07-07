@@ -2,6 +2,16 @@
   "evidence_mode": "real-partial",
   "total_pages": 12,
   "shared_pages": 12,
+  "hot_pages": 6,
+  "cold_pages": 0,
+  "compressed_pages": 0,
+  "evicted_pages": 0,
+  "pinned_pages": 0,
+  "ref_counted_pages": 12,
   "saved_bytes": 968,
-  "saved_tokens": 237
+  "saved_tokens": 237,
+  "memory_saved_bytes": 968,
+  "compression_saved_bytes": 0,
+  "dedup_saved_bytes": 968,
+  "dedup_saved_tokens": 237
 }
