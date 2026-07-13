@@ -12,6 +12,7 @@ import (
 	"time"
 
 	"aort-r/internal/experiment"
+	"aort-r/internal/review"
 	"aort-r/internal/workspace"
 )
 
@@ -23,13 +24,15 @@ func main() {
 
 func run(args []string) error {
 	if len(args) == 0 {
-		return fmt.Errorf("usage: aortctl experiment|demo|workspace|observer|ipc|cvm|replay ...")
+		return fmt.Errorf("usage: aortctl experiment|scenario|evidence|demo|workspace|observer|ipc|cvm|replay ...")
 	}
 	switch args[0] {
 	case "_hog":
 		return runHog(args[1:])
 	case "experiment":
 		return runExperiment(args[1:])
+	case "scenario":
+		return runScenario(args[1:])
 	case "evidence":
 		return runEvidence(args[1:])
 	case "demo":
@@ -46,6 +49,38 @@ func run(args []string) error {
 		return runReplay(args[1:])
 	default:
 		return fmt.Errorf("unknown command %q", args[0])
+	}
+}
+
+func runScenario(args []string) error {
+	if len(args) == 0 {
+		return fmt.Errorf("usage: aortctl scenario resource-isolation|context-sharing|real-agent-demo")
+	}
+	switch args[0] {
+	case "resource-isolation":
+		fs := flag.NewFlagSet("scenario resource-isolation", flag.ContinueOnError)
+		mode := fs.String("mode", "all", "comparison mode: all, baseline, isolation-only, or aort-r")
+		runs := fs.Int("runs", 20, "measured runs")
+		warmup := fs.Int("warmup", 3, "warmup runs")
+		seed := fs.Int64("seed", 20260713, "deterministic random seed")
+		timeout := fs.Duration("timeout", 5*time.Second, "per-run timeout")
+		out := fs.String("out", filepath.Join("experiments", "results", "review_remediation", "resource_isolation"), "output directory")
+		replay := fs.Bool("replay", false, "record a replay request for the fault agent")
+		if err := fs.Parse(args[1:]); err != nil {
+			return err
+		}
+		_, err := experiment.RunResourceIsolation(review.ResourceIsolationConfig{
+			Mode:         *mode,
+			Runs:         *runs,
+			Warmup:       *warmup,
+			Seed:         *seed,
+			Timeout:      *timeout,
+			OutDir:       *out,
+			EnableReplay: *replay,
+		})
+		return err
+	default:
+		return fmt.Errorf("unknown scenario %q", args[0])
 	}
 }
 

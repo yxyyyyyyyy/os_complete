@@ -34,6 +34,27 @@ func TestAortctlResourceAwareExperimentAndWorkspaceFaultCommands(t *testing.T) {
 	}
 }
 
+func TestAortctlResourceIsolationScenarioWritesReviewArtifacts(t *testing.T) {
+	outDir := t.TempDir()
+	if err := run([]string{"scenario", "resource-isolation", "--mode", "all", "--runs", "1", "--warmup", "0", "--timeout", "2s", "--out", outDir}); err != nil {
+		t.Fatalf("resource-isolation: %v", err)
+	}
+	var summary struct {
+		ScenarioID string                               `json:"scenario_id"`
+		PerRun     []map[string]any                     `json:"per_run"`
+		Summary    map[string]map[string]map[string]any `json:"summary"`
+	}
+	decodeJSONFile(t, filepath.Join(outDir, "summary.json"), &summary)
+	if summary.ScenarioID != "resource-isolation" || len(summary.PerRun) != 3 {
+		t.Fatalf("unexpected scenario summary: %#v", summary)
+	}
+	for _, mode := range []string{"baseline", "isolation-only", "aort-r"} {
+		if _, ok := summary.Summary[mode]; !ok {
+			t.Fatalf("missing mode %q: %#v", mode, summary.Summary)
+		}
+	}
+}
+
 func TestAortctlWorkspaceProbeCommandWritesEvidence(t *testing.T) {
 	outDir := t.TempDir()
 	outFile := filepath.Join(outDir, "workspace_probe.json")
