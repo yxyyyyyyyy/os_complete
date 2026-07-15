@@ -9,12 +9,24 @@ pages through CVM, supports page-reference IPC, records scheduler decisions,
 saves lightweight checkpoints, and exposes runtime evidence through REST/SSE
 and a bilingual Vue dashboard.
 
-Core claim:
+Current scoped claim:
 
-> AORT-R treats Agent as an OS-level execution unit: process/cgroup-backed AVP,
-> CVM page table, syscall gateway for tools/LLM/IPC/control, token-CFS
+> AORT-R treats Agent as a user-space runtime execution object: an AVP can be
+> backed by a real worker process/cgroup when the environment supports it, with
+> a CVM page table, controlled runtime gateway for tools/LLM/IPC/control, token-CFS
 > scheduling, fault supervision, checkpoint evidence, and replayable runtime
 > trace.
+
+The review-facing design is intentionally limited to two problem lines:
+resource isolation/fault control and context reuse/communication measurement.
+See [`docs/design/README.md`](docs/design/README.md) and run the formal scenarios:
+
+```bash
+go run ./cmd/aortctl scenario resource-isolation --mode all --warmup 3 --runs 20 --out experiments/results/review_remediation/resource_isolation
+go run ./cmd/aortctl scenario context-sharing --mode all --warmup 3 --runs 20 --out experiments/results/review_remediation/context_sharing
+go run ./cmd/aortctl scenario real-agent-demo --provider mock --out experiments/results/review_remediation/real_agent_demo
+go run ./cmd/aortctl evidence review-final --out experiments/results/review_final
+```
 
 ## Quick Start
 

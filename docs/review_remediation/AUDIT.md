@@ -39,7 +39,7 @@
 
 ## Boundary findings
 
-- Older design material contains phrases such as “零拷贝”, “内核级机制隔离”, and “操作系统一等公民”. Current `README.md` and `docs/EVIDENCE_MODE.md` already narrow several claims, but `V2.0.md` and the 2026-07-04 design still need boundary corrections.
+- Older design material originally contained phrases such as “零拷贝”, “内核级机制隔离”, and “操作系统一等公民”. The remediation adds historical-proposal banners and corrects the key claims in `V1.0`, `V2.0`, `V3.0`, the 2026-07-04 design, README, and the legacy technical report.
 - CVM evidence explicitly says it is not model KV Cache; this wording must be retained.
 - eBPF evidence is degraded and must never be promoted to complete observation.
 - DeepSeek evidence currently uses environment-only credentials and redacted summaries; no key is present in the repository.
