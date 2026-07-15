@@ -46,8 +46,8 @@ func TestWriteScenarioArtifactsPreservesRawRunsAndStableCSV(t *testing.T) {
 		RunID:         "bundle-1",
 		EvidenceMode:  "degraded",
 		PerRun: []RunObservation{
-			{RunID: "run-1", Mode: "baseline", Success: true, Metrics: map[string]MetricValue{"latency_ms": {Value: 10, Kind: MeasurementMeasured, Unit: "ms"}}},
-			{RunID: "run-2", Mode: "baseline", Success: false, FailureReason: "timeout", Metrics: map[string]MetricValue{"latency_ms": {Value: 20, Kind: MeasurementMeasured, Unit: "ms"}}},
+			{RunID: "run-1", Mode: "baseline", Success: true, Metrics: map[string]MetricValue{"latency_ms": {Value: 10, Kind: MeasurementMeasured, Unit: "ms"}, "saved_bytes": {Value: 0, Kind: MeasurementDerived, Unit: "bytes"}}},
+			{RunID: "run-2", Mode: "baseline", Success: false, FailureReason: "timeout", Metrics: map[string]MetricValue{"latency_ms": {Value: 20, Kind: MeasurementMeasured, Unit: "ms"}, "saved_bytes": {Value: 5, Kind: MeasurementDerived, Unit: "bytes"}}},
 		},
 	}
 	if err := WriteScenarioArtifacts(out, &result); err != nil {
@@ -78,7 +78,16 @@ func TestWriteScenarioArtifactsPreservesRawRunsAndStableCSV(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(rows) != 2 || strings.Join(rows[0], ",") != csvHeader {
+	if len(rows) != 3 || strings.Join(rows[0], ",") != csvHeader {
 		t.Fatalf("csv rows = %#v", rows)
+	}
+	foundDerived := false
+	for _, row := range rows[1:] {
+		if row[1] == "saved_bytes" && row[12] == MeasurementDerived && row[13] == "bytes" {
+			foundDerived = true
+		}
+	}
+	if !foundDerived {
+		t.Fatalf("derived metric label was not preserved: %#v", rows)
 	}
 }

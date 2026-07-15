@@ -79,6 +79,40 @@ func runScenario(args []string) error {
 			EnableReplay: *replay,
 		})
 		return err
+	case "context-sharing":
+		fs := flag.NewFlagSet("scenario context-sharing", flag.ContinueOnError)
+		mode := fs.String("mode", "all", "comparison mode: all, full-copy, shared-ipc, or aort-r")
+		runs := fs.Int("runs", 20, "measured runs")
+		warmup := fs.Int("warmup", 3, "warmup runs")
+		seed := fs.Int64("seed", 20260713, "deterministic random seed")
+		timeout := fs.Duration("timeout", 5*time.Second, "per-run timeout")
+		contextSize := fs.Int("context-size", 4096, "logical context bytes per agent")
+		agents := fs.Int("agents", 6, "number of agents")
+		sharedRatioText := fs.String("shared-ratio", "all", "shared context ratio: all, 0, 0.25, 0.5, or 0.75")
+		out := fs.String("out", filepath.Join("experiments", "results", "review_remediation", "context_sharing"), "output directory")
+		if err := fs.Parse(args[1:]); err != nil {
+			return err
+		}
+		cfg := review.ContextSharingConfig{
+			Mode:        *mode,
+			Runs:        *runs,
+			Warmup:      *warmup,
+			Seed:        *seed,
+			Timeout:     *timeout,
+			ContextSize: *contextSize,
+			Agents:      *agents,
+			OutDir:      *out,
+		}
+		if *sharedRatioText != "all" {
+			ratio, err := strconv.ParseFloat(*sharedRatioText, 64)
+			if err != nil {
+				return fmt.Errorf("invalid shared-ratio %q: %w", *sharedRatioText, err)
+			}
+			cfg.SharedRatio = ratio
+			cfg.SharedRatioSet = true
+		}
+		_, err := experiment.RunContextSharing(cfg)
+		return err
 	default:
 		return fmt.Errorf("unknown scenario %q", args[0])
 	}

@@ -55,6 +55,27 @@ func TestAortctlResourceIsolationScenarioWritesReviewArtifacts(t *testing.T) {
 	}
 }
 
+func TestAortctlContextSharingScenarioWritesAllRatioArtifacts(t *testing.T) {
+	outDir := t.TempDir()
+	if err := run([]string{"scenario", "context-sharing", "--mode", "all", "--runs", "1", "--warmup", "0", "--agents", "3", "--context-size", "256", "--timeout", "2s", "--out", outDir}); err != nil {
+		t.Fatalf("context-sharing: %v", err)
+	}
+	var summary struct {
+		ScenarioID string           `json:"scenario_id"`
+		PerRun     []map[string]any `json:"per_run"`
+		Summary    map[string]any   `json:"summary"`
+	}
+	decodeJSONFile(t, filepath.Join(outDir, "summary.json"), &summary)
+	if summary.ScenarioID != "context-sharing" || len(summary.PerRun) != 12 || len(summary.Summary) != 12 {
+		t.Fatalf("unexpected context summary: scenario=%s runs=%d modes=%d", summary.ScenarioID, len(summary.PerRun), len(summary.Summary))
+	}
+	for _, name := range []string{"comparison.csv", "report.md"} {
+		if _, err := os.Stat(filepath.Join(outDir, name)); err != nil {
+			t.Fatalf("missing %s: %v", name, err)
+		}
+	}
+}
+
 func TestAortctlWorkspaceProbeCommandWritesEvidence(t *testing.T) {
 	outDir := t.TempDir()
 	outFile := filepath.Join(outDir, "workspace_probe.json")

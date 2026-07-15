@@ -46,6 +46,7 @@ type RunObservation struct {
 	ScenarioID    string                 `json:"scenario_id"`
 	RunID         string                 `json:"run_id"`
 	Mode          string                 `json:"mode"`
+	Labels        map[string]string      `json:"labels,omitempty"`
 	Timestamp     string                 `json:"timestamp"`
 	Success       bool                   `json:"success"`
 	FailureReason string                 `json:"failure_reason,omitempty"`
@@ -193,7 +194,7 @@ func WriteScenarioArtifacts(outDir string, result *ScenarioResult) error {
 		}
 	}
 	result.Summary = summarizeRuns(result.PerRun)
-	result.Comparison = comparisonRows(result.Summary)
+	result.Comparison = comparisonRows(result.Summary, result.PerRun)
 	result.ArtifactPaths = []string{"raw/", "summary.json", "comparison.csv", "report.md"}
 	data, err := json.MarshalIndent(result, "", "  ")
 	if err != nil {
@@ -212,13 +213,14 @@ func summarizeRuns(runs []RunObservation) map[string]map[string]Stats {
 	values := make(map[string]map[string][]float64)
 	statuses := make(map[string]map[string][]bool)
 	for _, run := range runs {
-		if values[run.Mode] == nil {
-			values[run.Mode] = make(map[string][]float64)
-			statuses[run.Mode] = make(map[string][]bool)
+		key := runSummaryKey(run)
+		if values[key] == nil {
+			values[key] = make(map[string][]float64)
+			statuses[key] = make(map[string][]bool)
 		}
 		for name, metric := range run.Metrics {
-			values[run.Mode][name] = append(values[run.Mode][name], metric.Value)
-			statuses[run.Mode][name] = append(statuses[run.Mode][name], run.Success)
+			values[key][name] = append(values[key][name], metric.Value)
+			statuses[key][name] = append(statuses[key][name], run.Success)
 		}
 	}
 	out := make(map[string]map[string]Stats)
@@ -231,8 +233,20 @@ func summarizeRuns(runs []RunObservation) map[string]map[string]Stats {
 	return out
 }
 
-func comparisonRows(summary map[string]map[string]Stats) []ComparisonRow {
+func comparisonRows(summary map[string]map[string]Stats, runs []RunObservation) []ComparisonRow {
 	baseline := summary["baseline"]
+	metadata := make(map[string]map[string]MetricValue)
+	for _, run := range runs {
+		key := runSummaryKey(run)
+		if metadata[key] == nil {
+			metadata[key] = make(map[string]MetricValue)
+		}
+		for name, metric := range run.Metrics {
+			if _, ok := metadata[key][name]; !ok {
+				metadata[key][name] = metric
+			}
+		}
+	}
 	modes := make([]string, 0, len(summary))
 	for mode := range summary {
 		modes = append(modes, mode)
@@ -241,14 +255,23 @@ func comparisonRows(summary map[string]map[string]Stats) []ComparisonRow {
 	rows := make([]ComparisonRow, 0)
 	for _, mode := range modes {
 		metrics := summary[mode]
+		modeBaseline := baseline
+		if at := strings.LastIndex(mode, "@"); at >= 0 {
+			modeBaseline = summary["full-copy"+mode[at:]]
+		}
 		names := make([]string, 0, len(metrics))
 		for name := range metrics {
 			names = append(names, name)
 		}
 		sort.Strings(names)
 		for _, name := range names {
-			row := ComparisonRow{Mode: mode, Metric: name, Stats: metrics[name], MeasurementKind: MeasurementMeasured}
-			if base, ok := baseline[name]; ok {
+			metric := metadata[mode][name]
+			kind := metric.Kind
+			if kind == "" {
+				kind = MeasurementMeasured
+			}
+			row := ComparisonRow{Mode: mode, Metric: name, Stats: metrics[name], MeasurementKind: kind, Unit: metric.Unit}
+			if base, ok := modeBaseline[name]; ok {
 				row.BaselineMean = base.Mean
 				row.ImprovementPct, row.ImprovementValid = Improvement(base.Mean, metrics[name].Mean)
 			}
@@ -256,6 +279,14 @@ func comparisonRows(summary map[string]map[string]Stats) []ComparisonRow {
 		}
 	}
 	return rows
+}
+
+func runSummaryKey(run RunObservation) string {
+	key := run.Mode
+	if ratio := run.Labels["shared_ratio"]; ratio != "" {
+		key += "@" + ratio
+	}
+	return key
 }
 
 func writeComparisonCSV(path string, rows []ComparisonRow) error {
