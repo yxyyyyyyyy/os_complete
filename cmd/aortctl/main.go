@@ -113,6 +113,17 @@ func runScenario(args []string) error {
 		}
 		_, err := experiment.RunContextSharing(cfg)
 		return err
+	case "real-agent-demo":
+		fs := flag.NewFlagSet("scenario real-agent-demo", flag.ContinueOnError)
+		provider := fs.String("provider", "mock", "LLM provider: mock or deepseek")
+		seed := fs.Int64("seed", 20260713, "deterministic random seed")
+		timeout := fs.Duration("timeout", 30*time.Second, "scenario timeout")
+		out := fs.String("out", filepath.Join("experiments", "results", "review_remediation", "real_agent_demo"), "output directory")
+		if err := fs.Parse(args[1:]); err != nil {
+			return err
+		}
+		_, err := experiment.RunAgentDemo(review.AgentDemoConfig{Provider: *provider, Seed: *seed, Timeout: *timeout, OutDir: *out})
+		return err
 	default:
 		return fmt.Errorf("unknown scenario %q", args[0])
 	}
@@ -310,7 +321,7 @@ func runReplay(args []string) error {
 
 func runEvidence(args []string) error {
 	if len(args) == 0 {
-		return fmt.Errorf("usage: aortctl evidence final")
+		return fmt.Errorf("usage: aortctl evidence final|review-final")
 	}
 	switch args[0] {
 	case "final":
@@ -320,6 +331,18 @@ func runEvidence(args []string) error {
 			return err
 		}
 		_, err := experiment.WriteFinalEvidence(*out)
+		return err
+	case "review-final":
+		fs := flag.NewFlagSet("evidence review-final", flag.ContinueOnError)
+		out := fs.String("out", filepath.Join("experiments", "results", "review_final"), "output directory")
+		resourceDir := fs.String("resource-dir", filepath.Join("experiments", "results", "review_remediation", "resource_isolation"), "resource-isolation result directory")
+		contextDir := fs.String("context-dir", filepath.Join("experiments", "results", "review_remediation", "context_sharing"), "context-sharing result directory")
+		demoDir := fs.String("demo-dir", filepath.Join("experiments", "results", "review_remediation", "real_agent_demo"), "real-agent-demo result directory")
+		legacyFinalDir := fs.String("legacy-final-dir", filepath.Join("experiments", "results", "final"), "legacy final evidence directory")
+		if err := fs.Parse(args[1:]); err != nil {
+			return err
+		}
+		_, err := experiment.WriteReviewFinal(review.ReviewFinalConfig{OutDir: *out, ResourceDir: *resourceDir, ContextDir: *contextDir, DemoDir: *demoDir, LegacyFinalDir: *legacyFinalDir})
 		return err
 	default:
 		return fmt.Errorf("unknown evidence command %q", args[0])

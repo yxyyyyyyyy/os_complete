@@ -76,6 +76,60 @@ func TestAortctlContextSharingScenarioWritesAllRatioArtifacts(t *testing.T) {
 	}
 }
 
+func TestAortctlRealAgentDemoMockWritesArtifacts(t *testing.T) {
+	outDir := t.TempDir()
+	if err := run([]string{"scenario", "real-agent-demo", "--provider", "mock", "--seed", "21", "--timeout", "3s", "--out", outDir}); err != nil {
+		t.Fatalf("real-agent-demo: %v", err)
+	}
+	var summary struct {
+		ScenarioID string `json:"scenario_id"`
+		Status     string `json:"status"`
+		Agents     []any  `json:"agents"`
+		LLMCalls   []any  `json:"llm_calls"`
+		ToolCalls  []any  `json:"tool_calls"`
+	}
+	decodeJSONFile(t, filepath.Join(outDir, "summary.json"), &summary)
+	if summary.ScenarioID != "real-agent-demo" || summary.Status != "passed" || len(summary.Agents) != 6 || len(summary.LLMCalls) < 1 || len(summary.ToolCalls) < 3 {
+		t.Fatalf("unexpected demo summary: %+v", summary)
+	}
+}
+
+func TestAortctlReviewFinalIndexesScenarioOutputs(t *testing.T) {
+	root := t.TempDir()
+	dirs := map[string]string{
+		"resource-isolation": filepath.Join(root, "resource"),
+		"context-sharing":    filepath.Join(root, "context"),
+		"real-agent-demo":    filepath.Join(root, "demo"),
+	}
+	for scenario, dir := range dirs {
+		if err := os.MkdirAll(dir, 0o755); err != nil {
+			t.Fatal(err)
+		}
+		content := `{"scenario_id":"` + scenario + `","status":"passed","evidence_mode":"degraded","per_run":[{"success":true}]}`
+		if err := os.WriteFile(filepath.Join(dir, "summary.json"), []byte(content), 0o644); err != nil {
+			t.Fatal(err)
+		}
+	}
+	legacy := filepath.Join(root, "legacy")
+	if err := os.MkdirAll(legacy, 0o755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(legacy, "FINAL_EVIDENCE_INDEX.json"), []byte(`{"legacy":true}`), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	out := filepath.Join(root, "review-final")
+	if err := run([]string{"evidence", "review-final", "--resource-dir", dirs["resource-isolation"], "--context-dir", dirs["context-sharing"], "--demo-dir", dirs["real-agent-demo"], "--legacy-final-dir", legacy, "--out", out}); err != nil {
+		t.Fatalf("review-final: %v", err)
+	}
+	var index struct {
+		AllRequiredPassed bool `json:"all_required_passed"`
+	}
+	decodeJSONFile(t, filepath.Join(out, "REVIEW_EVIDENCE_INDEX.json"), &index)
+	if !index.AllRequiredPassed {
+		t.Fatal("review-final should pass with all scenario summaries")
+	}
+}
+
 func TestAortctlWorkspaceProbeCommandWritesEvidence(t *testing.T) {
 	outDir := t.TempDir()
 	outFile := filepath.Join(outDir, "workspace_probe.json")
