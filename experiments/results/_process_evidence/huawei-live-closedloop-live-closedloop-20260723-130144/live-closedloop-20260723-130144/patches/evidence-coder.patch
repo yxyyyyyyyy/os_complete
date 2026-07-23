@@ -1,0 +1,9 @@
+diff --git a/internal/review/live_evidence_hook.go b/internal/review/live_evidence_hook.go
+--- a/internal/review/live_evidence_hook.go
++++ b/internal/review/live_evidence_hook.go
+@@ -1,4 +1,4 @@
+ package review
+ 
+ // LiveEvidenceHook is an allowlisted one-line edit target for codebase-dag live runs.
+-const LiveEvidenceHook = "evidence-hook-v1"
++const LiveEvidenceHook = "hook-v2"

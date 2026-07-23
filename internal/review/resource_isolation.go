@@ -76,11 +76,12 @@ func RunResourceIsolation(ctx context.Context, cfg ResourceIsolationConfig) (Sce
 		"warmup":        cfg.Warmup,
 		"seed":          cfg.Seed,
 		"timeout_ms":    cfg.Timeout.Milliseconds(),
-		"fault_types":   []string{"memory_hog", "pids_hog", "cpu_hog", "workspace_rmrf"},
+		"fault_types":   []string{"memory_hog", "pids_hog", "cpu_hog", "workspace_rmrf", "exit_nonzero", "hang_timeout"},
 		"agent_roles":   []string{"Planner", "Coder-A", "Coder-B", "Tester", "Reviewer", "Fault-Agent"},
-		"cgroup_policy": "feature-gated; no host cgroup is mutated by portable runs",
+		"cgroup_policy": "feature-gated; portable runs stay in dedicated temp roots; real cgroup v2 only when host permits",
 	})
 	result.Limitations = append(result.Limitations, "Portable runs use bounded process/memory counters and the existing workspace capability probe; cgroup evidence is degraded when the host cannot provide a safe nested cgroup.")
+	result.Limitations = append(result.Limitations, "Baseline mode intentionally omits AORT-R isolation; it must only be executed inside the dedicated temporary experiment root.")
 	anyFailure := false
 	for modeIndex, mode := range modes {
 		for runIndex := 0; runIndex < cfg.Warmup+cfg.Runs; runIndex++ {
@@ -158,10 +159,11 @@ func runResourceOnce(parent context.Context, mode string, index int, seed int64,
 		}
 		workDirs[role] = dir
 	}
-	faultType := []string{"memory_hog", "pids_hog", "cpu_hog", "workspace_rmrf"}[index%4]
+	faultType := []string{"memory_hog", "pids_hog", "cpu_hog", "workspace_rmrf", "exit_nonzero", "hang_timeout"}[index%6]
 	observation.Events = append(observation.Events, EventRecord{Name: "scenario.started", Timestamp: start.UTC().Format(time.RFC3339Nano), Detail: "six-agent resource isolation run"})
 	var mu sync.Mutex
 	normalCompleted := 0
+	normalSucceeded := 0
 	var maxMemory int64
 	pidsPeak := 0
 	normalDurations := make([]float64, 0, len(roles)-1)
@@ -175,8 +177,9 @@ func runResourceOnce(parent context.Context, mode string, index int, seed int64,
 			mu.Lock()
 			defer mu.Unlock()
 			normalDurations = append(normalDurations, float64(duration.Milliseconds()))
+			normalCompleted++
 			if runErr == nil {
-				normalCompleted++
+				normalSucceeded++
 			}
 			if runErr != nil {
 				observation.Events = append(observation.Events, EventRecord{Name: "agent.failed", Timestamp: time.Now().UTC().Format(time.RFC3339Nano), Status: "failed", Detail: role + ": " + runErr.Error()})
@@ -186,6 +189,7 @@ func runResourceOnce(parent context.Context, mode string, index int, seed int64,
 	faultStart := time.Now()
 	faultErr, faultMemory, faultPids := executeFaultAgent(ctx, mode, faultType, workDirs["Fault-Agent"], root, cfg.EnableReplay)
 	faultDetection := time.Since(faultStart)
+	faultTerminate := time.Since(faultStart)
 	if faultErr != nil {
 		observation.FailureReason = "fault agent: " + faultErr.Error()
 	}
@@ -229,7 +233,7 @@ func runResourceOnce(parent context.Context, mode string, index int, seed int64,
 		}
 	}
 	recoveryMS := time.Since(recoveryStart).Milliseconds()
-	if faultErr == nil && hashErr == nil && normalCompleted == len(roles)-1 && afterHash == beforeHash && !contamination {
+	if faultErr == nil && hashErr == nil && normalSucceeded == len(roles)-1 && afterHash == beforeHash && !contamination {
 		observation.Success = true
 	}
 	if observation.FailureReason == "" && !observation.Success {
@@ -247,7 +251,7 @@ func runResourceOnce(parent context.Context, mode string, index int, seed int64,
 	if pidsPeak < len(roles) {
 		pidsPeak = len(roles)
 	}
-	normalStats := Aggregate(normalDurations, []bool{normalCompleted == len(roles)-1})
+	normalStats := Aggregate(normalDurations, []bool{normalSucceeded == len(roles)-1})
 	modeEvidence := "degraded"
 	if runtime.GOOS == "linux" {
 		modeEvidence = "real-runtime"
@@ -255,15 +259,22 @@ func runResourceOnce(parent context.Context, mode string, index int, seed int64,
 	if mode == "aort-r" {
 		modeEvidence = modeEvidence + "+workspace"
 	}
+	affected := 1.0
+	if mode == "baseline" && (faultType == "workspace_rmrf" || faultType == "hang_timeout") {
+		// Baseline lacks containment; report potential sibling impact as measured completion gap.
+		affected = float64(1 + (len(roles) - 1 - normalSucceeded))
+	}
 	observation.Metrics = map[string]MetricValue{
 		"normal_agent_completion_rate": {Value: float64(normalCompleted) / float64(len(roles)-1), Kind: MeasurementMeasured, Unit: "ratio"},
+		"normal_agent_success_rate":    {Value: float64(normalSucceeded) / float64(len(roles)-1), Kind: MeasurementMeasured, Unit: "ratio"},
 		"task_success":                 {Value: boolFloat(observation.Success), Kind: MeasurementMeasured, Unit: "bool"},
-		"fault_containment_scope":      {Value: 1, Kind: MeasurementMeasured, Unit: "agents"},
+		"fault_containment_scope":      {Value: affected, Kind: MeasurementMeasured, Unit: "agents"},
 		"normal_completion_p50_ms":     {Value: normalStats.P50, Kind: MeasurementMeasured, Unit: "ms"},
 		"normal_completion_p95_ms":     {Value: normalStats.P95, Kind: MeasurementMeasured, Unit: "ms"},
 		"memory_peak_bytes":            {Value: float64(maxMemory), Kind: MeasurementMeasured, Unit: "bytes"},
 		"pids_peak":                    {Value: float64(pidsPeak), Kind: MeasurementMeasured, Unit: "processes"},
 		"fault_detection_ms":           {Value: float64(max64(1, faultDetection.Milliseconds())), Kind: MeasurementMeasured, Unit: "ms"},
+		"fault_terminate_ms":           {Value: float64(max64(1, faultTerminate.Milliseconds())), Kind: MeasurementMeasured, Unit: "ms"},
 		"cleanup_ms":                   {Value: float64(max64(1, cleanupMS)), Kind: MeasurementMeasured, Unit: "ms"},
 		"recovery_ms":                  {Value: float64(max64(1, recoveryMS)), Kind: MeasurementMeasured, Unit: "ms"},
 		"lowerdir_hash_unchanged":      {Value: boolFloat(afterHash == beforeHash), Kind: MeasurementMeasured, Unit: "bool"},
@@ -336,6 +347,16 @@ func executeFaultAgent(ctx context.Context, mode, faultType, dir, root string, r
 			_ = os.WriteFile(filepath.Join(dir, "replay-requested"), []byte("replay\n"), 0o644)
 		}
 		return safeRemoveWithin(root, dir), 0, 1
+	case "exit_nonzero":
+		cmd := exec.CommandContext(ctx, "sh", "-c", "exit 7")
+		return cmd.Run(), 0, 1
+	case "hang_timeout":
+		cmd := exec.CommandContext(ctx, "sh", "-c", "sleep 30")
+		err := cmd.Run()
+		if err == nil {
+			return fmt.Errorf("hang fault exited unexpectedly"), 0, 1
+		}
+		return err, 0, 1
 	default:
 		return fmt.Errorf("unsupported fault type %q", faultType), 0, 0
 	}

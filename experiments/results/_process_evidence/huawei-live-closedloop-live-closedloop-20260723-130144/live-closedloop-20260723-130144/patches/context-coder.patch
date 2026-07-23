@@ -1,0 +1,9 @@
+diff --git a/internal/review/live_context_hook.go b/internal/review/live_context_hook.go
+--- a/internal/review/live_context_hook.go
++++ b/internal/review/live_context_hook.go
+@@ -1,4 +1,4 @@
+ package review
+ 
+ // LiveContextHook is an allowlisted one-line edit target for codebase-dag live runs.
+-const LiveContextHook = "context-hook-v1"
++const LiveContextHook = "hook-v2"

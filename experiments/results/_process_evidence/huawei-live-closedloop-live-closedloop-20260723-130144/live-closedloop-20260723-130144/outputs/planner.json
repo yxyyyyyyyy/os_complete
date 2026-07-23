@@ -1,0 +1,55 @@
+{
+  "schema_version": "codebase-dag/v1",
+  "node_id": "planner",
+  "tasks": [
+    {
+      "id": "review-remediation-1",
+      "owner": "developer",
+      "dependencies": [],
+      "files": [
+        "internal/codebasedag/resource.go",
+        "internal/codebasedag/context.go"
+      ],
+      "acceptance": [
+        "internal/codebasedag/acceptance/resource_real.sh"
+      ]
+    },
+    {
+      "id": "review-remediation-2",
+      "owner": "developer",
+      "dependencies": [
+        "review-remediation-1"
+      ],
+      "files": [
+        "internal/codebasedag/review.go"
+      ],
+      "acceptance": [
+        "internal/codebasedag/acceptance/review_final_strict.sh"
+      ]
+    },
+    {
+      "id": "review-remediation-3",
+      "owner": "developer",
+      "dependencies": [
+        "review-remediation-2"
+      ],
+      "files": [
+        "internal/codebasedag/context.go"
+      ],
+      "acceptance": [
+        "internal/codebasedag/acceptance/context_real.sh"
+      ]
+    }
+  ],
+  "risks": [
+    "Changes may break existing functionality; ensure full test suite passes.",
+    "Immutable acceptance scripts must not be modified."
+  ],
+  "commands": [
+    [
+      "go",
+      "test",
+      "./..."
+    ]
+  ]
+}

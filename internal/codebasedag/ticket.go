@@ -33,37 +33,26 @@ func ReviewRemediationTicket() Ticket {
 			"resource-coder": {
 				Role: KindCoder,
 				AllowedFiles: []string{
-					"internal/review/resource_isolation.go",
-					"internal/review/resource_isolation_test.go",
-					"internal/experiment/review_scenarios.go",
-					"cmd/aortctl/main.go",
+					"internal/review/live_resource_hook.go",
 				},
 				ImmutableFiles: acceptanceScriptNames(),
-				PrivateContext: "Implement real resource isolation evidence: cgroup v2, overlay workspace checks, scheduler and cleanup evidence.",
+				PrivateContext: "Return replacement_value as a new non-empty string for LiveResourceHook only. Do not invent structs. Prefer replacement_value over a hand-written patch.",
 			},
 			"context-coder": {
 				Role: KindCoder,
 				AllowedFiles: []string{
-					"internal/review/context_sharing.go",
-					"internal/review/context_sharing_test.go",
-					"internal/ipc/shm/shm.go",
-					"internal/ipc/shm/shm_test.go",
-					"cmd/aortctl/main.go",
+					"internal/review/live_context_hook.go",
 				},
 				ImmutableFiles: acceptanceScriptNames(),
-				PrivateContext: "Implement real shared-context evidence using memfd/mmap/FD-passing counters and no degraded pass labels.",
+				PrivateContext: "Return replacement_value as a new non-empty string for LiveContextHook only. Do not invent structs. Prefer replacement_value over a hand-written patch.",
 			},
 			"evidence-coder": {
 				Role: KindCoder,
 				AllowedFiles: []string{
-					"internal/review/review_final.go",
-					"internal/review/review_final_test.go",
-					"internal/review/metrics.go",
-					"internal/review/metrics_test.go",
-					"cmd/aortctl/main.go",
+					"internal/review/live_evidence_hook.go",
 				},
 				ImmutableFiles: acceptanceScriptNames(),
-				PrivateContext: "Implement strict final evidence validation for real modes, call metadata, artifact hashes, and known limits.",
+				PrivateContext: "Return replacement_value as a new non-empty string for LiveEvidenceHook only. Do not invent structs. Prefer replacement_value over a hand-written patch.",
 			},
 			"tester": {
 				Role:           KindTester,

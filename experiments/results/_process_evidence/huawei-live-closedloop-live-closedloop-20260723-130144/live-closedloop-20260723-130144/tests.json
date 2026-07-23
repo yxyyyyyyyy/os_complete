@@ -1,0 +1,60 @@
+[
+  {
+    "schema_version": "codebase-dag/v1",
+    "name": "tester-1-gofmt",
+    "command": [
+      "gofmt",
+      "-w",
+      "internal/review/live_context_hook.go",
+      "internal/review/live_evidence_hook.go",
+      "internal/review/live_resource_hook.go"
+    ],
+    "exit_code": 0,
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "started_at": "2026-07-23T13:02:13.746828251Z",
+    "finished_at": "2026-07-23T13:02:13.748243684Z"
+  },
+  {
+    "schema_version": "codebase-dag/v1",
+    "name": "tester-2-git",
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit_code": 0,
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "started_at": "2026-07-23T13:02:13.748249213Z",
+    "finished_at": "2026-07-23T13:02:13.775312506Z"
+  },
+  {
+    "schema_version": "codebase-dag/v1",
+    "name": "tester-3-go",
+    "command": [
+      "go",
+      "test",
+      "./..."
+    ],
+    "exit_code": 0,
+    "stdout_sha256": "471b9e8994e6fc99f52997a56c88ca0dbc29386251becbf5b089a0176e9ee5f3",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "started_at": "2026-07-23T13:02:13.775320291Z",
+    "finished_at": "2026-07-23T13:02:24.129404975Z"
+  },
+  {
+    "schema_version": "codebase-dag/v1",
+    "name": "tester-4-go",
+    "command": [
+      "go",
+      "vet",
+      "./..."
+    ],
+    "exit_code": 0,
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "started_at": "2026-07-23T13:02:24.129420775Z",
+    "finished_at": "2026-07-23T13:02:25.712377626Z"
+  }
+]

@@ -85,7 +85,7 @@ func RunContextSharing(ctx context.Context, cfg ContextSharingConfig) (ScenarioR
 	if cfg.Mode != "all" {
 		modes = []string{cfg.Mode}
 	}
-	ratios := []float64{0, 0.25, 0.5, 0.75}
+	ratios := []float64{0, 0.25, 0.5, 0.75, 1.0}
 	if cfg.SharedRatioSet {
 		ratios = []float64{cfg.SharedRatio}
 	}
@@ -407,6 +407,106 @@ func maxIntValue(left, right int) int {
 		return left
 	}
 	return right
+}
+
+// ContextMatrixConfig sweeps the Open World context-sharing matrix.
+type ContextMatrixConfig struct {
+	Modes        []string
+	ContextSizes []int
+	AgentCounts  []int
+	SharedRatios []float64
+	Runs         int
+	Timeout      time.Duration
+	OutDir       string
+	Seed         int64
+}
+
+func (cfg ContextMatrixConfig) normalized() ContextMatrixConfig {
+	if len(cfg.Modes) == 0 {
+		cfg.Modes = append([]string(nil), contextModes...)
+	}
+	if len(cfg.ContextSizes) == 0 {
+		cfg.ContextSizes = []int{4 << 10, 64 << 10, 256 << 10, 1 << 20}
+	}
+	if len(cfg.AgentCounts) == 0 {
+		cfg.AgentCounts = []int{2, 4, 8, 16}
+	}
+	if len(cfg.SharedRatios) == 0 {
+		cfg.SharedRatios = []float64{0, 0.25, 0.5, 0.75, 1.0}
+	}
+	if cfg.Runs <= 0 {
+		cfg.Runs = 1
+	}
+	if cfg.Timeout <= 0 {
+		cfg.Timeout = 5 * time.Second
+	}
+	if cfg.Seed == 0 {
+		cfg.Seed = 20260723
+	}
+	if cfg.OutDir == "" {
+		cfg.OutDir = filepath.Join("experiments", "results", "review_remediation", "context_sharing_matrix")
+	}
+	return cfg
+}
+
+// RunContextSharingMatrix executes the full size×agents×ratio×mode matrix.
+// Large cells remain measured/derived/unsupported-labeled via existing metrics.
+func RunContextSharingMatrix(ctx context.Context, cfg ContextMatrixConfig) (ScenarioResult, error) {
+	cfg = cfg.normalized()
+	if ctx == nil {
+		ctx = context.Background()
+	}
+	result := newScenarioResult("context-sharing-matrix", "matrix", cfg.Seed, 0, cfg.Runs, map[string]any{
+		"modes":         cfg.Modes,
+		"context_sizes": cfg.ContextSizes,
+		"agent_counts":  cfg.AgentCounts,
+		"shared_ratios": cfg.SharedRatios,
+		"runs":          cfg.Runs,
+	})
+	result.Limitations = append(result.Limitations,
+		"Matrix cells label metrics as measured/derived/unsupported; logical bytes are not claimed as network bytes.",
+		"1MB×16-agent cells may be slow; keep Runs small for CI.",
+	)
+	anyFailure := false
+	cell := 0
+	for _, mode := range cfg.Modes {
+		for _, size := range cfg.ContextSizes {
+			for _, agents := range cfg.AgentCounts {
+				for _, ratio := range cfg.SharedRatios {
+					for run := 0; run < cfg.Runs; run++ {
+						cell++
+						seed := cfg.Seed + int64(cell*97+run)
+						obs, err := runContextOnce(ctx, mode, ratio, run, seed, ContextSharingConfig{
+							Mode:           mode,
+							Runs:           1,
+							ContextSize:    size,
+							Agents:         agents,
+							SharedRatio:    ratio,
+							SharedRatioSet: true,
+							Timeout:        cfg.Timeout,
+							OutDir:         cfg.OutDir,
+							Seed:           seed,
+						})
+						obs.Labels["context_size"] = strconv.Itoa(size)
+						obs.Labels["agents"] = strconv.Itoa(agents)
+						obs.RunID = fmt.Sprintf("%s-s%d-a%d-r%d-%03d", mode, size, agents, int(ratio*100), run+1)
+						result.PerRun = append(result.PerRun, obs)
+						if err != nil || !obs.Success {
+							anyFailure = true
+						}
+					}
+				}
+			}
+		}
+	}
+	result.EvidenceMode = contextEvidenceMode(result.PerRun)
+	if err := WriteScenarioArtifacts(cfg.OutDir, &result); err != nil {
+		return result, err
+	}
+	if anyFailure {
+		return result, fmt.Errorf("context sharing matrix had failed measured runs")
+	}
+	return result, nil
 }
 
 func contextEvidenceMode(runs []RunObservation) string {

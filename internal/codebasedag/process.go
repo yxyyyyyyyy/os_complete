@@ -19,13 +19,15 @@ type WorkerSpec struct {
 }
 
 type ResourceLimits struct {
-	MemoryMax string `json:"memory_max"`
-	PidsMax   string `json:"pids_max"`
-	CPUMax    string `json:"cpu_max"`
+	MemoryMax  string `json:"memory_max"`
+	MemoryHigh string `json:"memory_high,omitempty"`
+	PidsMax    string `json:"pids_max"`
+	CPUMax     string `json:"cpu_max"`
+	CPUWeight  string `json:"cpu_weight,omitempty"`
 }
 
 func DefaultResourceLimits() ResourceLimits {
-	return ResourceLimits{MemoryMax: "67108864", PidsMax: "8", CPUMax: "100000 100000"}
+	return ResourceLimits{MemoryMax: "67108864", MemoryHigh: "33554432", PidsMax: "8", CPUMax: "100000 100000"}
 }
 
 type ProcessConfig struct {
@@ -50,17 +52,19 @@ type WorkerResult struct {
 	OutputSHA256 string
 	LLMCallID    string
 	Error        string
+	Metrics      map[string]string
 }
 
 type ProcessResult struct {
-	PID                 int    `json:"pid"`
-	CgroupPath          string `json:"cgroup_path"`
-	ProcessEvidenceMode string `json:"process_evidence_mode"`
-	CgroupEvidenceMode  string `json:"cgroup_evidence_mode"`
-	EvidenceMode        string `json:"evidence_mode"`
-	ExitCode            int    `json:"exit_code"`
-	OutputSHA256        string `json:"output_sha256"`
-	LLMCallID           string `json:"llm_call_id"`
+	PID                 int               `json:"pid"`
+	CgroupPath          string            `json:"cgroup_path"`
+	ProcessEvidenceMode string            `json:"process_evidence_mode"`
+	CgroupEvidenceMode  string            `json:"cgroup_evidence_mode"`
+	EvidenceMode        string            `json:"evidence_mode"`
+	ExitCode            int               `json:"exit_code"`
+	OutputSHA256        string            `json:"output_sha256"`
+	LLMCallID           string            `json:"llm_call_id"`
+	Metrics             map[string]string `json:"metrics,omitempty"`
 }
 
 type ProcessRuntime interface {
@@ -83,8 +87,8 @@ func NewInterfaceProcessRuntime(driver ProcessDriver) InterfaceProcessRuntime {
 	return InterfaceProcessRuntime{driver: driver}
 }
 
-func (r InterfaceProcessRuntime) StartPrepared(ctx context.Context, cfg ProcessConfig) (ProcessResult, error) {
-	if err := validateProcessConfig(cfg); err != nil {
+func (r InterfaceProcessRuntime) StartPrepared(ctx context.Context, cfg ProcessConfig) (result ProcessResult, err error) {
+	if err = validateProcessConfig(cfg); err != nil {
 		return ProcessResult{}, err
 	}
 	if r.driver == nil {
@@ -98,36 +102,55 @@ func (r InterfaceProcessRuntime) StartPrepared(ctx context.Context, cfg ProcessC
 	cleanup := true
 	defer func() {
 		if cleanup {
-			_ = r.driver.Cleanup(ctx, worker, attachment)
+			if cerr := r.driver.Cleanup(ctx, worker, attachment); cerr != nil {
+				err = errors.Join(err, cerr)
+			}
 		}
 	}()
 	attachment, err = r.driver.Attach(ctx, worker, cfg.Limits)
 	if err != nil {
+		mode := "degraded"
+		if attachment.EvidenceMode != "" {
+			mode = attachment.EvidenceMode
+		}
+		return ProcessResult{
+			PID:                 worker.PID,
+			CgroupPath:          attachment.CgroupPath,
+			ProcessEvidenceMode: mode,
+			CgroupEvidenceMode:  mode,
+			EvidenceMode:        mode,
+		}, fmt.Errorf("cgroup attach: %w", err)
+	}
+	if err = r.driver.Continue(ctx, worker); err != nil {
 		return ProcessResult{}, err
 	}
-	if err := r.driver.Continue(ctx, worker); err != nil {
-		return ProcessResult{}, err
+	waitResult, waitErr := r.driver.Wait(ctx, worker)
+	if waitErr != nil {
+		return ProcessResult{}, waitErr
 	}
-	result, err := r.driver.Wait(ctx, worker)
-	if err != nil {
-		return ProcessResult{}, err
-	}
-	if err := r.driver.Cleanup(ctx, worker, attachment); err != nil {
+	if err = r.driver.Cleanup(ctx, worker, attachment); err != nil {
 		return ProcessResult{}, err
 	}
 	cleanup = false
-	if result.ExitCode != 0 {
-		return ProcessResult{}, fmt.Errorf("worker exited %d: %s", result.ExitCode, result.Error)
+	if waitResult.ExitCode != 0 {
+		return ProcessResult{}, fmt.Errorf("worker exited %d: %s", waitResult.ExitCode, waitResult.Error)
+	}
+	processMode := worker.EvidenceMode
+	evidenceMode := worker.EvidenceMode
+	if attachment.EvidenceMode == "degraded" {
+		processMode = "degraded"
+		evidenceMode = "degraded"
 	}
 	return ProcessResult{
 		PID:                 worker.PID,
 		CgroupPath:          attachment.CgroupPath,
-		ProcessEvidenceMode: worker.EvidenceMode,
+		ProcessEvidenceMode: processMode,
 		CgroupEvidenceMode:  attachment.EvidenceMode,
-		EvidenceMode:        worker.EvidenceMode,
-		ExitCode:            result.ExitCode,
-		OutputSHA256:        result.OutputSHA256,
-		LLMCallID:           result.LLMCallID,
+		EvidenceMode:        evidenceMode,
+		ExitCode:            waitResult.ExitCode,
+		OutputSHA256:        waitResult.OutputSHA256,
+		LLMCallID:           waitResult.LLMCallID,
+		Metrics:             waitResult.Metrics,
 	}, nil
 }
 

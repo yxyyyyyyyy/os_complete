@@ -105,9 +105,9 @@ func strictTestSummary() EvidenceSummary {
 		Nodes: nodes,
 		Calls: calls,
 		Patches: []PatchRecord{
-			{NodeID: "resource-coder", SHA256: strings.Repeat("d", 64), ChangedFiles: []string{"internal/review/resource_isolation.go"}, SourceCallID: "call-a"},
-			{NodeID: "context-coder", SHA256: strings.Repeat("e", 64), ChangedFiles: []string{"internal/review/context_sharing.go"}, SourceCallID: "call-b"},
-			{NodeID: "evidence-coder", SHA256: strings.Repeat("f", 64), ChangedFiles: []string{"internal/review/review_final.go"}, SourceCallID: "call-c"},
+			{NodeID: "resource-coder", SHA256: strings.Repeat("d", 64), ChangedFiles: []string{"internal/review/live_resource_hook.go"}, SourceCallID: "call-a"},
+			{NodeID: "context-coder", SHA256: strings.Repeat("e", 64), ChangedFiles: []string{"internal/review/live_context_hook.go"}, SourceCallID: "call-b"},
+			{NodeID: "evidence-coder", SHA256: strings.Repeat("f", 64), ChangedFiles: []string{"internal/review/live_evidence_hook.go"}, SourceCallID: "call-c"},
 		},
 		Tests:                []TestRecord{{SchemaVersion: SchemaVersion, Name: "go test", ExitCode: 0}},
 		Artifacts:            map[string]string{"summary.json": strings.Repeat("c", 64)},

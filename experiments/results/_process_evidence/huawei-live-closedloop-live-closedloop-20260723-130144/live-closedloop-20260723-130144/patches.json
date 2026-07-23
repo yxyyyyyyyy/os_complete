@@ -1,0 +1,29 @@
+[
+  {
+    "node_id": "context-coder",
+    "sha256": "83025bff4a3aece2a738acdfb4b1eb6dfeadb4eee6d2c7b7fa11335e7a1dbc92",
+    "bytes": 374,
+    "changed_files": [
+      "internal/review/live_context_hook.go"
+    ],
+    "source_call_id": "a0254f2a-4a98-4b35-8f9e-10c4b38d115a"
+  },
+  {
+    "node_id": "evidence-coder",
+    "sha256": "455380b6eefee7091cecb0528781ec2938226b36ac0be4a5e38453f67007711b",
+    "bytes": 382,
+    "changed_files": [
+      "internal/review/live_evidence_hook.go"
+    ],
+    "source_call_id": "5c3ad1b4-1e71-432a-9171-cee2a1416683"
+  },
+  {
+    "node_id": "resource-coder",
+    "sha256": "563b468aa57db98624a3740db8b6939650b39a04fb4f6f36f8cc750facbe20f8",
+    "bytes": 470,
+    "changed_files": [
+      "internal/review/live_resource_hook.go"
+    ],
+    "source_call_id": "f192e956-3f54-4b40-9e06-2c2e10509c33"
+  }
+]

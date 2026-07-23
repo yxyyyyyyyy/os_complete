@@ -124,4 +124,6 @@ type EvidenceSummary struct {
 	Artifacts            map[string]string  `json:"artifacts_sha256"`
 	AllRequiredPassed    bool               `json:"all_required_passed"`
 	HumanFunctionalEdits int                `json:"human_functional_edits"`
+	MinPhysicalLines     int                `json:"min_physical_go_lines,omitempty"`
+	MinNonblankLines     int                `json:"min_nonblank_go_lines,omitempty"`
 }

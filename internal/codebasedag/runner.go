@@ -267,6 +267,18 @@ func (s *ExecutionState) Transition(nodeID string, to NodeStatus, evidence Trans
 	return nil
 }
 
+func (s *ExecutionState) EnsureNode(nodeID string) error {
+	if nodeID == "" {
+		return fmt.Errorf("node ID is required")
+	}
+	if _, ok := s.nodes[nodeID]; ok {
+		return nil
+	}
+	s.nodes[nodeID] = NodeState{NodeID: nodeID, Status: NodePending}
+	s.order = append(s.order, nodeID)
+	return nil
+}
+
 func (s *ExecutionState) Completed() map[string]bool {
 	out := make(map[string]bool, len(s.nodes))
 	for nodeID, state := range s.nodes {

@@ -1,0 +1,17 @@
+{
+  "schema_version": "codebase-dag/v1",
+  "node_id": "context-coder",
+  "summary": "update LiveContextHook",
+  "patch": "diff --git a/internal/review/live_context_hook.go b/internal/review/live_context_hook.go\n--- a/internal/review/live_context_hook.go\n+++ b/internal/review/live_context_hook.go\n@@ -1,4 +1,4 @@\n package review\n \n // LiveContextHook is an allowlisted one-line edit target for codebase-dag live runs.\n-const LiveContextHook = \"context-hook-v1\"\n+const LiveContextHook = \"hook-v2\"\n",
+  "replacement_value": "hook-v2",
+  "changed_files": [
+    "internal/review/live_context_hook.go"
+  ],
+  "tests": [
+    [
+      "go",
+      "test",
+      "./internal/..."
+    ]
+  ]
+}

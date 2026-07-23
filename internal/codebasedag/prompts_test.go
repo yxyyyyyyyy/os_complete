@@ -28,7 +28,7 @@ func TestBuildPromptIncludesRoleContractAndOmitsSecrets(t *testing.T) {
 		"internal/review/resource.go",
 		"internal/codebasedag/acceptance/resource_real.sh",
 		"sha256:abc123",
-		`"patch"`,
+		`"replacement_value"`,
 		"Return exactly one JSON object",
 	} {
 		if !strings.Contains(prompt, want) {

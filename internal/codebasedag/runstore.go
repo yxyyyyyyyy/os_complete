@@ -100,7 +100,7 @@ func (s *RunStore) AppendJSONL(rel string, value any) error {
 	return err
 }
 
-func (s *RunStore) FinalizeHashes() (map[string]string, error) {
+func (s *RunStore) HashArtifacts() (map[string]string, error) {
 	hashes := make(map[string]string)
 	err := filepath.WalkDir(s.Dir, func(path string, entry fs.DirEntry, walkErr error) error {
 		if walkErr != nil {
@@ -146,6 +146,16 @@ func (s *RunStore) FinalizeHashes() (map[string]string, error) {
 	for _, key := range keys {
 		ordered[key] = hashes[key]
 	}
+	return ordered, nil
+}
+
+func (s *RunStore) FinalizeHashes() (map[string]string, error) {
+	ordered, err := s.HashArtifacts()
+	if err != nil {
+		return nil, err
+	}
+	indexPath := filepath.Join(s.Dir, artifactHashIndex)
+	_ = os.Remove(indexPath)
 	if err := s.WriteJSON(artifactHashIndex, ordered); err != nil {
 		return nil, err
 	}

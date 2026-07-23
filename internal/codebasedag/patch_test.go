@@ -1,6 +1,10 @@
 package codebasedag
 
 import (
+	"context"
+	"os"
+	"os/exec"
+	"path/filepath"
 	"strings"
 	"testing"
 )
@@ -55,6 +59,60 @@ func TestDecodeCoderOutputRejectsFencesTrailingDataUnknownFieldsAndWrongNode(t *
 	}
 }
 
+func TestSynthesizeQuotedConstPatchApplies(t *testing.T) {
+	dir := t.TempDir()
+	rel := "internal/review/live_resource_hook.go"
+	path := filepath.Join(dir, rel)
+	if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(path, []byte("package review\n\nconst LiveResourceHook = \"resource-hook-v1\"\n"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	init := exec.Command("git", "init", "--template=")
+	init.Dir = dir
+	if out, err := init.CombinedOutput(); err != nil {
+		t.Fatalf("git init: %v\n%s", err, out)
+	}
+	for _, args := range [][]string{
+		{"git", "config", "user.email", "t@example.com"},
+		{"git", "config", "user.name", "t"},
+		{"git", "add", "."},
+		{"git", "commit", "-m", "i"},
+	} {
+		cmd := exec.Command(args[0], args[1:]...)
+		cmd.Dir = dir
+		if out, err := cmd.CombinedOutput(); err != nil {
+			t.Fatalf("%v: %v\n%s", args, err, out)
+		}
+	}
+	patch, name, err := SynthesizeQuotedConstPatch(dir, rel, "resource-hook-v2")
+	if err != nil || name != "LiveResourceHook" {
+		t.Fatalf("synth: name=%s err=%v", name, err)
+	}
+	if err := CheckPatchApplies(context.Background(), "git", dir, patch); err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestValidatePatchRejectsIncompleteHunk(t *testing.T) {
+	output := CoderOutput{
+		SchemaVersion: SchemaVersion,
+		NodeID:        "resource-coder",
+		Summary:       "truncated",
+		Patch:         "diff --git a/internal/review/live_resource_hook.go b/internal/review/live_resource_hook.go\n--- a/internal/review/live_resource_hook.go\n+++ b/internal/review/live_resource_hook.go\n@@ -1,3 +1,5 @@\n package review\n \n-const LiveResourceHook = \"resource-hook-v1\"\n",
+		ChangedFiles:  []string{"internal/review/live_resource_hook.go"},
+	}
+	_, err := ValidatePatch(PatchPolicy{
+		NodeID:       "resource-coder",
+		AllowedFiles: map[string]struct{}{"internal/review/live_resource_hook.go": {}},
+		MaxBytes:     32 << 10,
+	}, output, "call")
+	if err == nil || !strings.Contains(err.Error(), "incomplete hunk") {
+		t.Fatalf("error = %v", err)
+	}
+}
+
 func TestValidatePatchRejectsPolicyViolations(t *testing.T) {
 	output, err := DecodeCoderOutput("resource-coder", []byte(validCoderJSON))
 	if err != nil {
@@ -73,13 +131,13 @@ func TestValidatePatchRejectsPolicyViolations(t *testing.T) {
 			want:   "outside allowlist",
 		},
 		{
-			name: "declared mismatch",
+			name: "model declaration ignored in favor of patch files",
 			mutate: func(o CoderOutput) CoderOutput {
-				o.ChangedFiles = []string{"internal/review/other.go"}
+				o.ChangedFiles = []string{"internal/review/other.go", "internal/review/resource.go"}
 				return o
 			},
 			policy: PatchPolicy{NodeID: "resource-coder", AllowedFiles: map[string]struct{}{"internal/review/resource.go": {}}, MaxBytes: 32 << 10},
-			want:   "declared",
+			want:   "",
 		},
 		{
 			name: "immutable deletion",
@@ -98,10 +156,37 @@ func TestValidatePatchRejectsPolicyViolations(t *testing.T) {
 	}
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {
-			_, err := ValidatePatch(tc.policy, tc.mutate(output), "api-call-1")
+			rec, err := ValidatePatch(tc.policy, tc.mutate(output), "api-call-1")
+			if tc.want == "" {
+				if err != nil {
+					t.Fatalf("unexpected error: %v", err)
+				}
+				if len(rec.ChangedFiles) != 1 || rec.ChangedFiles[0] != "internal/review/resource.go" {
+					t.Fatalf("expected patch-derived files, got %#v", rec.ChangedFiles)
+				}
+				return
+			}
 			if err == nil || !strings.Contains(err.Error(), tc.want) {
 				t.Fatalf("error = %v, want %q", err, tc.want)
 			}
 		})
+	}
+}
+
+func TestDecodeCoderOutputAllowsEmptySummaryWithReplacement(t *testing.T) {
+	body := `{"schema_version":"codebase-dag/v1","node_id":"context-coder","summary":"","replacement_value":"hook-v2","changed_files":[],"tests":[["go","test","./internal/..."]]}`
+	out, err := DecodeCoderOutput("context-coder", []byte(body))
+	if err != nil {
+		t.Fatalf("DecodeCoderOutput: %v", err)
+	}
+	if out.ReplacementValue != "hook-v2" || out.Summary != "" || len(out.ChangedFiles) != 0 {
+		t.Fatalf("unexpected output: %#v", out)
+	}
+}
+
+func TestDecodeCoderOutputStillRequiresChangedFilesWithoutReplacement(t *testing.T) {
+	body := `{"schema_version":"codebase-dag/v1","node_id":"context-coder","summary":"x","patch":"diff --git a/a b/a\n","changed_files":[],"tests":[]}`
+	if _, err := DecodeCoderOutput("context-coder", []byte(body)); err == nil || !strings.Contains(err.Error(), "changed_files") {
+		t.Fatalf("error = %v, want changed_files", err)
 	}
 }

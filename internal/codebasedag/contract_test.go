@@ -10,13 +10,13 @@ func TestDefaultReviewRemediationContractValidAndScoped(t *testing.T) {
 	if err := c.Validate(); err != nil {
 		t.Fatal(err)
 	}
-	if err := c.AllowPath("resource-coder", "internal/review/resource_isolation.go"); err != nil {
+	if err := c.AllowPath("resource-coder", "internal/review/live_resource_hook.go"); err != nil {
 		t.Fatal(err)
 	}
-	if err := c.AllowPath("context-coder", "internal/ipc/shm/transport.go"); err != nil {
+	if err := c.AllowPath("context-coder", "internal/review/live_context_hook.go"); err != nil {
 		t.Fatal(err)
 	}
-	if err := c.AllowPath("evidence-coder", "internal/evidence/index.go"); err != nil {
+	if err := c.AllowPath("evidence-coder", "internal/review/live_evidence_hook.go"); err != nil {
 		t.Fatal(err)
 	}
 	if err := c.AllowPath("resource-coder", "internal/codebasedag/acceptance/resource_real.sh"); err == nil {

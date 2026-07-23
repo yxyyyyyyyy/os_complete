@@ -3,6 +3,7 @@ package codebasedag
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -11,32 +12,61 @@ import (
 	"strings"
 	"sync/atomic"
 	"testing"
+	"time"
+
+	"aort-r/internal/llm"
 )
 
-func TestLiveNodeExecutorIntegrateSkipsLLM(t *testing.T) {
+func TestLiveNodeExecutorIntegrateRequiresPatches(t *testing.T) {
 	dir := t.TempDir()
 	store, err := NewRunStore(dir, "live-integrate")
 	if err != nil {
 		t.Fatal(err)
 	}
 	exec := NewLiveNodeExecutor(nil, ReviewRemediationTicket(), store)
-	result, err := exec.ExecuteNode(context.Background(), NodeExecutionRequest{
+	_, err = exec.ExecuteNode(context.Background(), NodeExecutionRequest{
 		RunID:        "live-integrate",
 		NodeID:       "integrate",
 		Dependencies: []string{"resource-coder", "context-coder", "evidence-coder"},
 	})
+	if err == nil || !strings.Contains(err.Error(), "at least 3 coder patches") {
+		t.Fatalf("expected patch requirement error, got %v", err)
+	}
+}
+
+func TestLiveNodeExecutorRejectsInvalidCoderJSON(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path == "/models" {
+			_, _ = w.Write([]byte(`{"data":[{"id":"deepseek-v4-flash"}]}`))
+			return
+		}
+		_ = json.NewEncoder(w).Encode(map[string]any{
+			"id": "call-bad", "model": "deepseek-v4-flash",
+			"choices": []map[string]any{{"message": map[string]string{"content": `{"schema_version":"codebase-dag/v1","node_id":"resource-coder"}`}}},
+			"usage":   map[string]int{"prompt_tokens": 1, "completion_tokens": 1, "total_tokens": 2},
+		})
+	}))
+	defer server.Close()
+
+	dir := t.TempDir()
+	store, err := NewRunStore(dir, "live-bad-json")
 	if err != nil {
 		t.Fatal(err)
 	}
-	if result.OutputSHA256 == "" || result.LLMCallID != "" {
-		t.Fatalf("result=%#v", result)
-	}
-	if _, err := os.Stat(filepath.Join(store.Dir, "outputs", "integrate.json")); err != nil {
+	provider := llm.NewDeepSeekProvider(llm.DeepSeekConfig{APIKey: "k", BaseURL: server.URL, Model: RequiredDeepSeekModel})
+	model, err := NewStrictModel(provider, StrictModelOptions{RequiredModel: RequiredDeepSeekModel, MaxCalls: 10})
+	if err != nil {
 		t.Fatal(err)
+	}
+	exec := NewLiveNodeExecutor(model, ReviewRemediationTicket(), store)
+	_, err = exec.ExecuteNode(context.Background(), NodeExecutionRequest{RunID: "live-bad-json", NodeID: "resource-coder"})
+	if err == nil {
+		t.Fatal("expected decode/validate failure")
 	}
 }
 
 func TestRunLiveExecutesGraphAgainstFakeDeepSeek(t *testing.T) {
+	repo := initReviewFixtureRepo(t)
 	var callSeq atomic.Int64
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch {
@@ -53,64 +83,21 @@ func TestRunLiveExecutesGraphAgainstFakeDeepSeek(t *testing.T) {
 			if len(body.Messages) > 0 {
 				prompt = body.Messages[0].Content
 			}
-			nodeID := "planner"
-			text := `{"schema_version":"codebase-dag/v1","node_id":"planner","tasks":[],"risks":[],"commands":[]}`
-			switch {
-			case strings.Contains(prompt, "node_id: resource-coder"):
-				nodeID = "resource-coder"
-				text = strings.ReplaceAll(validCoderJSON, "resource-coder", "resource-coder")
-			case strings.Contains(prompt, "node_id: context-coder"):
-				nodeID = "context-coder"
-				text = strings.ReplaceAll(validCoderJSON, "resource-coder", "context-coder")
-				text = strings.ReplaceAll(text, "internal/review/resource.go", "internal/review/context_sharing.go")
-			case strings.Contains(prompt, "node_id: evidence-coder"):
-				nodeID = "evidence-coder"
-				text = strings.ReplaceAll(validCoderJSON, "resource-coder", "evidence-coder")
-				text = strings.ReplaceAll(text, "internal/review/resource.go", "internal/review/review_final.go")
-			case strings.Contains(prompt, "role: tester"):
-				nodeID = "tester"
-				text = `{"schema_version":"codebase-dag/v1","node_id":"tester","verdict":"pass","blocking_findings":[],"non_blocking_findings":[]}`
-			case strings.Contains(prompt, "role: reviewer"):
-				nodeID = "reviewer"
-				text = `{"schema_version":"codebase-dag/v1","node_id":"reviewer","verdict":"pass","blocking_findings":[],"non_blocking_findings":[]}`
-			case strings.Contains(prompt, "role: finalizer"):
-				nodeID = "finalizer"
-				text = `{"schema_version":"codebase-dag/v1","node_id":"finalizer","status":"passed","summary":"ok","limitations":[]}`
-			}
+			text := fakeLiveResponse(prompt)
 			id := callSeq.Add(1)
-			payload := map[string]any{
-				"id":    "call-" + nodeID + "-" + itoa(id),
+			_ = json.NewEncoder(w).Encode(map[string]any{
+				"id":    fmt.Sprintf("call-%d", id),
 				"model": "deepseek-v4-flash",
 				"choices": []map[string]any{
 					{"message": map[string]string{"content": text}},
 				},
 				"usage": map[string]int{"prompt_tokens": 3, "completion_tokens": 5, "total_tokens": 8},
-			}
-			_ = json.NewEncoder(w).Encode(payload)
+			})
 		default:
 			http.NotFound(w, r)
 		}
 	}))
 	defer server.Close()
-
-	repo := newTestGitRepo(t)
-	goFile := filepath.Join(repo, "main.go")
-	if err := os.WriteFile(goFile, []byte("package main\n\nfunc main() {}\n"), 0o644); err != nil {
-		t.Fatal(err)
-	}
-	for _, args := range [][]string{
-		{"git", "init", "--template="},
-		{"git", "config", "user.email", "test@example.com"},
-		{"git", "config", "user.name", "test"},
-		{"git", "add", "main.go"},
-		{"git", "commit", "-m", "init"},
-	} {
-		cmd := exec.Command(args[0], args[1:]...)
-		cmd.Dir = repo
-		if out, err := cmd.CombinedOutput(); err != nil {
-			t.Fatalf("%v: %v\n%s", args, err, out)
-		}
-	}
 
 	out := t.TempDir()
 	result, err := RunLive(context.Background(), LiveRunConfig{
@@ -128,34 +115,105 @@ func TestRunLiveExecutesGraphAgainstFakeDeepSeek(t *testing.T) {
 		APIKey:      "test-key",
 		BaseURL:     server.URL,
 		RequireKey:  true,
+		SkipRace:    true,
+		Cleanup:     true,
+		TestTimeout: 2 * time.Minute,
 	})
 	if err != nil {
 		t.Fatalf("RunLive: %v", err)
 	}
-	if !result.Summary.AllRequiredPassed {
-		t.Fatalf("summary=%#v", result.Summary)
+	if !result.AllRequiredPassed {
+		t.Fatalf("expected passed, summary=%#v", result.Summary)
 	}
 	if len(result.Calls) < 7 {
 		t.Fatalf("calls=%d", len(result.Calls))
 	}
-	if _, err := os.Stat(filepath.Join(result.Dir, "summary.json")); err != nil {
-		t.Fatal(err)
-	}
-	if _, err := os.Stat(filepath.Join(result.Dir, "llm_calls.jsonl")); err != nil {
-		t.Fatal(err)
+	if err := ValidateRun(result.Dir); err != nil {
+		t.Fatalf("ValidateRun: %v", err)
 	}
 }
 
-func itoa(v int64) string {
-	if v == 0 {
-		return "0"
+func fakeLiveResponse(prompt string) string {
+	nodeID := "planner"
+	for _, key := range []string{"finalizer", "reviewer-recheck-", "reviewer", "tester-recheck-", "tester", "fixer-", "resource-coder", "context-coder", "evidence-coder", "planner"} {
+		if strings.Contains(prompt, "node_id: "+key) || (strings.HasSuffix(key, "-") && strings.Contains(prompt, "node_id: "+strings.TrimSuffix(key, "-"))) {
+			if strings.HasSuffix(key, "-") {
+				// extract actual node id line
+				for _, line := range strings.Split(prompt, "\n") {
+					if strings.HasPrefix(line, "node_id: ") {
+						nodeID = strings.TrimSpace(strings.TrimPrefix(line, "node_id: "))
+						break
+					}
+				}
+			} else {
+				nodeID = key
+			}
+			break
+		}
 	}
-	var buf [20]byte
-	i := len(buf)
-	for v > 0 {
-		i--
-		buf[i] = byte('0' + v%10)
-		v /= 10
+	for _, line := range strings.Split(prompt, "\n") {
+		if strings.HasPrefix(line, "node_id: ") {
+			nodeID = strings.TrimSpace(strings.TrimPrefix(line, "node_id: "))
+			break
+		}
 	}
-	return string(buf[i:])
+	switch {
+	case nodeID == "planner" || strings.Contains(prompt, "role: planner"):
+		return `{"schema_version":"codebase-dag/v1","node_id":"planner","tasks":[{"id":"t1","owner":"resource-coder","dependencies":[],"files":["internal/review/live_resource_hook.go"],"acceptance":["go test"]}],"risks":[],"commands":[["go","test","./"]]}`
+	case nodeID == "resource-coder":
+		return coderJSON("resource-coder", "internal/review/live_resource_hook.go", "LiveResourceHook", "resource-hook-v1", "resource-hook-v2")
+	case nodeID == "context-coder":
+		return coderJSON("context-coder", "internal/review/live_context_hook.go", "LiveContextHook", "context-hook-v1", "context-hook-v2")
+	case nodeID == "evidence-coder":
+		return coderJSON("evidence-coder", "internal/review/live_evidence_hook.go", "LiveEvidenceHook", "evidence-hook-v1", "evidence-hook-v2")
+	case strings.HasPrefix(nodeID, "tester"):
+		return fmt.Sprintf(`{"schema_version":"codebase-dag/v1","node_id":%q,"verdict":"pass","blocking_findings":[],"non_blocking_findings":[]}`, nodeID)
+	case strings.HasPrefix(nodeID, "reviewer"):
+		return fmt.Sprintf(`{"schema_version":"codebase-dag/v1","node_id":%q,"verdict":"pass","blocking_findings":[],"non_blocking_findings":[]}`, nodeID)
+	case nodeID == "finalizer":
+		return `{"schema_version":"codebase-dag/v1","node_id":"finalizer","status":"passed","summary":"ok","limitations":[]}`
+	case strings.HasPrefix(nodeID, "fixer-"):
+		return coderJSON(nodeID, "internal/review/live_resource_hook.go", "LiveResourceHook", "resource-hook-v2", "resource-hook-v3")
+	default:
+		return `{"schema_version":"codebase-dag/v1","node_id":"planner","tasks":[{"id":"t1","owner":"resource-coder","dependencies":[],"files":[],"acceptance":[]}],"risks":[],"commands":[["go","test","./"]]}`
+	}
+}
+
+func coderJSON(node, file, constName, oldMark, newMark string) string {
+	return fmt.Sprintf(`{"schema_version":"codebase-dag/v1","node_id":%q,"summary":"update marker","replacement_value":%q,"changed_files":[%q],"tests":[["go","test","./"]]}`, node, newMark, file)
+}
+
+func initReviewFixtureRepo(t *testing.T) string {
+	t.Helper()
+	dir := newTestGitRepo(t)
+	files := map[string]string{
+		"go.mod":                                "module example.com/reviewfix\n\ngo 1.22\n",
+		"internal/review/live_resource_hook.go": "package review\n\nconst LiveResourceHook = \"resource-hook-v1\"\n",
+		"internal/review/live_context_hook.go":  "package review\n\nconst LiveContextHook = \"context-hook-v1\"\n",
+		"internal/review/live_evidence_hook.go": "package review\n\nconst LiveEvidenceHook = \"evidence-hook-v1\"\n",
+		"internal/review/live_hooks_test.go":    "package review\n\nimport \"testing\"\n\nfunc TestLiveHooksPresent(t *testing.T) {\n\tif LiveResourceHook == \"\" || LiveContextHook == \"\" || LiveEvidenceHook == \"\" {\n\t\tt.Fatal(\"empty\")\n\t}\n}\n",
+	}
+	for rel, body := range files {
+		path := filepath.Join(dir, rel)
+		if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
+			t.Fatal(err)
+		}
+		if err := os.WriteFile(path, []byte(body), 0o644); err != nil {
+			t.Fatal(err)
+		}
+	}
+	for _, args := range [][]string{
+		{"git", "init", "--template="},
+		{"git", "config", "user.email", "test@example.com"},
+		{"git", "config", "user.name", "test"},
+		{"git", "add", "."},
+		{"git", "commit", "-m", "init"},
+	} {
+		cmd := exec.Command(args[0], args[1:]...)
+		cmd.Dir = dir
+		if out, err := cmd.CombinedOutput(); err != nil {
+			t.Fatalf("%v: %v\n%s", args, err, out)
+		}
+	}
+	return dir
 }

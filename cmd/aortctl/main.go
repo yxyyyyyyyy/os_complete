@@ -92,9 +92,32 @@ func runScenario(args []string) error {
 		timeout := fs.Duration("timeout", 5*time.Second, "per-run timeout")
 		contextSize := fs.Int("context-size", 4096, "logical context bytes per agent")
 		agents := fs.Int("agents", 6, "number of agents")
-		sharedRatioText := fs.String("shared-ratio", "all", "shared context ratio: all, 0, 0.25, 0.5, or 0.75")
+		sharedRatioText := fs.String("shared-ratio", "all", "shared context ratio: all, 0, 0.25, 0.5, 0.75, or 1.0")
+		matrix := fs.Bool("matrix", false, "run full size×agents×ratio×mode matrix (Open World sweep)")
+		matrixSmoke := fs.Bool("matrix-smoke", false, "run a small matrix subset for CI/smoke")
 		out := fs.String("out", filepath.Join("experiments", "results", "review_remediation", "context_sharing"), "output directory")
 		if err := fs.Parse(args[1:]); err != nil {
+			return err
+		}
+		if *matrix || *matrixSmoke {
+			matrixCfg := review.ContextMatrixConfig{
+				Runs:    *runs,
+				Seed:    *seed,
+				Timeout: *timeout,
+				OutDir:  *out,
+			}
+			// Default scenario --runs=20 would explode the matrix; keep one sample per cell unless overridden.
+			if *runs == 20 {
+				matrixCfg.Runs = 1
+			}
+			if *matrixSmoke {
+				matrixCfg.Modes = []string{"full-copy", "aort-r"}
+				matrixCfg.ContextSizes = []int{4096, 65536}
+				matrixCfg.AgentCounts = []int{2, 4}
+				matrixCfg.SharedRatios = []float64{0, 1.0}
+				matrixCfg.Runs = 1
+			}
+			_, err := experiment.RunContextSharingMatrix(matrixCfg)
 			return err
 		}
 		cfg := review.ContextSharingConfig{
@@ -146,6 +169,8 @@ func runCodebaseDAGScenario(args []string) error {
 	preflightOnly := fs.Bool("preflight-only", false, "run local preflight and write summary without worker execution")
 	minPhysical := fs.Int("min-physical", codebasedag.DefaultMinPhysicalLines, "minimum tracked Go physical lines")
 	minNonblank := fs.Int("min-nonblank", codebasedag.DefaultMinNonblankLines, "minimum tracked Go nonblank lines")
+	allowDirty := fs.Bool("allow-dirty", false, "allow dirty workload git tree (recorded as risk)")
+	skipRace := fs.Bool("skip-race", false, "skip go test -race in machine tester")
 	gitPath := fs.String("git-path", "", "Git executable path for manifest construction")
 	if err := fs.Parse(args); err != nil {
 		return err
@@ -195,18 +220,22 @@ func runCodebaseDAGScenario(args []string) error {
 	}
 
 	live, err := codebasedag.RunLive(context.Background(), codebasedag.LiveRunConfig{
-		RunnerConfig: cfg,
-		OutDir:       *out,
-		Ticket:       *ticket,
-		MinPhysical:  *minPhysical,
-		MinNonblank:  *minNonblank,
-		GitPath:      *gitPath,
-		RequireKey:   true,
+		RunnerConfig:  cfg,
+		OutDir:        *out,
+		Ticket:        *ticket,
+		MinPhysical:   *minPhysical,
+		MinNonblank:   *minNonblank,
+		GitPath:       *gitPath,
+		RequireKey:    true,
+		WorkerCommand: *workerCommand,
+		AllowDirty:    *allowDirty,
+		SkipRace:      *skipRace,
+		Cleanup:       true,
 	})
 	if err != nil {
 		return err
 	}
-	fmt.Printf("codebase-dag live run %s passed=%v calls=%d dir=%s\n", live.Summary.RunID, live.Summary.AllRequiredPassed, len(live.Calls), live.Dir)
+	fmt.Printf("codebase-dag live run %s passed=%v calls=%d dir=%s\n", live.Summary.RunID, live.AllRequiredPassed, len(live.Calls), live.Dir)
 	return nil
 }
 

@@ -18,7 +18,7 @@ func TestReviewRemediationTicketDefinesNodePolicies(t *testing.T) {
 			t.Fatalf("missing policy for %s", node)
 		}
 	}
-	if got := ticket.NodePolicies["resource-coder"].AllowedFiles; !containsString(got, "internal/review/resource_isolation.go") {
+	if got := ticket.NodePolicies["resource-coder"].AllowedFiles; !containsString(got, "internal/review/live_resource_hook.go") {
 		t.Fatalf("resource allowlist = %#v", got)
 	}
 }

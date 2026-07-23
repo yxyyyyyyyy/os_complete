@@ -40,7 +40,7 @@ func TestCallBudgetRejectsEighthNormalBeyondMaxWithFixers(t *testing.T) {
 }
 
 func TestCallBudgetFixerAndSchemaRepairCaps(t *testing.T) {
-	b := NewCallBudgetWithLimits(10, 7, 2, 1)
+	b := NewCallBudgetWithLimits(15, 7, 2, 3)
 	roles := []string{"planner", "resource-coder", "context-coder", "evidence-coder", "tester", "reviewer", "finalizer"}
 	for _, role := range roles {
 		res, err := b.Reserve(role, "normal")
@@ -67,8 +67,18 @@ func TestCallBudgetFixerAndSchemaRepairCaps(t *testing.T) {
 		t.Fatal(err)
 	}
 	s1.Commit(true)
-	if _, err := b.Reserve("planner", "schema-repair"); err == nil {
-		t.Fatal("second schema-repair should fail")
+	s2, err := b.Reserve("coder", "schema-repair")
+	if err != nil {
+		t.Fatal(err)
+	}
+	s2.Commit(true)
+	s3, err := b.Reserve("coder2", "schema-repair")
+	if err != nil {
+		t.Fatal(err)
+	}
+	s3.Commit(true)
+	if _, err := b.Reserve("coder3", "schema-repair"); err == nil {
+		t.Fatal("fourth schema-repair should fail")
 	}
 }
 

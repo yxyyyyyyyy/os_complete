@@ -1,0 +1,7 @@
+{
+  "schema_version": "codebase-dag/v1",
+  "node_id": "finalizer",
+  "status": "passed",
+  "summary": "Three allowlisted one-line edits updated LiveContextHook, LiveEvidenceHook, LiveResourceHook constants to '-v2'. All validation gates (gofmt, whitespace, tests, vet) passed.",
+  "limitations": []
+}

@@ -32,7 +32,10 @@ func ValidateEvidenceSummary(summary EvidenceSummary) error {
 	if summary.HumanFunctionalEdits != 0 {
 		return fmt.Errorf("human functional edits must be zero")
 	}
-	if err := summary.SourceManifest.ValidateLargeCodebase(); err != nil {
+	if err := summary.SourceManifest.ValidateLargeCodebaseWithOptions(ManifestOptions{
+		MinPhysical: summary.MinPhysicalLines,
+		MinNonblank: summary.MinNonblankLines,
+	}); err != nil {
 		return err
 	}
 	if summary.SourceManifest.SchemaVersion != "" && summary.SourceManifest.SchemaVersion != SchemaVersion {

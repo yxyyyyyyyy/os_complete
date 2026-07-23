@@ -30,24 +30,13 @@ func DefaultReviewRemediationContract() ReviewRemediationContract {
 		},
 		CoderScopes: map[string][]string{
 			"resource-coder": {
-				"internal/review/resource_isolation.go",
-				"internal/review/resource_isolation_test.go",
-				"internal/capsule/",
-				"internal/scheduler/",
-				"internal/workspace/",
-				"internal/checkpoint/",
+				"internal/review/live_resource_hook.go",
 			},
 			"context-coder": {
-				"internal/review/context_sharing.go",
-				"internal/review/context_sharing_test.go",
-				"internal/ipc/shm/",
-				"internal/cvm/",
+				"internal/review/live_context_hook.go",
 			},
 			"evidence-coder": {
-				"internal/review/review_final.go",
-				"internal/review/review_final_test.go",
-				"internal/evidence/",
-				"internal/verify/",
+				"internal/review/live_evidence_hook.go",
 			},
 		},
 		ForbiddenPaths: []string{

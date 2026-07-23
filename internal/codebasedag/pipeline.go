@@ -11,9 +11,9 @@ import (
 // IntegrationPlan describes how validated coder patches are applied into one
 // integration workspace before tester/reviewer gates run.
 type IntegrationPlan struct {
-	RunID          string              `json:"run_id"`
-	OrderedPatches []PatchRecord       `json:"ordered_patches"`
-	FileOwners     map[string]string   `json:"file_owners"`
+	RunID          string                `json:"run_id"`
+	OrderedPatches []PatchRecord         `json:"ordered_patches"`
+	FileOwners     map[string]string     `json:"file_owners"`
 	Conflicts      []IntegrationConflict `json:"conflicts,omitempty"`
 }
 

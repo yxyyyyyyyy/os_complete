@@ -68,13 +68,28 @@ func TestAortctlContextSharingScenarioWritesAllRatioArtifacts(t *testing.T) {
 		Summary    map[string]any   `json:"summary"`
 	}
 	decodeJSONFile(t, filepath.Join(outDir, "summary.json"), &summary)
-	if summary.ScenarioID != "context-sharing" || len(summary.PerRun) != 12 || len(summary.Summary) != 12 {
+	if summary.ScenarioID != "context-sharing" || len(summary.PerRun) != 15 || len(summary.Summary) != 15 {
 		t.Fatalf("unexpected context summary: scenario=%s runs=%d modes=%d", summary.ScenarioID, len(summary.PerRun), len(summary.Summary))
 	}
 	for _, name := range []string{"comparison.csv", "report.md"} {
 		if _, err := os.Stat(filepath.Join(outDir, name)); err != nil {
 			t.Fatalf("missing %s: %v", name, err)
 		}
+	}
+}
+
+func TestAortctlContextSharingMatrixSmokeWritesArtifacts(t *testing.T) {
+	outDir := t.TempDir()
+	if err := run([]string{"scenario", "context-sharing", "--matrix-smoke", "--timeout", "2s", "--out", outDir}); err != nil {
+		t.Fatalf("context-sharing matrix-smoke: %v", err)
+	}
+	var summary struct {
+		ScenarioID string           `json:"scenario_id"`
+		PerRun     []map[string]any `json:"per_run"`
+	}
+	decodeJSONFile(t, filepath.Join(outDir, "summary.json"), &summary)
+	if summary.ScenarioID != "context-sharing-matrix" || len(summary.PerRun) != 16 {
+		t.Fatalf("unexpected matrix summary: scenario=%s runs=%d", summary.ScenarioID, len(summary.PerRun))
 	}
 }
 

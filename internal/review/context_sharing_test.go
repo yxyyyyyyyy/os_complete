@@ -7,6 +7,36 @@ import (
 	"time"
 )
 
+func TestContextSharingMatrixSmokeSubset(t *testing.T) {
+	result, err := RunContextSharingMatrix(context.Background(), ContextMatrixConfig{
+		Modes:        []string{"full-copy", "aort-r"},
+		ContextSizes: []int{4096, 65536},
+		AgentCounts:  []int{2, 4},
+		SharedRatios: []float64{0, 1.0},
+		Runs:         1,
+		Timeout:      2 * time.Second,
+		OutDir:       t.TempDir(),
+		Seed:         23,
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	// 2 modes × 2 sizes × 2 agents × 2 ratios × 1 run = 16
+	if len(result.PerRun) != 16 {
+		t.Fatalf("matrix cells = %d, want 16", len(result.PerRun))
+	}
+	for _, run := range result.PerRun {
+		if run.Labels["context_size"] == "" || run.Labels["agents"] == "" {
+			t.Fatalf("missing matrix labels: %#v", run.Labels)
+		}
+		for _, name := range []string{"logical_context_bytes", "materialized_bytes", "saved_bytes"} {
+			if _, ok := run.Metrics[name]; !ok {
+				t.Fatalf("missing metric %s in %s", name, run.RunID)
+			}
+		}
+	}
+}
+
 func TestContextSharingRejectsInvalidRatioAndMode(t *testing.T) {
 	if _, err := RunContextSharing(context.Background(), ContextSharingConfig{Mode: "invalid", OutDir: t.TempDir()}); err == nil {
 		t.Fatal("invalid context mode should fail")
@@ -16,7 +46,7 @@ func TestContextSharingRejectsInvalidRatioAndMode(t *testing.T) {
 	}
 }
 
-func TestContextSharingCoversThreeModesAndFourRatios(t *testing.T) {
+func TestContextSharingCoversThreeModesAndFiveRatios(t *testing.T) {
 	result, err := RunContextSharing(context.Background(), ContextSharingConfig{
 		Mode:        "all",
 		Runs:        1,
@@ -30,8 +60,8 @@ func TestContextSharingCoversThreeModesAndFourRatios(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(result.PerRun) != 12 {
-		t.Fatalf("per-run count = %d, want 12", len(result.PerRun))
+	if len(result.PerRun) != 15 {
+		t.Fatalf("per-run count = %d, want 15 (3 modes x 5 ratios)", len(result.PerRun))
 	}
 	seen := map[string]bool{}
 	for _, run := range result.PerRun {
@@ -48,7 +78,7 @@ func TestContextSharingCoversThreeModesAndFourRatios(t *testing.T) {
 			t.Fatalf("materialized bytes cannot exceed logical bytes: %+v", run.Metrics)
 		}
 	}
-	if len(seen) != 12 {
+	if len(seen) != 15 {
 		t.Fatalf("variants = %v", seen)
 	}
 }

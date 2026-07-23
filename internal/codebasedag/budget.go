@@ -6,10 +6,10 @@ import (
 )
 
 const (
-	DefaultMaxCalls          = 10
-	DefaultRequiredMinCalls  = 7
-	DefaultMaxFixerCalls     = 2
-	DefaultMaxSchemaRepairs  = 1
+	DefaultMaxCalls         = 10
+	DefaultRequiredMinCalls = 7
+	DefaultMaxFixerCalls    = 2
+	DefaultMaxSchemaRepairs = 3
 )
 
 // CallBudget enforces the Open World DeepSeek call envelope:

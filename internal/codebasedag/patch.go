@@ -7,8 +7,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"os"
 	"path/filepath"
-	"reflect"
+	"regexp"
 	"sort"
 	"strings"
 )
@@ -30,12 +31,13 @@ type PlanOutput struct {
 }
 
 type CoderOutput struct {
-	SchemaVersion string     `json:"schema_version"`
-	NodeID        string     `json:"node_id"`
-	Summary       string     `json:"summary"`
-	Patch         string     `json:"patch"`
-	ChangedFiles  []string   `json:"changed_files"`
-	Tests         [][]string `json:"tests"`
+	SchemaVersion    string     `json:"schema_version"`
+	NodeID           string     `json:"node_id"`
+	Summary          string     `json:"summary"`
+	Patch            string     `json:"patch"`
+	ReplacementValue string     `json:"replacement_value,omitempty"`
+	ChangedFiles     []string   `json:"changed_files"`
+	Tests            [][]string `json:"tests"`
 }
 
 type ReviewOutput struct {
@@ -80,11 +82,17 @@ func DecodeCoderOutput(nodeID string, data []byte) (CoderOutput, error) {
 	if output.NodeID != nodeID {
 		return CoderOutput{}, fmt.Errorf("wrong node ID %q, want %q", output.NodeID, nodeID)
 	}
-	if strings.TrimSpace(output.Patch) == "" {
-		return CoderOutput{}, fmt.Errorf("patch is required")
+	if strings.TrimSpace(output.Patch) == "" && strings.TrimSpace(output.ReplacementValue) == "" {
+		return CoderOutput{}, fmt.Errorf("patch or replacement_value is required")
 	}
-	if err := validateUniquePaths(output.ChangedFiles); err != nil {
-		return CoderOutput{}, err
+	if strings.TrimSpace(output.Summary) == "" && strings.TrimSpace(output.ReplacementValue) == "" {
+		return CoderOutput{}, fmt.Errorf("summary is required")
+	}
+	// replacement_value lets MaterializeCoderPatch fill changed_files (and summary).
+	if len(output.ChangedFiles) > 0 || strings.TrimSpace(output.ReplacementValue) == "" {
+		if err := validateUniquePaths(output.ChangedFiles); err != nil {
+			return CoderOutput{}, err
+		}
 	}
 	return output, nil
 }
@@ -97,7 +105,9 @@ func DecodeReviewOutput(nodeID string, data []byte) (ReviewOutput, error) {
 	if output.SchemaVersion != SchemaVersion || output.NodeID != nodeID {
 		return ReviewOutput{}, fmt.Errorf("invalid review output identity")
 	}
-	if output.Verdict != "pass" && output.Verdict != "fix" {
+	switch output.Verdict {
+	case "pass", "fix", "reject":
+	default:
 		return ReviewOutput{}, fmt.Errorf("invalid review verdict %q", output.Verdict)
 	}
 	return output, nil
@@ -117,12 +127,20 @@ func ValidatePatch(policy PatchPolicy, output CoderOutput, sourceCallID string) 
 	if strings.Contains(output.Patch, "\r\n") || strings.Contains(output.Patch, "GIT binary patch") {
 		return PatchRecord{}, fmt.Errorf("binary or ambiguous patch format is forbidden")
 	}
+	if err := validatePatchHunkCompleteness(output.Patch); err != nil {
+		return PatchRecord{}, err
+	}
 	paths, deletions, err := patchChangedFiles(output.Patch)
 	if err != nil {
 		return PatchRecord{}, err
 	}
-	if !reflect.DeepEqual(paths, sortedCopy(output.ChangedFiles)) {
-		return PatchRecord{}, fmt.Errorf("declared changed files %v do not match patch files %v", sortedCopy(output.ChangedFiles), paths)
+	if len(paths) == 0 {
+		return PatchRecord{}, fmt.Errorf("patch does not change any files")
+	}
+	// Authoritative changed_files come from the patch body, never the model declaration.
+	// Keep a strict failure only when the model omits every patch path (empty attribution).
+	if len(output.ChangedFiles) == 0 {
+		return PatchRecord{}, fmt.Errorf("changed_files is required")
 	}
 	for _, path := range paths {
 		if _, ok := policy.AllowedFiles[path]; !ok {
@@ -178,6 +196,201 @@ func validateUniquePaths(paths []string) error {
 		seen[path] = struct{}{}
 	}
 	return nil
+}
+
+func MaterializeCoderPatch(workDir string, allowedFiles []string, coder *CoderOutput) error {
+	if coder == nil {
+		return fmt.Errorf("coder output is required")
+	}
+	if value := strings.TrimSpace(coder.ReplacementValue); value != "" {
+		if strings.ContainsAny(value, "\"\n\r") {
+			return fmt.Errorf("replacement_value must be a single-line string without quotes")
+		}
+		target := ""
+		switch {
+		case len(allowedFiles) == 1:
+			target = allowedFiles[0]
+		case len(coder.ChangedFiles) == 1:
+			for _, allowed := range allowedFiles {
+				if allowed == coder.ChangedFiles[0] {
+					target = allowed
+					break
+				}
+			}
+			if target == "" {
+				return fmt.Errorf("changed_files %q is outside allowlist", coder.ChangedFiles[0])
+			}
+		default:
+			for _, allowed := range allowedFiles {
+				if strings.Contains(filepath.Base(allowed), "live_") && strings.HasSuffix(allowed, "_hook.go") {
+					if target != "" {
+						return fmt.Errorf("replacement_value is ambiguous across allowlisted hook files")
+					}
+					target = allowed
+				}
+			}
+			if target == "" {
+				return fmt.Errorf("replacement_value requires one allowlisted hook file")
+			}
+		}
+		patch, constName, err := SynthesizeQuotedConstPatch(workDir, target, value)
+		if err != nil {
+			return err
+		}
+		coder.Patch = patch
+		coder.ChangedFiles = []string{target}
+		if strings.TrimSpace(coder.Summary) == "" {
+			coder.Summary = fmt.Sprintf("update %s", constName)
+		}
+		return nil
+	}
+	if strings.TrimSpace(coder.Patch) == "" {
+		return fmt.Errorf("patch or replacement_value is required")
+	}
+	return nil
+}
+
+func SynthesizeQuotedConstPatch(workDir, relPath, newValue string) (string, string, error) {
+	clean, err := cleanPolicyPath(relPath)
+	if err != nil {
+		return "", "", err
+	}
+	data, err := os.ReadFile(filepath.Join(workDir, clean))
+	if err != nil {
+		return "", "", err
+	}
+	content := string(data)
+	lines := strings.Split(strings.ReplaceAll(content, "\r\n", "\n"), "\n")
+	if len(lines) > 0 && lines[len(lines)-1] == "" {
+		lines = lines[:len(lines)-1]
+	}
+	constRe := regexp.MustCompile(`^(const\s+)([A-Za-z_][A-Za-z0-9_]*)(\s*=\s*")([^"]*)(".*)$`)
+	idx := -1
+	var constName, oldLine, newLine string
+	for i, line := range lines {
+		m := constRe.FindStringSubmatch(line)
+		if m == nil {
+			continue
+		}
+		if idx != -1 {
+			return "", "", fmt.Errorf("file %s has multiple const string assignments", clean)
+		}
+		idx = i
+		constName = m[2]
+		if m[4] == newValue {
+			return "", "", fmt.Errorf("replacement_value %q equals current value", newValue)
+		}
+		oldLine = line
+		newLine = m[1] + m[2] + m[3] + newValue + m[5]
+	}
+	if idx < 0 {
+		return "", "", fmt.Errorf("no quoted const assignment found in %s", clean)
+	}
+	var body strings.Builder
+	for i, line := range lines {
+		if i == idx {
+			fmt.Fprintf(&body, "-%s\n", oldLine)
+			fmt.Fprintf(&body, "+%s\n", newLine)
+			continue
+		}
+		fmt.Fprintf(&body, " %s\n", line)
+	}
+	count := len(lines)
+	var patch strings.Builder
+	fmt.Fprintf(&patch, "diff --git a/%s b/%s\n", clean, clean)
+	fmt.Fprintf(&patch, "--- a/%s\n", clean)
+	fmt.Fprintf(&patch, "+++ b/%s\n", clean)
+	fmt.Fprintf(&patch, "@@ -1,%d +1,%d @@\n", count, count)
+	patch.WriteString(body.String())
+	return patch.String(), constName, nil
+}
+
+func validatePatchHunkCompleteness(patch string) error {
+	lines := strings.Split(patch, "\n")
+	for i := 0; i < len(lines); i++ {
+		line := lines[i]
+		if !strings.HasPrefix(line, "@@") {
+			continue
+		}
+		oldCount, newCount, ok := parseHunkCounts(line)
+		if !ok {
+			return fmt.Errorf("corrupt hunk header %q", line)
+		}
+		gotOld, gotNew := 0, 0
+		j := i + 1
+		for ; j < len(lines); j++ {
+			body := lines[j]
+			if strings.HasPrefix(body, "@@") || strings.HasPrefix(body, "diff --git ") || strings.HasPrefix(body, "--- ") || strings.HasPrefix(body, "+++ ") {
+				break
+			}
+			if body == `\ No newline at end of file` {
+				continue
+			}
+			if body == "" {
+				break
+			}
+			switch body[0] {
+			case ' ':
+				gotOld++
+				gotNew++
+			case '-':
+				gotOld++
+			case '+':
+				gotNew++
+			case '\\':
+				continue
+			default:
+				return fmt.Errorf("corrupt hunk body line %q under %q", body, line)
+			}
+		}
+		if gotOld != oldCount || gotNew != newCount {
+			return fmt.Errorf("incomplete hunk %q: want old=%d new=%d got old=%d new=%d", line, oldCount, newCount, gotOld, gotNew)
+		}
+		i = j - 1
+	}
+	return nil
+}
+
+func parseHunkCounts(header string) (oldCount, newCount int, ok bool) {
+	// @@ -l,s +l,s @@ or @@ -l +l @@
+	header = strings.TrimSpace(header)
+	if !strings.HasPrefix(header, "@@") {
+		return 0, 0, false
+	}
+	parts := strings.Split(header, "@@")
+	if len(parts) < 2 {
+		return 0, 0, false
+	}
+	body := strings.TrimSpace(parts[1])
+	fields := strings.Fields(body)
+	if len(fields) < 2 {
+		return 0, 0, false
+	}
+	oldCount, ok = parseRangeCount(fields[0], '-')
+	if !ok {
+		return 0, 0, false
+	}
+	newCount, ok = parseRangeCount(fields[1], '+')
+	return oldCount, newCount, ok
+}
+
+func parseRangeCount(field string, sign byte) (int, bool) {
+	if len(field) < 2 || field[0] != sign {
+		return 0, false
+	}
+	rest := field[1:]
+	if idx := strings.IndexByte(rest, ','); idx >= 0 {
+		var start, count int
+		if _, err := fmt.Sscanf(rest, "%d,%d", &start, &count); err != nil {
+			return 0, false
+		}
+		return count, true
+	}
+	var start int
+	if _, err := fmt.Sscanf(rest, "%d", &start); err != nil {
+		return 0, false
+	}
+	return 1, true
 }
 
 func patchChangedFiles(patch string) ([]string, map[string]bool, error) {

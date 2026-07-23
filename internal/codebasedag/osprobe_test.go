@@ -7,10 +7,10 @@ import (
 
 func TestValidateOSProbeAcceptsRealOpenEulerStack(t *testing.T) {
 	result := OSProbeResult{
-		OS: OSRelease{ID: "openEuler", VersionID: "24.03", PrettyName: "openEuler 24.03 LTS"},
-		Cgroup: CgroupProbe{FilesystemType: "cgroup2fs", Writable: true, NestedCreate: true, EvidenceMode: "real-cgroup-v2"},
+		OS:      OSRelease{ID: "openEuler", VersionID: "24.03", PrettyName: "openEuler 24.03 LTS"},
+		Cgroup:  CgroupProbe{FilesystemType: "cgroup2fs", Writable: true, NestedCreate: true, EvidenceMode: "real-cgroup-v2"},
 		Overlay: OverlayProbe{Available: true, MountSucceeded: true, EvidenceMode: "real-overlayfs"},
-		Memfd: MemfdProbe{Available: true, MmapSucceeded: true, FDPassingSucceeded: true, EvidenceMode: "real-memfd"},
+		Memfd:   MemfdProbe{Available: true, MmapSucceeded: true, FDPassingSucceeded: true, EvidenceMode: "real-memfd"},
 	}
 	if err := result.ValidateOpenWorld(); err != nil {
 		t.Fatal(err)
@@ -19,10 +19,10 @@ func TestValidateOSProbeAcceptsRealOpenEulerStack(t *testing.T) {
 
 func TestValidateOSProbeRejectsDegradedModes(t *testing.T) {
 	result := OSProbeResult{
-		OS: OSRelease{ID: "ubuntu", VersionID: "22.04"},
-		Cgroup: CgroupProbe{FilesystemType: "tmpfs", Writable: false, EvidenceMode: "degraded"},
+		OS:      OSRelease{ID: "ubuntu", VersionID: "22.04"},
+		Cgroup:  CgroupProbe{FilesystemType: "tmpfs", Writable: false, EvidenceMode: "degraded"},
 		Overlay: OverlayProbe{Available: true, MountSucceeded: false, EvidenceMode: "degraded"},
-		Memfd: MemfdProbe{Available: false, EvidenceMode: "unsupported"},
+		Memfd:   MemfdProbe{Available: false, EvidenceMode: "unsupported"},
 	}
 	err := result.ValidateOpenWorld()
 	if err == nil {

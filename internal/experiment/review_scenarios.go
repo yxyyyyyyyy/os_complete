@@ -14,6 +14,10 @@ func RunContextSharing(cfg review.ContextSharingConfig) (review.ScenarioResult, 
 	return review.RunContextSharing(context.Background(), cfg)
 }
 
+func RunContextSharingMatrix(cfg review.ContextMatrixConfig) (review.ScenarioResult, error) {
+	return review.RunContextSharingMatrix(context.Background(), cfg)
+}
+
 func RunAgentDemo(cfg review.AgentDemoConfig) (review.AgentDemoResult, error) {
 	return review.RunAgentDemo(context.Background(), cfg)
 }
