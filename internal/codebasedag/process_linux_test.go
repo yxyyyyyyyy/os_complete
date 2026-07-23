@@ -141,3 +141,32 @@ func TestStartStoppedCommandProducesLivePID(t *testing.T) {
 	_ = syscall.Kill(pid, syscall.SIGKILL)
 	_, _ = cmd.Process.Wait()
 }
+
+func TestLinuxCgroupCleanupRemovesNodeDir(t *testing.T) {
+	root := t.TempDir()
+	driver, err := NewLinuxCgroupDriver(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	driver.writeFn = func(path, data string) error {
+		return os.WriteFile(path, []byte(data), 0o644)
+	}
+	driver.readFn = func(string) (string, error) { return "0", nil }
+	driver.mkdirFn = os.MkdirAll
+	driver.killFn = syscall.Kill
+	rt := NewInterfaceProcessRuntime(driver)
+	result, err := rt.StartPrepared(context.Background(), ProcessConfig{
+		RunID: "cleanup-cg", NodeID: "n",
+		Worker: WorkerSpec{Command: "true"},
+		Limits: DefaultResourceLimits(),
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if result.CgroupPath == "" {
+		t.Fatal("missing cgroup path")
+	}
+	if _, err := os.Stat(result.CgroupPath); !os.IsNotExist(err) {
+		t.Fatalf("cgroup dir should be cleaned after success, err=%v path=%s", err, result.CgroupPath)
+	}
+}

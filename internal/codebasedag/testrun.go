@@ -159,12 +159,12 @@ func sortStrings(in []string) {
 
 func scrubTesterEnv(env []string) []string {
 	blocked := map[string]struct{}{
-		"DEEPSEEK_API_KEY": {},
-		"OPENAI_API_KEY": {},
-		"AORT_LLM_PROVIDER": {},
+		"DEEPSEEK_API_KEY":           {},
+		"OPENAI_API_KEY":             {},
+		"AORT_LLM_PROVIDER":          {},
 		"AORT_LLM_FALLBACK_PROVIDER": {},
-		"DEEPSEEK_BASE_URL": {},
-		"DEEPSEEK_MODEL": {},
+		"DEEPSEEK_BASE_URL":          {},
+		"DEEPSEEK_MODEL":             {},
 	}
 	out := make([]string, 0, len(env))
 	for _, kv := range env {

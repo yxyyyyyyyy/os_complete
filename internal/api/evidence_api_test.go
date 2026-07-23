@@ -14,6 +14,12 @@ import (
 )
 
 func TestEvidenceEndpointReportsModuleModes(t *testing.T) {
+	for _, key := range []string{
+		"DEEPSEEK_API_KEY", "DEEPSEEK_BASE_URL", "DEEPSEEK_MODEL",
+		"AORT_LLM_PROVIDER", "AORT_LLM_FALLBACK_PROVIDER",
+	} {
+		t.Setenv(key, "")
+	}
 	srv := NewServer(config.Config{HTTPAddr: "127.0.0.1:8080", Mode: "mock", DataDir: t.TempDir()})
 	server := srv.(*Server)
 	server.registry = worker.NewRegistry(server.sink)

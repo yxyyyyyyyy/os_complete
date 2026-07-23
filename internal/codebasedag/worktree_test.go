@@ -36,6 +36,29 @@ func TestCreateWorktreeApplyPatchAndRejectEscape(t *testing.T) {
 	if !strings.Contains(string(data), `return "hello"`) {
 		t.Fatalf("patch not applied: %s", data)
 	}
+
+	escape := "diff --git a/../evil.go b/../evil.go\n--- a/../evil.go\n+++ b/../evil.go\n@@ -0,0 +1 @@\n+package evil\n"
+	if _, err := wt.ApplyValidatedPatch(context.Background(), "resource-coder", escape, []string{"../evil.go"}); err == nil {
+		t.Fatal("expected path escape rejection")
+	}
+	if _, _, err := patchChangedFiles(escape); err == nil {
+		t.Fatal("patchChangedFiles should reject escaped paths")
+	}
+}
+
+func TestApplyRejectsDeclaredFilesMismatch(t *testing.T) {
+	repo := initTinyRepo(t)
+	parent := t.TempDir()
+	wt, err := CreateWorktree(context.Background(), repo, parent, "wt-mismatch", "git")
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() { _ = wt.Cleanup(context.Background()) })
+	patch := "diff --git a/hello.go b/hello.go\n--- a/hello.go\n+++ b/hello.go\n@@ -1,3 +1,3 @@\n package main\n \n-func Hello() string { return \"hi\" }\n+func Hello() string { return \"hello\" }\n"
+	_, err = wt.ApplyValidatedPatch(context.Background(), "resource-coder", patch, []string{"other.go"})
+	if err == nil || !strings.Contains(err.Error(), "changed_files mismatch") {
+		t.Fatalf("expected declared/actual mismatch, got %v", err)
+	}
 }
 
 func TestDetectHunkConflictsSameFile(t *testing.T) {

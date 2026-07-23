@@ -120,13 +120,17 @@ func (s *LiveSession) executeLLMNode(ctx context.Context, req NodeExecutionReque
 	switch policy.Role {
 	case KindCoder, KindFixer:
 		coder := decoded.(CoderOutput)
-		if err := MaterializeCoderPatch(s.WorkloadDir, policy.AllowedFiles, &coder); err != nil {
+		materializeDir := s.WorkloadDir
+		if s.Worktree != nil && s.Worktree.WorkDir != "" {
+			materializeDir = s.Worktree.WorkDir
+		}
+		if err := MaterializeCoderPatch(materializeDir, policy.AllowedFiles, &coder); err != nil {
 			text, record, decoded, err = s.attemptSchemaRepair(ctx, req.NodeID, policy, text, record, err)
 			if err != nil {
 				return NodeExecutionResult{}, err
 			}
 			coder = decoded.(CoderOutput)
-			if matErr := MaterializeCoderPatch(s.WorkloadDir, policy.AllowedFiles, &coder); matErr != nil {
+			if matErr := MaterializeCoderPatch(materializeDir, policy.AllowedFiles, &coder); matErr != nil {
 				return NodeExecutionResult{}, matErr
 			}
 		}
@@ -144,7 +148,7 @@ func (s *LiveSession) executeLLMNode(ctx context.Context, req NodeExecutionReque
 			ImmutableFiles: immutable,
 		}, coder, record.CallID)
 		if patchErr == nil {
-			patchErr = CheckPatchApplies(ctx, s.GitPath, s.WorkloadDir, coder.Patch)
+			patchErr = CheckPatchApplies(ctx, s.GitPath, materializeDir, coder.Patch)
 		}
 		if patchErr != nil {
 			text, record, decoded, err = s.attemptSchemaRepair(ctx, req.NodeID, policy, text, record, patchErr)
@@ -152,7 +156,7 @@ func (s *LiveSession) executeLLMNode(ctx context.Context, req NodeExecutionReque
 				return NodeExecutionResult{}, err
 			}
 			coder = decoded.(CoderOutput)
-			if matErr := MaterializeCoderPatch(s.WorkloadDir, policy.AllowedFiles, &coder); matErr != nil {
+			if matErr := MaterializeCoderPatch(materializeDir, policy.AllowedFiles, &coder); matErr != nil {
 				return NodeExecutionResult{}, matErr
 			}
 			patchRec, patchErr = ValidatePatch(PatchPolicy{
@@ -161,7 +165,7 @@ func (s *LiveSession) executeLLMNode(ctx context.Context, req NodeExecutionReque
 				ImmutableFiles: immutable,
 			}, coder, record.CallID)
 			if patchErr == nil {
-				patchErr = CheckPatchApplies(ctx, s.GitPath, s.WorkloadDir, coder.Patch)
+				patchErr = CheckPatchApplies(ctx, s.GitPath, materializeDir, coder.Patch)
 			}
 			if patchErr != nil {
 				return NodeExecutionResult{}, patchErr
@@ -337,7 +341,9 @@ func (s *LiveSession) executeIntegrate(ctx context.Context, req NodeExecutionReq
 		s.Applies = append(s.Applies, applyRes)
 		if err != nil {
 			evidence.Conflicts = append(evidence.Conflicts, err.Error())
-			_ = s.Store.WriteJSON("outputs/integrate.json", evidence)
+			if writeErr := s.Store.WriteJSON("outputs/integrate.json", evidence); writeErr != nil {
+				return NodeExecutionResult{}, errors.Join(err, writeErr)
+			}
 			return NodeExecutionResult{}, err
 		}
 	}
