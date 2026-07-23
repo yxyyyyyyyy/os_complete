@@ -1,0 +1,23 @@
+?   	aort-r/cmd/aort-worker	[no test files]
+ok  	aort-r/cmd/aort-experiment	0.027s
+?   	aort-r/cmd/aortd	[no test files]
+ok  	aort-r/internal/api	0.094s
+ok  	aort-r/internal/avp	(cached)
+ok  	aort-r/internal/capsule	(cached)
+ok  	aort-r/internal/checkpoint	(cached)
+ok  	aort-r/internal/config	(cached)
+ok  	aort-r/internal/cvm	(cached)
+ok  	aort-r/internal/dag	(cached)
+ok  	aort-r/internal/demo	(cached)
+ok  	aort-r/internal/events	(cached)
+ok  	aort-r/internal/experiment	0.029s
+ok  	aort-r/internal/ipc	(cached)
+ok  	aort-r/internal/kernel	(cached)
+ok  	aort-r/internal/llm	(cached)
+ok  	aort-r/internal/pressure	(cached)
+ok  	aort-r/internal/scheduler	(cached)
+ok  	aort-r/internal/supervisor	(cached)
+ok  	aort-r/internal/syscall	(cached)
+ok  	aort-r/internal/trace	(cached)
+ok  	aort-r/internal/worker	(cached)
+ok  	aort-r/internal/workspace	(cached)

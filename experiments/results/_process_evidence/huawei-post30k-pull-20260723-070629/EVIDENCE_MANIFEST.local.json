@@ -1,0 +1,56 @@
+{
+  "schema": "aort.process_evidence.v1",
+  "phase": "huawei-post30k-pull",
+  "remote": "/root/aort-process-evidence/huawei-post30k-20260723-070142",
+  "captured_at_utc": "2026-07-23T07:06:32Z",
+  "deepseek": {
+    "provider": "deepseek",
+    "model": "deepseek-v4-flash",
+    "fallback": false,
+    "evidence_mode": "real-api",
+    "duration_ms": 872,
+    "tokens": 33,
+    "status": "passed"
+  },
+  "preflight_summaries": [
+    {
+      "run_id": "preflight-20260723-070141",
+      "passed": true,
+      "physical": 36280,
+      "nonblank": 34340
+    }
+  ],
+  "file_count": 6,
+  "files": [
+    {
+      "path": "EVIDENCE_MANIFEST.json",
+      "bytes": 1229,
+      "sha256": "ccc42b5e0febea0d9b59d8025534bb411aba874f9624837504a0429eb38e652e"
+    },
+    {
+      "path": "codebase_dag/preflight-20260723-070141/ARTIFACT_SHA256.json",
+      "bytes": 89,
+      "sha256": "39ba77e9216622a7de121c50f3becb90be0b80cad67f46e151d7e7c5912d4ec0"
+    },
+    {
+      "path": "codebase_dag/preflight-20260723-070141/summary.json",
+      "bytes": 41114,
+      "sha256": "aeb406cda7fecaf6e623a9e302fa1946fc9fe157eafa8df0ebee44a09a4d09d3"
+    },
+    {
+      "path": "deepseek_smoke/request.redacted.json",
+      "bytes": 159,
+      "sha256": "e0f3e2ba49b96d0a623e39415249989bdfc52692b4bd45e2ce1fd612d31c222f"
+    },
+    {
+      "path": "deepseek_smoke/response.json",
+      "bytes": 634,
+      "sha256": "7f6dffdf2c2c648263ff32aeb7d23155017acd5dd0091bc7e7f5525afe0e1fca"
+    },
+    {
+      "path": "deepseek_smoke/summary.json",
+      "bytes": 173,
+      "sha256": "8b22dc45cd764c5727c60a667fef5d512781d1d783b73d32d7e3832ecd2f5c15"
+    }
+  ]
+}

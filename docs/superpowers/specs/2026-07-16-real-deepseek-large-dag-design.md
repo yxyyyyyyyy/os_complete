@@ -11,11 +11,11 @@
 The experiment uses AORT-R itself as the engineering workload. At design time,
 the tracked Go tree contains 22,114 physical lines and 20,666 nonblank lines.
 Every real run recomputes both values from the clean workload commit and fails
-before any model call unless both are at least 20,000.
+before any model call unless both are at least 30,000.
 
-"A 20,000-line task" means that the DAG operates on, builds, and tests an
-integrated codebase of at least 20,000 source lines. It does not mean padding a
-fixture or forcing the model to rewrite 20,000 lines. The accepted patch is
+"A 30,000-line task" means that the DAG operates on, builds, and tests an
+integrated codebase of at least 30,000 source lines. It does not mean padding a
+fixture or forcing the model to rewrite 30,000 lines. The accepted patch is
 expected to be targeted, reviewable, and justified by failing acceptance
 tests.
 
@@ -119,7 +119,7 @@ Preflight performs no LLM call. It must prove all of the following:
 - real memfd/mmap and FD-passing smoke success;
 - `deepseek-v4-flash` is accepted by the configured DeepSeek endpoint;
 - clean workload Git status and stable workload commit;
-- at least 20,000 tracked physical Go lines and 20,000 tracked nonblank Go
+- at least 30,000 tracked physical Go lines and 30,000 tracked nonblank Go
   lines;
 - baseline `go test ./...` passes before the runner-owned acceptance tests are
   enabled;
@@ -256,7 +256,7 @@ The following conditions make the whole experiment fail:
 
 - any mock, fallback, skipped, planned, or degraded provider/runtime mode;
 - wrong model or fewer than seven successful real model calls;
-- workload below either 20,000-line threshold;
+- workload below either 30,000-line threshold;
 - an LLM node that does not contribute its required structured output;
 - unsafe or out-of-scope patch content;
 - any change to a runner-owned acceptance test or its recorded hash;
@@ -315,7 +315,7 @@ machine evidence receive SHA-256 hashes in the final index.
 The run passes only when all of these are true:
 
 1. Huawei openEuler/root/cgroup-v2 environment gate passes.
-2. Physical and nonblank tracked Go line counts are each at least 20,000.
+2. Physical and nonblank tracked Go line counts are each at least 30,000.
 3. The configured and actual provider/model are DeepSeek and
    `deepseek-v4-flash` for every LLM call.
 4. At least seven successful real API calls occur with zero mock/fallback calls.

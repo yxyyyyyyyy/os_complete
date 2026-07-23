@@ -1,0 +1,111 @@
+{
+  "scenario_id": "context-sharing",
+  "run_id": "full-copy-00-021",
+  "mode": "full-copy",
+  "labels": {
+    "shared_ratio": "0"
+  },
+  "timestamp": "2026-07-15T15:11:40.441333Z",
+  "success": true,
+  "metrics": {
+    "agent_wait_ms": {
+      "value": 0.006,
+      "measurement_kind": "derived",
+      "unit": "ms"
+    },
+    "bytes_avoided": {
+      "value": 0,
+      "measurement_kind": "derived",
+      "unit": "bytes"
+    },
+    "bytes_transferred": {
+      "value": 24576,
+      "measurement_kind": "measured",
+      "unit": "bytes"
+    },
+    "fairness": {
+      "value": 1.0000000000000002,
+      "measurement_kind": "derived",
+      "unit": "jain"
+    },
+    "ipc_p50_ms": {
+      "value": 0.001,
+      "measurement_kind": "measured",
+      "unit": "ms"
+    },
+    "ipc_p95_ms": {
+      "value": 0.001,
+      "measurement_kind": "measured",
+      "unit": "ms"
+    },
+    "logical_context_bytes": {
+      "value": 24576,
+      "measurement_kind": "measured",
+      "unit": "bytes"
+    },
+    "materialized_bytes": {
+      "value": 24576,
+      "measurement_kind": "measured",
+      "unit": "bytes"
+    },
+    "page_hit_ratio": {
+      "value": 0,
+      "measurement_kind": "derived",
+      "unit": "ratio"
+    },
+    "peak_rss_bytes": {
+      "value": 1399440,
+      "measurement_kind": "unsupported",
+      "unit": "bytes"
+    },
+    "physical_bytes_written": {
+      "value": 24576,
+      "measurement_kind": "measured",
+      "unit": "bytes"
+    },
+    "prefix_affinity_hits": {
+      "value": 0,
+      "measurement_kind": "measured",
+      "unit": "hits"
+    },
+    "private_pages": {
+      "value": 6,
+      "measurement_kind": "measured",
+      "unit": "pages"
+    },
+    "saved_bytes": {
+      "value": 0,
+      "measurement_kind": "derived",
+      "unit": "bytes"
+    },
+    "shared_pages": {
+      "value": 0,
+      "measurement_kind": "measured",
+      "unit": "pages"
+    },
+    "shared_ratio": {
+      "value": 0,
+      "measurement_kind": "measured",
+      "unit": "ratio"
+    },
+    "throughput_agents_per_sec": {
+      "value": 6000,
+      "measurement_kind": "derived",
+      "unit": "agents/s"
+    },
+    "total_completion_ms": {
+      "value": 1,
+      "measurement_kind": "measured",
+      "unit": "ms"
+    }
+  },
+  "events": [
+    {
+      "name": "context.transfer",
+      "timestamp": "2026-07-15T15:11:40.441398Z",
+      "status": "real-runtime",
+      "detail": "shared_bytes=0 private_bytes=4096"
+    }
+  ],
+  "artifact": "raw/full-copy-00-021.json"
+}

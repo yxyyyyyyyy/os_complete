@@ -1,0 +1,145 @@
+[
+  {
+    "event_id": "software-real-001",
+    "timestamp": "2026-07-07T07:27:09.135962Z",
+    "type": "scheduler_decision",
+    "agent_id": "e5-planner",
+    "task_id": "software-real",
+    "payload": {
+      "policy": "resource-aware",
+      "status": "running"
+    }
+  },
+  {
+    "event_id": "software-real-002",
+    "timestamp": "2026-07-07T07:27:09.136962Z",
+    "type": "admission_decision",
+    "agent_id": "e5-planner",
+    "task_id": "software-real",
+    "payload": {
+      "accepted": true,
+      "agents": 6
+    }
+  },
+  {
+    "event_id": "software-real-003",
+    "timestamp": "2026-07-07T07:27:09.137962Z",
+    "type": "resource_sampler_result",
+    "agent_id": "runtime",
+    "task_id": "software-real",
+    "payload": {
+      "evidence_mode": "real-runtime"
+    }
+  },
+  {
+    "event_id": "software-real-004",
+    "timestamp": "2026-07-07T07:27:09.138962Z",
+    "type": "syscall_request",
+    "agent_id": "e5-planner",
+    "task_id": "software-real",
+    "payload": {
+      "name": "context.materialize"
+    }
+  },
+  {
+    "event_id": "software-real-005",
+    "timestamp": "2026-07-07T07:27:09.139962Z",
+    "type": "syscall_response",
+    "agent_id": "e5-planner",
+    "task_id": "software-real",
+    "payload": {
+      "name": "context.materialize",
+      "status": "ok"
+    }
+  },
+  {
+    "event_id": "software-real-006",
+    "timestamp": "2026-07-07T07:27:09.140962Z",
+    "type": "tool_exec_command",
+    "agent_id": "e5-tester",
+    "task_id": "software-real",
+    "payload": {
+      "tool_exec_count": 3
+    }
+  },
+  {
+    "event_id": "software-real-007",
+    "timestamp": "2026-07-07T07:27:09.141962Z",
+    "type": "tool_exec_result",
+    "agent_id": "e5-tester",
+    "task_id": "software-real",
+    "payload": {
+      "fault_recovered": true
+    }
+  },
+  {
+    "event_id": "software-real-008",
+    "timestamp": "2026-07-07T07:27:09.142962Z",
+    "type": "workspace_commit",
+    "agent_id": "e5-fixer",
+    "task_id": "software-real",
+    "payload": {
+      "status": "committed"
+    }
+  },
+  {
+    "event_id": "software-real-009",
+    "timestamp": "2026-07-07T07:27:09.143962Z",
+    "type": "ipc_publish",
+    "agent_id": "e5-reviewer",
+    "task_id": "software-real",
+    "payload": {
+      "messages": 1
+    }
+  },
+  {
+    "event_id": "software-real-010",
+    "timestamp": "2026-07-07T07:27:09.144962Z",
+    "type": "ipc_poll",
+    "agent_id": "e5-fixer",
+    "task_id": "software-real",
+    "payload": {
+      "messages": 1
+    }
+  },
+  {
+    "event_id": "software-real-011",
+    "timestamp": "2026-07-07T07:27:09.145962Z",
+    "type": "cvm_materialize",
+    "agent_id": "e5-planner",
+    "task_id": "software-real",
+    "payload": {
+      "context_saved_tokens": 175
+    }
+  },
+  {
+    "event_id": "software-real-012",
+    "timestamp": "2026-07-07T07:27:09.146962Z",
+    "type": "checkpoint",
+    "agent_id": "runtime",
+    "task_id": "software-real",
+    "payload": {
+      "status": "saved"
+    }
+  },
+  {
+    "event_id": "software-real-013",
+    "timestamp": "2026-07-07T07:27:09.147962Z",
+    "type": "recovery",
+    "agent_id": "e5-fixer",
+    "task_id": "software-real",
+    "payload": {
+      "fault_recovered": true
+    }
+  },
+  {
+    "event_id": "software-real-014",
+    "timestamp": "2026-07-07T07:27:09.148962Z",
+    "type": "task_completed",
+    "agent_id": "runtime",
+    "task_id": "software-real",
+    "payload": {
+      "final_status": "completed"
+    }
+  }
+]

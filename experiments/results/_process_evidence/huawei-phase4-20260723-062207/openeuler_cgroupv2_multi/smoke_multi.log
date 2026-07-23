@@ -1,0 +1,4 @@
+== go test ./... ==
+== start aortd ==
+curl: (7) Failed to connect to 127.0.0.1 port 8080 after 0 ms: Couldn't connect to server
+multi-agent cgroup v2 smoke artifacts written to experiments/results/openeuler_cgroupv2_multi

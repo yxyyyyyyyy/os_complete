@@ -1,8 +1,8 @@
 # P1 Repository Audit
 
-**Audit date:** 2026-07-13  
-**Branch at audit:** `codex/aort-r-upgrade` (before remediation commit)  
-**Baseline:** `go test ./...` passed for every package; `gofmt -l` returned no files.
+- **Audit date:** 2026-07-13
+- **Branch at audit:** `codex/aort-r-upgrade` (before remediation commit)
+- **Baseline:** `go test ./...` passed for every package; `gofmt -l` returned no files.
 
 ## Repository and command surface
 
@@ -46,7 +46,7 @@
 
 ## Preserve / refactor / add / downgrade
 
-**Keep:** old CLI groups, final evidence schema, historical results, cgroup/OverlayFS smoke scripts, existing tests, and real openEuler archives.  
-**Refactor:** add adapters around existing CVM/IPC/workspace/scheduler code and normalize experiment statistics.  
-**Add:** three scenario commands, unified reports, review-final index, six-agent mock/real demo, design/threat/defense documents.  
-**Downgrade wording:** AVP/Gateway/CVM/IPC/eBPF and security claims to the explicit boundaries in the design spec whenever evidence is partial or degraded.
+- **Keep:** old CLI groups, final evidence schema, historical results, cgroup/OverlayFS smoke scripts, existing tests, and real openEuler archives.
+- **Refactor:** add adapters around existing CVM/IPC/workspace/scheduler code and normalize experiment statistics.
+- **Add:** three scenario commands, unified reports, review-final index, six-agent mock/real demo, design/threat/defense documents.
+- **Downgrade wording:** AVP/Gateway/CVM/IPC/eBPF and security claims to the explicit boundaries in the design spec whenever evidence is partial or degraded.

@@ -8,6 +8,8 @@ import (
 	"slices"
 	"strings"
 	"testing"
+
+	"aort-r/internal/codebasedag"
 )
 
 func TestAortctlResourceAwareExperimentAndWorkspaceFaultCommands(t *testing.T) {
@@ -127,6 +129,90 @@ func TestAortctlReviewFinalIndexesScenarioOutputs(t *testing.T) {
 	decodeJSONFile(t, filepath.Join(out, "REVIEW_EVIDENCE_INDEX.json"), &index)
 	if !index.AllRequiredPassed {
 		t.Fatal("review-final should pass with all scenario summaries")
+	}
+}
+
+func TestAortctlCodebaseDAGScenarioAndEvidenceStubs(t *testing.T) {
+	outDir := t.TempDir()
+	workload := t.TempDir()
+	goFile := filepath.Join(workload, "main.go")
+	if err := os.WriteFile(goFile, []byte("package main\n\nfunc main() {}\n"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	if err := run([]string{
+		"scenario", "codebase-dag",
+		"--workload", workload,
+		"--out", outDir,
+		"--run-id", "cli-test",
+		"--preflight-only",
+		"--min-physical", "1",
+		"--min-nonblank", "1",
+		"--git-path", fakeCodebaseDAGGit(t),
+	}); err != nil {
+		t.Fatalf("codebase-dag scenario: %v", err)
+	}
+	var summary struct {
+		SchemaVersion string `json:"schema_version"`
+		RunID         string `json:"run_id"`
+		Preflight     struct {
+			Passed bool `json:"passed"`
+		} `json:"preflight"`
+	}
+	decodeJSONFile(t, filepath.Join(outDir, "cli-test", "summary.json"), &summary)
+	if summary.SchemaVersion != codebasedag.SchemaVersion || summary.RunID != "cli-test" || !summary.Preflight.Passed {
+		t.Fatalf("unexpected codebase-dag summary: %#v", summary)
+	}
+
+	strictDir := filepath.Join(outDir, "strict")
+	if err := os.MkdirAll(strictDir, 0o755); err != nil {
+		t.Fatal(err)
+	}
+	strict := codebasedag.EvidenceSummary{
+		SchemaVersion: codebasedag.SchemaVersion,
+		RunID:         "strict",
+		SourceManifest: codebasedag.SourceManifest{
+			SchemaVersion:  codebasedag.SchemaVersion,
+			PhysicalLines:  codebasedag.DefaultMinPhysicalLines,
+			NonblankLines:  codebasedag.DefaultMinNonblankLines,
+			TrackedGoFiles: 1,
+			TreeHash:       strings.Repeat("b", 64),
+		},
+		AllRequiredPassed: true,
+		Artifacts:         map[string]string{"summary.json": strings.Repeat("c", 64)},
+		Tests:             []codebasedag.TestRecord{{SchemaVersion: codebasedag.SchemaVersion, Name: "go test", ExitCode: 0}},
+	}
+	for _, node := range []string{"preflight", "planner", "resource-coder", "context-coder", "evidence-coder", "integrate", "tester", "reviewer", "finalizer"} {
+		strict.Nodes = append(strict.Nodes, codebasedag.NodeRecord{SchemaVersion: codebasedag.SchemaVersion, NodeID: node, Status: codebasedag.NodeSucceeded})
+	}
+	strict.Patches = []codebasedag.PatchRecord{
+		{NodeID: "resource-coder", SHA256: strings.Repeat("d", 64), ChangedFiles: []string{"internal/review/resource_isolation.go"}, SourceCallID: "call-a"},
+		{NodeID: "context-coder", SHA256: strings.Repeat("e", 64), ChangedFiles: []string{"internal/review/context_sharing.go"}, SourceCallID: "call-b"},
+		{NodeID: "evidence-coder", SHA256: strings.Repeat("f", 64), ChangedFiles: []string{"internal/review/review_final.go"}, SourceCallID: "call-c"},
+	}
+	for i := 0; i < 7; i++ {
+		strict.Calls = append(strict.Calls, codebasedag.CallRecord{
+			SchemaVersion:    codebasedag.SchemaVersion,
+			CallID:           "call-" + string(rune('a'+i)),
+			Provider:         codebasedag.RequiredDeepSeekProvider,
+			RequestedModel:   codebasedag.RequiredDeepSeekModel,
+			ActualModel:      codebasedag.RequiredDeepSeekModel,
+			EvidenceMode:     "real-api",
+			PromptTokens:     1,
+			CompletionTokens: 1,
+			TotalTokens:      2,
+			OutputSHA256:     strings.Repeat("a", 64),
+			Status:           "succeeded",
+		})
+	}
+	data, err := json.Marshal(strict)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(strictDir, "summary.json"), data, 0o644); err != nil {
+		t.Fatal(err)
+	}
+	if err := run([]string{"evidence", "codebase-dag", "--run", strictDir}); err != nil {
+		t.Fatalf("codebase-dag evidence: %v", err)
 	}
 }
 
@@ -389,4 +475,39 @@ func containsName(names []string, want string) bool {
 		}
 	}
 	return false
+}
+
+func fakeCodebaseDAGGit(t *testing.T) string {
+	t.Helper()
+	dir := filepath.Join(t.TempDir(), "bin")
+	if err := os.MkdirAll(dir, 0o755); err != nil {
+		t.Fatal(err)
+	}
+	path := filepath.Join(dir, "git")
+	script := `#!/bin/sh
+set -eu
+if [ "$1" != "-C" ]; then
+  echo "missing -C" >&2
+  exit 2
+fi
+cmd="$3"
+case "$cmd" in
+  rev-parse)
+    printf '%s\n' 0123456789abcdef0123456789abcdef01234567
+    ;;
+  status)
+    ;;
+  ls-files)
+    printf 'main.go\0'
+    ;;
+  *)
+    echo "unexpected fake git command: $cmd" >&2
+    exit 2
+    ;;
+esac
+`
+	if err := os.WriteFile(path, []byte(script), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	return path
 }

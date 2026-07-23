@@ -1,0 +1,6 @@
+{"schema_version":"codebase-dag/v1","run_id":"live-20260723-072746","type":"preflight","at":"2026-07-23T07:27:47.091381205Z","fields":{"gate.api_key_present":"true","gate.go_runtime":"true","gate.provider_model":"true","gate.source_manifest":"true","passed":"true"}}
+{"schema_version":"codebase-dag/v1","run_id":"live-20260723-072746","node_id":"planner","type":"node.start","at":"2026-07-23T07:27:47.091520081Z","message":"dependencies complete"}
+{"schema_version":"codebase-dag/v1","run_id":"live-20260723-072746","node_id":"planner","type":"node.end","at":"2026-07-23T07:27:59.751001396Z","message":"node completed"}
+{"schema_version":"codebase-dag/v1","run_id":"live-20260723-072746","node_id":"planner","type":"artifact.hash","at":"2026-07-23T07:27:59.751019017Z","artifact":{"path":"outputs/planner.json","sha256":"44b66bcb08101fb122c132a939e3702e44bb283df3f4f2f80c776adbbf302d09","bytes":0}}
+{"schema_version":"codebase-dag/v1","run_id":"live-20260723-072746","node_id":"context-coder","type":"node.start","at":"2026-07-23T07:27:59.751027708Z","message":"dependencies complete"}
+{"schema_version":"codebase-dag/v1","run_id":"live-20260723-072746","node_id":"context-coder","type":"node.end","at":"2026-07-23T07:28:29.751534028Z","message":"api_error: context deadline exceeded (Client.Timeout or context cancellation while reading body)"}

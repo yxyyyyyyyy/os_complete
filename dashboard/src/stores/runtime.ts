@@ -5,6 +5,7 @@ import {
   getContextStats,
   getEvidenceReport,
   getExperimentResults,
+  getHealth,
   getKernelEvents,
   getKernelStatus,
   getIPCMetrics,
@@ -20,6 +21,7 @@ import {
   type ContextStats,
   type EvidenceReport,
   type ExperimentResults,
+  type HealthStatus,
   type IPCMetric,
   type IPCTopics,
   type KernelEvent,
@@ -32,6 +34,10 @@ import {
 } from '../api/client'
 
 export const runtimeStore = reactive({
+  health: {
+    status: 'unknown',
+    mode: 'unknown'
+  } as HealthStatus,
   tasks: [] as Task[],
   agents: [] as Agent[],
   events: [] as RuntimeEvent[],
@@ -189,9 +195,14 @@ let eventSource: EventSource | null = null
 let refreshTimer: number | undefined
 
 export async function refreshTasks() {
+  runtimeStore.health = await getHealth()
   runtimeStore.tasks = await getTasks()
   runtimeStore.agents = await getAgents()
-  runtimeStore.schedulerDecisions = await getSchedulerDecisions()
+  try {
+    runtimeStore.schedulerDecisions = await getSchedulerDecisions()
+  } catch (error) {
+    console.warn('scheduler decisions refresh skipped', error)
+  }
   runtimeStore.kernelStatus = await getKernelStatus()
   runtimeStore.kernelEvents = await getKernelEvents()
   runtimeStore.pressureStatus = await getPressureStatus()

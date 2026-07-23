@@ -1,0 +1,513 @@
+{
+  "schema": "aort.process_evidence.v1",
+  "phase": "phase4-remote-snapshot",
+  "captured_at_utc": "2026-07-23T06:22:46Z",
+  "file_count": 101,
+  "files": [
+    {
+      "path": "deepseek_smoke/request.redacted.json",
+      "bytes": 159,
+      "sha256": "e0f3e2ba49b96d0a623e39415249989bdfc52692b4bd45e2ce1fd612d31c222f"
+    },
+    {
+      "path": "deepseek_smoke/response.json",
+      "bytes": 633,
+      "sha256": "574fae67b4647d135667ce692c54f35547ff7252f4517457267f84c31cc7eb09"
+    },
+    {
+      "path": "deepseek_smoke/summary.json",
+      "bytes": 173,
+      "sha256": "c8406ecd10abcea6a78cde8c5e1ac62e98fcc23eea544d5b3f0263cfb651bab3"
+    },
+    {
+      "path": "openeuler_cgroupv2_limits/README.md",
+      "bytes": 617,
+      "sha256": "ccda21a7afdac98e4f2ea2eac5458a26590028ba8c93d5a87b1410a749ba3562"
+    },
+    {
+      "path": "openeuler_cgroupv2_limits/cpu_quota_stat.json",
+      "bytes": 606,
+      "sha256": "85318ad0b2b10fd17a01f26a7d3f26b18652bc0acfee5c8a2af029d5e7ab9d00"
+    },
+    {
+      "path": "openeuler_cgroupv2_limits/limit_summary.json",
+      "bytes": 183,
+      "sha256": "f0bbbfcb184003bda67490bfdf3376df2b5c370972b28105e30b07915de9e47e"
+    },
+    {
+      "path": "openeuler_cgroupv2_limits/memory_limit_enforced.json",
+      "bytes": 511,
+      "sha256": "13c432edb361dd95a0dfbc38fc7246e9fa6e472b0b07029af7e17ba2fb201fcd"
+    },
+    {
+      "path": "openeuler_cgroupv2_limits/pids_limit_enforced.json",
+      "bytes": 301,
+      "sha256": "247bd8296b9b538b1100de1ca604a8faf7363687bd576cafdc651381e9e21da9"
+    },
+    {
+      "path": "openeuler_cgroupv2_limits/smoke_limits.log",
+      "bytes": 577,
+      "sha256": "409d1d2d0f50ba320a6907f2c4d787caa98ae27dd7a6e0bb859f4f789fa1e2fb"
+    },
+    {
+      "path": "openeuler_cgroupv2_multi/README.md",
+      "bytes": 500,
+      "sha256": "73a1b1783f23149da30c7e93954d7979fd068588475196a34dfa83c5200e548b"
+    },
+    {
+      "path": "openeuler_cgroupv2_multi/agents.json",
+      "bytes": 5668,
+      "sha256": "f384a3c4aa346ab5f77d34464a0ea3e62079720614a74c88f3a424dfe9dbd2d1"
+    },
+    {
+      "path": "openeuler_cgroupv2_multi/agents.status",
+      "bytes": 4,
+      "sha256": "c11e3f4837efde2441e23a7b9da02131f53bf59fddeb7147c4ab81afe400460f"
+    },
+    {
+      "path": "openeuler_cgroupv2_multi/agents_after_kill.json",
+      "bytes": 5659,
+      "sha256": "41d245f9511f99ae6e41f8b68736123cb0b187da183053df295aed4bb589a6aa"
+    },
+    {
+      "path": "openeuler_cgroupv2_multi/agents_after_kill.status",
+      "bytes": 4,
+      "sha256": "c11e3f4837efde2441e23a7b9da02131f53bf59fddeb7147c4ab81afe400460f"
+    },
+    {
+      "path": "openeuler_cgroupv2_multi/capsules.json",
+      "bytes": 3884,
+      "sha256": "cc6fe626daecb32945abe1bb533ec8046b3d59c05169212bdaf947fdc82c7ad9"
+    },
+    {
+      "path": "openeuler_cgroupv2_multi/capsules.status",
+      "bytes": 4,
+      "sha256": "c11e3f4837efde2441e23a7b9da02131f53bf59fddeb7147c4ab81afe400460f"
+    },
+    {
+      "path": "openeuler_cgroupv2_multi/capsules_after_kill.json",
+      "bytes": 3878,
+      "sha256": "b4666b9852ee4f61f0065064ca96e580c2e51acb07a81593e8277f88b018f264"
+    },
+    {
+      "path": "openeuler_cgroupv2_multi/capsules_after_kill.status",
+      "bytes": 4,
+      "sha256": "c11e3f4837efde2441e23a7b9da02131f53bf59fddeb7147c4ab81afe400460f"
+    },
+    {
+      "path": "openeuler_cgroupv2_multi/demo_run.json",
+      "bytes": 39,
+      "sha256": "d746ff3eb6acfb9d7a1d90be544e60e0823ae11bdb6507053a94d956288fe3ac"
+    },
+    {
+      "path": "openeuler_cgroupv2_multi/demo_run.status",
+      "bytes": 4,
+      "sha256": "1a55a7d16b47deb40890edb52c2234c4adddf330dbac2e1f1eedf0a9723a4c70"
+    },
+    {
+      "path": "openeuler_cgroupv2_multi/freeze.json",
+      "bytes": 34,
+      "sha256": "57ecd1c96a89d39a7c0e39890e31c378c3f2a8d8b9fc3a952142a2d6ca2e10b4"
+    },
+    {
+      "path": "openeuler_cgroupv2_multi/freeze.status",
+      "bytes": 4,
+      "sha256": "c11e3f4837efde2441e23a7b9da02131f53bf59fddeb7147c4ab81afe400460f"
+    },
+    {
+      "path": "openeuler_cgroupv2_multi/go_test.txt",
+      "bytes": 1197,
+      "sha256": "64844d1ee775187296535f007b1020387720d73845ad500f112f4346d9349f98"
+    },
+    {
+      "path": "openeuler_cgroupv2_multi/health.json",
+      "bytes": 30,
+      "sha256": "46e7d854b2b2943611d7193373af8c2720615d14c7d01e41a8d27874ccfefd31"
+    },
+    {
+      "path": "openeuler_cgroupv2_multi/health.status",
+      "bytes": 4,
+      "sha256": "c11e3f4837efde2441e23a7b9da02131f53bf59fddeb7147c4ab81afe400460f"
+    },
+    {
+      "path": "openeuler_cgroupv2_multi/kill.json",
+      "bytes": 114,
+      "sha256": "1e46c6b456a4f3917bf130c91858891fd48f25f576632220c7c87f711ecd2b83"
+    },
+    {
+      "path": "openeuler_cgroupv2_multi/kill.status",
+      "bytes": 4,
+      "sha256": "c11e3f4837efde2441e23a7b9da02131f53bf59fddeb7147c4ab81afe400460f"
+    },
+    {
+      "path": "openeuler_cgroupv2_multi/multi_agent_capsules.json",
+      "bytes": 2422,
+      "sha256": "249c8258a3413ab4997cc62c9dd86b776a56798ed260805dcca66a3b6d90492c"
+    },
+    {
+      "path": "openeuler_cgroupv2_multi/multi_agent_freeze_unfreeze.json",
+      "bytes": 163,
+      "sha256": "3206e93b3d7d6d8947ff6084a4ddf33956a511103bb1256918d05f113e8fb347"
+    },
+    {
+      "path": "openeuler_cgroupv2_multi/multi_agent_kill_recovery.json",
+      "bytes": 575,
+      "sha256": "195754017e45cf1a2fe36dcf8275e451a8b7e9fe47f8a5eff4c8afbd9125969c"
+    },
+    {
+      "path": "openeuler_cgroupv2_multi/multi_agent_summary.json",
+      "bytes": 945,
+      "sha256": "3dad3e73d717d1a22489fbce9b1774a37fc2bc221bd9c8d9b77530051836aea9"
+    },
+    {
+      "path": "openeuler_cgroupv2_multi/runtime_start.log",
+      "bytes": 54,
+      "sha256": "9a5a4d0a3a7278e5f20100815c1dbd69eca1026aa859741dacc59711634c28a1"
+    },
+    {
+      "path": "openeuler_cgroupv2_multi/selected_agents.env",
+      "bytes": 174,
+      "sha256": "58369438c50ad4e6e773a4f785b93cbe5f7cd52726a9188467d65ec51b1ca83c"
+    },
+    {
+      "path": "openeuler_cgroupv2_multi/smoke_multi.log",
+      "bytes": 222,
+      "sha256": "153d4703d38ae9d8c5ed79f203173eb6cc9df1d05910f9dc16433bae76ffed64"
+    },
+    {
+      "path": "openeuler_cgroupv2_multi/unfreeze.json",
+      "bytes": 36,
+      "sha256": "eef10c086a060ce808d92251f459f74ad162d1f146393590726a955da7a22942"
+    },
+    {
+      "path": "openeuler_cgroupv2_multi/unfreeze.status",
+      "bytes": 4,
+      "sha256": "c11e3f4837efde2441e23a7b9da02131f53bf59fddeb7147c4ab81afe400460f"
+    },
+    {
+      "path": "openeuler_smoke/README.md",
+      "bytes": 1442,
+      "sha256": "5349f387e95661fb6d9037b95943541df41b4f8aca492289819048bf9c0353ca"
+    },
+    {
+      "path": "openeuler_smoke/REAL_CGROUP_V2_SUMMARY.md",
+      "bytes": 1238,
+      "sha256": "bd2666dc1fe57f2c100d7bd6036844e26ca7e402fbfcefa7f4cd6fddbeaa02eb"
+    },
+    {
+      "path": "openeuler_smoke/agent.env",
+      "bytes": 129,
+      "sha256": "e948f11d891ca264a5c9fd9dbf2a807c483406e11da6d1148c074eb526e0e9a3"
+    },
+    {
+      "path": "openeuler_smoke/agent_summary.json",
+      "bytes": 629,
+      "sha256": "b1e9132838735c52fec017eea84403067e46ae81f1389fe26f7af0944026934a"
+    },
+    {
+      "path": "openeuler_smoke/agents.json",
+      "bytes": 4347,
+      "sha256": "913c9c9fd5c506a96da1277d3a97a3778b523a5251f0c89d26c8b06268b886d8"
+    },
+    {
+      "path": "openeuler_smoke/agents.status",
+      "bytes": 4,
+      "sha256": "c11e3f4837efde2441e23a7b9da02131f53bf59fddeb7147c4ab81afe400460f"
+    },
+    {
+      "path": "openeuler_smoke/aort-r-openeuler-7d939c2-cgroupv2-real-evidence.tgz",
+      "bytes": 4596,
+      "sha256": "c8a6ef8940c1a5b83b1a72b4447d35c6aec466b072383c53844917776ef76aaa"
+    },
+    {
+      "path": "openeuler_smoke/aort-r-openeuler-9029ec3-evidence.tgz",
+      "bytes": 1180,
+      "sha256": "6754631102ed85dc4f5a7f35f3633dd89f3fcccc37d81b970bf3d6c133018b22"
+    },
+    {
+      "path": "openeuler_smoke/capsule_real.json",
+      "bytes": 562,
+      "sha256": "403bae861b350a131bfaf8f001a2fc74bcc24c6df61120b113acd0349a3bae45"
+    },
+    {
+      "path": "openeuler_smoke/capsules.json",
+      "bytes": 3099,
+      "sha256": "167e6c786401f7e31a5fcff571f799001afcfe91cdfc057b542745573ffc1239"
+    },
+    {
+      "path": "openeuler_smoke/capsules.status",
+      "bytes": 4,
+      "sha256": "c11e3f4837efde2441e23a7b9da02131f53bf59fddeb7147c4ab81afe400460f"
+    },
+    {
+      "path": "openeuler_smoke/cgroup_memory_current.txt",
+      "bytes": 8,
+      "sha256": "cdbfae55be5661dc67c13637b25877f3dbabb2c2dfce1c9ddf33eda1c3b64043"
+    },
+    {
+      "path": "openeuler_smoke/cgroup_pids_current.txt",
+      "bytes": 2,
+      "sha256": "f0b5c2c2211c8d67ed15e75e656c7862d086e9245420892a7de62cd9ec582a06"
+    },
+    {
+      "path": "openeuler_smoke/context_stats.json",
+      "bytes": 376,
+      "sha256": "d33726ce89027d50579e988ea088fd6a34a1aec2132a630a4f27e8bb8c88d37a"
+    },
+    {
+      "path": "openeuler_smoke/context_stats.status",
+      "bytes": 4,
+      "sha256": "c11e3f4837efde2441e23a7b9da02131f53bf59fddeb7147c4ab81afe400460f"
+    },
+    {
+      "path": "openeuler_smoke/demo_run.json",
+      "bytes": 44,
+      "sha256": "148f04ddf10af38375520da1c27ba8421dcde12b919c5b567bb5ea5379471797"
+    },
+    {
+      "path": "openeuler_smoke/demo_run.status",
+      "bytes": 4,
+      "sha256": "1a55a7d16b47deb40890edb52c2234c4adddf330dbac2e1f1eedf0a9723a4c70"
+    },
+    {
+      "path": "openeuler_smoke/env_check.json",
+      "bytes": 896,
+      "sha256": "8a37acb63050f412e0be4d042ffcf38225fe8c221ccd0cbbbe0a3ae8de374e77"
+    },
+    {
+      "path": "openeuler_smoke/env_check.txt",
+      "bytes": 954,
+      "sha256": "b5579c4805bcc054798218dcc72d0630d2927545081559d9b6710acd7de86173"
+    },
+    {
+      "path": "openeuler_smoke/env_check_97e63e8.txt",
+      "bytes": 1042,
+      "sha256": "4924ae18409741de23eaf7c64f18f8326e076b6a924c5224f82300aba658073b"
+    },
+    {
+      "path": "openeuler_smoke/env_check_cgroupv2_7d939c2.txt",
+      "bytes": 993,
+      "sha256": "623b489b7af750df61a87e5bd630a853c4cfd01cd8fa098e23e5b59ab1043dd3"
+    },
+    {
+      "path": "openeuler_smoke/env_check_latest.txt",
+      "bytes": 1042,
+      "sha256": "4924ae18409741de23eaf7c64f18f8326e076b6a924c5224f82300aba658073b"
+    },
+    {
+      "path": "openeuler_smoke/experiment_97e63e8.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "openeuler_smoke/fault_tool_timeout.json",
+      "bytes": 385,
+      "sha256": "cf35b4a75693ba0b40a00090c2fa296e60e1c45aac3e53c2e3fc1bc0da097fe7"
+    },
+    {
+      "path": "openeuler_smoke/fault_tool_timeout.status",
+      "bytes": 4,
+      "sha256": "1a55a7d16b47deb40890edb52c2234c4adddf330dbac2e1f1eedf0a9723a4c70"
+    },
+    {
+      "path": "openeuler_smoke/freeze.json",
+      "bytes": 43,
+      "sha256": "688d4c5b0d29589709393cef9e7628888c25cfc054277ae312de1304f974d676"
+    },
+    {
+      "path": "openeuler_smoke/freeze.status",
+      "bytes": 4,
+      "sha256": "c11e3f4837efde2441e23a7b9da02131f53bf59fddeb7147c4ab81afe400460f"
+    },
+    {
+      "path": "openeuler_smoke/go_test.status",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "openeuler_smoke/go_test.txt",
+      "bytes": 1199,
+      "sha256": "74ff3cf67405f64c990e2f155afdce3bc3877b5cfd6d9dbc7b7442c78f67fed1"
+    },
+    {
+      "path": "openeuler_smoke/go_test_97e63e8.txt",
+      "bytes": 858,
+      "sha256": "6cd02024e4854a7a88d7bb92b31661d4f82f5ea9839bbcbfc94e11c1f2d66046"
+    },
+    {
+      "path": "openeuler_smoke/go_test_cgroupv2_7d939c2.txt",
+      "bytes": 822,
+      "sha256": "ba9d042a4a171b7ebd132deef8e52b5c01a1481f795b303930007eff7af51355"
+    },
+    {
+      "path": "openeuler_smoke/go_test_latest.txt",
+      "bytes": 867,
+      "sha256": "5f6bbb49385bacaefad28f3f42863770099e806cb43ef52c59ee576ad23fa48a"
+    },
+    {
+      "path": "openeuler_smoke/health.json",
+      "bytes": 39,
+      "sha256": "42fbf0080c09cf6f99f4e0c540997def135bea67de4b8d2104c611f11be1530c"
+    },
+    {
+      "path": "openeuler_smoke/health.status",
+      "bytes": 4,
+      "sha256": "c11e3f4837efde2441e23a7b9da02131f53bf59fddeb7147c4ab81afe400460f"
+    },
+    {
+      "path": "openeuler_smoke/kill.json",
+      "bytes": 135,
+      "sha256": "aa53071cfaaf6178674889b93a031f98eefe6a79c64a269f9b4449099749eac6"
+    },
+    {
+      "path": "openeuler_smoke/kill.status",
+      "bytes": 4,
+      "sha256": "c11e3f4837efde2441e23a7b9da02131f53bf59fddeb7147c4ab81afe400460f"
+    },
+    {
+      "path": "openeuler_smoke/manual_smoke_summary.json",
+      "bytes": 2572,
+      "sha256": "9ace8b5f844578f64c1e3b62891b78ca7d04e7c8c34ea3e8116b0f3f2121f882"
+    },
+    {
+      "path": "openeuler_smoke/runtime_start.log",
+      "bytes": 54,
+      "sha256": "22754054c5990253044870e0ec29d942d234e3aae0d3d5dc1a82f3df2454b3f3"
+    },
+    {
+      "path": "openeuler_smoke/scheduler_decisions.json",
+      "bytes": 6092,
+      "sha256": "dee79fc65edf2c1e46f0bba7c9e36f91eb888d7b9fbf90353bbea1e011db69a3"
+    },
+    {
+      "path": "openeuler_smoke/scheduler_decisions.status",
+      "bytes": 4,
+      "sha256": "c11e3f4837efde2441e23a7b9da02131f53bf59fddeb7147c4ab81afe400460f"
+    },
+    {
+      "path": "openeuler_smoke/smoke_cgroupv2_7d939c2.log",
+      "bytes": 1217,
+      "sha256": "73725472283c7b61289c4ccf0f97929297d12305691cf40a1299539bda9ab8dd"
+    },
+    {
+      "path": "openeuler_smoke/smoke_latest.log",
+      "bytes": 1053,
+      "sha256": "1b5349c451843c93720ba062b24baaf2aaef001fdfb1066c96cc877123b1bd01"
+    },
+    {
+      "path": "openeuler_smoke/smoke_openeuler.log",
+      "bytes": 1054,
+      "sha256": "053fa847acc8b9642376a9f914c8e62e5e584862b8c6715b6093f343ceba79d8"
+    },
+    {
+      "path": "openeuler_smoke/smoke_summary.json",
+      "bytes": 2572,
+      "sha256": "9ace8b5f844578f64c1e3b62891b78ca7d04e7c8c34ea3e8116b0f3f2121f882"
+    },
+    {
+      "path": "openeuler_smoke/syscalls.json",
+      "bytes": 6456,
+      "sha256": "d3de176eab15ae9f6b03527b98b0ff6dbea8d5e09de8c7e2173117c2b341eff6"
+    },
+    {
+      "path": "openeuler_smoke/syscalls.status",
+      "bytes": 4,
+      "sha256": "c11e3f4837efde2441e23a7b9da02131f53bf59fddeb7147c4ab81afe400460f"
+    },
+    {
+      "path": "openeuler_smoke/unfreeze.json",
+      "bytes": 45,
+      "sha256": "4a78cd4640c6f6c8bdf35025c6437492cc798190e20544911dc1103b0706189d"
+    },
+    {
+      "path": "openeuler_smoke/unfreeze.status",
+      "bytes": 4,
+      "sha256": "c11e3f4837efde2441e23a7b9da02131f53bf59fddeb7147c4ab81afe400460f"
+    },
+    {
+      "path": "software_real_demo/openeuler/build_worker.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "software_real_demo/openeuler/go_test.txt",
+      "bytes": 1193,
+      "sha256": "6397a983bcf1e3935c9f9ea52b57f6929b04c073a4a2d2213c0a759ddb6b2165"
+    },
+    {
+      "path": "software_real_demo/openeuler/health.json",
+      "bytes": 35,
+      "sha256": "07d33473c5a9a92121d064be3bacb8ee19a7d0b9ebbf4761c70356a4d3f8e0ac"
+    },
+    {
+      "path": "software_real_demo/openeuler/health.status",
+      "bytes": 4,
+      "sha256": "c11e3f4837efde2441e23a7b9da02131f53bf59fddeb7147c4ab81afe400460f"
+    },
+    {
+      "path": "software_real_demo/openeuler/openeuler-runtime.yaml",
+      "bytes": 340,
+      "sha256": "8871220ee4ca9b613ad2d2f345a4ba640bd49ae9aba4566d253918fb99530310"
+    },
+    {
+      "path": "software_real_demo/openeuler/request.json",
+      "bytes": 101,
+      "sha256": "01ccd659781a8beefc25a15cce95c1a6e045cd6a1449d769cf659719a4a85bc7"
+    },
+    {
+      "path": "software_real_demo/openeuler/result.json",
+      "bytes": 2525,
+      "sha256": "b661d8e23bb7ab1bc93db6435c4f1f465de6531eafce9ceae65510d185e6e08e"
+    },
+    {
+      "path": "software_real_demo/openeuler/result.status",
+      "bytes": 4,
+      "sha256": "c11e3f4837efde2441e23a7b9da02131f53bf59fddeb7147c4ab81afe400460f"
+    },
+    {
+      "path": "software_real_demo/openeuler/run.json",
+      "bytes": 2525,
+      "sha256": "b661d8e23bb7ab1bc93db6435c4f1f465de6531eafce9ceae65510d185e6e08e"
+    },
+    {
+      "path": "software_real_demo/openeuler/run.status",
+      "bytes": 4,
+      "sha256": "1a55a7d16b47deb40890edb52c2234c4adddf330dbac2e1f1eedf0a9723a4c70"
+    },
+    {
+      "path": "software_real_demo/openeuler/runtime_start.log",
+      "bytes": 54,
+      "sha256": "b4654960805723d240f558f0f6925c0e917133b9daeccb31da2c5b447fa31d44"
+    },
+    {
+      "path": "software_real_demo/openeuler/software_real_capsules.json",
+      "bytes": 2989,
+      "sha256": "00357a1363be910124407fea2d8415ec6b76118d9354b8d2587a8e395ad07b92"
+    },
+    {
+      "path": "software_real_demo/openeuler/software_real_openeuler_summary.json",
+      "bytes": 386,
+      "sha256": "8f6bc2a5ccf2dfe6b6589d30e12b46c33d5e6d0be33406924d9f7a5dc5e3d5e7"
+    },
+    {
+      "path": "software_real_demo/openeuler/status.json",
+      "bytes": 2525,
+      "sha256": "b661d8e23bb7ab1bc93db6435c4f1f465de6531eafce9ceae65510d185e6e08e"
+    },
+    {
+      "path": "software_real_demo/openeuler/status.status",
+      "bytes": 4,
+      "sha256": "c11e3f4837efde2441e23a7b9da02131f53bf59fddeb7147c4ab81afe400460f"
+    },
+    {
+      "path": "software_real_demo/result.json",
+      "bytes": 3073,
+      "sha256": "79dff68b7ba818e4c07631a934a443c162603d041a808da209a3cf7753eb32b8"
+    },
+    {
+      "path": "software_real_demo/trace.json",
+      "bytes": 17961,
+      "sha256": "f35aa44329c87b32cef8fcc7566b9f077d0ac5f0006b91a052d90d75fa2390e0"
+    }
+  ]
+}

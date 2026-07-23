@@ -2,6 +2,8 @@
 .aort-dev/
 var/
 run/
+!experiments/results/_process_evidence/**/run/
+!experiments/results/_process_evidence/**/run/**
 
 # Build outputs
 bin/
@@ -20,6 +22,7 @@ dashboard/dist/
 # Logs and traces generated during local runs
 *.log
 *.jsonl
+!experiments/results/_process_evidence/**/*.jsonl
 
 # OS/editor noise
 .DS_Store

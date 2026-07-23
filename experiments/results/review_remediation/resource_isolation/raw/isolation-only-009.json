@@ -1,0 +1,87 @@
+{
+  "scenario_id": "resource-isolation",
+  "run_id": "isolation-only-009",
+  "mode": "isolation-only",
+  "timestamp": "2026-07-15T15:11:40.700228Z",
+  "success": true,
+  "metrics": {
+    "cleanup_ms": {
+      "value": 1,
+      "measurement_kind": "measured",
+      "unit": "ms"
+    },
+    "cross_agent_contamination": {
+      "value": 0,
+      "measurement_kind": "measured",
+      "unit": "bool"
+    },
+    "fault_containment_scope": {
+      "value": 1,
+      "measurement_kind": "measured",
+      "unit": "agents"
+    },
+    "fault_detection_ms": {
+      "value": 1,
+      "measurement_kind": "measured",
+      "unit": "ms"
+    },
+    "lowerdir_hash_unchanged": {
+      "value": 1,
+      "measurement_kind": "measured",
+      "unit": "bool"
+    },
+    "memory_peak_bytes": {
+      "value": 2505632,
+      "measurement_kind": "measured",
+      "unit": "bytes"
+    },
+    "normal_agent_completion_rate": {
+      "value": 1,
+      "measurement_kind": "measured",
+      "unit": "ratio"
+    },
+    "normal_completion_p50_ms": {
+      "value": 2,
+      "measurement_kind": "measured",
+      "unit": "ms"
+    },
+    "normal_completion_p95_ms": {
+      "value": 2,
+      "measurement_kind": "measured",
+      "unit": "ms"
+    },
+    "pids_peak": {
+      "value": 6,
+      "measurement_kind": "measured",
+      "unit": "processes"
+    },
+    "recovery_ms": {
+      "value": 1,
+      "measurement_kind": "measured",
+      "unit": "ms"
+    },
+    "resource_sampler_mode": {
+      "value": 8,
+      "measurement_kind": "derived",
+      "unit": "degraded"
+    },
+    "task_success": {
+      "value": 1,
+      "measurement_kind": "measured",
+      "unit": "bool"
+    }
+  },
+  "events": [
+    {
+      "name": "scenario.started",
+      "timestamp": "2026-07-15T15:11:40.700228Z",
+      "detail": "six-agent resource isolation run"
+    },
+    {
+      "name": "scenario.finished",
+      "timestamp": "2026-07-15T15:11:40.703663Z",
+      "status": "degraded"
+    }
+  ],
+  "artifact": "raw/isolation-only-009.json"
+}

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"fmt"
 	"log"
@@ -11,6 +12,7 @@ import (
 	"strconv"
 	"time"
 
+	"aort-r/internal/codebasedag"
 	"aort-r/internal/experiment"
 	"aort-r/internal/review"
 	"aort-r/internal/workspace"
@@ -54,9 +56,11 @@ func run(args []string) error {
 
 func runScenario(args []string) error {
 	if len(args) == 0 {
-		return fmt.Errorf("usage: aortctl scenario resource-isolation|context-sharing|real-agent-demo")
+		return fmt.Errorf("usage: aortctl scenario resource-isolation|context-sharing|real-agent-demo|codebase-dag")
 	}
 	switch args[0] {
+	case "codebase-dag":
+		return runCodebaseDAGScenario(args[1:])
 	case "resource-isolation":
 		fs := flag.NewFlagSet("scenario resource-isolation", flag.ContinueOnError)
 		mode := fs.String("mode", "all", "comparison mode: all, baseline, isolation-only, or aort-r")
@@ -127,6 +131,83 @@ func runScenario(args []string) error {
 	default:
 		return fmt.Errorf("unknown scenario %q", args[0])
 	}
+}
+
+func runCodebaseDAGScenario(args []string) error {
+	fs := flag.NewFlagSet("scenario codebase-dag", flag.ContinueOnError)
+	provider := fs.String("provider", codebasedag.RequiredDeepSeekProvider, "LLM provider; only deepseek is accepted")
+	model := fs.String("model", codebasedag.RequiredDeepSeekModel, "required DeepSeek model")
+	workload := fs.String("workload", "", "clean workload repository path")
+	ticket := fs.String("ticket", "review-remediation", "ticket identifier")
+	workerCommand := fs.String("worker-command", "", "aort code worker command")
+	runID := fs.String("run-id", time.Now().UTC().Format("20060102T150405Z"), "create-exclusive run ID")
+	out := fs.String("out", filepath.Join("experiments", "results", "codebase_dag"), "output root")
+	maxCalls := fs.Int("max-calls", codebasedag.DefaultMaxModelCalls, "maximum DeepSeek completion calls")
+	preflightOnly := fs.Bool("preflight-only", false, "run local preflight and write summary without worker execution")
+	minPhysical := fs.Int("min-physical", codebasedag.DefaultMinPhysicalLines, "minimum tracked Go physical lines")
+	minNonblank := fs.Int("min-nonblank", codebasedag.DefaultMinNonblankLines, "minimum tracked Go nonblank lines")
+	gitPath := fs.String("git-path", "", "Git executable path for manifest construction")
+	if err := fs.Parse(args); err != nil {
+		return err
+	}
+	if *workload == "" {
+		return fmt.Errorf("--workload is required")
+	}
+	if *ticket == "" {
+		return fmt.Errorf("--ticket is required")
+	}
+	cfg := codebasedag.RunnerConfig{
+		RunID:       *runID,
+		WorkloadDir: *workload,
+		Provider:    *provider,
+		Model:       *model,
+		MaxCalls:    *maxCalls,
+	}
+	if *preflightOnly {
+		preflight := codebasedag.LocalPreflight{
+			ManifestOptions: codebasedag.ManifestOptions{MinPhysical: *minPhysical, MinNonblank: *minNonblank, GitPath: *gitPath},
+			RequireAPIKey:   false,
+		}
+		result, err := preflight.Check(context.Background(), cfg)
+		store, storeErr := codebasedag.NewRunStore(*out, *runID)
+		if storeErr != nil {
+			return storeErr
+		}
+		summary := codebasedag.Summary{
+			SchemaVersion:     codebasedag.SchemaVersion,
+			RunID:             *runID,
+			Preflight:         result,
+			AllRequiredPassed: err == nil && result.Passed,
+		}
+		if *workerCommand != "" {
+			summary.Preflight.Gates["worker_command_configured"] = true
+		}
+		if writeErr := store.WriteJSON("summary.json", summary); writeErr != nil {
+			return writeErr
+		}
+		if _, hashErr := store.FinalizeHashes(); hashErr != nil {
+			return hashErr
+		}
+		if err != nil {
+			return err
+		}
+		return nil
+	}
+
+	live, err := codebasedag.RunLive(context.Background(), codebasedag.LiveRunConfig{
+		RunnerConfig: cfg,
+		OutDir:       *out,
+		Ticket:       *ticket,
+		MinPhysical:  *minPhysical,
+		MinNonblank:  *minNonblank,
+		GitPath:      *gitPath,
+		RequireKey:   true,
+	})
+	if err != nil {
+		return err
+	}
+	fmt.Printf("codebase-dag live run %s passed=%v calls=%d dir=%s\n", live.Summary.RunID, live.Summary.AllRequiredPassed, len(live.Calls), live.Dir)
+	return nil
 }
 
 func runExperiment(args []string) error {
@@ -321,9 +402,19 @@ func runReplay(args []string) error {
 
 func runEvidence(args []string) error {
 	if len(args) == 0 {
-		return fmt.Errorf("usage: aortctl evidence final|review-final")
+		return fmt.Errorf("usage: aortctl evidence final|review-final|codebase-dag")
 	}
 	switch args[0] {
+	case "codebase-dag":
+		fs := flag.NewFlagSet("evidence codebase-dag", flag.ContinueOnError)
+		runDir := fs.String("run", "", "codebase DAG run directory")
+		if err := fs.Parse(args[1:]); err != nil {
+			return err
+		}
+		if *runDir == "" {
+			return fmt.Errorf("--run is required")
+		}
+		return codebasedag.ValidateRun(*runDir)
 	case "final":
 		fs := flag.NewFlagSet("evidence final", flag.ContinueOnError)
 		out := fs.String("out", filepath.Join("experiments", "results", "final"), "output directory")

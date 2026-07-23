@@ -1,0 +1,48 @@
+{
+  "schema_version": "review/v1",
+  "timestamp": "2026-07-15T15:37:34.235111Z",
+  "git_commit": "4d43fc323c52f24b4d8876dcf437c3aae56c5ffc",
+  "git_dirty": true,
+  "scenarios": {
+    "context_sharing": {
+      "scenario_id": "context-sharing",
+      "path": "experiments/results/review_remediation/context_sharing/summary.json",
+      "status": "passed",
+      "evidence_mode": "degraded",
+      "present": true,
+      "valid": true
+    },
+    "real_agent_demo": {
+      "scenario_id": "real-agent-demo",
+      "path": "experiments/results/review_remediation/real_agent_demo/summary.json",
+      "status": "passed",
+      "evidence_mode": "mock",
+      "present": true,
+      "valid": true
+    },
+    "resource_isolation": {
+      "scenario_id": "resource-isolation",
+      "path": "experiments/results/review_remediation/resource_isolation/summary.json",
+      "status": "passed",
+      "evidence_mode": "degraded",
+      "present": true,
+      "valid": true
+    }
+  },
+  "legacy_final": {
+    "path": "experiments/results/final/FINAL_EVIDENCE_INDEX.json",
+    "status": "present",
+    "present": true
+  },
+  "generated_files": [
+    "experiments/results/review_final/REVIEW_EVIDENCE_INDEX.json",
+    "experiments/results/review_final/REVIEW_SUMMARY.md"
+  ],
+  "missing_files": [],
+  "failed_scenarios": [],
+  "all_required_passed": true,
+  "limitations": [
+    "This index references historical final evidence without modifying it.",
+    "Degraded evidence remains valid only when its fallback reason and platform boundary are explicit in the source summary."
+  ]
+}

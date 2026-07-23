@@ -1,0 +1,190 @@
+{
+  "experiment": "all",
+  "runs": 1,
+  "evidence_mode": "degraded",
+  "steps": [
+    {
+      "name": "e1",
+      "command": "go run ./cmd/aortctl experiment e1 --policy resource-aware --runs 1 --out experiments/results/audit_all/e1",
+      "status": "degraded",
+      "generated_files": [
+        "experiments/results/audit_all/e1/e1_resource_aware.json",
+        "experiments/results/audit_all/e1/e1_resource_aware.csv",
+        "experiments/results/audit_all/e1/e1_resource_aware_decisions.json",
+        "experiments/results/audit_all/e1/e1_resource_aware_summary.md"
+      ],
+      "error": "",
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
+    },
+    {
+      "name": "e1-pressure",
+      "command": "go run ./cmd/aortctl experiment e1-pressure --runs 1 --out experiments/results/audit_all/e1_pressure",
+      "status": "passed",
+      "generated_files": [
+        "experiments/results/audit_all/e1_pressure/e1_pressure.json"
+      ],
+      "error": ""
+    },
+    {
+      "name": "e2",
+      "command": "go run ./cmd/aortctl experiment e2 --runs 1 --out experiments/results/audit_all/e2",
+      "status": "degraded",
+      "generated_files": [
+        "experiments/results/audit_all/e2/e2-real-fault.json",
+        "experiments/results/audit_all/e2/e2-real-fault.csv"
+      ],
+      "error": "",
+      "fallback_reason": "tool timeout"
+    },
+    {
+      "name": "e2-pressure-fault",
+      "command": "go run ./cmd/aortctl experiment e2-pressure-fault --runs 1 --out experiments/results/audit_all/e2_pressure_fault",
+      "status": "degraded",
+      "generated_files": [
+        "experiments/results/audit_all/e2_pressure_fault/e2_pressure_fault.json"
+      ],
+      "error": "",
+      "fallback_reason": "overlayfs requires linux, got darwin"
+    },
+    {
+      "name": "software-real",
+      "command": "go run ./cmd/aortctl demo software-real --out experiments/results/audit_all/software_real",
+      "status": "passed",
+      "generated_files": [
+        "experiments/results/audit_all/software_real/software_real_demo/result.json"
+      ],
+      "error": ""
+    },
+    {
+      "name": "workspace probe",
+      "command": "go run ./cmd/aortctl workspace probe --out experiments/results/audit_all/workspace_probe.json",
+      "status": "degraded",
+      "generated_files": [
+        "experiments/results/audit_all/workspace_probe.json"
+      ],
+      "error": "",
+      "fallback_reason": "overlayfs requires linux, got darwin"
+    },
+    {
+      "name": "workspace-rmrf",
+      "command": "go run ./cmd/aortctl demo fault workspace-rmrf --out experiments/results/audit_all/workspace_rmrf",
+      "status": "degraded",
+      "generated_files": [
+        "experiments/results/audit_all/workspace_rmrf/workspace_isolation_evidence.json"
+      ],
+      "error": "",
+      "fallback_reason": "overlayfs requires linux, got darwin"
+    },
+    {
+      "name": "tool-workspace",
+      "command": "go run ./cmd/aortctl demo tool-workspace --out experiments/results/audit_all/tool_workspace",
+      "status": "degraded",
+      "generated_files": [
+        "experiments/results/audit_all/tool_workspace/tool_workspace_evidence.json"
+      ],
+      "error": "",
+      "fallback_reason": "overlayfs requires linux, got darwin"
+    },
+    {
+      "name": "real-cgroup-smoke",
+      "command": "go run ./cmd/aortctl experiment real-cgroup-smoke --out experiments/results/audit_all/real_cgroup_smoke",
+      "status": "degraded",
+      "generated_files": [
+        "experiments/results/audit_all/real_cgroup_smoke/real_cgroup_smoke.json"
+      ],
+      "error": "cgroup fs is not cgroup2fs: requires linux, got darwin",
+      "fallback_reason": "cgroup fs is not cgroup2fs: requires linux, got darwin"
+    },
+    {
+      "name": "real-pressure-smoke",
+      "command": "go run ./cmd/aortctl experiment real-pressure-smoke --runs 1 --out experiments/results/audit_all/real_pressure_smoke",
+      "status": "degraded",
+      "generated_files": [
+        "experiments/results/audit_all/real_pressure_smoke/real_pressure_smoke.json"
+      ],
+      "error": "",
+      "fallback_reason": "cgroup fs is not cgroup2fs: requires linux, got darwin"
+    },
+    {
+      "name": "ebpf-smoke",
+      "command": "go run ./cmd/aortctl observer ebpf-smoke --out experiments/results/audit_all/ebpf_smoke",
+      "status": "degraded",
+      "generated_files": [
+        "experiments/results/audit_all/ebpf_smoke/ebpf_smoke.json"
+      ],
+      "error": "",
+      "fallback_reason": "not linux: real eBPF observer requires Linux tracepoints"
+    },
+    {
+      "name": "ipc shm-smoke",
+      "command": "go run ./cmd/aortctl ipc shm-smoke --out experiments/results/audit_all/ipc_shm",
+      "status": "degraded",
+      "generated_files": [
+        "experiments/results/audit_all/ipc_shm/ipc_shm_smoke.json"
+      ],
+      "error": "",
+      "fallback_reason": "not linux: memfd/mmap shared-memory IPC requires Linux"
+    },
+    {
+      "name": "cvm memory-smoke",
+      "command": "go run ./cmd/aortctl cvm memory-smoke --out experiments/results/audit_all/cvm_memory",
+      "status": "passed",
+      "generated_files": [
+        "experiments/results/audit_all/cvm_memory/cvm_memory_smoke.json"
+      ],
+      "error": ""
+    },
+    {
+      "name": "real-all",
+      "command": "go run ./cmd/aortctl experiment real-all --runs 1 --out experiments/results/audit_all/real_all",
+      "status": "degraded",
+      "generated_files": [
+        "experiments/results/audit_all/real_all/REAL_EVIDENCE_INDEX.json"
+      ],
+      "error": "real-all failed: real cgroup v2 smoke did not pass; real resource sampler pressure smoke did not pass; real overlayfs workspace evidence did not pass; real overlayfs tool.exec evidence did not pass; real env check failed: real openEuler environment check failed:\n- no root permission\n- not openEuler\n- cgroup fs is not cgroup2fs\n- cgroup path is not writable\n- overlayfs not listed; cgroup fs is not cgroup2fs: requires linux, got darwin; cgroup fs is not cgroup2fs: requires linux, got darwin; real-overlayfs required: overlayfs requires linux, got darwin",
+      "fallback_reason": "real-all failed: real cgroup v2 smoke did not pass; real resource sampler pressure smoke did not pass; real overlayfs workspace evidence did not pass; real overlayfs tool.exec evidence did not pass; real env check failed: real openEuler environment check failed:\n- no root permission\n- not openEuler\n- cgroup fs is not cgroup2fs\n- cgroup path is not writable\n- overlayfs not listed; cgroup fs is not cgroup2fs: requires linux, got darwin; cgroup fs is not cgroup2fs: requires linux, got darwin; real-overlayfs required: overlayfs requires linux, got darwin"
+    }
+  ],
+  "passed": [
+    "e1-pressure",
+    "software-real",
+    "cvm memory-smoke"
+  ],
+  "failed": [],
+  "degraded": [
+    "e1",
+    "e2",
+    "e2-pressure-fault",
+    "workspace probe",
+    "workspace-rmrf",
+    "tool-workspace",
+    "real-cgroup-smoke",
+    "real-pressure-smoke",
+    "ebpf-smoke",
+    "ipc shm-smoke",
+    "real-all"
+  ],
+  "missing": [],
+  "generated_files": [
+    "experiments/results/audit_all/e1/e1_resource_aware.json",
+    "experiments/results/audit_all/e1/e1_resource_aware.csv",
+    "experiments/results/audit_all/e1/e1_resource_aware_decisions.json",
+    "experiments/results/audit_all/e1/e1_resource_aware_summary.md",
+    "experiments/results/audit_all/e1_pressure/e1_pressure.json",
+    "experiments/results/audit_all/e2/e2-real-fault.json",
+    "experiments/results/audit_all/e2/e2-real-fault.csv",
+    "experiments/results/audit_all/e2_pressure_fault/e2_pressure_fault.json",
+    "experiments/results/audit_all/software_real/software_real_demo/result.json",
+    "experiments/results/audit_all/workspace_probe.json",
+    "experiments/results/audit_all/workspace_rmrf/workspace_isolation_evidence.json",
+    "experiments/results/audit_all/tool_workspace/tool_workspace_evidence.json",
+    "experiments/results/audit_all/real_cgroup_smoke/real_cgroup_smoke.json",
+    "experiments/results/audit_all/real_pressure_smoke/real_pressure_smoke.json",
+    "experiments/results/audit_all/ebpf_smoke/ebpf_smoke.json",
+    "experiments/results/audit_all/ipc_shm/ipc_shm_smoke.json",
+    "experiments/results/audit_all/cvm_memory/cvm_memory_smoke.json",
+    "experiments/results/audit_all/real_all/REAL_EVIDENCE_INDEX.json",
+    "experiments/results/audit_all/all_experiments_summary.json"
+  ],
+  "all_required_passed": true
+}

@@ -1,0 +1,6564 @@
+{
+  "schema_version": "review/v1",
+  "scenario_id": "resource-isolation",
+  "run_id": "resource-isolation-1784128300414800000",
+  "timestamp": "2026-07-15T15:11:40.415949Z",
+  "git_commit": "424e204329d76ba11f0ed9631675a10d52f9e05c",
+  "git_dirty": true,
+  "environment": {
+    "go_version": "go1.25.3",
+    "goarch": "arm64",
+    "goos": "darwin"
+  },
+  "evidence_mode": "degraded",
+  "parameters": {
+    "agent_roles": [
+      "Planner",
+      "Coder-A",
+      "Coder-B",
+      "Tester",
+      "Reviewer",
+      "Fault-Agent"
+    ],
+    "cgroup_policy": "feature-gated; no host cgroup is mutated by portable runs",
+    "fault_types": [
+      "memory_hog",
+      "pids_hog",
+      "cpu_hog",
+      "workspace_rmrf"
+    ],
+    "mode": "all",
+    "runs": 20,
+    "seed": 20260713,
+    "timeout_ms": 5000,
+    "warmup": 3
+  },
+  "seed": 20260713,
+  "warmup": 3,
+  "measured_runs": 20,
+  "per_run": [
+    {
+      "scenario_id": "resource-isolation",
+      "run_id": "baseline-004",
+      "mode": "baseline",
+      "timestamp": "2026-07-15T15:11:40.471893Z",
+      "success": true,
+      "metrics": {
+        "cleanup_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "cross_agent_contamination": {
+          "value": 0,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "fault_containment_scope": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "agents"
+        },
+        "fault_detection_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "lowerdir_hash_unchanged": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "memory_peak_bytes": {
+          "value": 2895800,
+          "measurement_kind": "measured",
+          "unit": "bytes"
+        },
+        "normal_agent_completion_rate": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ratio"
+        },
+        "normal_completion_p50_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "normal_completion_p95_ms": {
+          "value": 2.8,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "pids_peak": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "processes"
+        },
+        "recovery_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "resource_sampler_mode": {
+          "value": 8,
+          "measurement_kind": "derived",
+          "unit": "degraded"
+        },
+        "task_success": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        }
+      },
+      "events": [
+        {
+          "name": "scenario.started",
+          "timestamp": "2026-07-15T15:11:40.471893Z",
+          "detail": "six-agent resource isolation run"
+        },
+        {
+          "name": "scenario.finished",
+          "timestamp": "2026-07-15T15:11:40.475901Z",
+          "status": "degraded"
+        }
+      ],
+      "artifact": "raw/baseline-004.json"
+    },
+    {
+      "scenario_id": "resource-isolation",
+      "run_id": "baseline-005",
+      "mode": "baseline",
+      "timestamp": "2026-07-15T15:11:40.476835Z",
+      "success": true,
+      "metrics": {
+        "cleanup_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "cross_agent_contamination": {
+          "value": 0,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "fault_containment_scope": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "agents"
+        },
+        "fault_detection_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "lowerdir_hash_unchanged": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "memory_peak_bytes": {
+          "value": 2414048,
+          "measurement_kind": "measured",
+          "unit": "bytes"
+        },
+        "normal_agent_completion_rate": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ratio"
+        },
+        "normal_completion_p50_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "normal_completion_p95_ms": {
+          "value": 3,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "pids_peak": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "processes"
+        },
+        "recovery_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "resource_sampler_mode": {
+          "value": 8,
+          "measurement_kind": "derived",
+          "unit": "degraded"
+        },
+        "task_success": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        }
+      },
+      "events": [
+        {
+          "name": "scenario.started",
+          "timestamp": "2026-07-15T15:11:40.476835Z",
+          "detail": "six-agent resource isolation run"
+        },
+        {
+          "name": "scenario.finished",
+          "timestamp": "2026-07-15T15:11:40.481147Z",
+          "status": "degraded"
+        }
+      ],
+      "artifact": "raw/baseline-005.json"
+    },
+    {
+      "scenario_id": "resource-isolation",
+      "run_id": "baseline-006",
+      "mode": "baseline",
+      "timestamp": "2026-07-15T15:11:40.482021Z",
+      "success": true,
+      "metrics": {
+        "cleanup_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "cross_agent_contamination": {
+          "value": 0,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "fault_containment_scope": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "agents"
+        },
+        "fault_detection_ms": {
+          "value": 7,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "lowerdir_hash_unchanged": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "memory_peak_bytes": {
+          "value": 2580608,
+          "measurement_kind": "measured",
+          "unit": "bytes"
+        },
+        "normal_agent_completion_rate": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ratio"
+        },
+        "normal_completion_p50_ms": {
+          "value": 3,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "normal_completion_p95_ms": {
+          "value": 3.8,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "pids_peak": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "processes"
+        },
+        "recovery_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "resource_sampler_mode": {
+          "value": 8,
+          "measurement_kind": "derived",
+          "unit": "degraded"
+        },
+        "task_success": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        }
+      },
+      "events": [
+        {
+          "name": "scenario.started",
+          "timestamp": "2026-07-15T15:11:40.482021Z",
+          "detail": "six-agent resource isolation run"
+        },
+        {
+          "name": "scenario.finished",
+          "timestamp": "2026-07-15T15:11:40.490073Z",
+          "status": "degraded"
+        }
+      ],
+      "artifact": "raw/baseline-006.json"
+    },
+    {
+      "scenario_id": "resource-isolation",
+      "run_id": "baseline-007",
+      "mode": "baseline",
+      "timestamp": "2026-07-15T15:11:40.490823Z",
+      "success": true,
+      "metrics": {
+        "cleanup_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "cross_agent_contamination": {
+          "value": 0,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "fault_containment_scope": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "agents"
+        },
+        "fault_detection_ms": {
+          "value": 15,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "lowerdir_hash_unchanged": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "memory_peak_bytes": {
+          "value": 2689376,
+          "measurement_kind": "measured",
+          "unit": "bytes"
+        },
+        "normal_agent_completion_rate": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ratio"
+        },
+        "normal_completion_p50_ms": {
+          "value": 3,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "normal_completion_p95_ms": {
+          "value": 3.8,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "pids_peak": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "processes"
+        },
+        "recovery_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "resource_sampler_mode": {
+          "value": 8,
+          "measurement_kind": "derived",
+          "unit": "degraded"
+        },
+        "task_success": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        }
+      },
+      "events": [
+        {
+          "name": "scenario.started",
+          "timestamp": "2026-07-15T15:11:40.490823Z",
+          "detail": "six-agent resource isolation run"
+        },
+        {
+          "name": "scenario.finished",
+          "timestamp": "2026-07-15T15:11:40.507549Z",
+          "status": "degraded"
+        }
+      ],
+      "artifact": "raw/baseline-007.json"
+    },
+    {
+      "scenario_id": "resource-isolation",
+      "run_id": "baseline-008",
+      "mode": "baseline",
+      "timestamp": "2026-07-15T15:11:40.508314Z",
+      "success": true,
+      "metrics": {
+        "cleanup_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "cross_agent_contamination": {
+          "value": 0,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "fault_containment_scope": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "agents"
+        },
+        "fault_detection_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "lowerdir_hash_unchanged": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "memory_peak_bytes": {
+          "value": 2799576,
+          "measurement_kind": "measured",
+          "unit": "bytes"
+        },
+        "normal_agent_completion_rate": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ratio"
+        },
+        "normal_completion_p50_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "normal_completion_p95_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "pids_peak": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "processes"
+        },
+        "recovery_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "resource_sampler_mode": {
+          "value": 8,
+          "measurement_kind": "derived",
+          "unit": "degraded"
+        },
+        "task_success": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        }
+      },
+      "events": [
+        {
+          "name": "scenario.started",
+          "timestamp": "2026-07-15T15:11:40.508314Z",
+          "detail": "six-agent resource isolation run"
+        },
+        {
+          "name": "scenario.finished",
+          "timestamp": "2026-07-15T15:11:40.511859Z",
+          "status": "degraded"
+        }
+      ],
+      "artifact": "raw/baseline-008.json"
+    },
+    {
+      "scenario_id": "resource-isolation",
+      "run_id": "baseline-009",
+      "mode": "baseline",
+      "timestamp": "2026-07-15T15:11:40.512555Z",
+      "success": true,
+      "metrics": {
+        "cleanup_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "cross_agent_contamination": {
+          "value": 0,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "fault_containment_scope": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "agents"
+        },
+        "fault_detection_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "lowerdir_hash_unchanged": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "memory_peak_bytes": {
+          "value": 2435136,
+          "measurement_kind": "measured",
+          "unit": "bytes"
+        },
+        "normal_agent_completion_rate": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ratio"
+        },
+        "normal_completion_p50_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "normal_completion_p95_ms": {
+          "value": 2.8,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "pids_peak": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "processes"
+        },
+        "recovery_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "resource_sampler_mode": {
+          "value": 8,
+          "measurement_kind": "derived",
+          "unit": "degraded"
+        },
+        "task_success": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        }
+      },
+      "events": [
+        {
+          "name": "scenario.started",
+          "timestamp": "2026-07-15T15:11:40.512555Z",
+          "detail": "six-agent resource isolation run"
+        },
+        {
+          "name": "scenario.finished",
+          "timestamp": "2026-07-15T15:11:40.51641Z",
+          "status": "degraded"
+        }
+      ],
+      "artifact": "raw/baseline-009.json"
+    },
+    {
+      "scenario_id": "resource-isolation",
+      "run_id": "baseline-010",
+      "mode": "baseline",
+      "timestamp": "2026-07-15T15:11:40.516988Z",
+      "success": true,
+      "metrics": {
+        "cleanup_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "cross_agent_contamination": {
+          "value": 0,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "fault_containment_scope": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "agents"
+        },
+        "fault_detection_ms": {
+          "value": 5,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "lowerdir_hash_unchanged": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "memory_peak_bytes": {
+          "value": 2598320,
+          "measurement_kind": "measured",
+          "unit": "bytes"
+        },
+        "normal_agent_completion_rate": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ratio"
+        },
+        "normal_completion_p50_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "normal_completion_p95_ms": {
+          "value": 2.8,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "pids_peak": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "processes"
+        },
+        "recovery_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "resource_sampler_mode": {
+          "value": 8,
+          "measurement_kind": "derived",
+          "unit": "degraded"
+        },
+        "task_success": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        }
+      },
+      "events": [
+        {
+          "name": "scenario.started",
+          "timestamp": "2026-07-15T15:11:40.516988Z",
+          "detail": "six-agent resource isolation run"
+        },
+        {
+          "name": "scenario.finished",
+          "timestamp": "2026-07-15T15:11:40.52339Z",
+          "status": "degraded"
+        }
+      ],
+      "artifact": "raw/baseline-010.json"
+    },
+    {
+      "scenario_id": "resource-isolation",
+      "run_id": "baseline-011",
+      "mode": "baseline",
+      "timestamp": "2026-07-15T15:11:40.524104Z",
+      "success": true,
+      "metrics": {
+        "cleanup_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "cross_agent_contamination": {
+          "value": 0,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "fault_containment_scope": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "agents"
+        },
+        "fault_detection_ms": {
+          "value": 15,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "lowerdir_hash_unchanged": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "memory_peak_bytes": {
+          "value": 2704384,
+          "measurement_kind": "measured",
+          "unit": "bytes"
+        },
+        "normal_agent_completion_rate": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ratio"
+        },
+        "normal_completion_p50_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "normal_completion_p95_ms": {
+          "value": 2.8,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "pids_peak": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "processes"
+        },
+        "recovery_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "resource_sampler_mode": {
+          "value": 8,
+          "measurement_kind": "derived",
+          "unit": "degraded"
+        },
+        "task_success": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        }
+      },
+      "events": [
+        {
+          "name": "scenario.started",
+          "timestamp": "2026-07-15T15:11:40.524104Z",
+          "detail": "six-agent resource isolation run"
+        },
+        {
+          "name": "scenario.finished",
+          "timestamp": "2026-07-15T15:11:40.539748Z",
+          "status": "degraded"
+        }
+      ],
+      "artifact": "raw/baseline-011.json"
+    },
+    {
+      "scenario_id": "resource-isolation",
+      "run_id": "baseline-012",
+      "mode": "baseline",
+      "timestamp": "2026-07-15T15:11:40.540482Z",
+      "success": true,
+      "metrics": {
+        "cleanup_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "cross_agent_contamination": {
+          "value": 0,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "fault_containment_scope": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "agents"
+        },
+        "fault_detection_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "lowerdir_hash_unchanged": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "memory_peak_bytes": {
+          "value": 2813784,
+          "measurement_kind": "measured",
+          "unit": "bytes"
+        },
+        "normal_agent_completion_rate": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ratio"
+        },
+        "normal_completion_p50_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "normal_completion_p95_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "pids_peak": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "processes"
+        },
+        "recovery_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "resource_sampler_mode": {
+          "value": 8,
+          "measurement_kind": "derived",
+          "unit": "degraded"
+        },
+        "task_success": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        }
+      },
+      "events": [
+        {
+          "name": "scenario.started",
+          "timestamp": "2026-07-15T15:11:40.540482Z",
+          "detail": "six-agent resource isolation run"
+        },
+        {
+          "name": "scenario.finished",
+          "timestamp": "2026-07-15T15:11:40.54407Z",
+          "status": "degraded"
+        }
+      ],
+      "artifact": "raw/baseline-012.json"
+    },
+    {
+      "scenario_id": "resource-isolation",
+      "run_id": "baseline-013",
+      "mode": "baseline",
+      "timestamp": "2026-07-15T15:11:40.544786Z",
+      "success": true,
+      "metrics": {
+        "cleanup_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "cross_agent_contamination": {
+          "value": 0,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "fault_containment_scope": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "agents"
+        },
+        "fault_detection_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "lowerdir_hash_unchanged": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "memory_peak_bytes": {
+          "value": 2444832,
+          "measurement_kind": "measured",
+          "unit": "bytes"
+        },
+        "normal_agent_completion_rate": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ratio"
+        },
+        "normal_completion_p50_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "normal_completion_p95_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "pids_peak": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "processes"
+        },
+        "recovery_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "resource_sampler_mode": {
+          "value": 8,
+          "measurement_kind": "derived",
+          "unit": "degraded"
+        },
+        "task_success": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        }
+      },
+      "events": [
+        {
+          "name": "scenario.started",
+          "timestamp": "2026-07-15T15:11:40.544786Z",
+          "detail": "six-agent resource isolation run"
+        },
+        {
+          "name": "scenario.finished",
+          "timestamp": "2026-07-15T15:11:40.548056Z",
+          "status": "degraded"
+        }
+      ],
+      "artifact": "raw/baseline-013.json"
+    },
+    {
+      "scenario_id": "resource-isolation",
+      "run_id": "baseline-014",
+      "mode": "baseline",
+      "timestamp": "2026-07-15T15:11:40.54862Z",
+      "success": true,
+      "metrics": {
+        "cleanup_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "cross_agent_contamination": {
+          "value": 0,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "fault_containment_scope": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "agents"
+        },
+        "fault_detection_ms": {
+          "value": 5,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "lowerdir_hash_unchanged": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "memory_peak_bytes": {
+          "value": 2610896,
+          "measurement_kind": "measured",
+          "unit": "bytes"
+        },
+        "normal_agent_completion_rate": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ratio"
+        },
+        "normal_completion_p50_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "normal_completion_p95_ms": {
+          "value": 2.8,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "pids_peak": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "processes"
+        },
+        "recovery_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "resource_sampler_mode": {
+          "value": 8,
+          "measurement_kind": "derived",
+          "unit": "degraded"
+        },
+        "task_success": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        }
+      },
+      "events": [
+        {
+          "name": "scenario.started",
+          "timestamp": "2026-07-15T15:11:40.54862Z",
+          "detail": "six-agent resource isolation run"
+        },
+        {
+          "name": "scenario.finished",
+          "timestamp": "2026-07-15T15:11:40.555074Z",
+          "status": "degraded"
+        }
+      ],
+      "artifact": "raw/baseline-014.json"
+    },
+    {
+      "scenario_id": "resource-isolation",
+      "run_id": "baseline-015",
+      "mode": "baseline",
+      "timestamp": "2026-07-15T15:11:40.55575Z",
+      "success": true,
+      "metrics": {
+        "cleanup_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "cross_agent_contamination": {
+          "value": 0,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "fault_containment_scope": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "agents"
+        },
+        "fault_detection_ms": {
+          "value": 15,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "lowerdir_hash_unchanged": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "memory_peak_bytes": {
+          "value": 2719008,
+          "measurement_kind": "measured",
+          "unit": "bytes"
+        },
+        "normal_agent_completion_rate": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ratio"
+        },
+        "normal_completion_p50_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "normal_completion_p95_ms": {
+          "value": 2.8,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "pids_peak": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "processes"
+        },
+        "recovery_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "resource_sampler_mode": {
+          "value": 8,
+          "measurement_kind": "derived",
+          "unit": "degraded"
+        },
+        "task_success": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        }
+      },
+      "events": [
+        {
+          "name": "scenario.started",
+          "timestamp": "2026-07-15T15:11:40.55575Z",
+          "detail": "six-agent resource isolation run"
+        },
+        {
+          "name": "scenario.finished",
+          "timestamp": "2026-07-15T15:11:40.571394Z",
+          "status": "degraded"
+        }
+      ],
+      "artifact": "raw/baseline-015.json"
+    },
+    {
+      "scenario_id": "resource-isolation",
+      "run_id": "baseline-016",
+      "mode": "baseline",
+      "timestamp": "2026-07-15T15:11:40.572252Z",
+      "success": true,
+      "metrics": {
+        "cleanup_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "cross_agent_contamination": {
+          "value": 0,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "fault_containment_scope": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "agents"
+        },
+        "fault_detection_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "lowerdir_hash_unchanged": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "memory_peak_bytes": {
+          "value": 2828248,
+          "measurement_kind": "measured",
+          "unit": "bytes"
+        },
+        "normal_agent_completion_rate": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ratio"
+        },
+        "normal_completion_p50_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "normal_completion_p95_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "pids_peak": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "processes"
+        },
+        "recovery_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "resource_sampler_mode": {
+          "value": 8,
+          "measurement_kind": "derived",
+          "unit": "degraded"
+        },
+        "task_success": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        }
+      },
+      "events": [
+        {
+          "name": "scenario.started",
+          "timestamp": "2026-07-15T15:11:40.572252Z",
+          "detail": "six-agent resource isolation run"
+        },
+        {
+          "name": "scenario.finished",
+          "timestamp": "2026-07-15T15:11:40.575625Z",
+          "status": "degraded"
+        }
+      ],
+      "artifact": "raw/baseline-016.json"
+    },
+    {
+      "scenario_id": "resource-isolation",
+      "run_id": "baseline-017",
+      "mode": "baseline",
+      "timestamp": "2026-07-15T15:11:40.576321Z",
+      "success": true,
+      "metrics": {
+        "cleanup_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "cross_agent_contamination": {
+          "value": 0,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "fault_containment_scope": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "agents"
+        },
+        "fault_detection_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "lowerdir_hash_unchanged": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "memory_peak_bytes": {
+          "value": 2474944,
+          "measurement_kind": "measured",
+          "unit": "bytes"
+        },
+        "normal_agent_completion_rate": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ratio"
+        },
+        "normal_completion_p50_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "normal_completion_p95_ms": {
+          "value": 2.8,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "pids_peak": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "processes"
+        },
+        "recovery_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "resource_sampler_mode": {
+          "value": 8,
+          "measurement_kind": "derived",
+          "unit": "degraded"
+        },
+        "task_success": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        }
+      },
+      "events": [
+        {
+          "name": "scenario.started",
+          "timestamp": "2026-07-15T15:11:40.576321Z",
+          "detail": "six-agent resource isolation run"
+        },
+        {
+          "name": "scenario.finished",
+          "timestamp": "2026-07-15T15:11:40.579968Z",
+          "status": "degraded"
+        }
+      ],
+      "artifact": "raw/baseline-017.json"
+    },
+    {
+      "scenario_id": "resource-isolation",
+      "run_id": "baseline-018",
+      "mode": "baseline",
+      "timestamp": "2026-07-15T15:11:40.580611Z",
+      "success": true,
+      "metrics": {
+        "cleanup_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "cross_agent_contamination": {
+          "value": 0,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "fault_containment_scope": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "agents"
+        },
+        "fault_detection_ms": {
+          "value": 5,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "lowerdir_hash_unchanged": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "memory_peak_bytes": {
+          "value": 2637440,
+          "measurement_kind": "measured",
+          "unit": "bytes"
+        },
+        "normal_agent_completion_rate": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ratio"
+        },
+        "normal_completion_p50_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "normal_completion_p95_ms": {
+          "value": 2.8,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "pids_peak": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "processes"
+        },
+        "recovery_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "resource_sampler_mode": {
+          "value": 8,
+          "measurement_kind": "derived",
+          "unit": "degraded"
+        },
+        "task_success": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        }
+      },
+      "events": [
+        {
+          "name": "scenario.started",
+          "timestamp": "2026-07-15T15:11:40.580611Z",
+          "detail": "six-agent resource isolation run"
+        },
+        {
+          "name": "scenario.finished",
+          "timestamp": "2026-07-15T15:11:40.587216Z",
+          "status": "degraded"
+        }
+      ],
+      "artifact": "raw/baseline-018.json"
+    },
+    {
+      "scenario_id": "resource-isolation",
+      "run_id": "baseline-019",
+      "mode": "baseline",
+      "timestamp": "2026-07-15T15:11:40.587866Z",
+      "success": true,
+      "metrics": {
+        "cleanup_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "cross_agent_contamination": {
+          "value": 0,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "fault_containment_scope": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "agents"
+        },
+        "fault_detection_ms": {
+          "value": 15,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "lowerdir_hash_unchanged": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "memory_peak_bytes": {
+          "value": 2742800,
+          "measurement_kind": "measured",
+          "unit": "bytes"
+        },
+        "normal_agent_completion_rate": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ratio"
+        },
+        "normal_completion_p50_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "normal_completion_p95_ms": {
+          "value": 3,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "pids_peak": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "processes"
+        },
+        "recovery_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "resource_sampler_mode": {
+          "value": 8,
+          "measurement_kind": "derived",
+          "unit": "degraded"
+        },
+        "task_success": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        }
+      },
+      "events": [
+        {
+          "name": "scenario.started",
+          "timestamp": "2026-07-15T15:11:40.587866Z",
+          "detail": "six-agent resource isolation run"
+        },
+        {
+          "name": "scenario.finished",
+          "timestamp": "2026-07-15T15:11:40.603597Z",
+          "status": "degraded"
+        }
+      ],
+      "artifact": "raw/baseline-019.json"
+    },
+    {
+      "scenario_id": "resource-isolation",
+      "run_id": "baseline-020",
+      "mode": "baseline",
+      "timestamp": "2026-07-15T15:11:40.60422Z",
+      "success": true,
+      "metrics": {
+        "cleanup_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "cross_agent_contamination": {
+          "value": 0,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "fault_containment_scope": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "agents"
+        },
+        "fault_detection_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "lowerdir_hash_unchanged": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "memory_peak_bytes": {
+          "value": 2849864,
+          "measurement_kind": "measured",
+          "unit": "bytes"
+        },
+        "normal_agent_completion_rate": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ratio"
+        },
+        "normal_completion_p50_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "normal_completion_p95_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "pids_peak": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "processes"
+        },
+        "recovery_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "resource_sampler_mode": {
+          "value": 8,
+          "measurement_kind": "derived",
+          "unit": "degraded"
+        },
+        "task_success": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        }
+      },
+      "events": [
+        {
+          "name": "scenario.started",
+          "timestamp": "2026-07-15T15:11:40.60422Z",
+          "detail": "six-agent resource isolation run"
+        },
+        {
+          "name": "scenario.finished",
+          "timestamp": "2026-07-15T15:11:40.607934Z",
+          "status": "degraded"
+        }
+      ],
+      "artifact": "raw/baseline-020.json"
+    },
+    {
+      "scenario_id": "resource-isolation",
+      "run_id": "baseline-021",
+      "mode": "baseline",
+      "timestamp": "2026-07-15T15:11:40.608621Z",
+      "success": true,
+      "metrics": {
+        "cleanup_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "cross_agent_contamination": {
+          "value": 0,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "fault_containment_scope": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "agents"
+        },
+        "fault_detection_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "lowerdir_hash_unchanged": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "memory_peak_bytes": {
+          "value": 2482160,
+          "measurement_kind": "measured",
+          "unit": "bytes"
+        },
+        "normal_agent_completion_rate": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ratio"
+        },
+        "normal_completion_p50_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "normal_completion_p95_ms": {
+          "value": 3,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "pids_peak": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "processes"
+        },
+        "recovery_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "resource_sampler_mode": {
+          "value": 8,
+          "measurement_kind": "derived",
+          "unit": "degraded"
+        },
+        "task_success": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        }
+      },
+      "events": [
+        {
+          "name": "scenario.started",
+          "timestamp": "2026-07-15T15:11:40.608621Z",
+          "detail": "six-agent resource isolation run"
+        },
+        {
+          "name": "scenario.finished",
+          "timestamp": "2026-07-15T15:11:40.612391Z",
+          "status": "degraded"
+        }
+      ],
+      "artifact": "raw/baseline-021.json"
+    },
+    {
+      "scenario_id": "resource-isolation",
+      "run_id": "baseline-022",
+      "mode": "baseline",
+      "timestamp": "2026-07-15T15:11:40.613013Z",
+      "success": true,
+      "metrics": {
+        "cleanup_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "cross_agent_contamination": {
+          "value": 0,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "fault_containment_scope": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "agents"
+        },
+        "fault_detection_ms": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "lowerdir_hash_unchanged": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "memory_peak_bytes": {
+          "value": 2645008,
+          "measurement_kind": "measured",
+          "unit": "bytes"
+        },
+        "normal_agent_completion_rate": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ratio"
+        },
+        "normal_completion_p50_ms": {
+          "value": 3,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "normal_completion_p95_ms": {
+          "value": 3,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "pids_peak": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "processes"
+        },
+        "recovery_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "resource_sampler_mode": {
+          "value": 8,
+          "measurement_kind": "derived",
+          "unit": "degraded"
+        },
+        "task_success": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        }
+      },
+      "events": [
+        {
+          "name": "scenario.started",
+          "timestamp": "2026-07-15T15:11:40.613013Z",
+          "detail": "six-agent resource isolation run"
+        },
+        {
+          "name": "scenario.finished",
+          "timestamp": "2026-07-15T15:11:40.620019Z",
+          "status": "degraded"
+        }
+      ],
+      "artifact": "raw/baseline-022.json"
+    },
+    {
+      "scenario_id": "resource-isolation",
+      "run_id": "baseline-023",
+      "mode": "baseline",
+      "timestamp": "2026-07-15T15:11:40.62062Z",
+      "success": true,
+      "metrics": {
+        "cleanup_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "cross_agent_contamination": {
+          "value": 0,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "fault_containment_scope": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "agents"
+        },
+        "fault_detection_ms": {
+          "value": 15,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "lowerdir_hash_unchanged": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "memory_peak_bytes": {
+          "value": 2755872,
+          "measurement_kind": "measured",
+          "unit": "bytes"
+        },
+        "normal_agent_completion_rate": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ratio"
+        },
+        "normal_completion_p50_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "normal_completion_p95_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "pids_peak": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "processes"
+        },
+        "recovery_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "resource_sampler_mode": {
+          "value": 8,
+          "measurement_kind": "derived",
+          "unit": "degraded"
+        },
+        "task_success": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        }
+      },
+      "events": [
+        {
+          "name": "scenario.started",
+          "timestamp": "2026-07-15T15:11:40.62062Z",
+          "detail": "six-agent resource isolation run"
+        },
+        {
+          "name": "scenario.finished",
+          "timestamp": "2026-07-15T15:11:40.636228Z",
+          "status": "degraded"
+        }
+      ],
+      "artifact": "raw/baseline-023.json"
+    },
+    {
+      "scenario_id": "resource-isolation",
+      "run_id": "isolation-only-004",
+      "mode": "isolation-only",
+      "timestamp": "2026-07-15T15:11:40.664671Z",
+      "success": true,
+      "metrics": {
+        "cleanup_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "cross_agent_contamination": {
+          "value": 0,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "fault_containment_scope": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "agents"
+        },
+        "fault_detection_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "lowerdir_hash_unchanged": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "memory_peak_bytes": {
+          "value": 2872016,
+          "measurement_kind": "measured",
+          "unit": "bytes"
+        },
+        "normal_agent_completion_rate": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ratio"
+        },
+        "normal_completion_p50_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "normal_completion_p95_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "pids_peak": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "processes"
+        },
+        "recovery_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "resource_sampler_mode": {
+          "value": 8,
+          "measurement_kind": "derived",
+          "unit": "degraded"
+        },
+        "task_success": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        }
+      },
+      "events": [
+        {
+          "name": "scenario.started",
+          "timestamp": "2026-07-15T15:11:40.664671Z",
+          "detail": "six-agent resource isolation run"
+        },
+        {
+          "name": "scenario.finished",
+          "timestamp": "2026-07-15T15:11:40.668106Z",
+          "status": "degraded"
+        }
+      ],
+      "artifact": "raw/isolation-only-004.json"
+    },
+    {
+      "scenario_id": "resource-isolation",
+      "run_id": "isolation-only-005",
+      "mode": "isolation-only",
+      "timestamp": "2026-07-15T15:11:40.668714Z",
+      "success": true,
+      "metrics": {
+        "cleanup_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "cross_agent_contamination": {
+          "value": 0,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "fault_containment_scope": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "agents"
+        },
+        "fault_detection_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "lowerdir_hash_unchanged": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "memory_peak_bytes": {
+          "value": 2499520,
+          "measurement_kind": "measured",
+          "unit": "bytes"
+        },
+        "normal_agent_completion_rate": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ratio"
+        },
+        "normal_completion_p50_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "normal_completion_p95_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "pids_peak": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "processes"
+        },
+        "recovery_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "resource_sampler_mode": {
+          "value": 8,
+          "measurement_kind": "derived",
+          "unit": "degraded"
+        },
+        "task_success": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        }
+      },
+      "events": [
+        {
+          "name": "scenario.started",
+          "timestamp": "2026-07-15T15:11:40.668714Z",
+          "detail": "six-agent resource isolation run"
+        },
+        {
+          "name": "scenario.finished",
+          "timestamp": "2026-07-15T15:11:40.672173Z",
+          "status": "degraded"
+        }
+      ],
+      "artifact": "raw/isolation-only-005.json"
+    },
+    {
+      "scenario_id": "resource-isolation",
+      "run_id": "isolation-only-006",
+      "mode": "isolation-only",
+      "timestamp": "2026-07-15T15:11:40.672764Z",
+      "success": true,
+      "metrics": {
+        "cleanup_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "cross_agent_contamination": {
+          "value": 0,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "fault_containment_scope": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "agents"
+        },
+        "fault_detection_ms": {
+          "value": 5,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "lowerdir_hash_unchanged": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "memory_peak_bytes": {
+          "value": 2662360,
+          "measurement_kind": "measured",
+          "unit": "bytes"
+        },
+        "normal_agent_completion_rate": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ratio"
+        },
+        "normal_completion_p50_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "normal_completion_p95_ms": {
+          "value": 2.8,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "pids_peak": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "processes"
+        },
+        "recovery_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "resource_sampler_mode": {
+          "value": 8,
+          "measurement_kind": "derived",
+          "unit": "degraded"
+        },
+        "task_success": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        }
+      },
+      "events": [
+        {
+          "name": "scenario.started",
+          "timestamp": "2026-07-15T15:11:40.672764Z",
+          "detail": "six-agent resource isolation run"
+        },
+        {
+          "name": "scenario.finished",
+          "timestamp": "2026-07-15T15:11:40.679109Z",
+          "status": "degraded"
+        }
+      ],
+      "artifact": "raw/isolation-only-006.json"
+    },
+    {
+      "scenario_id": "resource-isolation",
+      "run_id": "isolation-only-007",
+      "mode": "isolation-only",
+      "timestamp": "2026-07-15T15:11:40.679701Z",
+      "success": true,
+      "metrics": {
+        "cleanup_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "cross_agent_contamination": {
+          "value": 0,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "fault_containment_scope": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "agents"
+        },
+        "fault_detection_ms": {
+          "value": 15,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "lowerdir_hash_unchanged": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "memory_peak_bytes": {
+          "value": 2768080,
+          "measurement_kind": "measured",
+          "unit": "bytes"
+        },
+        "normal_agent_completion_rate": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ratio"
+        },
+        "normal_completion_p50_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "normal_completion_p95_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "pids_peak": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "processes"
+        },
+        "recovery_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "resource_sampler_mode": {
+          "value": 8,
+          "measurement_kind": "derived",
+          "unit": "degraded"
+        },
+        "task_success": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        }
+      },
+      "events": [
+        {
+          "name": "scenario.started",
+          "timestamp": "2026-07-15T15:11:40.679701Z",
+          "detail": "six-agent resource isolation run"
+        },
+        {
+          "name": "scenario.finished",
+          "timestamp": "2026-07-15T15:11:40.69534Z",
+          "status": "degraded"
+        }
+      ],
+      "artifact": "raw/isolation-only-007.json"
+    },
+    {
+      "scenario_id": "resource-isolation",
+      "run_id": "isolation-only-008",
+      "mode": "isolation-only",
+      "timestamp": "2026-07-15T15:11:40.696177Z",
+      "success": true,
+      "metrics": {
+        "cleanup_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "cross_agent_contamination": {
+          "value": 0,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "fault_containment_scope": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "agents"
+        },
+        "fault_detection_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "lowerdir_hash_unchanged": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "memory_peak_bytes": {
+          "value": 2875088,
+          "measurement_kind": "measured",
+          "unit": "bytes"
+        },
+        "normal_agent_completion_rate": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ratio"
+        },
+        "normal_completion_p50_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "normal_completion_p95_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "pids_peak": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "processes"
+        },
+        "recovery_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "resource_sampler_mode": {
+          "value": 8,
+          "measurement_kind": "derived",
+          "unit": "degraded"
+        },
+        "task_success": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        }
+      },
+      "events": [
+        {
+          "name": "scenario.started",
+          "timestamp": "2026-07-15T15:11:40.696177Z",
+          "detail": "six-agent resource isolation run"
+        },
+        {
+          "name": "scenario.finished",
+          "timestamp": "2026-07-15T15:11:40.699625Z",
+          "status": "degraded"
+        }
+      ],
+      "artifact": "raw/isolation-only-008.json"
+    },
+    {
+      "scenario_id": "resource-isolation",
+      "run_id": "isolation-only-009",
+      "mode": "isolation-only",
+      "timestamp": "2026-07-15T15:11:40.700228Z",
+      "success": true,
+      "metrics": {
+        "cleanup_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "cross_agent_contamination": {
+          "value": 0,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "fault_containment_scope": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "agents"
+        },
+        "fault_detection_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "lowerdir_hash_unchanged": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "memory_peak_bytes": {
+          "value": 2505632,
+          "measurement_kind": "measured",
+          "unit": "bytes"
+        },
+        "normal_agent_completion_rate": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ratio"
+        },
+        "normal_completion_p50_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "normal_completion_p95_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "pids_peak": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "processes"
+        },
+        "recovery_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "resource_sampler_mode": {
+          "value": 8,
+          "measurement_kind": "derived",
+          "unit": "degraded"
+        },
+        "task_success": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        }
+      },
+      "events": [
+        {
+          "name": "scenario.started",
+          "timestamp": "2026-07-15T15:11:40.700228Z",
+          "detail": "six-agent resource isolation run"
+        },
+        {
+          "name": "scenario.finished",
+          "timestamp": "2026-07-15T15:11:40.703663Z",
+          "status": "degraded"
+        }
+      ],
+      "artifact": "raw/isolation-only-009.json"
+    },
+    {
+      "scenario_id": "resource-isolation",
+      "run_id": "isolation-only-010",
+      "mode": "isolation-only",
+      "timestamp": "2026-07-15T15:11:40.704234Z",
+      "success": true,
+      "metrics": {
+        "cleanup_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "cross_agent_contamination": {
+          "value": 0,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "fault_containment_scope": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "agents"
+        },
+        "fault_detection_ms": {
+          "value": 5,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "lowerdir_hash_unchanged": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "memory_peak_bytes": {
+          "value": 2669400,
+          "measurement_kind": "measured",
+          "unit": "bytes"
+        },
+        "normal_agent_completion_rate": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ratio"
+        },
+        "normal_completion_p50_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "normal_completion_p95_ms": {
+          "value": 3,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "pids_peak": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "processes"
+        },
+        "recovery_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "resource_sampler_mode": {
+          "value": 8,
+          "measurement_kind": "derived",
+          "unit": "degraded"
+        },
+        "task_success": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        }
+      },
+      "events": [
+        {
+          "name": "scenario.started",
+          "timestamp": "2026-07-15T15:11:40.704234Z",
+          "detail": "six-agent resource isolation run"
+        },
+        {
+          "name": "scenario.finished",
+          "timestamp": "2026-07-15T15:11:40.710577Z",
+          "status": "degraded"
+        }
+      ],
+      "artifact": "raw/isolation-only-010.json"
+    },
+    {
+      "scenario_id": "resource-isolation",
+      "run_id": "isolation-only-011",
+      "mode": "isolation-only",
+      "timestamp": "2026-07-15T15:11:40.711172Z",
+      "success": true,
+      "metrics": {
+        "cleanup_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "cross_agent_contamination": {
+          "value": 0,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "fault_containment_scope": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "agents"
+        },
+        "fault_detection_ms": {
+          "value": 15,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "lowerdir_hash_unchanged": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "memory_peak_bytes": {
+          "value": 2775088,
+          "measurement_kind": "measured",
+          "unit": "bytes"
+        },
+        "normal_agent_completion_rate": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ratio"
+        },
+        "normal_completion_p50_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "normal_completion_p95_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "pids_peak": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "processes"
+        },
+        "recovery_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "resource_sampler_mode": {
+          "value": 8,
+          "measurement_kind": "derived",
+          "unit": "degraded"
+        },
+        "task_success": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        }
+      },
+      "events": [
+        {
+          "name": "scenario.started",
+          "timestamp": "2026-07-15T15:11:40.711172Z",
+          "detail": "six-agent resource isolation run"
+        },
+        {
+          "name": "scenario.finished",
+          "timestamp": "2026-07-15T15:11:40.726808Z",
+          "status": "degraded"
+        }
+      ],
+      "artifact": "raw/isolation-only-011.json"
+    },
+    {
+      "scenario_id": "resource-isolation",
+      "run_id": "isolation-only-012",
+      "mode": "isolation-only",
+      "timestamp": "2026-07-15T15:11:40.727375Z",
+      "success": true,
+      "metrics": {
+        "cleanup_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "cross_agent_contamination": {
+          "value": 0,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "fault_containment_scope": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "agents"
+        },
+        "fault_detection_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "lowerdir_hash_unchanged": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "memory_peak_bytes": {
+          "value": 2882992,
+          "measurement_kind": "measured",
+          "unit": "bytes"
+        },
+        "normal_agent_completion_rate": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ratio"
+        },
+        "normal_completion_p50_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "normal_completion_p95_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "pids_peak": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "processes"
+        },
+        "recovery_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "resource_sampler_mode": {
+          "value": 8,
+          "measurement_kind": "derived",
+          "unit": "degraded"
+        },
+        "task_success": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        }
+      },
+      "events": [
+        {
+          "name": "scenario.started",
+          "timestamp": "2026-07-15T15:11:40.727375Z",
+          "detail": "six-agent resource isolation run"
+        },
+        {
+          "name": "scenario.finished",
+          "timestamp": "2026-07-15T15:11:40.730559Z",
+          "status": "degraded"
+        }
+      ],
+      "artifact": "raw/isolation-only-012.json"
+    },
+    {
+      "scenario_id": "resource-isolation",
+      "run_id": "isolation-only-013",
+      "mode": "isolation-only",
+      "timestamp": "2026-07-15T15:11:40.731166Z",
+      "success": true,
+      "metrics": {
+        "cleanup_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "cross_agent_contamination": {
+          "value": 0,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "fault_containment_scope": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "agents"
+        },
+        "fault_detection_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "lowerdir_hash_unchanged": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "memory_peak_bytes": {
+          "value": 2514336,
+          "measurement_kind": "measured",
+          "unit": "bytes"
+        },
+        "normal_agent_completion_rate": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ratio"
+        },
+        "normal_completion_p50_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "normal_completion_p95_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "pids_peak": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "processes"
+        },
+        "recovery_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "resource_sampler_mode": {
+          "value": 8,
+          "measurement_kind": "derived",
+          "unit": "degraded"
+        },
+        "task_success": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        }
+      },
+      "events": [
+        {
+          "name": "scenario.started",
+          "timestamp": "2026-07-15T15:11:40.731166Z",
+          "detail": "six-agent resource isolation run"
+        },
+        {
+          "name": "scenario.finished",
+          "timestamp": "2026-07-15T15:11:40.734467Z",
+          "status": "degraded"
+        }
+      ],
+      "artifact": "raw/isolation-only-013.json"
+    },
+    {
+      "scenario_id": "resource-isolation",
+      "run_id": "isolation-only-014",
+      "mode": "isolation-only",
+      "timestamp": "2026-07-15T15:11:40.735054Z",
+      "success": true,
+      "metrics": {
+        "cleanup_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "cross_agent_contamination": {
+          "value": 0,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "fault_containment_scope": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "agents"
+        },
+        "fault_detection_ms": {
+          "value": 5,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "lowerdir_hash_unchanged": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "memory_peak_bytes": {
+          "value": 2677112,
+          "measurement_kind": "measured",
+          "unit": "bytes"
+        },
+        "normal_agent_completion_rate": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ratio"
+        },
+        "normal_completion_p50_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "normal_completion_p95_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "pids_peak": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "processes"
+        },
+        "recovery_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "resource_sampler_mode": {
+          "value": 8,
+          "measurement_kind": "derived",
+          "unit": "degraded"
+        },
+        "task_success": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        }
+      },
+      "events": [
+        {
+          "name": "scenario.started",
+          "timestamp": "2026-07-15T15:11:40.735054Z",
+          "detail": "six-agent resource isolation run"
+        },
+        {
+          "name": "scenario.finished",
+          "timestamp": "2026-07-15T15:11:40.741291Z",
+          "status": "degraded"
+        }
+      ],
+      "artifact": "raw/isolation-only-014.json"
+    },
+    {
+      "scenario_id": "resource-isolation",
+      "run_id": "isolation-only-015",
+      "mode": "isolation-only",
+      "timestamp": "2026-07-15T15:11:40.741872Z",
+      "success": true,
+      "metrics": {
+        "cleanup_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "cross_agent_contamination": {
+          "value": 0,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "fault_containment_scope": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "agents"
+        },
+        "fault_detection_ms": {
+          "value": 15,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "lowerdir_hash_unchanged": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "memory_peak_bytes": {
+          "value": 2782480,
+          "measurement_kind": "measured",
+          "unit": "bytes"
+        },
+        "normal_agent_completion_rate": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ratio"
+        },
+        "normal_completion_p50_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "normal_completion_p95_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "pids_peak": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "processes"
+        },
+        "recovery_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "resource_sampler_mode": {
+          "value": 8,
+          "measurement_kind": "derived",
+          "unit": "degraded"
+        },
+        "task_success": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        }
+      },
+      "events": [
+        {
+          "name": "scenario.started",
+          "timestamp": "2026-07-15T15:11:40.741872Z",
+          "detail": "six-agent resource isolation run"
+        },
+        {
+          "name": "scenario.finished",
+          "timestamp": "2026-07-15T15:11:40.757414Z",
+          "status": "degraded"
+        }
+      ],
+      "artifact": "raw/isolation-only-015.json"
+    },
+    {
+      "scenario_id": "resource-isolation",
+      "run_id": "isolation-only-016",
+      "mode": "isolation-only",
+      "timestamp": "2026-07-15T15:11:40.757965Z",
+      "success": true,
+      "metrics": {
+        "cleanup_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "cross_agent_contamination": {
+          "value": 0,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "fault_containment_scope": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "agents"
+        },
+        "fault_detection_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "lowerdir_hash_unchanged": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "memory_peak_bytes": {
+          "value": 2891104,
+          "measurement_kind": "measured",
+          "unit": "bytes"
+        },
+        "normal_agent_completion_rate": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ratio"
+        },
+        "normal_completion_p50_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "normal_completion_p95_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "pids_peak": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "processes"
+        },
+        "recovery_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "resource_sampler_mode": {
+          "value": 8,
+          "measurement_kind": "derived",
+          "unit": "degraded"
+        },
+        "task_success": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        }
+      },
+      "events": [
+        {
+          "name": "scenario.started",
+          "timestamp": "2026-07-15T15:11:40.757965Z",
+          "detail": "six-agent resource isolation run"
+        },
+        {
+          "name": "scenario.finished",
+          "timestamp": "2026-07-15T15:11:40.761259Z",
+          "status": "degraded"
+        }
+      ],
+      "artifact": "raw/isolation-only-016.json"
+    },
+    {
+      "scenario_id": "resource-isolation",
+      "run_id": "isolation-only-017",
+      "mode": "isolation-only",
+      "timestamp": "2026-07-15T15:11:40.761871Z",
+      "success": true,
+      "metrics": {
+        "cleanup_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "cross_agent_contamination": {
+          "value": 0,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "fault_containment_scope": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "agents"
+        },
+        "fault_detection_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "lowerdir_hash_unchanged": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "memory_peak_bytes": {
+          "value": 2522176,
+          "measurement_kind": "measured",
+          "unit": "bytes"
+        },
+        "normal_agent_completion_rate": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ratio"
+        },
+        "normal_completion_p50_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "normal_completion_p95_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "pids_peak": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "processes"
+        },
+        "recovery_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "resource_sampler_mode": {
+          "value": 8,
+          "measurement_kind": "derived",
+          "unit": "degraded"
+        },
+        "task_success": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        }
+      },
+      "events": [
+        {
+          "name": "scenario.started",
+          "timestamp": "2026-07-15T15:11:40.761871Z",
+          "detail": "six-agent resource isolation run"
+        },
+        {
+          "name": "scenario.finished",
+          "timestamp": "2026-07-15T15:11:40.765396Z",
+          "status": "degraded"
+        }
+      ],
+      "artifact": "raw/isolation-only-017.json"
+    },
+    {
+      "scenario_id": "resource-isolation",
+      "run_id": "isolation-only-018",
+      "mode": "isolation-only",
+      "timestamp": "2026-07-15T15:11:40.765965Z",
+      "success": true,
+      "metrics": {
+        "cleanup_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "cross_agent_contamination": {
+          "value": 0,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "fault_containment_scope": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "agents"
+        },
+        "fault_detection_ms": {
+          "value": 5,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "lowerdir_hash_unchanged": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "memory_peak_bytes": {
+          "value": 2684760,
+          "measurement_kind": "measured",
+          "unit": "bytes"
+        },
+        "normal_agent_completion_rate": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ratio"
+        },
+        "normal_completion_p50_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "normal_completion_p95_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "pids_peak": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "processes"
+        },
+        "recovery_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "resource_sampler_mode": {
+          "value": 8,
+          "measurement_kind": "derived",
+          "unit": "degraded"
+        },
+        "task_success": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        }
+      },
+      "events": [
+        {
+          "name": "scenario.started",
+          "timestamp": "2026-07-15T15:11:40.765965Z",
+          "detail": "six-agent resource isolation run"
+        },
+        {
+          "name": "scenario.finished",
+          "timestamp": "2026-07-15T15:11:40.772511Z",
+          "status": "degraded"
+        }
+      ],
+      "artifact": "raw/isolation-only-018.json"
+    },
+    {
+      "scenario_id": "resource-isolation",
+      "run_id": "isolation-only-019",
+      "mode": "isolation-only",
+      "timestamp": "2026-07-15T15:11:40.773097Z",
+      "success": true,
+      "metrics": {
+        "cleanup_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "cross_agent_contamination": {
+          "value": 0,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "fault_containment_scope": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "agents"
+        },
+        "fault_detection_ms": {
+          "value": 15,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "lowerdir_hash_unchanged": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "memory_peak_bytes": {
+          "value": 2791088,
+          "measurement_kind": "measured",
+          "unit": "bytes"
+        },
+        "normal_agent_completion_rate": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ratio"
+        },
+        "normal_completion_p50_ms": {
+          "value": 3,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "normal_completion_p95_ms": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "pids_peak": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "processes"
+        },
+        "recovery_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "resource_sampler_mode": {
+          "value": 8,
+          "measurement_kind": "derived",
+          "unit": "degraded"
+        },
+        "task_success": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        }
+      },
+      "events": [
+        {
+          "name": "scenario.started",
+          "timestamp": "2026-07-15T15:11:40.773097Z",
+          "detail": "six-agent resource isolation run"
+        },
+        {
+          "name": "scenario.finished",
+          "timestamp": "2026-07-15T15:11:40.788672Z",
+          "status": "degraded"
+        }
+      ],
+      "artifact": "raw/isolation-only-019.json"
+    },
+    {
+      "scenario_id": "resource-isolation",
+      "run_id": "isolation-only-020",
+      "mode": "isolation-only",
+      "timestamp": "2026-07-15T15:11:40.789256Z",
+      "success": true,
+      "metrics": {
+        "cleanup_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "cross_agent_contamination": {
+          "value": 0,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "fault_containment_scope": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "agents"
+        },
+        "fault_detection_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "lowerdir_hash_unchanged": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "memory_peak_bytes": {
+          "value": 2900784,
+          "measurement_kind": "measured",
+          "unit": "bytes"
+        },
+        "normal_agent_completion_rate": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ratio"
+        },
+        "normal_completion_p50_ms": {
+          "value": 3,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "normal_completion_p95_ms": {
+          "value": 3,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "pids_peak": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "processes"
+        },
+        "recovery_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "resource_sampler_mode": {
+          "value": 8,
+          "measurement_kind": "derived",
+          "unit": "degraded"
+        },
+        "task_success": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        }
+      },
+      "events": [
+        {
+          "name": "scenario.started",
+          "timestamp": "2026-07-15T15:11:40.789256Z",
+          "detail": "six-agent resource isolation run"
+        },
+        {
+          "name": "scenario.finished",
+          "timestamp": "2026-07-15T15:11:40.79399Z",
+          "status": "degraded"
+        }
+      ],
+      "artifact": "raw/isolation-only-020.json"
+    },
+    {
+      "scenario_id": "resource-isolation",
+      "run_id": "isolation-only-021",
+      "mode": "isolation-only",
+      "timestamp": "2026-07-15T15:11:40.794637Z",
+      "success": true,
+      "metrics": {
+        "cleanup_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "cross_agent_contamination": {
+          "value": 0,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "fault_containment_scope": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "agents"
+        },
+        "fault_detection_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "lowerdir_hash_unchanged": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "memory_peak_bytes": {
+          "value": 2532224,
+          "measurement_kind": "measured",
+          "unit": "bytes"
+        },
+        "normal_agent_completion_rate": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ratio"
+        },
+        "normal_completion_p50_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "normal_completion_p95_ms": {
+          "value": 3,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "pids_peak": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "processes"
+        },
+        "recovery_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "resource_sampler_mode": {
+          "value": 8,
+          "measurement_kind": "derived",
+          "unit": "degraded"
+        },
+        "task_success": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        }
+      },
+      "events": [
+        {
+          "name": "scenario.started",
+          "timestamp": "2026-07-15T15:11:40.794637Z",
+          "detail": "six-agent resource isolation run"
+        },
+        {
+          "name": "scenario.finished",
+          "timestamp": "2026-07-15T15:11:40.799125Z",
+          "status": "degraded"
+        }
+      ],
+      "artifact": "raw/isolation-only-021.json"
+    },
+    {
+      "scenario_id": "resource-isolation",
+      "run_id": "isolation-only-022",
+      "mode": "isolation-only",
+      "timestamp": "2026-07-15T15:11:40.799977Z",
+      "success": true,
+      "metrics": {
+        "cleanup_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "cross_agent_contamination": {
+          "value": 0,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "fault_containment_scope": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "agents"
+        },
+        "fault_detection_ms": {
+          "value": 5,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "lowerdir_hash_unchanged": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "memory_peak_bytes": {
+          "value": 2705848,
+          "measurement_kind": "measured",
+          "unit": "bytes"
+        },
+        "normal_agent_completion_rate": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ratio"
+        },
+        "normal_completion_p50_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "normal_completion_p95_ms": {
+          "value": 2.8,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "pids_peak": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "processes"
+        },
+        "recovery_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "resource_sampler_mode": {
+          "value": 8,
+          "measurement_kind": "derived",
+          "unit": "degraded"
+        },
+        "task_success": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        }
+      },
+      "events": [
+        {
+          "name": "scenario.started",
+          "timestamp": "2026-07-15T15:11:40.799977Z",
+          "detail": "six-agent resource isolation run"
+        },
+        {
+          "name": "scenario.finished",
+          "timestamp": "2026-07-15T15:11:40.806348Z",
+          "status": "degraded"
+        }
+      ],
+      "artifact": "raw/isolation-only-022.json"
+    },
+    {
+      "scenario_id": "resource-isolation",
+      "run_id": "isolation-only-023",
+      "mode": "isolation-only",
+      "timestamp": "2026-07-15T15:11:40.806952Z",
+      "success": true,
+      "metrics": {
+        "cleanup_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "cross_agent_contamination": {
+          "value": 0,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "fault_containment_scope": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "agents"
+        },
+        "fault_detection_ms": {
+          "value": 15,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "lowerdir_hash_unchanged": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "memory_peak_bytes": {
+          "value": 2811504,
+          "measurement_kind": "measured",
+          "unit": "bytes"
+        },
+        "normal_agent_completion_rate": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ratio"
+        },
+        "normal_completion_p50_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "normal_completion_p95_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "pids_peak": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "processes"
+        },
+        "recovery_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "resource_sampler_mode": {
+          "value": 8,
+          "measurement_kind": "derived",
+          "unit": "degraded"
+        },
+        "task_success": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        }
+      },
+      "events": [
+        {
+          "name": "scenario.started",
+          "timestamp": "2026-07-15T15:11:40.806952Z",
+          "detail": "six-agent resource isolation run"
+        },
+        {
+          "name": "scenario.finished",
+          "timestamp": "2026-07-15T15:11:40.822568Z",
+          "status": "degraded"
+        }
+      ],
+      "artifact": "raw/isolation-only-023.json"
+    },
+    {
+      "scenario_id": "resource-isolation",
+      "run_id": "aort-r-004",
+      "mode": "aort-r",
+      "timestamp": "2026-07-15T15:11:40.850582Z",
+      "success": true,
+      "metrics": {
+        "cleanup_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "cross_agent_contamination": {
+          "value": 0,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "fault_containment_scope": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "agents"
+        },
+        "fault_detection_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "lowerdir_hash_unchanged": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "memory_peak_bytes": {
+          "value": 497768,
+          "measurement_kind": "measured",
+          "unit": "bytes"
+        },
+        "normal_agent_completion_rate": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ratio"
+        },
+        "normal_completion_p50_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "normal_completion_p95_ms": {
+          "value": 2.8,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "pids_peak": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "processes"
+        },
+        "recovery_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "resource_sampler_mode": {
+          "value": 18,
+          "measurement_kind": "derived",
+          "unit": "degraded+workspace"
+        },
+        "task_success": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        }
+      },
+      "events": [
+        {
+          "name": "scenario.started",
+          "timestamp": "2026-07-15T15:11:40.850582Z",
+          "detail": "six-agent resource isolation run"
+        },
+        {
+          "name": "workspace.rmrf",
+          "timestamp": "2026-07-15T15:11:40.862197Z",
+          "status": "degraded-copy",
+          "detail": "overlayfs requires linux, got darwin"
+        },
+        {
+          "name": "scenario.finished",
+          "timestamp": "2026-07-15T15:11:40.862417Z",
+          "status": "degraded+workspace"
+        }
+      ],
+      "artifact": "raw/aort-r-004.json"
+    },
+    {
+      "scenario_id": "resource-isolation",
+      "run_id": "aort-r-005",
+      "mode": "aort-r",
+      "timestamp": "2026-07-15T15:11:40.863131Z",
+      "success": true,
+      "metrics": {
+        "cleanup_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "cross_agent_contamination": {
+          "value": 0,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "fault_containment_scope": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "agents"
+        },
+        "fault_detection_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "lowerdir_hash_unchanged": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "memory_peak_bytes": {
+          "value": 2707312,
+          "measurement_kind": "measured",
+          "unit": "bytes"
+        },
+        "normal_agent_completion_rate": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ratio"
+        },
+        "normal_completion_p50_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "normal_completion_p95_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "pids_peak": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "processes"
+        },
+        "recovery_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "resource_sampler_mode": {
+          "value": 18,
+          "measurement_kind": "derived",
+          "unit": "degraded+workspace"
+        },
+        "task_success": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        }
+      },
+      "events": [
+        {
+          "name": "scenario.started",
+          "timestamp": "2026-07-15T15:11:40.863131Z",
+          "detail": "six-agent resource isolation run"
+        },
+        {
+          "name": "scenario.finished",
+          "timestamp": "2026-07-15T15:11:40.866256Z",
+          "status": "degraded+workspace"
+        }
+      ],
+      "artifact": "raw/aort-r-005.json"
+    },
+    {
+      "scenario_id": "resource-isolation",
+      "run_id": "aort-r-006",
+      "mode": "aort-r",
+      "timestamp": "2026-07-15T15:11:40.866966Z",
+      "success": true,
+      "metrics": {
+        "cleanup_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "cross_agent_contamination": {
+          "value": 0,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "fault_containment_scope": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "agents"
+        },
+        "fault_detection_ms": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "lowerdir_hash_unchanged": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "memory_peak_bytes": {
+          "value": 452760,
+          "measurement_kind": "measured",
+          "unit": "bytes"
+        },
+        "normal_agent_completion_rate": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ratio"
+        },
+        "normal_completion_p50_ms": {
+          "value": 3,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "normal_completion_p95_ms": {
+          "value": 3,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "pids_peak": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "processes"
+        },
+        "recovery_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "resource_sampler_mode": {
+          "value": 18,
+          "measurement_kind": "derived",
+          "unit": "degraded+workspace"
+        },
+        "task_success": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        }
+      },
+      "events": [
+        {
+          "name": "scenario.started",
+          "timestamp": "2026-07-15T15:11:40.866966Z",
+          "detail": "six-agent resource isolation run"
+        },
+        {
+          "name": "scenario.finished",
+          "timestamp": "2026-07-15T15:11:40.873903Z",
+          "status": "degraded+workspace"
+        }
+      ],
+      "artifact": "raw/aort-r-006.json"
+    },
+    {
+      "scenario_id": "resource-isolation",
+      "run_id": "aort-r-007",
+      "mode": "aort-r",
+      "timestamp": "2026-07-15T15:11:40.874579Z",
+      "success": true,
+      "metrics": {
+        "cleanup_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "cross_agent_contamination": {
+          "value": 0,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "fault_containment_scope": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "agents"
+        },
+        "fault_detection_ms": {
+          "value": 15,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "lowerdir_hash_unchanged": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "memory_peak_bytes": {
+          "value": 560520,
+          "measurement_kind": "measured",
+          "unit": "bytes"
+        },
+        "normal_agent_completion_rate": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ratio"
+        },
+        "normal_completion_p50_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "normal_completion_p95_ms": {
+          "value": 2.8,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "pids_peak": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "processes"
+        },
+        "recovery_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "resource_sampler_mode": {
+          "value": 18,
+          "measurement_kind": "derived",
+          "unit": "degraded+workspace"
+        },
+        "task_success": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        }
+      },
+      "events": [
+        {
+          "name": "scenario.started",
+          "timestamp": "2026-07-15T15:11:40.874579Z",
+          "detail": "six-agent resource isolation run"
+        },
+        {
+          "name": "scenario.finished",
+          "timestamp": "2026-07-15T15:11:40.890183Z",
+          "status": "degraded+workspace"
+        }
+      ],
+      "artifact": "raw/aort-r-007.json"
+    },
+    {
+      "scenario_id": "resource-isolation",
+      "run_id": "aort-r-008",
+      "mode": "aort-r",
+      "timestamp": "2026-07-15T15:11:40.890832Z",
+      "success": true,
+      "metrics": {
+        "cleanup_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "cross_agent_contamination": {
+          "value": 0,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "fault_containment_scope": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "agents"
+        },
+        "fault_detection_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "lowerdir_hash_unchanged": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "memory_peak_bytes": {
+          "value": 1722624,
+          "measurement_kind": "measured",
+          "unit": "bytes"
+        },
+        "normal_agent_completion_rate": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ratio"
+        },
+        "normal_completion_p50_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "normal_completion_p95_ms": {
+          "value": 3.5999999999999996,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "pids_peak": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "processes"
+        },
+        "recovery_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "resource_sampler_mode": {
+          "value": 18,
+          "measurement_kind": "derived",
+          "unit": "degraded+workspace"
+        },
+        "task_success": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        }
+      },
+      "events": [
+        {
+          "name": "scenario.started",
+          "timestamp": "2026-07-15T15:11:40.890832Z",
+          "detail": "six-agent resource isolation run"
+        },
+        {
+          "name": "workspace.rmrf",
+          "timestamp": "2026-07-15T15:11:40.902183Z",
+          "status": "degraded-copy",
+          "detail": "overlayfs requires linux, got darwin"
+        },
+        {
+          "name": "scenario.finished",
+          "timestamp": "2026-07-15T15:11:40.902414Z",
+          "status": "degraded+workspace"
+        }
+      ],
+      "artifact": "raw/aort-r-008.json"
+    },
+    {
+      "scenario_id": "resource-isolation",
+      "run_id": "aort-r-009",
+      "mode": "aort-r",
+      "timestamp": "2026-07-15T15:11:40.90314Z",
+      "success": true,
+      "metrics": {
+        "cleanup_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "cross_agent_contamination": {
+          "value": 0,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "fault_containment_scope": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "agents"
+        },
+        "fault_detection_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "lowerdir_hash_unchanged": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "memory_peak_bytes": {
+          "value": 2571744,
+          "measurement_kind": "measured",
+          "unit": "bytes"
+        },
+        "normal_agent_completion_rate": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ratio"
+        },
+        "normal_completion_p50_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "normal_completion_p95_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "pids_peak": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "processes"
+        },
+        "recovery_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "resource_sampler_mode": {
+          "value": 18,
+          "measurement_kind": "derived",
+          "unit": "degraded+workspace"
+        },
+        "task_success": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        }
+      },
+      "events": [
+        {
+          "name": "scenario.started",
+          "timestamp": "2026-07-15T15:11:40.90314Z",
+          "detail": "six-agent resource isolation run"
+        },
+        {
+          "name": "scenario.finished",
+          "timestamp": "2026-07-15T15:11:40.906571Z",
+          "status": "degraded+workspace"
+        }
+      ],
+      "artifact": "raw/aort-r-009.json"
+    },
+    {
+      "scenario_id": "resource-isolation",
+      "run_id": "aort-r-010",
+      "mode": "aort-r",
+      "timestamp": "2026-07-15T15:11:40.907179Z",
+      "success": true,
+      "metrics": {
+        "cleanup_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "cross_agent_contamination": {
+          "value": 0,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "fault_containment_scope": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "agents"
+        },
+        "fault_detection_ms": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "lowerdir_hash_unchanged": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "memory_peak_bytes": {
+          "value": 2734472,
+          "measurement_kind": "measured",
+          "unit": "bytes"
+        },
+        "normal_agent_completion_rate": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ratio"
+        },
+        "normal_completion_p50_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "normal_completion_p95_ms": {
+          "value": 2.8,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "pids_peak": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "processes"
+        },
+        "recovery_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "resource_sampler_mode": {
+          "value": 18,
+          "measurement_kind": "derived",
+          "unit": "degraded+workspace"
+        },
+        "task_success": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        }
+      },
+      "events": [
+        {
+          "name": "scenario.started",
+          "timestamp": "2026-07-15T15:11:40.907179Z",
+          "detail": "six-agent resource isolation run"
+        },
+        {
+          "name": "scenario.finished",
+          "timestamp": "2026-07-15T15:11:40.913944Z",
+          "status": "degraded+workspace"
+        }
+      ],
+      "artifact": "raw/aort-r-010.json"
+    },
+    {
+      "scenario_id": "resource-isolation",
+      "run_id": "aort-r-011",
+      "mode": "aort-r",
+      "timestamp": "2026-07-15T15:11:40.914632Z",
+      "success": true,
+      "metrics": {
+        "cleanup_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "cross_agent_contamination": {
+          "value": 0,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "fault_containment_scope": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "agents"
+        },
+        "fault_detection_ms": {
+          "value": 15,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "lowerdir_hash_unchanged": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "memory_peak_bytes": {
+          "value": 2839856,
+          "measurement_kind": "measured",
+          "unit": "bytes"
+        },
+        "normal_agent_completion_rate": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ratio"
+        },
+        "normal_completion_p50_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "normal_completion_p95_ms": {
+          "value": 3,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "pids_peak": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "processes"
+        },
+        "recovery_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "resource_sampler_mode": {
+          "value": 18,
+          "measurement_kind": "derived",
+          "unit": "degraded+workspace"
+        },
+        "task_success": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        }
+      },
+      "events": [
+        {
+          "name": "scenario.started",
+          "timestamp": "2026-07-15T15:11:40.914632Z",
+          "detail": "six-agent resource isolation run"
+        },
+        {
+          "name": "scenario.finished",
+          "timestamp": "2026-07-15T15:11:40.930309Z",
+          "status": "degraded+workspace"
+        }
+      ],
+      "artifact": "raw/aort-r-011.json"
+    },
+    {
+      "scenario_id": "resource-isolation",
+      "run_id": "aort-r-012",
+      "mode": "aort-r",
+      "timestamp": "2026-07-15T15:11:40.930978Z",
+      "success": true,
+      "metrics": {
+        "cleanup_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "cross_agent_contamination": {
+          "value": 0,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "fault_containment_scope": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "agents"
+        },
+        "fault_detection_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "lowerdir_hash_unchanged": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "memory_peak_bytes": {
+          "value": 513336,
+          "measurement_kind": "measured",
+          "unit": "bytes"
+        },
+        "normal_agent_completion_rate": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ratio"
+        },
+        "normal_completion_p50_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "normal_completion_p95_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "pids_peak": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "processes"
+        },
+        "recovery_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "resource_sampler_mode": {
+          "value": 18,
+          "measurement_kind": "derived",
+          "unit": "degraded+workspace"
+        },
+        "task_success": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        }
+      },
+      "events": [
+        {
+          "name": "scenario.started",
+          "timestamp": "2026-07-15T15:11:40.930978Z",
+          "detail": "six-agent resource isolation run"
+        },
+        {
+          "name": "workspace.rmrf",
+          "timestamp": "2026-07-15T15:11:40.942317Z",
+          "status": "degraded-copy",
+          "detail": "overlayfs requires linux, got darwin"
+        },
+        {
+          "name": "scenario.finished",
+          "timestamp": "2026-07-15T15:11:40.942528Z",
+          "status": "degraded+workspace"
+        }
+      ],
+      "artifact": "raw/aort-r-012.json"
+    },
+    {
+      "scenario_id": "resource-isolation",
+      "run_id": "aort-r-013",
+      "mode": "aort-r",
+      "timestamp": "2026-07-15T15:11:40.943225Z",
+      "success": true,
+      "metrics": {
+        "cleanup_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "cross_agent_contamination": {
+          "value": 0,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "fault_containment_scope": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "agents"
+        },
+        "fault_detection_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "lowerdir_hash_unchanged": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "memory_peak_bytes": {
+          "value": 2717376,
+          "measurement_kind": "measured",
+          "unit": "bytes"
+        },
+        "normal_agent_completion_rate": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ratio"
+        },
+        "normal_completion_p50_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "normal_completion_p95_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "pids_peak": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "processes"
+        },
+        "recovery_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "resource_sampler_mode": {
+          "value": 18,
+          "measurement_kind": "derived",
+          "unit": "degraded+workspace"
+        },
+        "task_success": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        }
+      },
+      "events": [
+        {
+          "name": "scenario.started",
+          "timestamp": "2026-07-15T15:11:40.943225Z",
+          "detail": "six-agent resource isolation run"
+        },
+        {
+          "name": "scenario.finished",
+          "timestamp": "2026-07-15T15:11:40.94632Z",
+          "status": "degraded+workspace"
+        }
+      ],
+      "artifact": "raw/aort-r-013.json"
+    },
+    {
+      "scenario_id": "resource-isolation",
+      "run_id": "aort-r-014",
+      "mode": "aort-r",
+      "timestamp": "2026-07-15T15:11:40.94695Z",
+      "success": true,
+      "metrics": {
+        "cleanup_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "cross_agent_contamination": {
+          "value": 0,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "fault_containment_scope": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "agents"
+        },
+        "fault_detection_ms": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "lowerdir_hash_unchanged": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "memory_peak_bytes": {
+          "value": 475240,
+          "measurement_kind": "measured",
+          "unit": "bytes"
+        },
+        "normal_agent_completion_rate": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ratio"
+        },
+        "normal_completion_p50_ms": {
+          "value": 3,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "normal_completion_p95_ms": {
+          "value": 3,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "pids_peak": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "processes"
+        },
+        "recovery_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "resource_sampler_mode": {
+          "value": 18,
+          "measurement_kind": "derived",
+          "unit": "degraded+workspace"
+        },
+        "task_success": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        }
+      },
+      "events": [
+        {
+          "name": "scenario.started",
+          "timestamp": "2026-07-15T15:11:40.94695Z",
+          "detail": "six-agent resource isolation run"
+        },
+        {
+          "name": "scenario.finished",
+          "timestamp": "2026-07-15T15:11:40.954121Z",
+          "status": "degraded+workspace"
+        }
+      ],
+      "artifact": "raw/aort-r-014.json"
+    },
+    {
+      "scenario_id": "resource-isolation",
+      "run_id": "aort-r-015",
+      "mode": "aort-r",
+      "timestamp": "2026-07-15T15:11:40.954787Z",
+      "success": true,
+      "metrics": {
+        "cleanup_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "cross_agent_contamination": {
+          "value": 0,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "fault_containment_scope": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "agents"
+        },
+        "fault_detection_ms": {
+          "value": 15,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "lowerdir_hash_unchanged": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "memory_peak_bytes": {
+          "value": 582136,
+          "measurement_kind": "measured",
+          "unit": "bytes"
+        },
+        "normal_agent_completion_rate": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ratio"
+        },
+        "normal_completion_p50_ms": {
+          "value": 3,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "normal_completion_p95_ms": {
+          "value": 3,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "pids_peak": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "processes"
+        },
+        "recovery_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "resource_sampler_mode": {
+          "value": 18,
+          "measurement_kind": "derived",
+          "unit": "degraded+workspace"
+        },
+        "task_success": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        }
+      },
+      "events": [
+        {
+          "name": "scenario.started",
+          "timestamp": "2026-07-15T15:11:40.954787Z",
+          "detail": "six-agent resource isolation run"
+        },
+        {
+          "name": "scenario.finished",
+          "timestamp": "2026-07-15T15:11:40.970483Z",
+          "status": "degraded+workspace"
+        }
+      ],
+      "artifact": "raw/aort-r-015.json"
+    },
+    {
+      "scenario_id": "resource-isolation",
+      "run_id": "aort-r-016",
+      "mode": "aort-r",
+      "timestamp": "2026-07-15T15:11:40.971181Z",
+      "success": true,
+      "metrics": {
+        "cleanup_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "cross_agent_contamination": {
+          "value": 0,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "fault_containment_scope": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "agents"
+        },
+        "fault_detection_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "lowerdir_hash_unchanged": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "memory_peak_bytes": {
+          "value": 1742520,
+          "measurement_kind": "measured",
+          "unit": "bytes"
+        },
+        "normal_agent_completion_rate": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ratio"
+        },
+        "normal_completion_p50_ms": {
+          "value": 3,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "normal_completion_p95_ms": {
+          "value": 3,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "pids_peak": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "processes"
+        },
+        "recovery_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "resource_sampler_mode": {
+          "value": 18,
+          "measurement_kind": "derived",
+          "unit": "degraded+workspace"
+        },
+        "task_success": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        }
+      },
+      "events": [
+        {
+          "name": "scenario.started",
+          "timestamp": "2026-07-15T15:11:40.971181Z",
+          "detail": "six-agent resource isolation run"
+        },
+        {
+          "name": "workspace.rmrf",
+          "timestamp": "2026-07-15T15:11:40.983614Z",
+          "status": "degraded-copy",
+          "detail": "overlayfs requires linux, got darwin"
+        },
+        {
+          "name": "scenario.finished",
+          "timestamp": "2026-07-15T15:11:40.983847Z",
+          "status": "degraded+workspace"
+        }
+      ],
+      "artifact": "raw/aort-r-016.json"
+    },
+    {
+      "scenario_id": "resource-isolation",
+      "run_id": "aort-r-017",
+      "mode": "aort-r",
+      "timestamp": "2026-07-15T15:11:40.984559Z",
+      "success": true,
+      "metrics": {
+        "cleanup_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "cross_agent_contamination": {
+          "value": 0,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "fault_containment_scope": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "agents"
+        },
+        "fault_detection_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "lowerdir_hash_unchanged": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "memory_peak_bytes": {
+          "value": 2583104,
+          "measurement_kind": "measured",
+          "unit": "bytes"
+        },
+        "normal_agent_completion_rate": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ratio"
+        },
+        "normal_completion_p50_ms": {
+          "value": 3,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "normal_completion_p95_ms": {
+          "value": 3,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "pids_peak": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "processes"
+        },
+        "recovery_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "resource_sampler_mode": {
+          "value": 18,
+          "measurement_kind": "derived",
+          "unit": "degraded+workspace"
+        },
+        "task_success": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        }
+      },
+      "events": [
+        {
+          "name": "scenario.started",
+          "timestamp": "2026-07-15T15:11:40.984559Z",
+          "detail": "six-agent resource isolation run"
+        },
+        {
+          "name": "scenario.finished",
+          "timestamp": "2026-07-15T15:11:40.989009Z",
+          "status": "degraded+workspace"
+        }
+      ],
+      "artifact": "raw/aort-r-017.json"
+    },
+    {
+      "scenario_id": "resource-isolation",
+      "run_id": "aort-r-018",
+      "mode": "aort-r",
+      "timestamp": "2026-07-15T15:11:40.990995Z",
+      "success": true,
+      "metrics": {
+        "cleanup_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "cross_agent_contamination": {
+          "value": 0,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "fault_containment_scope": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "agents"
+        },
+        "fault_detection_ms": {
+          "value": 8,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "lowerdir_hash_unchanged": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "memory_peak_bytes": {
+          "value": 2749864,
+          "measurement_kind": "measured",
+          "unit": "bytes"
+        },
+        "normal_agent_completion_rate": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ratio"
+        },
+        "normal_completion_p50_ms": {
+          "value": 4,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "normal_completion_p95_ms": {
+          "value": 4,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "pids_peak": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "processes"
+        },
+        "recovery_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "resource_sampler_mode": {
+          "value": 18,
+          "measurement_kind": "derived",
+          "unit": "degraded+workspace"
+        },
+        "task_success": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        }
+      },
+      "events": [
+        {
+          "name": "scenario.started",
+          "timestamp": "2026-07-15T15:11:40.990995Z",
+          "detail": "six-agent resource isolation run"
+        },
+        {
+          "name": "scenario.finished",
+          "timestamp": "2026-07-15T15:11:41.002259Z",
+          "status": "degraded+workspace"
+        }
+      ],
+      "artifact": "raw/aort-r-018.json"
+    },
+    {
+      "scenario_id": "resource-isolation",
+      "run_id": "aort-r-019",
+      "mode": "aort-r",
+      "timestamp": "2026-07-15T15:11:41.003018Z",
+      "success": true,
+      "metrics": {
+        "cleanup_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "cross_agent_contamination": {
+          "value": 0,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "fault_containment_scope": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "agents"
+        },
+        "fault_detection_ms": {
+          "value": 15,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "lowerdir_hash_unchanged": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "memory_peak_bytes": {
+          "value": 2857808,
+          "measurement_kind": "measured",
+          "unit": "bytes"
+        },
+        "normal_agent_completion_rate": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ratio"
+        },
+        "normal_completion_p50_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "normal_completion_p95_ms": {
+          "value": 2.8,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "pids_peak": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "processes"
+        },
+        "recovery_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "resource_sampler_mode": {
+          "value": 18,
+          "measurement_kind": "derived",
+          "unit": "degraded+workspace"
+        },
+        "task_success": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        }
+      },
+      "events": [
+        {
+          "name": "scenario.started",
+          "timestamp": "2026-07-15T15:11:41.003018Z",
+          "detail": "six-agent resource isolation run"
+        },
+        {
+          "name": "scenario.finished",
+          "timestamp": "2026-07-15T15:11:41.018793Z",
+          "status": "degraded+workspace"
+        }
+      ],
+      "artifact": "raw/aort-r-019.json"
+    },
+    {
+      "scenario_id": "resource-isolation",
+      "run_id": "aort-r-020",
+      "mode": "aort-r",
+      "timestamp": "2026-07-15T15:11:41.019677Z",
+      "success": true,
+      "metrics": {
+        "cleanup_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "cross_agent_contamination": {
+          "value": 0,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "fault_containment_scope": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "agents"
+        },
+        "fault_detection_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "lowerdir_hash_unchanged": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "memory_peak_bytes": {
+          "value": 451400,
+          "measurement_kind": "measured",
+          "unit": "bytes"
+        },
+        "normal_agent_completion_rate": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ratio"
+        },
+        "normal_completion_p50_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "normal_completion_p95_ms": {
+          "value": 3,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "pids_peak": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "processes"
+        },
+        "recovery_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "resource_sampler_mode": {
+          "value": 18,
+          "measurement_kind": "derived",
+          "unit": "degraded+workspace"
+        },
+        "task_success": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        }
+      },
+      "events": [
+        {
+          "name": "scenario.started",
+          "timestamp": "2026-07-15T15:11:41.019677Z",
+          "detail": "six-agent resource isolation run"
+        },
+        {
+          "name": "workspace.rmrf",
+          "timestamp": "2026-07-15T15:11:41.032603Z",
+          "status": "degraded-copy",
+          "detail": "overlayfs requires linux, got darwin"
+        },
+        {
+          "name": "scenario.finished",
+          "timestamp": "2026-07-15T15:11:41.032857Z",
+          "status": "degraded+workspace"
+        }
+      ],
+      "artifact": "raw/aort-r-020.json"
+    },
+    {
+      "scenario_id": "resource-isolation",
+      "run_id": "aort-r-021",
+      "mode": "aort-r",
+      "timestamp": "2026-07-15T15:11:41.033605Z",
+      "success": true,
+      "metrics": {
+        "cleanup_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "cross_agent_contamination": {
+          "value": 0,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "fault_containment_scope": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "agents"
+        },
+        "fault_detection_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "lowerdir_hash_unchanged": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "memory_peak_bytes": {
+          "value": 2659208,
+          "measurement_kind": "measured",
+          "unit": "bytes"
+        },
+        "normal_agent_completion_rate": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ratio"
+        },
+        "normal_completion_p50_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "normal_completion_p95_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "pids_peak": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "processes"
+        },
+        "recovery_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "resource_sampler_mode": {
+          "value": 18,
+          "measurement_kind": "derived",
+          "unit": "degraded+workspace"
+        },
+        "task_success": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        }
+      },
+      "events": [
+        {
+          "name": "scenario.started",
+          "timestamp": "2026-07-15T15:11:41.033605Z",
+          "detail": "six-agent resource isolation run"
+        },
+        {
+          "name": "scenario.finished",
+          "timestamp": "2026-07-15T15:11:41.036903Z",
+          "status": "degraded+workspace"
+        }
+      ],
+      "artifact": "raw/aort-r-021.json"
+    },
+    {
+      "scenario_id": "resource-isolation",
+      "run_id": "aort-r-022",
+      "mode": "aort-r",
+      "timestamp": "2026-07-15T15:11:41.037589Z",
+      "success": true,
+      "metrics": {
+        "cleanup_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "cross_agent_contamination": {
+          "value": 0,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "fault_containment_scope": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "agents"
+        },
+        "fault_detection_ms": {
+          "value": 7,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "lowerdir_hash_unchanged": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "memory_peak_bytes": {
+          "value": 2821328,
+          "measurement_kind": "measured",
+          "unit": "bytes"
+        },
+        "normal_agent_completion_rate": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ratio"
+        },
+        "normal_completion_p50_ms": {
+          "value": 3,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "normal_completion_p95_ms": {
+          "value": 3,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "pids_peak": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "processes"
+        },
+        "recovery_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "resource_sampler_mode": {
+          "value": 18,
+          "measurement_kind": "derived",
+          "unit": "degraded+workspace"
+        },
+        "task_success": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        }
+      },
+      "events": [
+        {
+          "name": "scenario.started",
+          "timestamp": "2026-07-15T15:11:41.037589Z",
+          "detail": "six-agent resource isolation run"
+        },
+        {
+          "name": "scenario.finished",
+          "timestamp": "2026-07-15T15:11:41.045226Z",
+          "status": "degraded+workspace"
+        }
+      ],
+      "artifact": "raw/aort-r-022.json"
+    },
+    {
+      "scenario_id": "resource-isolation",
+      "run_id": "aort-r-023",
+      "mode": "aort-r",
+      "timestamp": "2026-07-15T15:11:41.045873Z",
+      "success": true,
+      "metrics": {
+        "cleanup_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "cross_agent_contamination": {
+          "value": 0,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "fault_containment_scope": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "agents"
+        },
+        "fault_detection_ms": {
+          "value": 15,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "lowerdir_hash_unchanged": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        },
+        "memory_peak_bytes": {
+          "value": 2927224,
+          "measurement_kind": "measured",
+          "unit": "bytes"
+        },
+        "normal_agent_completion_rate": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ratio"
+        },
+        "normal_completion_p50_ms": {
+          "value": 2,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "normal_completion_p95_ms": {
+          "value": 3,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "pids_peak": {
+          "value": 6,
+          "measurement_kind": "measured",
+          "unit": "processes"
+        },
+        "recovery_ms": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "ms"
+        },
+        "resource_sampler_mode": {
+          "value": 18,
+          "measurement_kind": "derived",
+          "unit": "degraded+workspace"
+        },
+        "task_success": {
+          "value": 1,
+          "measurement_kind": "measured",
+          "unit": "bool"
+        }
+      },
+      "events": [
+        {
+          "name": "scenario.started",
+          "timestamp": "2026-07-15T15:11:41.045873Z",
+          "detail": "six-agent resource isolation run"
+        },
+        {
+          "name": "scenario.finished",
+          "timestamp": "2026-07-15T15:11:41.061581Z",
+          "status": "degraded+workspace"
+        }
+      ],
+      "artifact": "raw/aort-r-023.json"
+    }
+  ],
+  "summary": {
+    "aort-r": {
+      "cleanup_ms": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 1,
+        "stddev": 0,
+        "min": 1,
+        "max": 1,
+        "p50": 1,
+        "p95": 1
+      },
+      "cross_agent_contamination": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 0,
+        "stddev": 0,
+        "min": 0,
+        "max": 0,
+        "p50": 0,
+        "p95": 0
+      },
+      "fault_containment_scope": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 1,
+        "stddev": 0,
+        "min": 1,
+        "max": 1,
+        "p50": 1,
+        "p95": 1
+      },
+      "fault_detection_ms": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 5.9,
+        "stddev": 5.7436921923097515,
+        "min": 1,
+        "max": 15,
+        "p50": 3.5,
+        "p95": 15
+      },
+      "lowerdir_hash_unchanged": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 1,
+        "stddev": 0,
+        "min": 1,
+        "max": 1,
+        "p50": 1,
+        "p95": 1
+      },
+      "memory_peak_bytes": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 1858380,
+        "stddev": 1039280.1463890283,
+        "min": 451400,
+        "max": 2927224,
+        "p50": 2577424,
+        "p95": 2861278.8
+      },
+      "normal_agent_completion_rate": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 1,
+        "stddev": 0,
+        "min": 1,
+        "max": 1,
+        "p50": 1,
+        "p95": 1
+      },
+      "normal_completion_p50_ms": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 2.35,
+        "stddev": 0.6538348415311012,
+        "min": 1,
+        "max": 4,
+        "p50": 2,
+        "p95": 3.049999999999999
+      },
+      "normal_completion_p95_ms": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 2.79,
+        "stddev": 0.5309425580983314,
+        "min": 2,
+        "max": 4,
+        "p50": 3,
+        "p95": 3.619999999999999
+      },
+      "pids_peak": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 6,
+        "stddev": 0,
+        "min": 6,
+        "max": 6,
+        "p50": 6,
+        "p95": 6
+      },
+      "recovery_ms": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 1,
+        "stddev": 0,
+        "min": 1,
+        "max": 1,
+        "p50": 1,
+        "p95": 1
+      },
+      "resource_sampler_mode": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 18,
+        "stddev": 0,
+        "min": 18,
+        "max": 18,
+        "p50": 18,
+        "p95": 18
+      },
+      "task_success": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 1,
+        "stddev": 0,
+        "min": 1,
+        "max": 1,
+        "p50": 1,
+        "p95": 1
+      }
+    },
+    "baseline": {
+      "cleanup_ms": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 1,
+        "stddev": 0,
+        "min": 1,
+        "max": 1,
+        "p50": 1,
+        "p95": 1
+      },
+      "cross_agent_contamination": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 0,
+        "stddev": 0,
+        "min": 0,
+        "max": 0,
+        "p50": 0,
+        "p95": 0
+      },
+      "fault_containment_scope": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 1,
+        "stddev": 0,
+        "min": 1,
+        "max": 1,
+        "p50": 1,
+        "p95": 1
+      },
+      "fault_detection_ms": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 5.65,
+        "stddev": 5.729528776435284,
+        "min": 1,
+        "max": 15,
+        "p50": 3,
+        "p95": 15
+      },
+      "lowerdir_hash_unchanged": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 1,
+        "stddev": 0,
+        "min": 1,
+        "max": 1,
+        "p50": 1,
+        "p95": 1
+      },
+      "memory_peak_bytes": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 2656105.2,
+        "stddev": 145193.9669330651,
+        "min": 2414048,
+        "max": 2895800,
+        "p50": 2667192,
+        "p95": 2852160.8
+      },
+      "normal_agent_completion_rate": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 1,
+        "stddev": 0,
+        "min": 1,
+        "max": 1,
+        "p50": 1,
+        "p95": 1
+      },
+      "normal_completion_p50_ms": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 2.1,
+        "stddev": 0.43588989435406733,
+        "min": 1,
+        "max": 3,
+        "p50": 2,
+        "p95": 3
+      },
+      "normal_completion_p95_ms": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 2.7,
+        "stddev": 0.5385164807134504,
+        "min": 2,
+        "max": 3.8,
+        "p50": 2.8,
+        "p95": 3.8
+      },
+      "pids_peak": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 6,
+        "stddev": 0,
+        "min": 6,
+        "max": 6,
+        "p50": 6,
+        "p95": 6
+      },
+      "recovery_ms": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 1,
+        "stddev": 0,
+        "min": 1,
+        "max": 1,
+        "p50": 1,
+        "p95": 1
+      },
+      "resource_sampler_mode": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 8,
+        "stddev": 0,
+        "min": 8,
+        "max": 8,
+        "p50": 8,
+        "p95": 8
+      },
+      "task_success": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 1,
+        "stddev": 0,
+        "min": 1,
+        "max": 1,
+        "p50": 1,
+        "p95": 1
+      }
+    },
+    "isolation-only": {
+      "cleanup_ms": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 1,
+        "stddev": 0,
+        "min": 1,
+        "max": 1,
+        "p50": 1,
+        "p95": 1
+      },
+      "cross_agent_contamination": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 0,
+        "stddev": 0,
+        "min": 0,
+        "max": 0,
+        "p50": 0,
+        "p95": 0
+      },
+      "fault_containment_scope": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 1,
+        "stddev": 0,
+        "min": 1,
+        "max": 1,
+        "p50": 1,
+        "p95": 1
+      },
+      "fault_detection_ms": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 5.5,
+        "stddev": 5.722761571129799,
+        "min": 1,
+        "max": 15,
+        "p50": 3,
+        "p95": 15
+      },
+      "lowerdir_hash_unchanged": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 1,
+        "stddev": 0,
+        "min": 1,
+        "max": 1,
+        "p50": 1,
+        "p95": 1
+      },
+      "memory_peak_bytes": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 2716179.6,
+        "stddev": 137566.86327688076,
+        "min": 2499520,
+        "max": 2900784,
+        "p50": 2736964,
+        "p95": 2891588
+      },
+      "normal_agent_completion_rate": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 1,
+        "stddev": 0,
+        "min": 1,
+        "max": 1,
+        "p50": 1,
+        "p95": 1
+      },
+      "normal_completion_p50_ms": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 2.05,
+        "stddev": 0.38405728739343037,
+        "min": 1,
+        "max": 3,
+        "p50": 2,
+        "p95": 3
+      },
+      "normal_completion_p95_ms": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 2.43,
+        "stddev": 0.9105492847726586,
+        "min": 2,
+        "max": 6,
+        "p50": 2,
+        "p95": 3.1499999999999977
+      },
+      "pids_peak": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 6,
+        "stddev": 0,
+        "min": 6,
+        "max": 6,
+        "p50": 6,
+        "p95": 6
+      },
+      "recovery_ms": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 1,
+        "stddev": 0,
+        "min": 1,
+        "max": 1,
+        "p50": 1,
+        "p95": 1
+      },
+      "resource_sampler_mode": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 8,
+        "stddev": 0,
+        "min": 8,
+        "max": 8,
+        "p50": 8,
+        "p95": 8
+      },
+      "task_success": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 1,
+        "stddev": 0,
+        "min": 1,
+        "max": 1,
+        "p50": 1,
+        "p95": 1
+      }
+    }
+  },
+  "comparison": [
+    {
+      "mode": "aort-r",
+      "metric": "cleanup_ms",
+      "stats": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 1,
+        "stddev": 0,
+        "min": 1,
+        "max": 1,
+        "p50": 1,
+        "p95": 1
+      },
+      "measurement_kind": "measured",
+      "unit": "ms",
+      "baseline_mean": 1,
+      "improvement_valid": true
+    },
+    {
+      "mode": "aort-r",
+      "metric": "cross_agent_contamination",
+      "stats": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 0,
+        "stddev": 0,
+        "min": 0,
+        "max": 0,
+        "p50": 0,
+        "p95": 0
+      },
+      "measurement_kind": "measured",
+      "unit": "bool",
+      "improvement_valid": false
+    },
+    {
+      "mode": "aort-r",
+      "metric": "fault_containment_scope",
+      "stats": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 1,
+        "stddev": 0,
+        "min": 1,
+        "max": 1,
+        "p50": 1,
+        "p95": 1
+      },
+      "measurement_kind": "measured",
+      "unit": "agents",
+      "baseline_mean": 1,
+      "improvement_valid": true
+    },
+    {
+      "mode": "aort-r",
+      "metric": "fault_detection_ms",
+      "stats": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 5.9,
+        "stddev": 5.7436921923097515,
+        "min": 1,
+        "max": 15,
+        "p50": 3.5,
+        "p95": 15
+      },
+      "measurement_kind": "measured",
+      "unit": "ms",
+      "baseline_mean": 5.65,
+      "improvement_pct": -4.424778761061947,
+      "improvement_valid": true
+    },
+    {
+      "mode": "aort-r",
+      "metric": "lowerdir_hash_unchanged",
+      "stats": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 1,
+        "stddev": 0,
+        "min": 1,
+        "max": 1,
+        "p50": 1,
+        "p95": 1
+      },
+      "measurement_kind": "measured",
+      "unit": "bool",
+      "baseline_mean": 1,
+      "improvement_valid": true
+    },
+    {
+      "mode": "aort-r",
+      "metric": "memory_peak_bytes",
+      "stats": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 1858380,
+        "stddev": 1039280.1463890283,
+        "min": 451400,
+        "max": 2927224,
+        "p50": 2577424,
+        "p95": 2861278.8
+      },
+      "measurement_kind": "measured",
+      "unit": "bytes",
+      "baseline_mean": 2656105.2,
+      "improvement_pct": 30.033644751721432,
+      "improvement_valid": true
+    },
+    {
+      "mode": "aort-r",
+      "metric": "normal_agent_completion_rate",
+      "stats": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 1,
+        "stddev": 0,
+        "min": 1,
+        "max": 1,
+        "p50": 1,
+        "p95": 1
+      },
+      "measurement_kind": "measured",
+      "unit": "ratio",
+      "baseline_mean": 1,
+      "improvement_valid": true
+    },
+    {
+      "mode": "aort-r",
+      "metric": "normal_completion_p50_ms",
+      "stats": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 2.35,
+        "stddev": 0.6538348415311012,
+        "min": 1,
+        "max": 4,
+        "p50": 2,
+        "p95": 3.049999999999999
+      },
+      "measurement_kind": "measured",
+      "unit": "ms",
+      "baseline_mean": 2.1,
+      "improvement_pct": -11.904761904761903,
+      "improvement_valid": true
+    },
+    {
+      "mode": "aort-r",
+      "metric": "normal_completion_p95_ms",
+      "stats": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 2.79,
+        "stddev": 0.5309425580983314,
+        "min": 2,
+        "max": 4,
+        "p50": 3,
+        "p95": 3.619999999999999
+      },
+      "measurement_kind": "measured",
+      "unit": "ms",
+      "baseline_mean": 2.7,
+      "improvement_pct": -3.3333333333333277,
+      "improvement_valid": true
+    },
+    {
+      "mode": "aort-r",
+      "metric": "pids_peak",
+      "stats": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 6,
+        "stddev": 0,
+        "min": 6,
+        "max": 6,
+        "p50": 6,
+        "p95": 6
+      },
+      "measurement_kind": "measured",
+      "unit": "processes",
+      "baseline_mean": 6,
+      "improvement_valid": true
+    },
+    {
+      "mode": "aort-r",
+      "metric": "recovery_ms",
+      "stats": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 1,
+        "stddev": 0,
+        "min": 1,
+        "max": 1,
+        "p50": 1,
+        "p95": 1
+      },
+      "measurement_kind": "measured",
+      "unit": "ms",
+      "baseline_mean": 1,
+      "improvement_valid": true
+    },
+    {
+      "mode": "aort-r",
+      "metric": "resource_sampler_mode",
+      "stats": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 18,
+        "stddev": 0,
+        "min": 18,
+        "max": 18,
+        "p50": 18,
+        "p95": 18
+      },
+      "measurement_kind": "derived",
+      "unit": "degraded+workspace",
+      "baseline_mean": 8,
+      "improvement_pct": -125,
+      "improvement_valid": true
+    },
+    {
+      "mode": "aort-r",
+      "metric": "task_success",
+      "stats": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 1,
+        "stddev": 0,
+        "min": 1,
+        "max": 1,
+        "p50": 1,
+        "p95": 1
+      },
+      "measurement_kind": "measured",
+      "unit": "bool",
+      "baseline_mean": 1,
+      "improvement_valid": true
+    },
+    {
+      "mode": "baseline",
+      "metric": "cleanup_ms",
+      "stats": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 1,
+        "stddev": 0,
+        "min": 1,
+        "max": 1,
+        "p50": 1,
+        "p95": 1
+      },
+      "measurement_kind": "measured",
+      "unit": "ms",
+      "baseline_mean": 1,
+      "improvement_valid": true
+    },
+    {
+      "mode": "baseline",
+      "metric": "cross_agent_contamination",
+      "stats": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 0,
+        "stddev": 0,
+        "min": 0,
+        "max": 0,
+        "p50": 0,
+        "p95": 0
+      },
+      "measurement_kind": "measured",
+      "unit": "bool",
+      "improvement_valid": false
+    },
+    {
+      "mode": "baseline",
+      "metric": "fault_containment_scope",
+      "stats": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 1,
+        "stddev": 0,
+        "min": 1,
+        "max": 1,
+        "p50": 1,
+        "p95": 1
+      },
+      "measurement_kind": "measured",
+      "unit": "agents",
+      "baseline_mean": 1,
+      "improvement_valid": true
+    },
+    {
+      "mode": "baseline",
+      "metric": "fault_detection_ms",
+      "stats": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 5.65,
+        "stddev": 5.729528776435284,
+        "min": 1,
+        "max": 15,
+        "p50": 3,
+        "p95": 15
+      },
+      "measurement_kind": "measured",
+      "unit": "ms",
+      "baseline_mean": 5.65,
+      "improvement_valid": true
+    },
+    {
+      "mode": "baseline",
+      "metric": "lowerdir_hash_unchanged",
+      "stats": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 1,
+        "stddev": 0,
+        "min": 1,
+        "max": 1,
+        "p50": 1,
+        "p95": 1
+      },
+      "measurement_kind": "measured",
+      "unit": "bool",
+      "baseline_mean": 1,
+      "improvement_valid": true
+    },
+    {
+      "mode": "baseline",
+      "metric": "memory_peak_bytes",
+      "stats": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 2656105.2,
+        "stddev": 145193.9669330651,
+        "min": 2414048,
+        "max": 2895800,
+        "p50": 2667192,
+        "p95": 2852160.8
+      },
+      "measurement_kind": "measured",
+      "unit": "bytes",
+      "baseline_mean": 2656105.2,
+      "improvement_valid": true
+    },
+    {
+      "mode": "baseline",
+      "metric": "normal_agent_completion_rate",
+      "stats": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 1,
+        "stddev": 0,
+        "min": 1,
+        "max": 1,
+        "p50": 1,
+        "p95": 1
+      },
+      "measurement_kind": "measured",
+      "unit": "ratio",
+      "baseline_mean": 1,
+      "improvement_valid": true
+    },
+    {
+      "mode": "baseline",
+      "metric": "normal_completion_p50_ms",
+      "stats": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 2.1,
+        "stddev": 0.43588989435406733,
+        "min": 1,
+        "max": 3,
+        "p50": 2,
+        "p95": 3
+      },
+      "measurement_kind": "measured",
+      "unit": "ms",
+      "baseline_mean": 2.1,
+      "improvement_valid": true
+    },
+    {
+      "mode": "baseline",
+      "metric": "normal_completion_p95_ms",
+      "stats": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 2.7,
+        "stddev": 0.5385164807134504,
+        "min": 2,
+        "max": 3.8,
+        "p50": 2.8,
+        "p95": 3.8
+      },
+      "measurement_kind": "measured",
+      "unit": "ms",
+      "baseline_mean": 2.7,
+      "improvement_valid": true
+    },
+    {
+      "mode": "baseline",
+      "metric": "pids_peak",
+      "stats": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 6,
+        "stddev": 0,
+        "min": 6,
+        "max": 6,
+        "p50": 6,
+        "p95": 6
+      },
+      "measurement_kind": "measured",
+      "unit": "processes",
+      "baseline_mean": 6,
+      "improvement_valid": true
+    },
+    {
+      "mode": "baseline",
+      "metric": "recovery_ms",
+      "stats": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 1,
+        "stddev": 0,
+        "min": 1,
+        "max": 1,
+        "p50": 1,
+        "p95": 1
+      },
+      "measurement_kind": "measured",
+      "unit": "ms",
+      "baseline_mean": 1,
+      "improvement_valid": true
+    },
+    {
+      "mode": "baseline",
+      "metric": "resource_sampler_mode",
+      "stats": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 8,
+        "stddev": 0,
+        "min": 8,
+        "max": 8,
+        "p50": 8,
+        "p95": 8
+      },
+      "measurement_kind": "derived",
+      "unit": "degraded",
+      "baseline_mean": 8,
+      "improvement_valid": true
+    },
+    {
+      "mode": "baseline",
+      "metric": "task_success",
+      "stats": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 1,
+        "stddev": 0,
+        "min": 1,
+        "max": 1,
+        "p50": 1,
+        "p95": 1
+      },
+      "measurement_kind": "measured",
+      "unit": "bool",
+      "baseline_mean": 1,
+      "improvement_valid": true
+    },
+    {
+      "mode": "isolation-only",
+      "metric": "cleanup_ms",
+      "stats": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 1,
+        "stddev": 0,
+        "min": 1,
+        "max": 1,
+        "p50": 1,
+        "p95": 1
+      },
+      "measurement_kind": "measured",
+      "unit": "ms",
+      "baseline_mean": 1,
+      "improvement_valid": true
+    },
+    {
+      "mode": "isolation-only",
+      "metric": "cross_agent_contamination",
+      "stats": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 0,
+        "stddev": 0,
+        "min": 0,
+        "max": 0,
+        "p50": 0,
+        "p95": 0
+      },
+      "measurement_kind": "measured",
+      "unit": "bool",
+      "improvement_valid": false
+    },
+    {
+      "mode": "isolation-only",
+      "metric": "fault_containment_scope",
+      "stats": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 1,
+        "stddev": 0,
+        "min": 1,
+        "max": 1,
+        "p50": 1,
+        "p95": 1
+      },
+      "measurement_kind": "measured",
+      "unit": "agents",
+      "baseline_mean": 1,
+      "improvement_valid": true
+    },
+    {
+      "mode": "isolation-only",
+      "metric": "fault_detection_ms",
+      "stats": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 5.5,
+        "stddev": 5.722761571129799,
+        "min": 1,
+        "max": 15,
+        "p50": 3,
+        "p95": 15
+      },
+      "measurement_kind": "measured",
+      "unit": "ms",
+      "baseline_mean": 5.65,
+      "improvement_pct": 2.6548672566371745,
+      "improvement_valid": true
+    },
+    {
+      "mode": "isolation-only",
+      "metric": "lowerdir_hash_unchanged",
+      "stats": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 1,
+        "stddev": 0,
+        "min": 1,
+        "max": 1,
+        "p50": 1,
+        "p95": 1
+      },
+      "measurement_kind": "measured",
+      "unit": "bool",
+      "baseline_mean": 1,
+      "improvement_valid": true
+    },
+    {
+      "mode": "isolation-only",
+      "metric": "memory_peak_bytes",
+      "stats": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 2716179.6,
+        "stddev": 137566.86327688076,
+        "min": 2499520,
+        "max": 2900784,
+        "p50": 2736964,
+        "p95": 2891588
+      },
+      "measurement_kind": "measured",
+      "unit": "bytes",
+      "baseline_mean": 2656105.2,
+      "improvement_pct": -2.261747765111107,
+      "improvement_valid": true
+    },
+    {
+      "mode": "isolation-only",
+      "metric": "normal_agent_completion_rate",
+      "stats": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 1,
+        "stddev": 0,
+        "min": 1,
+        "max": 1,
+        "p50": 1,
+        "p95": 1
+      },
+      "measurement_kind": "measured",
+      "unit": "ratio",
+      "baseline_mean": 1,
+      "improvement_valid": true
+    },
+    {
+      "mode": "isolation-only",
+      "metric": "normal_completion_p50_ms",
+      "stats": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 2.05,
+        "stddev": 0.38405728739343037,
+        "min": 1,
+        "max": 3,
+        "p50": 2,
+        "p95": 3
+      },
+      "measurement_kind": "measured",
+      "unit": "ms",
+      "baseline_mean": 2.1,
+      "improvement_pct": 2.380952380952394,
+      "improvement_valid": true
+    },
+    {
+      "mode": "isolation-only",
+      "metric": "normal_completion_p95_ms",
+      "stats": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 2.43,
+        "stddev": 0.9105492847726586,
+        "min": 2,
+        "max": 6,
+        "p50": 2,
+        "p95": 3.1499999999999977
+      },
+      "measurement_kind": "measured",
+      "unit": "ms",
+      "baseline_mean": 2.7,
+      "improvement_pct": 10,
+      "improvement_valid": true
+    },
+    {
+      "mode": "isolation-only",
+      "metric": "pids_peak",
+      "stats": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 6,
+        "stddev": 0,
+        "min": 6,
+        "max": 6,
+        "p50": 6,
+        "p95": 6
+      },
+      "measurement_kind": "measured",
+      "unit": "processes",
+      "baseline_mean": 6,
+      "improvement_valid": true
+    },
+    {
+      "mode": "isolation-only",
+      "metric": "recovery_ms",
+      "stats": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 1,
+        "stddev": 0,
+        "min": 1,
+        "max": 1,
+        "p50": 1,
+        "p95": 1
+      },
+      "measurement_kind": "measured",
+      "unit": "ms",
+      "baseline_mean": 1,
+      "improvement_valid": true
+    },
+    {
+      "mode": "isolation-only",
+      "metric": "resource_sampler_mode",
+      "stats": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 8,
+        "stddev": 0,
+        "min": 8,
+        "max": 8,
+        "p50": 8,
+        "p95": 8
+      },
+      "measurement_kind": "derived",
+      "unit": "degraded",
+      "baseline_mean": 8,
+      "improvement_valid": true
+    },
+    {
+      "mode": "isolation-only",
+      "metric": "task_success",
+      "stats": {
+        "count": 20,
+        "success_count": 20,
+        "failed_count": 0,
+        "success_rate": 1,
+        "mean": 1,
+        "stddev": 0,
+        "min": 1,
+        "max": 1,
+        "p50": 1,
+        "p95": 1
+      },
+      "measurement_kind": "measured",
+      "unit": "bool",
+      "baseline_mean": 1,
+      "improvement_valid": true
+    }
+  ],
+  "artifact_paths": [
+    "raw/",
+    "summary.json",
+    "comparison.csv",
+    "report.md"
+  ],
+  "limitations": [
+    "Portable runs use bounded process/memory counters and the existing workspace capability probe; cgroup evidence is degraded when the host cannot provide a safe nested cgroup."
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "schema": "aort.process_evidence.v1",
+  "phase": "loc-gate-30000",
+  "captured_at_utc": "2026-07-23T06:58:28Z",
+  "summary": {
+    "schema": "aort.loc_gate.v1",
+    "captured_at_utc": "2026-07-23T06:58:28Z",
+    "physical_go_lines": 36280,
+    "nonblank_go_lines": 34340,
+    "tracked_or_workspace_go_files": 160,
+    "gate_physical": 30000,
+    "gate_nonblank": 30000,
+    "passed": true
+  },
+  "file_count": 2,
+  "files": [
+    {
+      "path": "loc_files.json",
+      "bytes": 15629,
+      "sha256": "1224e27f81ac266956cc5dae2abad5d5e7104ab0cb20365be6967ba4947978d8"
+    },
+    {
+      "path": "loc_summary.json",
+      "bytes": 250,
+      "sha256": "a5abd26ada82ed267280ef88bd1783918576e8bc308e56e8b993f5ce13265692"
+    }
+  ]
+}

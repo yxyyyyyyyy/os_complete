@@ -42,6 +42,7 @@ type Request struct {
 }
 
 type Response struct {
+	RequestID         string `json:"request_id,omitempty"`
 	Text              string `json:"text"`
 	Provider          string `json:"provider"`
 	Model             string `json:"model,omitempty"`
@@ -55,6 +56,7 @@ type Response struct {
 type Usage struct {
 	PromptTokens     int    `json:"prompt_tokens"`
 	CompletionTokens int    `json:"completion_tokens"`
+	TotalTokens      int    `json:"total_tokens"`
 	CachedTokens     int    `json:"cached_tokens"`
 	PromptMS         int64  `json:"prompt_ms"`
 	TTFTMS           int64  `json:"ttft_ms"`

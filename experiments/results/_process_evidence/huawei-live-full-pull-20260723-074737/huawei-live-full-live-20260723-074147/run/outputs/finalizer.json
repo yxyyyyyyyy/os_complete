@@ -1,0 +1,1 @@
+{"schema_version":"codebase-dag/v1","node_id":"finalizer","status":"failed","summary":"No gate results or validation evidence provided; cannot summarize.","limitations":["Missing shared context","No machine gates passed"]}

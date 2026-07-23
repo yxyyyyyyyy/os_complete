@@ -50,7 +50,7 @@ func TestAgentDemoDeepSeekReadsEnvAndRedactsSecret(t *testing.T) {
 		return &http.Response{
 			StatusCode: http.StatusOK,
 			Header:     http.Header{"Content-Type": []string{"application/json"}},
-			Body:       io.NopCloser(bytes.NewBufferString(`{"choices":[{"message":{"content":"accepted"}}],"usage":{"prompt_tokens":8,"completion_tokens":2,"total_tokens":10}}`)),
+			Body:       io.NopCloser(bytes.NewBufferString(`{"id":"demo-call-1","model":"deepseek-test","choices":[{"message":{"content":"accepted"}}],"usage":{"prompt_tokens":8,"completion_tokens":2,"total_tokens":10}}`)),
 		}, nil
 	})}
 	out := t.TempDir()

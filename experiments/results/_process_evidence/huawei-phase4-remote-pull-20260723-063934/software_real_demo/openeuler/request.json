@@ -1,0 +1,1 @@
+{"requirement": "实现一个小 Go module，实现字符串工具函数，并运行 go test ./..."}

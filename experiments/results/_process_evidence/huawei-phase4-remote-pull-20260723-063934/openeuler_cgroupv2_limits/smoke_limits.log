@@ -1,0 +1,20 @@
+== memory.max enforcement ==
+scripts/smoke_cgroupv2_limits.sh: line 69: 12638 Killed                  python3 - "$memory_cg" <<'PY'
+import os
+import sys
+import time
+
+cgroup = sys.argv[1]
+with open(os.path.join(cgroup, "cgroup.procs"), "w", encoding="utf-8") as fh:
+    fh.write(str(os.getpid()))
+chunks = []
+for _ in range(128):
+    chunks.append(bytearray(1024 * 1024))
+    time.sleep(0.01)
+print(len(chunks))
+PY
+
+== pids.max enforcement ==
+== cpu.max / cpu.stat observability ==
+971614
+cgroup v2 limit smoke artifacts written to experiments/results/openeuler_cgroupv2_limits

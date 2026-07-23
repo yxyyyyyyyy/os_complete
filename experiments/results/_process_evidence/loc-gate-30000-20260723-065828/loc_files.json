@@ -1,0 +1,802 @@
+[
+  {
+    "path": "cmd/aort-code-worker/main.go",
+    "physical": 109,
+    "nonblank": 103
+  },
+  {
+    "path": "cmd/aort-code-worker/main_test.go",
+    "physical": 63,
+    "nonblank": 60
+  },
+  {
+    "path": "cmd/aort-experiment/main.go",
+    "physical": 107,
+    "nonblank": 102
+  },
+  {
+    "path": "cmd/aort-experiment/main_test.go",
+    "physical": 75,
+    "nonblank": 70
+  },
+  {
+    "path": "cmd/aort-worker/main.go",
+    "physical": 135,
+    "nonblank": 123
+  },
+  {
+    "path": "cmd/aort-worker/main_test.go",
+    "physical": 25,
+    "nonblank": 22
+  },
+  {
+    "path": "cmd/aortctl/main.go",
+    "physical": 609,
+    "nonblank": 593
+  },
+  {
+    "path": "cmd/aortctl/main_test.go",
+    "physical": 513,
+    "nonblank": 485
+  },
+  {
+    "path": "cmd/aortd/main.go",
+    "physical": 25,
+    "nonblank": 20
+  },
+  {
+    "path": "internal/api/capsule_api_test.go",
+    "physical": 143,
+    "nonblank": 132
+  },
+  {
+    "path": "internal/api/demo_api_test.go",
+    "physical": 224,
+    "nonblank": 197
+  },
+  {
+    "path": "internal/api/evidence_api_test.go",
+    "physical": 96,
+    "nonblank": 88
+  },
+  {
+    "path": "internal/api/experiment_api_test.go",
+    "physical": 44,
+    "nonblank": 40
+  },
+  {
+    "path": "internal/api/fault_api_test.go",
+    "physical": 60,
+    "nonblank": 51
+  },
+  {
+    "path": "internal/api/kernel_api_test.go",
+    "physical": 38,
+    "nonblank": 32
+  },
+  {
+    "path": "internal/api/pressure_api_test.go",
+    "physical": 55,
+    "nonblank": 48
+  },
+  {
+    "path": "internal/api/scheduler_api_test.go",
+    "physical": 86,
+    "nonblank": 75
+  },
+  {
+    "path": "internal/api/server.go",
+    "physical": 1980,
+    "nonblank": 1882
+  },
+  {
+    "path": "internal/api/server_test.go",
+    "physical": 27,
+    "nonblank": 24
+  },
+  {
+    "path": "internal/api/software_real_demo.go",
+    "physical": 720,
+    "nonblank": 674
+  },
+  {
+    "path": "internal/api/software_real_demo_api_test.go",
+    "physical": 137,
+    "nonblank": 128
+  },
+  {
+    "path": "internal/api/sse_test.go",
+    "physical": 64,
+    "nonblank": 56
+  },
+  {
+    "path": "internal/api/workspace_api_test.go",
+    "physical": 84,
+    "nonblank": 75
+  },
+  {
+    "path": "internal/avp/manager.go",
+    "physical": 89,
+    "nonblank": 81
+  },
+  {
+    "path": "internal/avp/manager_test.go",
+    "physical": 45,
+    "nonblank": 41
+  },
+  {
+    "path": "internal/avp/types.go",
+    "physical": 41,
+    "nonblank": 38
+  },
+  {
+    "path": "internal/capsule/manager.go",
+    "physical": 450,
+    "nonblank": 416
+  },
+  {
+    "path": "internal/capsule/manager_test.go",
+    "physical": 261,
+    "nonblank": 241
+  },
+  {
+    "path": "internal/checkpoint/checkpoint.go",
+    "physical": 254,
+    "nonblank": 235
+  },
+  {
+    "path": "internal/checkpoint/checkpoint_test.go",
+    "physical": 124,
+    "nonblank": 115
+  },
+  {
+    "path": "internal/codebasedag/acceptance.go",
+    "physical": 90,
+    "nonblank": 85
+  },
+  {
+    "path": "internal/codebasedag/acceptance_test.go",
+    "physical": 55,
+    "nonblank": 52
+  },
+  {
+    "path": "internal/codebasedag/apply.go",
+    "physical": 110,
+    "nonblank": 103
+  },
+  {
+    "path": "internal/codebasedag/apply_test.go",
+    "physical": 42,
+    "nonblank": 39
+  },
+  {
+    "path": "internal/codebasedag/budget.go",
+    "physical": 165,
+    "nonblank": 155
+  },
+  {
+    "path": "internal/codebasedag/budget_replay_test.go",
+    "physical": 167,
+    "nonblank": 159
+  },
+  {
+    "path": "internal/codebasedag/contract.go",
+    "physical": 174,
+    "nonblank": 168
+  },
+  {
+    "path": "internal/codebasedag/contract_test.go",
+    "physical": 52,
+    "nonblank": 49
+  },
+  {
+    "path": "internal/codebasedag/evidencejournal.go",
+    "physical": 166,
+    "nonblank": 150
+  },
+  {
+    "path": "internal/codebasedag/evidencejournal_test.go",
+    "physical": 104,
+    "nonblank": 100
+  },
+  {
+    "path": "internal/codebasedag/executor.go",
+    "physical": 42,
+    "nonblank": 38
+  },
+  {
+    "path": "internal/codebasedag/executor_test.go",
+    "physical": 73,
+    "nonblank": 69
+  },
+  {
+    "path": "internal/codebasedag/gates.go",
+    "physical": 170,
+    "nonblank": 156
+  },
+  {
+    "path": "internal/codebasedag/gates_matrix_test.go",
+    "physical": 6746,
+    "nonblank": 6743
+  },
+  {
+    "path": "internal/codebasedag/gates_test.go",
+    "physical": 82,
+    "nonblank": 78
+  },
+  {
+    "path": "internal/codebasedag/graph.go",
+    "physical": 102,
+    "nonblank": 92
+  },
+  {
+    "path": "internal/codebasedag/graph_test.go",
+    "physical": 69,
+    "nonblank": 64
+  },
+  {
+    "path": "internal/codebasedag/manifest.go",
+    "physical": 198,
+    "nonblank": 183
+  },
+  {
+    "path": "internal/codebasedag/manifest_test.go",
+    "physical": 185,
+    "nonblank": 173
+  },
+  {
+    "path": "internal/codebasedag/model.go",
+    "physical": 241,
+    "nonblank": 221
+  },
+  {
+    "path": "internal/codebasedag/model_test.go",
+    "physical": 195,
+    "nonblank": 184
+  },
+  {
+    "path": "internal/codebasedag/osprobe.go",
+    "physical": 112,
+    "nonblank": 102
+  },
+  {
+    "path": "internal/codebasedag/osprobe_test.go",
+    "physical": 67,
+    "nonblank": 62
+  },
+  {
+    "path": "internal/codebasedag/patch.go",
+    "physical": 257,
+    "nonblank": 239
+  },
+  {
+    "path": "internal/codebasedag/patch_test.go",
+    "physical": 107,
+    "nonblank": 102
+  },
+  {
+    "path": "internal/codebasedag/pipeline.go",
+    "physical": 224,
+    "nonblank": 206
+  },
+  {
+    "path": "internal/codebasedag/pipeline_test.go",
+    "physical": 105,
+    "nonblank": 99
+  },
+  {
+    "path": "internal/codebasedag/preflight.go",
+    "physical": 46,
+    "nonblank": 43
+  },
+  {
+    "path": "internal/codebasedag/preflight_test.go",
+    "physical": 87,
+    "nonblank": 82
+  },
+  {
+    "path": "internal/codebasedag/process.go",
+    "physical": 190,
+    "nonblank": 170
+  },
+  {
+    "path": "internal/codebasedag/process_linux.go",
+    "physical": 196,
+    "nonblank": 183
+  },
+  {
+    "path": "internal/codebasedag/process_linux_test.go",
+    "physical": 62,
+    "nonblank": 57
+  },
+  {
+    "path": "internal/codebasedag/process_other.go",
+    "physical": 7,
+    "nonblank": 5
+  },
+  {
+    "path": "internal/codebasedag/process_test.go",
+    "physical": 116,
+    "nonblank": 104
+  },
+  {
+    "path": "internal/codebasedag/processevidence.go",
+    "physical": 172,
+    "nonblank": 160
+  },
+  {
+    "path": "internal/codebasedag/processevidence_test.go",
+    "physical": 95,
+    "nonblank": 91
+  },
+  {
+    "path": "internal/codebasedag/promptcatalog.go",
+    "physical": 187,
+    "nonblank": 179
+  },
+  {
+    "path": "internal/codebasedag/promptcatalog_test.go",
+    "physical": 55,
+    "nonblank": 51
+  },
+  {
+    "path": "internal/codebasedag/prompts.go",
+    "physical": 96,
+    "nonblank": 89
+  },
+  {
+    "path": "internal/codebasedag/prompts_test.go",
+    "physical": 67,
+    "nonblank": 63
+  },
+  {
+    "path": "internal/codebasedag/replay.go",
+    "physical": 128,
+    "nonblank": 118
+  },
+  {
+    "path": "internal/codebasedag/report.go",
+    "physical": 218,
+    "nonblank": 204
+  },
+  {
+    "path": "internal/codebasedag/report_test.go",
+    "physical": 165,
+    "nonblank": 158
+  },
+  {
+    "path": "internal/codebasedag/runner.go",
+    "physical": 307,
+    "nonblank": 279
+  },
+  {
+    "path": "internal/codebasedag/runner_test.go",
+    "physical": 129,
+    "nonblank": 124
+  },
+  {
+    "path": "internal/codebasedag/runstore.go",
+    "physical": 200,
+    "nonblank": 187
+  },
+  {
+    "path": "internal/codebasedag/runstore_test.go",
+    "physical": 110,
+    "nonblank": 102
+  },
+  {
+    "path": "internal/codebasedag/schema.go",
+    "physical": 120,
+    "nonblank": 113
+  },
+  {
+    "path": "internal/codebasedag/schema_test.go",
+    "physical": 57,
+    "nonblank": 53
+  },
+  {
+    "path": "internal/codebasedag/ticket.go",
+    "physical": 139,
+    "nonblank": 132
+  },
+  {
+    "path": "internal/codebasedag/ticket_test.go",
+    "physical": 72,
+    "nonblank": 67
+  },
+  {
+    "path": "internal/codebasedag/types.go",
+    "physical": 127,
+    "nonblank": 113
+  },
+  {
+    "path": "internal/codebasedag/validate.go",
+    "physical": 170,
+    "nonblank": 163
+  },
+  {
+    "path": "internal/codebasedag/validate_test.go",
+    "physical": 134,
+    "nonblank": 127
+  },
+  {
+    "path": "internal/config/config.go",
+    "physical": 71,
+    "nonblank": 67
+  },
+  {
+    "path": "internal/config/config_test.go",
+    "physical": 41,
+    "nonblank": 38
+  },
+  {
+    "path": "internal/cvm/store.go",
+    "physical": 467,
+    "nonblank": 435
+  },
+  {
+    "path": "internal/cvm/store_test.go",
+    "physical": 164,
+    "nonblank": 156
+  },
+  {
+    "path": "internal/dag/dag.go",
+    "physical": 94,
+    "nonblank": 86
+  },
+  {
+    "path": "internal/dag/dag_test.go",
+    "physical": 100,
+    "nonblank": 89
+  },
+  {
+    "path": "internal/demo/software_demo.go",
+    "physical": 121,
+    "nonblank": 111
+  },
+  {
+    "path": "internal/demo/software_demo_test.go",
+    "physical": 35,
+    "nonblank": 32
+  },
+  {
+    "path": "internal/events/hub.go",
+    "physical": 91,
+    "nonblank": 83
+  },
+  {
+    "path": "internal/events/hub_test.go",
+    "physical": 43,
+    "nonblank": 39
+  },
+  {
+    "path": "internal/evidence/evidence.go",
+    "physical": 90,
+    "nonblank": 82
+  },
+  {
+    "path": "internal/evidence/evidence_mode_test.go",
+    "physical": 62,
+    "nonblank": 58
+  },
+  {
+    "path": "internal/experiment/all_final.go",
+    "physical": 1073,
+    "nonblank": 1014
+  },
+  {
+    "path": "internal/experiment/deepseek_real.go",
+    "physical": 188,
+    "nonblank": 178
+  },
+  {
+    "path": "internal/experiment/experiment.go",
+    "physical": 340,
+    "nonblank": 318
+  },
+  {
+    "path": "internal/experiment/experiment_test.go",
+    "physical": 56,
+    "nonblank": 52
+  },
+  {
+    "path": "internal/experiment/real_benchmark.go",
+    "physical": 1540,
+    "nonblank": 1482
+  },
+  {
+    "path": "internal/experiment/real_benchmark_test.go",
+    "physical": 163,
+    "nonblank": 155
+  },
+  {
+    "path": "internal/experiment/real_os_evidence.go",
+    "physical": 892,
+    "nonblank": 848
+  },
+  {
+    "path": "internal/experiment/real_os_evidence_test.go",
+    "physical": 417,
+    "nonblank": 396
+  },
+  {
+    "path": "internal/experiment/resource_aware_test.go",
+    "physical": 178,
+    "nonblank": 170
+  },
+  {
+    "path": "internal/experiment/review_scenarios.go",
+    "physical": 23,
+    "nonblank": 17
+  },
+  {
+    "path": "internal/experiment/runtime_trace.go",
+    "physical": 58,
+    "nonblank": 51
+  },
+  {
+    "path": "internal/experiment/runtime_upgrade.go",
+    "physical": 98,
+    "nonblank": 90
+  },
+  {
+    "path": "internal/ipc/blackboard.go",
+    "physical": 134,
+    "nonblank": 122
+  },
+  {
+    "path": "internal/ipc/blackboard_test.go",
+    "physical": 54,
+    "nonblank": 46
+  },
+  {
+    "path": "internal/ipc/shm/shm.go",
+    "physical": 65,
+    "nonblank": 60
+  },
+  {
+    "path": "internal/ipc/shm/shm_linux.go",
+    "physical": 125,
+    "nonblank": 117
+  },
+  {
+    "path": "internal/ipc/shm/shm_other.go",
+    "physical": 9,
+    "nonblank": 6
+  },
+  {
+    "path": "internal/ipc/shm/shm_test.go",
+    "physical": 60,
+    "nonblank": 57
+  },
+  {
+    "path": "internal/kernel/observer.go",
+    "physical": 204,
+    "nonblank": 187
+  },
+  {
+    "path": "internal/kernel/observer_test.go",
+    "physical": 79,
+    "nonblank": 69
+  },
+  {
+    "path": "internal/llm/deepseek_provider.go",
+    "physical": 178,
+    "nonblank": 171
+  },
+  {
+    "path": "internal/llm/deepseek_provider_live_test.go",
+    "physical": 53,
+    "nonblank": 48
+  },
+  {
+    "path": "internal/llm/router.go",
+    "physical": 246,
+    "nonblank": 217
+  },
+  {
+    "path": "internal/llm/router_test.go",
+    "physical": 218,
+    "nonblank": 201
+  },
+  {
+    "path": "internal/observer/ebpf/observer.go",
+    "physical": 114,
+    "nonblank": 107
+  },
+  {
+    "path": "internal/observer/ebpf/observer_linux.go",
+    "physical": 364,
+    "nonblank": 334
+  },
+  {
+    "path": "internal/observer/ebpf/observer_other.go",
+    "physical": 7,
+    "nonblank": 5
+  },
+  {
+    "path": "internal/observer/ebpf/observer_test.go",
+    "physical": 60,
+    "nonblank": 56
+  },
+  {
+    "path": "internal/pressure/monitor.go",
+    "physical": 200,
+    "nonblank": 189
+  },
+  {
+    "path": "internal/pressure/monitor_test.go",
+    "physical": 60,
+    "nonblank": 54
+  },
+  {
+    "path": "internal/replay/replay.go",
+    "physical": 125,
+    "nonblank": 116
+  },
+  {
+    "path": "internal/replay/replay_test.go",
+    "physical": 61,
+    "nonblank": 56
+  },
+  {
+    "path": "internal/resource/sampler.go",
+    "physical": 183,
+    "nonblank": 166
+  },
+  {
+    "path": "internal/resource/sampler_test.go",
+    "physical": 97,
+    "nonblank": 89
+  },
+  {
+    "path": "internal/review/agent_demo.go",
+    "physical": 459,
+    "nonblank": 432
+  },
+  {
+    "path": "internal/review/agent_demo_test.go",
+    "physical": 106,
+    "nonblank": 99
+  },
+  {
+    "path": "internal/review/context_sharing.go",
+    "physical": 421,
+    "nonblank": 404
+  },
+  {
+    "path": "internal/review/context_sharing_test.go",
+    "physical": 161,
+    "nonblank": 154
+  },
+  {
+    "path": "internal/review/metrics.go",
+    "physical": 376,
+    "nonblank": 355
+  },
+  {
+    "path": "internal/review/metrics_test.go",
+    "physical": 93,
+    "nonblank": 89
+  },
+  {
+    "path": "internal/review/resource_isolation.go",
+    "physical": 423,
+    "nonblank": 407
+  },
+  {
+    "path": "internal/review/resource_isolation_test.go",
+    "physical": 80,
+    "nonblank": 75
+  },
+  {
+    "path": "internal/review/review_final.go",
+    "physical": 207,
+    "nonblank": 199
+  },
+  {
+    "path": "internal/review/review_final_test.go",
+    "physical": 66,
+    "nonblank": 63
+  },
+  {
+    "path": "internal/scheduler/resource_aware_test.go",
+    "physical": 86,
+    "nonblank": 78
+  },
+  {
+    "path": "internal/scheduler/scheduler.go",
+    "physical": 411,
+    "nonblank": 377
+  },
+  {
+    "path": "internal/scheduler/scheduler_resource_aware_test.go",
+    "physical": 180,
+    "nonblank": 170
+  },
+  {
+    "path": "internal/scheduler/scheduler_test.go",
+    "physical": 80,
+    "nonblank": 71
+  },
+  {
+    "path": "internal/supervisor/supervisor.go",
+    "physical": 91,
+    "nonblank": 80
+  },
+  {
+    "path": "internal/supervisor/supervisor_test.go",
+    "physical": 39,
+    "nonblank": 32
+  },
+  {
+    "path": "internal/syscall/gateway.go",
+    "physical": 802,
+    "nonblank": 756
+  },
+  {
+    "path": "internal/syscall/gateway_test.go",
+    "physical": 486,
+    "nonblank": 440
+  },
+  {
+    "path": "internal/trace/recorder.go",
+    "physical": 90,
+    "nonblank": 80
+  },
+  {
+    "path": "internal/trace/recorder_test.go",
+    "physical": 65,
+    "nonblank": 60
+  },
+  {
+    "path": "internal/verify/competition_script_test.go",
+    "physical": 328,
+    "nonblank": 311
+  },
+  {
+    "path": "internal/worker/launcher.go",
+    "physical": 40,
+    "nonblank": 36
+  },
+  {
+    "path": "internal/worker/protocol.go",
+    "physical": 32,
+    "nonblank": 29
+  },
+  {
+    "path": "internal/worker/registry.go",
+    "physical": 246,
+    "nonblank": 224
+  },
+  {
+    "path": "internal/worker/registry_test.go",
+    "physical": 112,
+    "nonblank": 99
+  },
+  {
+    "path": "internal/worker/server.go",
+    "physical": 114,
+    "nonblank": 105
+  },
+  {
+    "path": "internal/worker/server_test.go",
+    "physical": 123,
+    "nonblank": 110
+  },
+  {
+    "path": "internal/workspace/manager.go",
+    "physical": 976,
+    "nonblank": 922
+  },
+  {
+    "path": "internal/workspace/manager_test.go",
+    "physical": 105,
+    "nonblank": 94
+  },
+  {
+    "path": "internal/workspace/workspace_isolation_test.go",
+    "physical": 146,
+    "nonblank": 134
+  }
+]

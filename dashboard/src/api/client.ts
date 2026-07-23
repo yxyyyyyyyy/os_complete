@@ -8,6 +8,11 @@ export interface RuntimeEvent {
   payload: Record<string, unknown>
 }
 
+export interface HealthStatus {
+  status: string
+  mode: string
+}
+
 export interface Agent {
   id?: string
   agent_id?: string
@@ -360,28 +365,56 @@ export interface ExperimentResults {
   replay: ReplayResult
 }
 
-export async function runDemo(): Promise<{ task_id: string }> {
-  const response = await fetch('/api/demo/run', { method: 'POST' })
-  if (!response.ok) {
-    throw new Error(`demo run failed: ${response.status}`)
+const RETRYABLE_STATUS_CODES = new Set([502, 503, 504])
+const RETRY_DELAYS_MS = [250, 750]
+
+async function delay(ms: number): Promise<void> {
+  await new Promise((resolve) => window.setTimeout(resolve, ms))
+}
+
+async function fetchJSON<T>(path: string, label: string, init?: RequestInit): Promise<T> {
+  const method = (init?.method ?? 'GET').toUpperCase()
+  const canRetry = method === 'GET'
+  const maxAttempts = canRetry ? RETRY_DELAYS_MS.length + 1 : 1
+
+  for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
+    try {
+      const response = await fetch(path, init)
+      if (response.ok) {
+        return response.json()
+      }
+      const isRetryable = canRetry && RETRYABLE_STATUS_CODES.has(response.status)
+      if (!isRetryable || attempt === maxAttempts - 1) {
+        throw new Error(`${label} request failed: ${response.status}`)
+      }
+    } catch (error) {
+      if (!canRetry || attempt === maxAttempts - 1) {
+        if (error instanceof Error && error.message.startsWith(`${label} request failed:`)) {
+          throw error
+        }
+        throw new Error(`${label} request failed: ${error instanceof Error ? error.message : String(error)}`)
+      }
+    }
+    await delay(RETRY_DELAYS_MS[attempt])
   }
-  return response.json()
+
+  throw new Error(`${label} request failed`)
+}
+
+export async function getHealth(): Promise<HealthStatus> {
+  return fetchJSON('/api/health', 'health')
+}
+
+export async function runDemo(): Promise<{ task_id: string }> {
+  return fetchJSON('/api/demo/run', 'demo run', { method: 'POST' })
 }
 
 export async function getTasks(): Promise<Task[]> {
-  const response = await fetch('/api/tasks')
-  if (!response.ok) {
-    throw new Error(`tasks request failed: ${response.status}`)
-  }
-  return response.json()
+  return fetchJSON('/api/tasks', 'tasks')
 }
 
 export async function getAgents(): Promise<Agent[]> {
-  const response = await fetch('/api/agents')
-  if (!response.ok) {
-    throw new Error(`agents request failed: ${response.status}`)
-  }
-  return response.json()
+  return fetchJSON('/api/agents', 'agents')
 }
 
 export async function postAgentAction(agentID: string, action: 'freeze' | 'unfreeze' | 'kill'): Promise<void> {
@@ -392,89 +425,45 @@ export async function postAgentAction(agentID: string, action: 'freeze' | 'unfre
 }
 
 export async function getContextPages(): Promise<ContextPage[]> {
-  const response = await fetch('/api/context/pages')
-  if (!response.ok) {
-    throw new Error(`context pages request failed: ${response.status}`)
-  }
-  return response.json()
+  return fetchJSON('/api/context/pages', 'context pages')
 }
 
 export async function getContextStats(): Promise<ContextStats> {
-  const response = await fetch('/api/context/stats')
-  if (!response.ok) {
-    throw new Error(`context stats request failed: ${response.status}`)
-  }
-  return response.json()
+  return fetchJSON('/api/context/stats', 'context stats')
 }
 
 export async function getIPCMetrics(): Promise<IPCMetric> {
-  const response = await fetch('/api/ipc/metrics')
-  if (!response.ok) {
-    throw new Error(`ipc metrics request failed: ${response.status}`)
-  }
-  return response.json()
+  return fetchJSON('/api/ipc/metrics', 'ipc metrics')
 }
 
 export async function getIPCTopics(): Promise<IPCTopics> {
-  const response = await fetch('/api/ipc/topics')
-  if (!response.ok) {
-    throw new Error(`ipc topics request failed: ${response.status}`)
-  }
-  return response.json()
+  return fetchJSON('/api/ipc/topics', 'ipc topics')
 }
 
 export async function getSchedulerDecisions(): Promise<SchedulerDecision[]> {
-  const response = await fetch('/api/scheduler/decisions')
-  if (!response.ok) {
-    throw new Error(`scheduler decisions request failed: ${response.status}`)
-  }
-  return response.json()
+  return fetchJSON('/api/scheduler/decisions', 'scheduler decisions')
 }
 
 export async function getRecoveryStatus(): Promise<RecoveryStatus> {
-  const response = await fetch('/api/recovery/status')
-  if (!response.ok) {
-    throw new Error(`recovery status request failed: ${response.status}`)
-  }
-  return response.json()
+  return fetchJSON('/api/recovery/status', 'recovery status')
 }
 
 export async function getKernelStatus(): Promise<KernelStatus> {
-  const response = await fetch('/api/kernel/status')
-  if (!response.ok) {
-    throw new Error(`kernel status request failed: ${response.status}`)
-  }
-  return response.json()
+  return fetchJSON('/api/kernel/status', 'kernel status')
 }
 
 export async function getKernelEvents(): Promise<KernelEvent[]> {
-  const response = await fetch('/api/kernel/events')
-  if (!response.ok) {
-    throw new Error(`kernel events request failed: ${response.status}`)
-  }
-  return response.json()
+  return fetchJSON('/api/kernel/events', 'kernel events')
 }
 
 export async function getPressureStatus(): Promise<PressureStatus> {
-  const response = await fetch('/api/pressure/status')
-  if (!response.ok) {
-    throw new Error(`pressure status request failed: ${response.status}`)
-  }
-  return response.json()
+  return fetchJSON('/api/pressure/status', 'pressure status')
 }
 
 export async function getEvidenceReport(): Promise<EvidenceReport> {
-  const response = await fetch('/api/evidence')
-  if (!response.ok) {
-    throw new Error(`evidence request failed: ${response.status}`)
-  }
-  return response.json()
+  return fetchJSON('/api/evidence', 'evidence')
 }
 
 export async function getExperimentResults(): Promise<ExperimentResults> {
-  const response = await fetch('/api/experiments/results')
-  if (!response.ok) {
-    throw new Error(`experiment results request failed: ${response.status}`)
-  }
-  return response.json()
+  return fetchJSON('/api/experiments/results', 'experiment results')
 }

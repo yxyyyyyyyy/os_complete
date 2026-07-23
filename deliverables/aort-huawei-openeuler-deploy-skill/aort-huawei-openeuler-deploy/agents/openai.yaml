@@ -1,0 +1,4 @@
+interface:
+  display_name: "AORT Huawei openEuler Deploy"
+  short_description: "Upload and verify AORT-R on Huawei Cloud openEuler."
+  default_prompt: "Deploy AORT-R to a Huawei Cloud openEuler server, run smoke tests, collect evidence, and keep secrets out of Git."

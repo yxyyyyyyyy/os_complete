@@ -1,0 +1,12 @@
+{
+  "completed_agents": 5,
+  "continued_after_fault": true,
+  "fault_contained": true,
+  "llm_call_count": 1,
+  "provider": "mock",
+  "run_id": "real-agent-demo-1784128315128874000",
+  "scenario_id": "real-agent-demo",
+  "schema_version": "review/v1",
+  "status": "passed",
+  "tool_call_count": 5
+}

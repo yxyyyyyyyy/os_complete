@@ -303,6 +303,7 @@ p {
   color: #f3feff;
   font-size: 26px;
   line-height: 1;
+  overflow-wrap: anywhere;
 }
 
 .compact-metrics .metric-card {

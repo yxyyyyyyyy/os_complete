@@ -1,8 +1,8 @@
 # AORT-R Review-Driven Remediation Design
 
-**Date:** 2026-07-13  
-**Scope:** P1-P9 from `AORT-R_评审整改AI执行提示词_独立版.docx`  
-**Target branch:** `codex/aort-r-upgrade`
+- **Date:** 2026-07-13
+- **Scope:** P1-P9 from `AORT-R_评审整改AI执行提示词_独立版.docx`
+- **Target branch:** `codex/aort-r-upgrade`
 
 ## Goal
 

@@ -30,7 +30,7 @@ const evidenceModules = computed(() => runtimeStore.evidenceReport.modules)
       <MetricCard :label="t.overview.tasks" :value="runtimeStore.tasks.length" />
       <MetricCard :label="t.overview.events" :value="runtimeStore.events.length" />
       <MetricCard :label="t.overview.sse" :value="runtimeStore.connected ? 'online' : 'offline'" />
-      <MetricCard :label="t.overview.runtimeMode" value="mock" />
+      <MetricCard :label="t.overview.runtimeMode" :value="runtimeStore.health.mode" />
     </div>
 
     <section class="section-block evidence-panel">

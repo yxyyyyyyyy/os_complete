@@ -1,0 +1,1 @@
+{"schema_version":"codebase-dag/v1","node_id":"tester","verdict":"fix","blocking_findings":["No command outputs provided for review. Machine failure suspected."],"non_blocking_findings":[]}

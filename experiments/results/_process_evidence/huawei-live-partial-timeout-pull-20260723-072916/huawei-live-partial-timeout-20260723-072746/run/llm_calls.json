@@ -1,0 +1,39 @@
+[
+  {
+    "schema_version": "codebase-dag/v1",
+    "call_id": "4f9bc2d6-7ac9-430b-ac32-9db9a9d268e1",
+    "node_id": "planner",
+    "role": "planner",
+    "provider": "deepseek",
+    "requested_model": "deepseek-v4-flash",
+    "actual_model": "deepseek-v4-flash",
+    "evidence_mode": "real-api",
+    "fallback": false,
+    "prompt_tokens": 217,
+    "completion_tokens": 1257,
+    "total_tokens": 1474,
+    "duration_ms": 12659,
+    "output_sha256": "44b66bcb08101fb122c132a939e3702e44bb283df3f4f2f80c776adbbf302d09",
+    "status": "succeeded",
+    "created_at": "2026-07-23T07:27:59.75083865Z"
+  },
+  {
+    "schema_version": "codebase-dag/v1",
+    "call_id": "",
+    "node_id": "context-coder",
+    "role": "coder",
+    "provider": "",
+    "requested_model": "deepseek-v4-flash",
+    "actual_model": "",
+    "evidence_mode": "",
+    "fallback": false,
+    "prompt_tokens": 0,
+    "completion_tokens": 0,
+    "total_tokens": 0,
+    "duration_ms": 0,
+    "output_sha256": "",
+    "status": "failed",
+    "error": "api_error: context deadline exceeded (Client.Timeout or context cancellation while reading body)",
+    "created_at": "2026-07-23T07:27:59.751048818Z"
+  }
+]

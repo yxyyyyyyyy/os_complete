@@ -1,0 +1,29 @@
+{
+  "schema_version": "codebase-dag/v1",
+  "node_id": "planner",
+  "tasks": [
+    {
+      "id": "fix-lint",
+      "owner": "developer",
+      "dependencies": [],
+      "files": [],
+      "acceptance": ["internal/codebasedag/acceptance/context_real.sh"]
+    },
+    {
+      "id": "improve-tests",
+      "owner": "tester",
+      "dependencies": ["fix-lint"],
+      "files": [],
+      "acceptance": ["internal/codebasedag/acceptance/resource_real.sh"]
+    },
+    {
+      "id": "remediate-security",
+      "owner": "security",
+      "dependencies": ["improve-tests"],
+      "files": [],
+      "acceptance": ["internal/codebasedag/acceptance/review_final_strict.sh"]
+    }
+  ],
+  "risks": [],
+  "commands": [["go", "test", "./..."]]
+}

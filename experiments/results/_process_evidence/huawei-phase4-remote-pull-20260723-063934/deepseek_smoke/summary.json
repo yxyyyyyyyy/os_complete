@@ -1,0 +1,9 @@
+{
+  "provider": "deepseek",
+  "model": "deepseek-v4-flash",
+  "fallback": false,
+  "evidence_mode": "real-api",
+  "duration_ms": 725,
+  "tokens": 34,
+  "status": "passed"
+}

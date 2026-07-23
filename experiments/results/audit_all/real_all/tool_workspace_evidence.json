@@ -1,0 +1,14 @@
+{
+  "tool_exec_uses_workspace": false,
+  "workspace_mode": "degraded-copy",
+  "cwd_is_merged": false,
+  "commit_on_success": false,
+  "rollback_on_failure": false,
+  "repo_dir_untouched": true,
+  "path_escape_blocked": false,
+  "symlink_escape_blocked": false,
+  "evidence_mode": "degraded-copy",
+  "merged_is_mountpoint": false,
+  "fallback_reason": "overlayfs requires linux, got darwin",
+  "error": "real-overlayfs required: overlayfs requires linux, got darwin"
+}

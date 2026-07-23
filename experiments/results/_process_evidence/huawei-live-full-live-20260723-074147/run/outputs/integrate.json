@@ -1,0 +1,1 @@
+{"schema_version":"codebase-dag/v1","node_id":"integrate","status":"merged","dependencies":"context-coder,evidence-coder,resource-coder"}

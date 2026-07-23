@@ -14,11 +14,11 @@
   "agent": {
     "evidence_mode": "real-cgroup-v2",
     "real_cgroup_v2": true,
-    "agent_id": "task-1783309221869434157-planner",
-    "pid": 45916,
+    "agent_id": "task-1784787327379345642-tester",
+    "pid": 266401,
     "capsule_mode": "real",
-    "cgroup_path": "/sys/fs/cgroup/aort.slice/task-1783309221869434157-planner",
-    "memory_current": 2109440,
+    "cgroup_path": "/sys/fs/cgroup/aort.slice/task-1784787327379345642-tester",
+    "memory_current": 2101248,
     "pids_current": 5,
     "cpu_stat": {
       "burst_usec": 0,
@@ -27,8 +27,8 @@
       "nr_throttled": 0,
       "system_usec": 0,
       "throttled_usec": 0,
-      "usage_usec": 466,
-      "user_usec": 466
+      "usage_usec": 695,
+      "user_usec": 695
     },
     "events": {
       "frozen": 0,
@@ -45,8 +45,8 @@
     "os": "openEuler 24.03 LTS",
     "cgroup_fs": "cgroup2fs",
     "capsule_mode": "real",
-    "cgroup_path": "/sys/fs/cgroup/aort.slice/task-1783309221869434157-planner",
-    "memory_current": 2109440,
+    "cgroup_path": "/sys/fs/cgroup/aort.slice/task-1784787327379345642-tester",
+    "memory_current": 2101248,
     "pids_current": 5,
     "cpu_stat": {
       "burst_usec": 0,
@@ -55,8 +55,8 @@
       "nr_throttled": 0,
       "system_usec": 0,
       "throttled_usec": 0,
-      "usage_usec": 466,
-      "user_usec": 466
+      "usage_usec": 695,
+      "user_usec": 695
     },
     "events": {
       "frozen": 0,
@@ -81,16 +81,22 @@
       "aort_slice": "exists"
     },
     "overlayfs": {
-      "supported": false
+      "supported": true
     },
     "psi": {
-      "available": false,
-      "files": []
+      "available": true,
+      "files": [
+        "cpu",
+        "io",
+        "irq",
+        "memory",
+        "stat"
+      ]
     },
-    "go_version": "go version go1.22.12 linux/amd64",
-    "node_version": "",
-    "npm_version": "",
+    "go_version": "go version go1.22.0 linux/amd64",
+    "node_version": "v20.18.2",
+    "npm_version": "10.8.2",
     "failures": 0,
-    "warnings": 4
+    "warnings": 0
   }
 }

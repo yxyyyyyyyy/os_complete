@@ -1,0 +1,17 @@
+{
+  "experiment": "cvm_memory_smoke",
+  "evidence_mode": "real-partial",
+  "total_pages": 3,
+  "dedup_pages": 2,
+  "hot_pages": 1,
+  "cold_pages": 0,
+  "compressed_pages": 1,
+  "evicted_pages": 1,
+  "pinned_pages": 1,
+  "ref_counted_pages": 3,
+  "materialize_success": true,
+  "memory_saved_bytes": 5453,
+  "compression_saved_bytes": 2637,
+  "dedup_saved_bytes": 2816,
+  "cache_hit_rate": 0.4
+}

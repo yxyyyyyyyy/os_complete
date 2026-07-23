@@ -1,0 +1,77 @@
+{
+  "success": true,
+  "fault_type": "workspace_rmrf",
+  "target_agent": "coder",
+  "mode": "degraded-copy",
+  "evidence_mode": "degraded-copy",
+  "runtime_root": "/var/folders/5k/_k2nnpwd43s6qsf0m6btyzlc0000gn/T/aort-runtime/workspaces",
+  "lowerdir_unchanged": true,
+  "target_agent_affected": true,
+  "unaffected_agents": [
+    "planner",
+    "reviewer"
+  ],
+  "cascade_failure": false,
+  "rollback_success": true,
+  "merged_is_mountpoint": false,
+  "commit_supported": true,
+  "destroy_success": true,
+  "fallback_reason": "overlayfs requires linux, got darwin",
+  "before_files": {
+    "coder": [
+      "README.txt",
+      "config/runtime.json",
+      "src/main.txt"
+    ],
+    "planner": [
+      "README.txt",
+      "config/runtime.json",
+      "src/main.txt"
+    ],
+    "reviewer": [
+      "README.txt",
+      "config/runtime.json",
+      "src/main.txt"
+    ]
+  },
+  "after_fault_files": {
+    "coder": [
+      "README.txt",
+      "config/runtime.json"
+    ],
+    "planner": [
+      "README.txt",
+      "config/runtime.json",
+      "src/main.txt"
+    ],
+    "reviewer": [
+      "README.txt",
+      "config/runtime.json",
+      "src/main.txt"
+    ]
+  },
+  "after_rollback_files": {
+    "coder": [
+      "README.txt",
+      "config/runtime.json",
+      "src/main.txt"
+    ],
+    "planner": [
+      "README.txt",
+      "config/runtime.json",
+      "src/main.txt"
+    ],
+    "reviewer": [
+      "README.txt",
+      "config/runtime.json",
+      "src/main.txt"
+    ]
+  },
+  "safety_checks": {
+    "runtime_root_only": true,
+    "path_escape_blocked": true,
+    "repo_dir_untouched": true,
+    "symlink_escape_blocked": true
+  },
+  "timestamp": "2026-07-07T07:27:09.162006Z"
+}

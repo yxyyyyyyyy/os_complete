@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Build and prove a real-only AORT-R DAG that uses `deepseek-v4-flash` to complete the three review-remediation changes on the 20,000-plus-line AORT-R Go repository on Huawei openEuler.
+**Goal:** Build and prove a real-only AORT-R DAG that uses `deepseek-v4-flash` to complete the three review-remediation changes on the 30,000-plus-line AORT-R Go repository on Huawei openEuler.
 
 **Architecture:** A strict DeepSeek client and immutable run store feed a validated DAG executor. Each LLM node is represented by a stopped child worker that is attached to a real cgroup before execution, receives shared CVM context through cross-process memfd/SCM_RIGHTS, operates in a real OverlayFS workspace, and reports through the existing Unix-socket Gateway. Runner-owned acceptance scripts, full Go tests, artifact hashes, and a final evidence validator are authoritative; model prose cannot override a failed machine gate.
 
@@ -14,7 +14,7 @@
 - The run must contain at least seven successful real API calls and zero mock, fallback, skipped, planned, simulation, or degraded LLM calls.
 - A single run permits at most ten API calls: seven required calls, up to two fixer calls, and one schema-repair retry.
 - `DEEPSEEK_API_KEY` is read only from the process environment and never appears in source, commands, logs, JSON, Markdown, patches, or Git history.
-- Both tracked physical Go lines and tracked nonblank Go lines in the clean workload must be at least 20,000 before any completion call.
+- Both tracked physical Go lines and tracked nonblank Go lines in the clean workload must be at least 30,000 before any completion call.
 - Real evidence requires openEuler 24.03 LTS, UID 0, `cgroup2fs`, writable nested cgroups, real OverlayFS, and real cross-process memfd/mmap plus FD passing.
 - Every result uses a new run-ID directory opened with create-exclusive semantics; no command may overwrite an earlier run.
 - Runner-owned acceptance scripts and their SHA-256 values are immutable and outside all model patch allowlists.
@@ -185,7 +185,7 @@ git add internal/llm/router.go internal/llm/deepseek_provider.go internal/llm/de
 git commit -m "feat: enforce strict DeepSeek response evidence"
 ```
 
-### Task 2: Immutable Run Store and 20,000-Line Source Manifest
+### Task 2: Immutable Run Store and 30,000-Line Source Manifest
 
 **Files:**
 - Create: `internal/codebasedag/types.go`
@@ -241,11 +241,11 @@ Also add:
 
 ```go
 func TestSourceManifestLargeCodeGate(t *testing.T) {
-	manifest := SourceManifest{PhysicalLines: 20000, NonblankLines: 19999}
+	manifest := SourceManifest{PhysicalLines: 30000, NonblankLines: 19999}
 	if err := manifest.ValidateLargeCodebase(); err == nil {
 		t.Fatal("nonblank threshold must fail")
 	}
-	manifest.NonblankLines = 20000
+	manifest.NonblankLines = 30000
 	if err := manifest.ValidateLargeCodebase(); err != nil {
 		t.Fatal(err)
 	}
@@ -794,7 +794,7 @@ Production defaults are provider `deepseek`, model `deepseek-v4-flash`, max call
 
 - [ ] **Step 2: Write preflight table tests**
 
-Cover wrong OS, non-root, wrong cgroup filesystem, absent key, dirty workload, either line threshold below 20,000, failed baseline tests, acceptance scripts unexpectedly passing baseline, unavailable exact model, non-real Overlay probe, and non-real shared-memory probe. Each case returns a named failed gate and writes `preflight.json` before returning.
+Cover wrong OS, non-root, wrong cgroup filesystem, absent key, dirty workload, either line threshold below 30,000, failed baseline tests, acceptance scripts unexpectedly passing baseline, unavailable exact model, non-real Overlay probe, and non-real shared-memory probe. Each case returns a named failed gate and writes `preflight.json` before returning.
 
 - [ ] **Step 3: Implement production preflight**
 
@@ -1176,4 +1176,4 @@ Verify branch is `codex/aort-r-upgrade`, inspect final `git status --short`, and
 git push origin codex/aort-r-upgrade
 ```
 
-Report the runner commit, model-patch commit, final evidence commit, remote branch, all key command outcomes, 20,000-line counts, exact API call/token counts, and remaining capability boundaries. Mark the active goal complete only after the pushed commit and every strict real gate are independently verified.
+Report the runner commit, model-patch commit, final evidence commit, remote branch, all key command outcomes, 30,000-line counts, exact API call/token counts, and remaining capability boundaries. Mark the active goal complete only after the pushed commit and every strict real gate are independently verified.

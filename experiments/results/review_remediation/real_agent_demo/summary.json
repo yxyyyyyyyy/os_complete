@@ -1,0 +1,396 @@
+{
+  "schema_version": "review/v1",
+  "scenario_id": "real-agent-demo",
+  "run_id": "real-agent-demo-1784128315128874000",
+  "timestamp": "2026-07-15T15:11:55.12888Z",
+  "seed": 20260713,
+  "status": "passed",
+  "provider_requested": "mock",
+  "provider_actual": "mock",
+  "evidence_mode": "mock",
+  "api_key_source": "env",
+  "api_key_present": false,
+  "api_key_redacted": true,
+  "agents": [
+    {
+      "id": "planner-1",
+      "role": "Planner",
+      "status": "COMPLETED"
+    },
+    {
+      "id": "coder-a-1",
+      "role": "Coder-A",
+      "status": "COMPLETED"
+    },
+    {
+      "id": "coder-b-1",
+      "role": "Coder-B",
+      "status": "COMPLETED"
+    },
+    {
+      "id": "tester-1",
+      "role": "Tester",
+      "status": "COMPLETED"
+    },
+    {
+      "id": "reviewer-1",
+      "role": "Reviewer",
+      "status": "COMPLETED"
+    },
+    {
+      "id": "fault-agent-1",
+      "role": "Fault-Agent",
+      "status": "FAILED_RECOVERABLE"
+    }
+  ],
+  "llm_calls": [
+    {
+      "agent_id": "planner-1",
+      "provider": "mock",
+      "model": "mock",
+      "evidence_mode": "mock",
+      "prompt_tokens": 12,
+      "completion_tokens": 13,
+      "network_ms": {
+        "value": 0,
+        "measurement_kind": "unsupported",
+        "unit": "ms"
+      },
+      "model_ms": {
+        "value": 1,
+        "measurement_kind": "measured",
+        "unit": "ms"
+      },
+      "runtime_overhead_ms": {
+        "value": 0,
+        "measurement_kind": "derived",
+        "unit": "ms"
+      }
+    }
+  ],
+  "tool_calls": [
+    {
+      "agent_id": "coder-a-1",
+      "command": "true",
+      "status": "OK",
+      "duration_ms": 1,
+      "exit_code": 0
+    },
+    {
+      "agent_id": "coder-b-1",
+      "command": "true",
+      "status": "OK",
+      "duration_ms": 1,
+      "exit_code": 0
+    },
+    {
+      "agent_id": "fault-agent-1",
+      "command": "false",
+      "status": "ERROR",
+      "duration_ms": 1,
+      "exit_code": 1
+    },
+    {
+      "agent_id": "tester-1",
+      "command": "true",
+      "status": "OK",
+      "duration_ms": 1,
+      "exit_code": 0
+    },
+    {
+      "agent_id": "reviewer-1",
+      "command": "true",
+      "status": "OK",
+      "duration_ms": 1,
+      "exit_code": 0
+    }
+  ],
+  "fault": {
+    "injected": true,
+    "type": "tool_process_failure",
+    "agent_id": "fault-agent-1",
+    "contained": true,
+    "continued": true,
+    "reason": "controlled false command returned non-zero"
+  },
+  "timeline": [
+    {
+      "id": "20260715231155.129059000",
+      "task_id": "",
+      "type": "context.page.created",
+      "source": "runtime",
+      "timestamp": 1784128315129,
+      "payload": {
+        "kind": "project",
+        "page_id": "030912ab821e4c7970e66eab1a21972d6fb83a324fb26dfd87b97e953768dda5",
+        "ref_count": 1
+      }
+    },
+    {
+      "id": "20260715231155.129383000",
+      "task_id": "",
+      "agent_id": "planner-1",
+      "type": "context.page.mounted",
+      "source": "runtime",
+      "timestamp": 1784128315129,
+      "payload": {
+        "kind": "project",
+        "page_id": "030912ab821e4c7970e66eab1a21972d6fb83a324fb26dfd87b97e953768dda5",
+        "ref_count": 2
+      }
+    },
+    {
+      "id": "20260715231155.129391000",
+      "task_id": "real-agent-demo-1784128315128874000",
+      "agent_id": "planner-1",
+      "type": "syscall.started",
+      "source": "syscall",
+      "timestamp": 1784128315129,
+      "payload": {
+        "input_size": 4,
+        "name": "context.materialize",
+        "request_id": "context-1"
+      }
+    },
+    {
+      "id": "20260715231155.129402000",
+      "task_id": "",
+      "agent_id": "planner-1",
+      "type": "context.materialized",
+      "source": "runtime",
+      "timestamp": 1784128315129,
+      "payload": {
+        "bytes": 32,
+        "tokens": 8
+      }
+    },
+    {
+      "id": "20260715231155.129415000",
+      "task_id": "real-agent-demo-1784128315128874000",
+      "agent_id": "planner-1",
+      "type": "syscall.finished",
+      "source": "syscall",
+      "timestamp": 1784128315129,
+      "payload": {
+        "duration_ms": 1,
+        "error": "",
+        "input_size": 4,
+        "name": "context.materialize",
+        "output_size": 281,
+        "request_id": "context-1",
+        "status": "OK"
+      }
+    },
+    {
+      "id": "20260715231155.129418000",
+      "task_id": "real-agent-demo-1784128315128874000",
+      "agent_id": "planner-1",
+      "type": "syscall.started",
+      "source": "syscall",
+      "timestamp": 1784128315129,
+      "payload": {
+        "input_size": 96,
+        "name": "llm.call",
+        "request_id": "llm-1"
+      }
+    },
+    {
+      "id": "20260715231155.129421000",
+      "task_id": "real-agent-demo-1784128315128874000",
+      "agent_id": "planner-1",
+      "type": "llm.called",
+      "source": "syscall",
+      "timestamp": 1784128315129,
+      "payload": {
+        "cached_tokens": 6,
+        "evidence_mode": "mock",
+        "fallback": false,
+        "fallback_from": "",
+        "fallback_reason": "",
+        "mode": "mock",
+        "model": "mock",
+        "prompt_tokens": 12,
+        "provider": "mock",
+        "requested_provider": "",
+        "ttft_ms": 1
+      }
+    },
+    {
+      "id": "20260715231155.129425000",
+      "task_id": "real-agent-demo-1784128315128874000",
+      "agent_id": "planner-1",
+      "type": "syscall.finished",
+      "source": "syscall",
+      "timestamp": 1784128315129,
+      "payload": {
+        "duration_ms": 1,
+        "error": "",
+        "input_size": 96,
+        "name": "llm.call",
+        "output_size": 338,
+        "request_id": "llm-1",
+        "status": "OK"
+      }
+    },
+    {
+      "id": "20260715231155.129426000",
+      "task_id": "real-agent-demo-1784128315128874000",
+      "agent_id": "coder-a-1",
+      "type": "syscall.started",
+      "source": "syscall",
+      "timestamp": 1784128315129,
+      "payload": {
+        "input_size": 36,
+        "name": "tool.exec",
+        "request_id": "tool-coder-a-1"
+      }
+    },
+    {
+      "id": "20260715231155.131039000",
+      "task_id": "real-agent-demo-1784128315128874000",
+      "agent_id": "coder-a-1",
+      "type": "syscall.finished",
+      "source": "syscall",
+      "timestamp": 1784128315131,
+      "payload": {
+        "duration_ms": 1,
+        "error": "",
+        "input_size": 36,
+        "name": "tool.exec",
+        "output_size": 176,
+        "request_id": "tool-coder-a-1",
+        "status": "OK"
+      }
+    },
+    {
+      "id": "20260715231155.131052000",
+      "task_id": "real-agent-demo-1784128315128874000",
+      "agent_id": "coder-b-1",
+      "type": "syscall.started",
+      "source": "syscall",
+      "timestamp": 1784128315131,
+      "payload": {
+        "input_size": 36,
+        "name": "tool.exec",
+        "request_id": "tool-coder-b-1"
+      }
+    },
+    {
+      "id": "20260715231155.132423000",
+      "task_id": "real-agent-demo-1784128315128874000",
+      "agent_id": "coder-b-1",
+      "type": "syscall.finished",
+      "source": "syscall",
+      "timestamp": 1784128315132,
+      "payload": {
+        "duration_ms": 1,
+        "error": "",
+        "input_size": 36,
+        "name": "tool.exec",
+        "output_size": 176,
+        "request_id": "tool-coder-b-1",
+        "status": "OK"
+      }
+    },
+    {
+      "id": "20260715231155.132433000",
+      "task_id": "real-agent-demo-1784128315128874000",
+      "agent_id": "fault-agent-1",
+      "type": "syscall.started",
+      "source": "syscall",
+      "timestamp": 1784128315132,
+      "payload": {
+        "input_size": 37,
+        "name": "tool.exec",
+        "request_id": "tool-fault-agent-1"
+      }
+    },
+    {
+      "id": "20260715231155.134247000",
+      "task_id": "real-agent-demo-1784128315128874000",
+      "agent_id": "fault-agent-1",
+      "type": "syscall.finished",
+      "source": "syscall",
+      "timestamp": 1784128315134,
+      "payload": {
+        "duration_ms": 1,
+        "error": "exit status 1",
+        "input_size": 37,
+        "name": "tool.exec",
+        "output_size": 181,
+        "request_id": "tool-fault-agent-1",
+        "status": "ERROR"
+      }
+    },
+    {
+      "id": "20260715231155.134254000",
+      "task_id": "real-agent-demo-1784128315128874000",
+      "agent_id": "tester-1",
+      "type": "syscall.started",
+      "source": "syscall",
+      "timestamp": 1784128315134,
+      "payload": {
+        "input_size": 36,
+        "name": "tool.exec",
+        "request_id": "tool-tester-1"
+      }
+    },
+    {
+      "id": "20260715231155.135629000",
+      "task_id": "real-agent-demo-1784128315128874000",
+      "agent_id": "tester-1",
+      "type": "syscall.finished",
+      "source": "syscall",
+      "timestamp": 1784128315135,
+      "payload": {
+        "duration_ms": 1,
+        "error": "",
+        "input_size": 36,
+        "name": "tool.exec",
+        "output_size": 175,
+        "request_id": "tool-tester-1",
+        "status": "OK"
+      }
+    },
+    {
+      "id": "20260715231155.135637000",
+      "task_id": "real-agent-demo-1784128315128874000",
+      "agent_id": "reviewer-1",
+      "type": "syscall.started",
+      "source": "syscall",
+      "timestamp": 1784128315135,
+      "payload": {
+        "input_size": 36,
+        "name": "tool.exec",
+        "request_id": "tool-reviewer-1"
+      }
+    },
+    {
+      "id": "20260715231155.136939000",
+      "task_id": "real-agent-demo-1784128315128874000",
+      "agent_id": "reviewer-1",
+      "type": "syscall.finished",
+      "source": "syscall",
+      "timestamp": 1784128315136,
+      "payload": {
+        "duration_ms": 1,
+        "error": "",
+        "input_size": 36,
+        "name": "tool.exec",
+        "output_size": 177,
+        "request_id": "tool-reviewer-1",
+        "status": "OK"
+      }
+    }
+  ],
+  "artifact_paths": [
+    "timeline.json",
+    "final_result.json",
+    "summary.json",
+    "report.md"
+  ],
+  "limitations": [
+    "Mock mode is the repeatable performance/demo path; DeepSeek mode is availability evidence only.",
+    "DeepSeek does not expose separate remote model execution time, so that field is unsupported while end-to-end network/API time is measured."
+  ]
+}
