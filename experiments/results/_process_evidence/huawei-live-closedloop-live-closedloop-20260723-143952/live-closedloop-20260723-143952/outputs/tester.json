@@ -1,0 +1,177 @@
+{
+  "schema_version": "codebase-dag/v1",
+  "node_id": "tester",
+  "status": "passed",
+  "commands": [
+    {
+      "schema_version": "codebase-dag/v1",
+      "name": "tester-1-gofmt",
+      "command": [
+        "gofmt",
+        "-w",
+        "internal/review/live_context_hook.go",
+        "internal/review/live_evidence_hook.go",
+        "internal/review/live_resource_hook.go"
+      ],
+      "work_dir": "/root/aort-process-evidence/huawei-live-closedloop-live-closedloop-20260723-143952/live-closedloop-20260723-143952/workspace/worktree-live-closedloop-20260723-143952",
+      "started_at": "2026-07-23T14:40:18.079588962Z",
+      "finished_at": "2026-07-23T14:40:18.08075749Z",
+      "duration_ms": 1,
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "timed_out": false,
+      "signal_killed": false
+    },
+    {
+      "schema_version": "codebase-dag/v1",
+      "name": "tester-2-git",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "work_dir": "/root/aort-process-evidence/huawei-live-closedloop-live-closedloop-20260723-143952/live-closedloop-20260723-143952/workspace/worktree-live-closedloop-20260723-143952",
+      "started_at": "2026-07-23T14:40:18.080765914Z",
+      "finished_at": "2026-07-23T14:40:18.092651413Z",
+      "duration_ms": 11,
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "timed_out": false,
+      "signal_killed": false
+    },
+    {
+      "schema_version": "codebase-dag/v1",
+      "name": "tester-3-go",
+      "command": [
+        "go",
+        "test",
+        "./..."
+      ],
+      "work_dir": "/root/aort-process-evidence/huawei-live-closedloop-live-closedloop-20260723-143952/live-closedloop-20260723-143952/workspace/worktree-live-closedloop-20260723-143952",
+      "started_at": "2026-07-23T14:40:18.092655707Z",
+      "finished_at": "2026-07-23T14:40:28.3959728Z",
+      "duration_ms": 10303,
+      "exit_code": 0,
+      "stdout_sha256": "48e705453023b8251be3c2043919caa2d63da71817470e90ad8c83c57e9e5c7f",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_excerpt": "ok  \taort-r/cmd/aort-code-worker\t0.001s\nok  \taort-r/cmd/aort-experiment\t0.119s\nok  \taort-r/cmd/aort-worker\t0.002s\n?   \taort-r/cmd/aortd\t[no test files]\nok  \taort-r/cmd/aortctl\t2.583s\nok  \taort-r/internal/api\t0.508s\nok  \taort-r/internal/avp\t0.001s\nok  \taort-r/internal/capsule\t1.054s\nok  \taort-r/internal/checkpoint\t0.002s\nok  \taort-r/internal/codebasedag\t3.547s\nok  \taort-r/internal/config\t0.001s\nok  \taort-r/internal/cvm\t0.001s\nok  \taort-r/internal/dag\t0.001s\nok  \taort-r/internal/demo\t0.001s\nok  \taort-r/internal/events\t0.003s\nok  \taort-r/internal/evidence\t0.001s\nok  \taort-r/internal/experiment\t0.123s\nok  \taort-r/internal/ipc\t0.001s\nok  \taort-r/internal/ipc/shm\t0.001s\nok  \taort-r/internal/kernel\t0.001s\nok  \taort-r/internal/llm\t0.003s\nok  \taort-r/internal/observer/ebpf\t0.013s\nok  \taort-r/internal/pressure\t0.001s\nok  \taort-r/internal/replay\t0.002s\nok  \taort-r/internal/resource\t0.002s\nok  \taort-r/internal/review\t0.338s\nok  \taort-r/internal/scheduler\t0.001s\nok  \taort-r/internal/supervisor\t0.001s\nok  \taort-r/internal/syscall\t0.027s\nok  \taort-r/internal/trace\t0.001s\nok  \taort-r/internal/verify\t0.030s\nok  \taort-r/internal/worker\t0.020s\nok  \taort-r/internal/workspace\t0.019s\n",
+      "timed_out": false,
+      "signal_killed": false
+    },
+    {
+      "schema_version": "codebase-dag/v1",
+      "name": "tester-4-go",
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "./internal/codebasedag/..."
+      ],
+      "work_dir": "/root/aort-process-evidence/huawei-live-closedloop-live-closedloop-20260723-143952/live-closedloop-20260723-143952/workspace/worktree-live-closedloop-20260723-143952",
+      "started_at": "2026-07-23T14:40:28.396001676Z",
+      "finished_at": "2026-07-23T14:40:33.945061507Z",
+      "duration_ms": 5549,
+      "exit_code": 0,
+      "stdout_sha256": "9a7f78d15c39395f42f58c81ac7f5a18c38faa18ec248b696bcbe1fb63178e65",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_excerpt": "ok  \taort-r/internal/codebasedag\t3.933s\n",
+      "timed_out": false,
+      "signal_killed": false
+    },
+    {
+      "schema_version": "codebase-dag/v1",
+      "name": "tester-5-go",
+      "command": [
+        "go",
+        "vet",
+        "./..."
+      ],
+      "work_dir": "/root/aort-process-evidence/huawei-live-closedloop-live-closedloop-20260723-143952/live-closedloop-20260723-143952/workspace/worktree-live-closedloop-20260723-143952",
+      "started_at": "2026-07-23T14:40:33.945070427Z",
+      "finished_at": "2026-07-23T14:40:34.671906171Z",
+      "duration_ms": 726,
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "timed_out": false,
+      "signal_killed": false
+    }
+  ],
+  "tests": [
+    {
+      "schema_version": "codebase-dag/v1",
+      "name": "tester-1-gofmt",
+      "command": [
+        "gofmt",
+        "-w",
+        "internal/review/live_context_hook.go",
+        "internal/review/live_evidence_hook.go",
+        "internal/review/live_resource_hook.go"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "started_at": "2026-07-23T14:40:18.079588962Z",
+      "finished_at": "2026-07-23T14:40:18.08075749Z"
+    },
+    {
+      "schema_version": "codebase-dag/v1",
+      "name": "tester-2-git",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "started_at": "2026-07-23T14:40:18.080765914Z",
+      "finished_at": "2026-07-23T14:40:18.092651413Z"
+    },
+    {
+      "schema_version": "codebase-dag/v1",
+      "name": "tester-3-go",
+      "command": [
+        "go",
+        "test",
+        "./..."
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "48e705453023b8251be3c2043919caa2d63da71817470e90ad8c83c57e9e5c7f",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "started_at": "2026-07-23T14:40:18.092655707Z",
+      "finished_at": "2026-07-23T14:40:28.3959728Z"
+    },
+    {
+      "schema_version": "codebase-dag/v1",
+      "name": "tester-4-go",
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "./internal/codebasedag/..."
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "9a7f78d15c39395f42f58c81ac7f5a18c38faa18ec248b696bcbe1fb63178e65",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "started_at": "2026-07-23T14:40:28.396001676Z",
+      "finished_at": "2026-07-23T14:40:33.945061507Z"
+    },
+    {
+      "schema_version": "codebase-dag/v1",
+      "name": "tester-5-go",
+      "command": [
+        "go",
+        "vet",
+        "./..."
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "started_at": "2026-07-23T14:40:33.945070427Z",
+      "finished_at": "2026-07-23T14:40:34.671906171Z"
+    }
+  ]
+}

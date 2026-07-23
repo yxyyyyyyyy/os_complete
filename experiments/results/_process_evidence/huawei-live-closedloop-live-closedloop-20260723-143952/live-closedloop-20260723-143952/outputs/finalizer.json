@@ -1,0 +1,7 @@
+{
+  "schema_version": "codebase-dag/v1",
+  "node_id": "finalizer",
+  "status": "passed",
+  "summary": "All machine gates pass. Changes: updated three hook constants in internal/review from v1 to v2. All tests (gofmt, git diff --check, go test, race, vet) passed.",
+  "limitations": []
+}

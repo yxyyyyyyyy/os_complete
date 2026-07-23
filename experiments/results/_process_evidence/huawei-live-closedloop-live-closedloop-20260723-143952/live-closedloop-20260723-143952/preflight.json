@@ -1,0 +1,1261 @@
+{
+  "passed": true,
+  "gates": {
+    "api_key_present": true,
+    "cgroup_v2_present": true,
+    "cgroup_writable": true,
+    "clean_worktree": true,
+    "git_available": true,
+    "git_commit_present": true,
+    "go_runtime": true,
+    "os_arch": true,
+    "provider_model": true,
+    "run_id_valid": true,
+    "source_manifest": true,
+    "tmpdir_writable": true,
+    "worker_command": true
+  },
+  "manifest": {
+    "schema_version": "codebase-dag/v1",
+    "git_commit": "78fb2e9c8b1171553d70646034d64c8551a2c41c",
+    "git_dirty": false,
+    "tree_hash": "db7f91bedebc94eab4d545b2be30cc38e391f4f18e47372c20b5c09f47bcf487",
+    "physical_go_lines": 39929,
+    "nonblank_go_lines": 37826,
+    "tracked_go_files": 176,
+    "files": [
+      {
+        "path": "cmd/aort-code-worker/main.go",
+        "sha256": "78e6391dd929a7a73a51f41cd0d436b11bb36cc3ebeb51e006e309eadb726589",
+        "bytes": 3324,
+        "physical_lines": 109,
+        "nonblank_lines": 103
+      },
+      {
+        "path": "cmd/aort-code-worker/main_test.go",
+        "sha256": "b6cea24d6a55767ffdf78c630750ef9a652dcf007b000b83b8ffa079c23f85e0",
+        "bytes": 1792,
+        "physical_lines": 63,
+        "nonblank_lines": 60
+      },
+      {
+        "path": "cmd/aort-experiment/main.go",
+        "sha256": "22b073736214aaae0881f7e8216e78d46a8c9fbcf7168b5f5942de28a6044d21",
+        "bytes": 3677,
+        "physical_lines": 107,
+        "nonblank_lines": 102
+      },
+      {
+        "path": "cmd/aort-experiment/main_test.go",
+        "sha256": "01c6062bfe8ed36b4ee4474fdc78b6b4c405db75983a75ecc22f42e933ab0032",
+        "bytes": 2106,
+        "physical_lines": 75,
+        "nonblank_lines": 70
+      },
+      {
+        "path": "cmd/aort-worker/main.go",
+        "sha256": "519dd497228b42a36dea5f5d3a611111d5d3bad28c73558332b60383baf30581",
+        "bytes": 3392,
+        "physical_lines": 135,
+        "nonblank_lines": 123
+      },
+      {
+        "path": "cmd/aort-worker/main_test.go",
+        "sha256": "87d8ca4dc121da8f256497e396382a594e8e2c06ce34b47bb4ecb8a946a507ea",
+        "bytes": 543,
+        "physical_lines": 25,
+        "nonblank_lines": 22
+      },
+      {
+        "path": "cmd/aortctl/main.go",
+        "sha256": "3780e4ca838bb88b3567ca44d1059e8217e0d7f270f8d948a160e152ee6a3242",
+        "bytes": 24050,
+        "physical_lines": 652,
+        "nonblank_lines": 635
+      },
+      {
+        "path": "cmd/aortctl/main_test.go",
+        "sha256": "e9c2bf07f3de54a72c018fc445e9a97444caa651d72aa5b01e3ef384980004ec",
+        "bytes": 21089,
+        "physical_lines": 528,
+        "nonblank_lines": 499
+      },
+      {
+        "path": "cmd/aortd/main.go",
+        "sha256": "6757a072eca55f8f6fd848420ab7d0ac1ceabef8d71e34907642e790a0d7e377",
+        "bytes": 482,
+        "physical_lines": 25,
+        "nonblank_lines": 20
+      },
+      {
+        "path": "internal/api/capsule_api_test.go",
+        "sha256": "7e8088853e4ee19015881e59fd801ca239f8e4d251cdd496d9261b01767092a0",
+        "bytes": 4895,
+        "physical_lines": 143,
+        "nonblank_lines": 132
+      },
+      {
+        "path": "internal/api/demo_api_test.go",
+        "sha256": "519732cc989b147ffc3fba97a7d6c54e87bfe12776c0c5af59a46d58b16afcf3",
+        "bytes": 8431,
+        "physical_lines": 224,
+        "nonblank_lines": 197
+      },
+      {
+        "path": "internal/api/evidence_api_test.go",
+        "sha256": "c344331205aca2145b972ddede87b94087e5067e15e1b1bec03e23296747f938",
+        "bytes": 3306,
+        "physical_lines": 102,
+        "nonblank_lines": 94
+      },
+      {
+        "path": "internal/api/experiment_api_test.go",
+        "sha256": "1d100fec5f90e838c9c889c5d27a5abc63200fb77992969da22da9bcf2f9754d",
+        "bytes": 951,
+        "physical_lines": 44,
+        "nonblank_lines": 40
+      },
+      {
+        "path": "internal/api/fault_api_test.go",
+        "sha256": "8dea78545d8ee5ac05b88a132ad54283882b1ba28a43e3062e84589f4cd71e08",
+        "bytes": 2487,
+        "physical_lines": 60,
+        "nonblank_lines": 51
+      },
+      {
+        "path": "internal/api/kernel_api_test.go",
+        "sha256": "396d976d962563431cf0509e4cdc5536deffa637fac51c3aaf5c2bcbb0a764f8",
+        "bytes": 1358,
+        "physical_lines": 38,
+        "nonblank_lines": 32
+      },
+      {
+        "path": "internal/api/pressure_api_test.go",
+        "sha256": "65c0d871466ae797bca8518726cf4c450bd4581382e9b19f75038427a5e439b0",
+        "bytes": 1494,
+        "physical_lines": 55,
+        "nonblank_lines": 48
+      },
+      {
+        "path": "internal/api/scheduler_api_test.go",
+        "sha256": "8199499e0460bcfa209de230b5ecdb2f6099899c5d28c5506accd34f06d29dd2",
+        "bytes": 3534,
+        "physical_lines": 86,
+        "nonblank_lines": 75
+      },
+      {
+        "path": "internal/api/server.go",
+        "sha256": "8a2d22a5b0b353663178a2ccb74c9804a701c9028212fabbc10b72116007a280",
+        "bytes": 64037,
+        "physical_lines": 1980,
+        "nonblank_lines": 1882
+      },
+      {
+        "path": "internal/api/server_test.go",
+        "sha256": "aab5bb57a5be0a364492407350678e63ad52f775178ea77a0df6326a3645d58f",
+        "bytes": 650,
+        "physical_lines": 27,
+        "nonblank_lines": 24
+      },
+      {
+        "path": "internal/api/software_real_demo.go",
+        "sha256": "4e509d5385aa03b2c047a0f94d7571c14ba87ab659963c975964855b4bc0b56a",
+        "bytes": 23332,
+        "physical_lines": 720,
+        "nonblank_lines": 674
+      },
+      {
+        "path": "internal/api/software_real_demo_api_test.go",
+        "sha256": "f4afcb43e63555eaf9e3e9377a7875f5d8394471e3f82ba6c5e843431235d971",
+        "bytes": 4946,
+        "physical_lines": 137,
+        "nonblank_lines": 128
+      },
+      {
+        "path": "internal/api/sse_test.go",
+        "sha256": "d4462d56ae95cfee21c5f2142663dbfd1e76e3858cadeaacf608a3de409587e6",
+        "bytes": 1347,
+        "physical_lines": 64,
+        "nonblank_lines": 56
+      },
+      {
+        "path": "internal/api/workspace_api_test.go",
+        "sha256": "e5117a2fba8a0c9a53660df9961050d64dff0b6aa48baf3beb80868f00fe8b11",
+        "bytes": 3238,
+        "physical_lines": 84,
+        "nonblank_lines": 75
+      },
+      {
+        "path": "internal/avp/manager.go",
+        "sha256": "ed0eb7da0631646793e8dfaf88fb6bc388a4cf11c38c436dcd18e61ba5a02c12",
+        "bytes": 2024,
+        "physical_lines": 89,
+        "nonblank_lines": 81
+      },
+      {
+        "path": "internal/avp/manager_test.go",
+        "sha256": "047ad698c886a94b3d28cc317a33790f1fbe23a2dab88c6959b9dd99e7a64c24",
+        "bytes": 1318,
+        "physical_lines": 45,
+        "nonblank_lines": 41
+      },
+      {
+        "path": "internal/avp/types.go",
+        "sha256": "947bd163ff9513ec9da23e47fc9d98e6ddc3d2db76ba6d7d34905ac7832aa03d",
+        "bytes": 1669,
+        "physical_lines": 41,
+        "nonblank_lines": 38
+      },
+      {
+        "path": "internal/capsule/manager.go",
+        "sha256": "96a5f5419b644514c959dd0d2547155be309bbaa05ab1dc00ab2771ec873db70",
+        "bytes": 11641,
+        "physical_lines": 450,
+        "nonblank_lines": 416
+      },
+      {
+        "path": "internal/capsule/manager_test.go",
+        "sha256": "1e66456c7de7c31c724554552bc77f964af27c6a89a20acbaf2ed8ee8c5e207b",
+        "bytes": 8248,
+        "physical_lines": 261,
+        "nonblank_lines": 241
+      },
+      {
+        "path": "internal/checkpoint/checkpoint.go",
+        "sha256": "786202aa1546d4da71b1a76755d9587c9ccce9fa598c66abccf1554b3705a1ba",
+        "bytes": 6963,
+        "physical_lines": 254,
+        "nonblank_lines": 235
+      },
+      {
+        "path": "internal/checkpoint/checkpoint_test.go",
+        "sha256": "ae325e64a0987dd75818b8bd9669d9116c77a961e4e5eff2299f299c362c24a0",
+        "bytes": 3750,
+        "physical_lines": 124,
+        "nonblank_lines": 115
+      },
+      {
+        "path": "internal/codebasedag/acceptance.go",
+        "sha256": "13669591e9d1a810ffda957ff5dec8531d90dca9fb0432730f8532a9eead2657",
+        "bytes": 2243,
+        "physical_lines": 90,
+        "nonblank_lines": 85
+      },
+      {
+        "path": "internal/codebasedag/acceptance_test.go",
+        "sha256": "b65f7752ec1946eb044652a12a4e860635b77cdd7f193bed2b520e87926dec5e",
+        "bytes": 1460,
+        "physical_lines": 55,
+        "nonblank_lines": 52
+      },
+      {
+        "path": "internal/codebasedag/apply.go",
+        "sha256": "515d6e7025f41754f1418dffcf6da1c40a977ed69fd5de6be9889280c6acf1dc",
+        "bytes": 3183,
+        "physical_lines": 110,
+        "nonblank_lines": 103
+      },
+      {
+        "path": "internal/codebasedag/apply_test.go",
+        "sha256": "d4841c1fdde407135dc07013d9eece3b5aaf9c217e9d6c40577742023832288d",
+        "bytes": 1775,
+        "physical_lines": 42,
+        "nonblank_lines": 39
+      },
+      {
+        "path": "internal/codebasedag/budget.go",
+        "sha256": "fa581b773ca5c5d30156c5b0d5a89f8e486ae7f0020a66c656a649d4bdfd45e2",
+        "bytes": 4417,
+        "physical_lines": 165,
+        "nonblank_lines": 155
+      },
+      {
+        "path": "internal/codebasedag/budget_replay_test.go",
+        "sha256": "bb03d901ce3a4d08f4e1662da9258dc510af0c0bea85273f65f57676e538ae7f",
+        "bytes": 4751,
+        "physical_lines": 177,
+        "nonblank_lines": 169
+      },
+      {
+        "path": "internal/codebasedag/contract.go",
+        "sha256": "90d72fe663905e1e6c72fd19ce92057cb434eb4821853b7c0e10c60c2f6c463c",
+        "bytes": 5303,
+        "physical_lines": 163,
+        "nonblank_lines": 157
+      },
+      {
+        "path": "internal/codebasedag/contract_test.go",
+        "sha256": "9725427cb576ea5c66e910d82650aba4f8d0c1057582196052ddffe915a0509b",
+        "bytes": 1589,
+        "physical_lines": 52,
+        "nonblank_lines": 49
+      },
+      {
+        "path": "internal/codebasedag/e2e_cli_test.go",
+        "sha256": "7d3958d99ffd9fd3408a2879965bcfe7a02fa3802e4e445c30dc156fddfa53d3",
+        "bytes": 2039,
+        "physical_lines": 64,
+        "nonblank_lines": 61
+      },
+      {
+        "path": "internal/codebasedag/evidence_bundle.go",
+        "sha256": "b2b2d19b8d712c6edfa4d3e75b5b9a92c1c291e0de06ab45322e7a09b769863f",
+        "bytes": 3552,
+        "physical_lines": 129,
+        "nonblank_lines": 121
+      },
+      {
+        "path": "internal/codebasedag/evidencejournal.go",
+        "sha256": "f61688a9b9fc9309766a3a3010361424fc07acb4994624ba079fcf125f24d33f",
+        "bytes": 4112,
+        "physical_lines": 166,
+        "nonblank_lines": 150
+      },
+      {
+        "path": "internal/codebasedag/evidencejournal_test.go",
+        "sha256": "2ad0da60312ce04223998e6327532fdd80dc77422d8d9ee146a049996c8b3065",
+        "bytes": 2902,
+        "physical_lines": 104,
+        "nonblank_lines": 100
+      },
+      {
+        "path": "internal/codebasedag/executor.go",
+        "sha256": "b5c20add07f252990d133e2db182f7b8b3d123eab38925084aec89c2d056c20d",
+        "bytes": 1259,
+        "physical_lines": 42,
+        "nonblank_lines": 38
+      },
+      {
+        "path": "internal/codebasedag/executor_test.go",
+        "sha256": "d520189f768c7abd09125a3aae4ecb1d8325041eae3477d6c0d239c70ff66664",
+        "bytes": 2653,
+        "physical_lines": 73,
+        "nonblank_lines": 69
+      },
+      {
+        "path": "internal/codebasedag/gates.go",
+        "sha256": "c9359b5d35af49193be4daff0af704786a2c23358c7cc43f1dc7a1639ec54a50",
+        "bytes": 7887,
+        "physical_lines": 170,
+        "nonblank_lines": 156
+      },
+      {
+        "path": "internal/codebasedag/gates_matrix_test.go",
+        "sha256": "2dca64a08c27691a9195973a0dbf701efcf9dc98b752a14f3b39d9279985db2d",
+        "bytes": 164659,
+        "physical_lines": 6745,
+        "nonblank_lines": 6743
+      },
+      {
+        "path": "internal/codebasedag/gates_test.go",
+        "sha256": "99fe8651c243b8ad2d66492c578ac3b0f451669b05cf28abe9b4ecd3df4be30b",
+        "bytes": 2479,
+        "physical_lines": 82,
+        "nonblank_lines": 78
+      },
+      {
+        "path": "internal/codebasedag/graph.go",
+        "sha256": "e08c7dd80fc89635cecabc0abc42e914a555509f41c6fec0e1880316e88794f9",
+        "bytes": 2511,
+        "physical_lines": 102,
+        "nonblank_lines": 92
+      },
+      {
+        "path": "internal/codebasedag/graph_test.go",
+        "sha256": "679a5742945cb363721d498181b8107d5b2cad6a6ad7d706720569bd605a5c4a",
+        "bytes": 2001,
+        "physical_lines": 69,
+        "nonblank_lines": 64
+      },
+      {
+        "path": "internal/codebasedag/live.go",
+        "sha256": "b0e8a341a699d0efa133ca8a30267ff265e88f37d3c358a048c9231bf348cf15",
+        "bytes": 28102,
+        "physical_lines": 822,
+        "nonblank_lines": 792
+      },
+      {
+        "path": "internal/codebasedag/live_fixer_test.go",
+        "sha256": "e5ae270045ede4166a712ab8bf41dc5abe6f2db09c83f0773c0a8b41dafebd0a",
+        "bytes": 2837,
+        "physical_lines": 97,
+        "nonblank_lines": 93
+      },
+      {
+        "path": "internal/codebasedag/live_gap_test.go",
+        "sha256": "8cbfd5a07d1d28680fce045d82053d9b810bd90ae970dfb9d97cad185f1f6249",
+        "bytes": 7758,
+        "physical_lines": 251,
+        "nonblank_lines": 241
+      },
+      {
+        "path": "internal/codebasedag/live_quality_test.go",
+        "sha256": "a92dd6447d3dc20952709ffc75c069a7c2ed7b4991619f2dce0c5985a5181297",
+        "bytes": 5132,
+        "physical_lines": 130,
+        "nonblank_lines": 124
+      },
+      {
+        "path": "internal/codebasedag/live_schema_repair_test.go",
+        "sha256": "c8fd5b7913c73f830bc2a23fe256ffb80fc8deddb1eb0b9eae0f5e2d0229b218",
+        "bytes": 2572,
+        "physical_lines": 81,
+        "nonblank_lines": 78
+      },
+      {
+        "path": "internal/codebasedag/live_test.go",
+        "sha256": "a54992f45831552e29ebb2d6a7f1522bdf90afbd5f16c743b8c0cc56e78af67e",
+        "bytes": 8358,
+        "physical_lines": 219,
+        "nonblank_lines": 209
+      },
+      {
+        "path": "internal/codebasedag/live_worker_test.go",
+        "sha256": "1cfc5bed0f04fdd10f4a8aca1f51b9049755b310eb503b1ab3b515e42446e85c",
+        "bytes": 3853,
+        "physical_lines": 129,
+        "nonblank_lines": 122
+      },
+      {
+        "path": "internal/codebasedag/manifest.go",
+        "sha256": "b92202d0f9c828f8c5827b062d88beaa1509680c23c36955dae85a6cfe62e374",
+        "bytes": 5736,
+        "physical_lines": 198,
+        "nonblank_lines": 183
+      },
+      {
+        "path": "internal/codebasedag/manifest_test.go",
+        "sha256": "730fddf9ca83f5563213efb1ca3846ceb7ca9f7c5de3652b6d4a41974160b52c",
+        "bytes": 4989,
+        "physical_lines": 185,
+        "nonblank_lines": 173
+      },
+      {
+        "path": "internal/codebasedag/model.go",
+        "sha256": "ff3659335eab1c14cae2731f374158d78e8d47c1c8d7739a3e24530fe980b1c7",
+        "bytes": 6148,
+        "physical_lines": 241,
+        "nonblank_lines": 221
+      },
+      {
+        "path": "internal/codebasedag/model_test.go",
+        "sha256": "42b0e09d79762ca81c30d7d8a7bf2fca5d2e9eab083418f271200c09159069a8",
+        "bytes": 5747,
+        "physical_lines": 195,
+        "nonblank_lines": 184
+      },
+      {
+        "path": "internal/codebasedag/osprobe.go",
+        "sha256": "a1ee994e0c721776704973c685c2b78341e481ad5db6c2d95bebc0d220b3f293",
+        "bytes": 3513,
+        "physical_lines": 112,
+        "nonblank_lines": 102
+      },
+      {
+        "path": "internal/codebasedag/osprobe_test.go",
+        "sha256": "0d9d1edf2e9df968a250e803bace97627853990bf37302d60aa1be3667d91447",
+        "bytes": 2398,
+        "physical_lines": 67,
+        "nonblank_lines": 62
+      },
+      {
+        "path": "internal/codebasedag/patch.go",
+        "sha256": "2d5aea8ad91fcef36961b6a4cc457515d29c94855ba43d9f8015c203249ac162",
+        "bytes": 13781,
+        "physical_lines": 470,
+        "nonblank_lines": 447
+      },
+      {
+        "path": "internal/codebasedag/patch_test.go",
+        "sha256": "0720add5881f8991cf2e8580789d6a6a7d0365145f1df9c898b80c2b2f985e2b",
+        "bytes": 6925,
+        "physical_lines": 192,
+        "nonblank_lines": 183
+      },
+      {
+        "path": "internal/codebasedag/pipeline.go",
+        "sha256": "35160606dd372958ffbf52392e12c0c3981143911d5e494a807d52166e277e87",
+        "bytes": 6019,
+        "physical_lines": 224,
+        "nonblank_lines": 206
+      },
+      {
+        "path": "internal/codebasedag/pipeline_test.go",
+        "sha256": "ccc860eeb7c7c39c75a498c97c3541869262bcf92c5165dbc9c4a889a2717432",
+        "bytes": 3734,
+        "physical_lines": 105,
+        "nonblank_lines": 99
+      },
+      {
+        "path": "internal/codebasedag/preflight.go",
+        "sha256": "3304f1cd961c608e66955aa09137e2416636044499ff3a4e823b41fe84565e10",
+        "bytes": 3176,
+        "physical_lines": 116,
+        "nonblank_lines": 108
+      },
+      {
+        "path": "internal/codebasedag/preflight_test.go",
+        "sha256": "78e6ad7998abc2dcbcab0bf573c1082462fed3cf2d6a4325fedf1fe66ba0c6d3",
+        "bytes": 2940,
+        "physical_lines": 87,
+        "nonblank_lines": 82
+      },
+      {
+        "path": "internal/codebasedag/process.go",
+        "sha256": "37a551179fac0fa90c870bbdb058c2822b748ec779fd059e53cb04b1524af2e4",
+        "bytes": 5990,
+        "physical_lines": 213,
+        "nonblank_lines": 193
+      },
+      {
+        "path": "internal/codebasedag/process_linux.go",
+        "sha256": "b2b3ab45c56cf3ab4a91e2768631e885fb27de8e38b425353bfc949d2cbd5047",
+        "bytes": 9873,
+        "physical_lines": 322,
+        "nonblank_lines": 305
+      },
+      {
+        "path": "internal/codebasedag/process_linux_test.go",
+        "sha256": "65b44f8db16cfb11748f0b1e88d444a1284d48a03774c0096b06c4bdf84fdc6b",
+        "bytes": 4674,
+        "physical_lines": 172,
+        "nonblank_lines": 161
+      },
+      {
+        "path": "internal/codebasedag/process_other.go",
+        "sha256": "e90fd4dc621567d4eeb959006faaaeb2aeeb52acf541ee8129852ce03a049500",
+        "bytes": 187,
+        "physical_lines": 7,
+        "nonblank_lines": 5
+      },
+      {
+        "path": "internal/codebasedag/process_test.go",
+        "sha256": "9b575646b303c9a0684f4e119dc69c49eadccb0383a53bffaf1e00707f628233",
+        "bytes": 3635,
+        "physical_lines": 116,
+        "nonblank_lines": 104
+      },
+      {
+        "path": "internal/codebasedag/processevidence.go",
+        "sha256": "7eb2dbbf88f38782dc619f1571ce02c508cd42d548e2363c3c94719f673cf5f6",
+        "bytes": 4788,
+        "physical_lines": 172,
+        "nonblank_lines": 160
+      },
+      {
+        "path": "internal/codebasedag/processevidence_test.go",
+        "sha256": "652e1cad9daffead66f42528bd36aab2958268d9de2ddc14a4c39b1ba17c27e8",
+        "bytes": 2674,
+        "physical_lines": 95,
+        "nonblank_lines": 91
+      },
+      {
+        "path": "internal/codebasedag/promptcatalog.go",
+        "sha256": "7469e7b7703449cf860cb38e676a49e996bdf150dcd5f9d280a25ccb94536682",
+        "bytes": 6973,
+        "physical_lines": 187,
+        "nonblank_lines": 179
+      },
+      {
+        "path": "internal/codebasedag/promptcatalog_test.go",
+        "sha256": "01bc661d31e2746e4b00e97cc4043950d4e75be912067b0d8a2b74d7eaa8929f",
+        "bytes": 1500,
+        "physical_lines": 55,
+        "nonblank_lines": 51
+      },
+      {
+        "path": "internal/codebasedag/prompts.go",
+        "sha256": "c1662c7b8a6a58cb45f4562091fae51e7ecdbd353e5527b728ce8e28ec777c2d",
+        "bytes": 4061,
+        "physical_lines": 114,
+        "nonblank_lines": 107
+      },
+      {
+        "path": "internal/codebasedag/prompts_test.go",
+        "sha256": "1b4152cd5096594c2196aa0bdb720306f949350be78c415d3a0461b8587c1524",
+        "bytes": 2115,
+        "physical_lines": 67,
+        "nonblank_lines": 63
+      },
+      {
+        "path": "internal/codebasedag/replay.go",
+        "sha256": "6c278dc4a26bec777c0343954e4590f299890ccc926112e138e3f0bea9b12783",
+        "bytes": 3355,
+        "physical_lines": 128,
+        "nonblank_lines": 118
+      },
+      {
+        "path": "internal/codebasedag/report.go",
+        "sha256": "c9c8de45bde1a9a778ae15d32ea087f3323478f96190f15bb57f3e2aadbf7237",
+        "bytes": 7597,
+        "physical_lines": 218,
+        "nonblank_lines": 204
+      },
+      {
+        "path": "internal/codebasedag/report_test.go",
+        "sha256": "d739c6dd47e623b256bfa957ad13fcb7e185bcb9883b1cbcec4dbaa70f14941a",
+        "bytes": 6762,
+        "physical_lines": 165,
+        "nonblank_lines": 158
+      },
+      {
+        "path": "internal/codebasedag/runner.go",
+        "sha256": "c1a0fdbf2e42086937caeca9918bc168fa3f0b8db3178d6c826de47c9377e67d",
+        "bytes": 9716,
+        "physical_lines": 319,
+        "nonblank_lines": 290
+      },
+      {
+        "path": "internal/codebasedag/runner_test.go",
+        "sha256": "fa2b59a4152bc3491df3ac3dcff9d9c5ebf0da264105b92bc9fcf845400ef121",
+        "bytes": 4248,
+        "physical_lines": 129,
+        "nonblank_lines": 124
+      },
+      {
+        "path": "internal/codebasedag/runstore.go",
+        "sha256": "a16e2fecb98367f0c25945fba9b06b3e5713a6458ebdd36063408678cbfec454",
+        "bytes": 4845,
+        "physical_lines": 210,
+        "nonblank_lines": 196
+      },
+      {
+        "path": "internal/codebasedag/runstore_test.go",
+        "sha256": "7fb2fd6dfb17c1b7e89c085526d9ac997e3470748aaf0cfa974e89a6d114ee8d",
+        "bytes": 3157,
+        "physical_lines": 110,
+        "nonblank_lines": 102
+      },
+      {
+        "path": "internal/codebasedag/schema.go",
+        "sha256": "3bfed08bd408748abfac1c3bc1d20bece2d2fa5b6359a98270b06f9402ff3af3",
+        "bytes": 3710,
+        "physical_lines": 120,
+        "nonblank_lines": 113
+      },
+      {
+        "path": "internal/codebasedag/schema_test.go",
+        "sha256": "b17e16d64e5023f914486b64929197079bbf2e3af6080b87b62534bd0d8f1c98",
+        "bytes": 2213,
+        "physical_lines": 57,
+        "nonblank_lines": 53
+      },
+      {
+        "path": "internal/codebasedag/testrun.go",
+        "sha256": "cdeddd65ac40dd8e38f0616e93895fdedb2b32ad0842cc2032a49ce41cde13b7",
+        "bytes": 5023,
+        "physical_lines": 178,
+        "nonblank_lines": 167
+      },
+      {
+        "path": "internal/codebasedag/ticket.go",
+        "sha256": "b996c55c8ac7a2446bd38e38520be6ded7f1bd30317fa9b4b9462043221c2ba3",
+        "bytes": 3838,
+        "physical_lines": 128,
+        "nonblank_lines": 121
+      },
+      {
+        "path": "internal/codebasedag/ticket_test.go",
+        "sha256": "cbbf42b1a2bbe05b1599fb0854a31c95803d8d29b6739e0cc321058f42189ae1",
+        "bytes": 2043,
+        "physical_lines": 72,
+        "nonblank_lines": 67
+      },
+      {
+        "path": "internal/codebasedag/types.go",
+        "sha256": "32999ff593f068b11d459d15fceb4ff317106b11765053f13a8839806c22d05f",
+        "bytes": 4670,
+        "physical_lines": 129,
+        "nonblank_lines": 115
+      },
+      {
+        "path": "internal/codebasedag/validate.go",
+        "sha256": "d2d99f34034646b7844a4cb2efb7a352e461b5f7670167da9e27c38bb94cd3b7",
+        "bytes": 5388,
+        "physical_lines": 173,
+        "nonblank_lines": 166
+      },
+      {
+        "path": "internal/codebasedag/validate_test.go",
+        "sha256": "543aab195e675e0592e497cf7b4c9387b47819b1fcb4a974e42654d6a1e8e9da",
+        "bytes": 5239,
+        "physical_lines": 134,
+        "nonblank_lines": 127
+      },
+      {
+        "path": "internal/codebasedag/worktree.go",
+        "sha256": "67ad4f8570989171c58cc2df74955b9a03b802d0110982b7f60c8c7a70bce93a",
+        "bytes": 13178,
+        "physical_lines": 431,
+        "nonblank_lines": 409
+      },
+      {
+        "path": "internal/codebasedag/worktree_test.go",
+        "sha256": "e64bebadf1c38558bd2a183c4bfcce31a6f34737e1ef46c9a0d9ef7d23fad912",
+        "bytes": 4973,
+        "physical_lines": 128,
+        "nonblank_lines": 119
+      },
+      {
+        "path": "internal/config/config.go",
+        "sha256": "0e01d32cb8f990ef30583380359e2f8420595f6af89fba69c36f73d21fc803ab",
+        "bytes": 1595,
+        "physical_lines": 71,
+        "nonblank_lines": 67
+      },
+      {
+        "path": "internal/config/config_test.go",
+        "sha256": "3cb0d671242cacad312451396730b023ea8c9d48610260cb0cbcb5ceff30ed8e",
+        "bytes": 1024,
+        "physical_lines": 41,
+        "nonblank_lines": 38
+      },
+      {
+        "path": "internal/cvm/store.go",
+        "sha256": "eb13c8d09dd6650efda1c24944e536e7947b3eb4244976c4601f753148f840a5",
+        "bytes": 11797,
+        "physical_lines": 467,
+        "nonblank_lines": 435
+      },
+      {
+        "path": "internal/cvm/store_test.go",
+        "sha256": "29bc6d88069ff47ccb8a04c326499177f6b08c04110f57a5b1302f27ff326e83",
+        "bytes": 4825,
+        "physical_lines": 164,
+        "nonblank_lines": 156
+      },
+      {
+        "path": "internal/dag/dag.go",
+        "sha256": "d3a1ec3eae10919dca2c4ea69576850faf4818a77b7484248735bcbbf946a0d7",
+        "bytes": 1818,
+        "physical_lines": 94,
+        "nonblank_lines": 86
+      },
+      {
+        "path": "internal/dag/dag_test.go",
+        "sha256": "1d7a23ae74d854a1af3bfcda3daa5b47be63d8085ee36d410a10d9bba329e974",
+        "bytes": 2688,
+        "physical_lines": 100,
+        "nonblank_lines": 89
+      },
+      {
+        "path": "internal/demo/software_demo.go",
+        "sha256": "315fdd78c34fd24c813efa2340f2c54f20c7a624a84422f19acc620bfd1032a1",
+        "bytes": 4062,
+        "physical_lines": 121,
+        "nonblank_lines": 111
+      },
+      {
+        "path": "internal/demo/software_demo_test.go",
+        "sha256": "5a9cdbf7b0c600f1e35d1aff781125db7255999f1c0cbbe5ab294f0aff3d3063",
+        "bytes": 812,
+        "physical_lines": 35,
+        "nonblank_lines": 32
+      },
+      {
+        "path": "internal/events/hub.go",
+        "sha256": "e105ce077d13b038a0b9a14c2e74c541215ab863b0d37733755ab040a12d8872",
+        "bytes": 1808,
+        "physical_lines": 91,
+        "nonblank_lines": 83
+      },
+      {
+        "path": "internal/events/hub_test.go",
+        "sha256": "6cefc77acd90ec50d3ffe19b0be6186d8359409cc2371dcb575bb46bd9826742",
+        "bytes": 1017,
+        "physical_lines": 43,
+        "nonblank_lines": 39
+      },
+      {
+        "path": "internal/evidence/evidence.go",
+        "sha256": "c317eeeb5caf45acedacef1a3cfeebbff1b2233b1c4ea77a852c901f3cebc24a",
+        "bytes": 2038,
+        "physical_lines": 90,
+        "nonblank_lines": 82
+      },
+      {
+        "path": "internal/evidence/evidence_mode_test.go",
+        "sha256": "05c905a4ea6b8c72328bc3401a4093f622a9f428087085a424b7d00becb7a2bf",
+        "bytes": 2060,
+        "physical_lines": 62,
+        "nonblank_lines": 58
+      },
+      {
+        "path": "internal/experiment/all_final.go",
+        "sha256": "369c53eb90c957a1eebd507d8a800fe5996c503295b4a2da305613c8cf269b5f",
+        "bytes": 40564,
+        "physical_lines": 1073,
+        "nonblank_lines": 1014
+      },
+      {
+        "path": "internal/experiment/deepseek_real.go",
+        "sha256": "ecd829bcaa774e6491335ebfa0b956aff7ceadead21a9209e932279207b4081d",
+        "bytes": 5355,
+        "physical_lines": 188,
+        "nonblank_lines": 178
+      },
+      {
+        "path": "internal/experiment/experiment.go",
+        "sha256": "d8aebe203061508e53310f00dded74a146d263fecfcfe85a8a57f16b228c289c",
+        "bytes": 9792,
+        "physical_lines": 340,
+        "nonblank_lines": 318
+      },
+      {
+        "path": "internal/experiment/experiment_test.go",
+        "sha256": "a22e9907c15872293354a3b54569b10aa480d701da64a13cf19c0614b9b80ae3",
+        "bytes": 1649,
+        "physical_lines": 56,
+        "nonblank_lines": 52
+      },
+      {
+        "path": "internal/experiment/real_benchmark.go",
+        "sha256": "42e899d781b51fadc99a735e04da536687f2d9711e58e45994844062dc7816cf",
+        "bytes": 59339,
+        "physical_lines": 1540,
+        "nonblank_lines": 1482
+      },
+      {
+        "path": "internal/experiment/real_benchmark_test.go",
+        "sha256": "8e618fac5ebdcbb49c2e3f876973b3b4bbbd2634ac19fdbef6b6bb81b1479990",
+        "bytes": 6550,
+        "physical_lines": 163,
+        "nonblank_lines": 155
+      },
+      {
+        "path": "internal/experiment/real_os_evidence.go",
+        "sha256": "c9cde420f771bd1993383ea83df2f66510f75f7897678671e29109eca5a94565",
+        "bytes": 31118,
+        "physical_lines": 892,
+        "nonblank_lines": 848
+      },
+      {
+        "path": "internal/experiment/real_os_evidence_test.go",
+        "sha256": "82a7ed18db477a552e01da5c35bde742b1dc6074cfa643b22e6f0a78ab068ba0",
+        "bytes": 15828,
+        "physical_lines": 417,
+        "nonblank_lines": 396
+      },
+      {
+        "path": "internal/experiment/resource_aware_test.go",
+        "sha256": "86369af816fcb862150d1323388c8c05b22bbe2ec104ff170893122dd534a7b3",
+        "bytes": 6988,
+        "physical_lines": 178,
+        "nonblank_lines": 170
+      },
+      {
+        "path": "internal/experiment/review_scenarios.go",
+        "sha256": "7462c5371c10c75d30fb6302cff2f31d4bbffd09cee4ebfc347e1a7c8c5e667f",
+        "bytes": 813,
+        "physical_lines": 27,
+        "nonblank_lines": 20
+      },
+      {
+        "path": "internal/experiment/runtime_trace.go",
+        "sha256": "e9dca2cb86181e1272335ab38b218bc6da28f744a27b9ed7b808253da4d689fb",
+        "bytes": 1269,
+        "physical_lines": 58,
+        "nonblank_lines": 51
+      },
+      {
+        "path": "internal/experiment/runtime_upgrade.go",
+        "sha256": "b9edbc3d376fd07d34c37ffc007b48bd024135047abc109f438508b006a2ea83",
+        "bytes": 3718,
+        "physical_lines": 98,
+        "nonblank_lines": 90
+      },
+      {
+        "path": "internal/ipc/blackboard.go",
+        "sha256": "0af60069a9e0343a3d954f87ea09be433dd0e12595f6c8bba05d7c0fb9c67583",
+        "bytes": 3466,
+        "physical_lines": 134,
+        "nonblank_lines": 122
+      },
+      {
+        "path": "internal/ipc/blackboard_test.go",
+        "sha256": "5df6864404ae6d71f93a7c32900b32a205522899b12c04c0332e883bbea0653d",
+        "bytes": 1514,
+        "physical_lines": 54,
+        "nonblank_lines": 46
+      },
+      {
+        "path": "internal/ipc/shm/shm.go",
+        "sha256": "723b4ac34222f4c4e06132ada20ae934b1146233129c132ae7e9bc3e6379c241",
+        "bytes": 1932,
+        "physical_lines": 65,
+        "nonblank_lines": 60
+      },
+      {
+        "path": "internal/ipc/shm/shm_linux.go",
+        "sha256": "92972907bbefb252956fc0780f950e9d43fc02f9b84002d635d7f7119fc69e4a",
+        "bytes": 3327,
+        "physical_lines": 125,
+        "nonblank_lines": 117
+      },
+      {
+        "path": "internal/ipc/shm/shm_other.go",
+        "sha256": "0321aae7f1e43bfa47642ada20e74348875a670eb19b048f36c94e75379b87f3",
+        "bytes": 209,
+        "physical_lines": 9,
+        "nonblank_lines": 6
+      },
+      {
+        "path": "internal/ipc/shm/shm_test.go",
+        "sha256": "77d8c628ddb14acb6b232d8936a6aa1d6be06574323d976e624dcb21eb1b6c37",
+        "bytes": 1674,
+        "physical_lines": 60,
+        "nonblank_lines": 57
+      },
+      {
+        "path": "internal/kernel/observer.go",
+        "sha256": "91f0f775c35a4c956d5e803b27d32c33eed85febf3bb49f0d67d019badf77ad2",
+        "bytes": 5020,
+        "physical_lines": 204,
+        "nonblank_lines": 187
+      },
+      {
+        "path": "internal/kernel/observer_test.go",
+        "sha256": "982693086ed82c23c5421826d899de5bd149661ea7fb45f34f449390e4050f11",
+        "bytes": 2033,
+        "physical_lines": 79,
+        "nonblank_lines": 69
+      },
+      {
+        "path": "internal/llm/deepseek_provider.go",
+        "sha256": "f6f8eccd180f65bdc01c6165367d6c33e4e39a6359e319dbed8a8f2cd1908ebb",
+        "bytes": 6825,
+        "physical_lines": 229,
+        "nonblank_lines": 220
+      },
+      {
+        "path": "internal/llm/deepseek_provider_live_test.go",
+        "sha256": "e8a1cd8f9171828a4428fcd6d20a715f329e4a766dcede0ae241257e9f0997a2",
+        "bytes": 1448,
+        "physical_lines": 53,
+        "nonblank_lines": 48
+      },
+      {
+        "path": "internal/llm/router.go",
+        "sha256": "5e18f7b6694d01b9ac404031299a510b837c1221f1a281c5ec5cd35bd4de03a2",
+        "bytes": 6048,
+        "physical_lines": 246,
+        "nonblank_lines": 217
+      },
+      {
+        "path": "internal/llm/router_test.go",
+        "sha256": "de471b71b958c848db9c017fe880bc44c1fb99f2293c0bdc18069ca4a89425a2",
+        "bytes": 8069,
+        "physical_lines": 218,
+        "nonblank_lines": 201
+      },
+      {
+        "path": "internal/observer/ebpf/observer.go",
+        "sha256": "a91908012e6f4c1e92a84c82d9167c2a5ea346b377025ab511b95fbb63e8aedb",
+        "bytes": 3060,
+        "physical_lines": 114,
+        "nonblank_lines": 107
+      },
+      {
+        "path": "internal/observer/ebpf/observer_linux.go",
+        "sha256": "bb4bc088aa21d680057f81bfaf419f464cb9ebee9c2fde1c2bc45579eabfc8e8",
+        "bytes": 9075,
+        "physical_lines": 364,
+        "nonblank_lines": 334
+      },
+      {
+        "path": "internal/observer/ebpf/observer_other.go",
+        "sha256": "504937a4c1eb2c996301793e2d6bf60e5ef1174252b45f9ec594adef9c703523",
+        "bytes": 168,
+        "physical_lines": 7,
+        "nonblank_lines": 5
+      },
+      {
+        "path": "internal/observer/ebpf/observer_test.go",
+        "sha256": "cdb6a1c6aa9e90fef90a2c2a0122f6ebeceeabf954c5aa3e431f7daa491585a6",
+        "bytes": 1700,
+        "physical_lines": 60,
+        "nonblank_lines": 56
+      },
+      {
+        "path": "internal/pressure/monitor.go",
+        "sha256": "d75f6210cc83909cb4bd074c761f36a8e859353ce59cc7ff0b07667c673a1c79",
+        "bytes": 5155,
+        "physical_lines": 200,
+        "nonblank_lines": 189
+      },
+      {
+        "path": "internal/pressure/monitor_test.go",
+        "sha256": "107d6016b3013b1b37c13329b0deafdb6bc89bd6fcbd4b86890f70868d437f12",
+        "bytes": 1803,
+        "physical_lines": 60,
+        "nonblank_lines": 54
+      },
+      {
+        "path": "internal/replay/replay.go",
+        "sha256": "d7a58f62f9336b7103b69c4e3176fb695545a8f84037010db921b30a15b68a54",
+        "bytes": 3324,
+        "physical_lines": 125,
+        "nonblank_lines": 116
+      },
+      {
+        "path": "internal/replay/replay_test.go",
+        "sha256": "f32846b2646227518b52d666f3ca4c1aa1257c1af2a2d417b41b8569f4edef26",
+        "bytes": 2164,
+        "physical_lines": 61,
+        "nonblank_lines": 56
+      },
+      {
+        "path": "internal/resource/sampler.go",
+        "sha256": "ace0f2b7131758f9baadc0cab651aebbeca79d89d1ae4e9729de5430b90a2b2e",
+        "bytes": 4621,
+        "physical_lines": 183,
+        "nonblank_lines": 166
+      },
+      {
+        "path": "internal/resource/sampler_test.go",
+        "sha256": "c5e43649699f78a7013586e5541408ba808a150c4b1a0026a76e7d00be9ae627",
+        "bytes": 3615,
+        "physical_lines": 97,
+        "nonblank_lines": 89
+      },
+      {
+        "path": "internal/review/agent_demo.go",
+        "sha256": "d3d4b3adf88fa3c8eac640f5344a272ff1f6c0f959e4592bc155c3b188559e79",
+        "bytes": 15565,
+        "physical_lines": 459,
+        "nonblank_lines": 432
+      },
+      {
+        "path": "internal/review/agent_demo_test.go",
+        "sha256": "5779bca6e7f995c66cd71deafb850b9d69a9606fb8e4879a3ac8202bfc526c61",
+        "bytes": 3424,
+        "physical_lines": 106,
+        "nonblank_lines": 99
+      },
+      {
+        "path": "internal/review/context_sharing.go",
+        "sha256": "b3a69d3818da3112d9fdfdd076da390508ef487c0df02d13f6a848f99ee43c03",
+        "bytes": 16759,
+        "physical_lines": 521,
+        "nonblank_lines": 501
+      },
+      {
+        "path": "internal/review/context_sharing_test.go",
+        "sha256": "e8a4c02807b19a3044551bb6a06d07edba6921279fc82287d978068197010de4",
+        "bytes": 6089,
+        "physical_lines": 191,
+        "nonblank_lines": 183
+      },
+      {
+        "path": "internal/review/live_context_hook.go",
+        "sha256": "8542166725186246b6616abbb3c86034e4bc5decb635e6ce1b088b2fe415fac8",
+        "bytes": 144,
+        "physical_lines": 4,
+        "nonblank_lines": 3
+      },
+      {
+        "path": "internal/review/live_evidence_hook.go",
+        "sha256": "a099cb5915ad4be6b56b3e6c3455256a472591f5ea0575e6652e0aa1ba12056a",
+        "bytes": 147,
+        "physical_lines": 4,
+        "nonblank_lines": 3
+      },
+      {
+        "path": "internal/review/live_hooks_test.go",
+        "sha256": "a776722a367bc102e643f1540212aff3d92e2646428b0aa1d442e844d21cee53",
+        "bytes": 203,
+        "physical_lines": 9,
+        "nonblank_lines": 7
+      },
+      {
+        "path": "internal/review/live_resource_hook.go",
+        "sha256": "8a1d96ddf1431d7741a056be2c974181f865331426c58ab005f977e046d6ef48",
+        "bytes": 234,
+        "physical_lines": 5,
+        "nonblank_lines": 4
+      },
+      {
+        "path": "internal/review/metrics.go",
+        "sha256": "a07239b8d29ca3cc92a18452dae80512bb0b30c655d22773f935005c767be83c",
+        "bytes": 12272,
+        "physical_lines": 376,
+        "nonblank_lines": 355
+      },
+      {
+        "path": "internal/review/metrics_test.go",
+        "sha256": "b57be8e072927d8236aa25752f21bbe1eaf472a9d051e2141dd00ae9051c7562",
+        "bytes": 3020,
+        "physical_lines": 93,
+        "nonblank_lines": 89
+      },
+      {
+        "path": "internal/review/resource_isolation.go",
+        "sha256": "c6624244b49cab8ef437627c235dbe2e2d1b9d4c2f6bc559d12d5e61f33c58d7",
+        "bytes": 15574,
+        "physical_lines": 444,
+        "nonblank_lines": 428
+      },
+      {
+        "path": "internal/review/resource_isolation_test.go",
+        "sha256": "844d116c84f1e69a55886cb8df3762f264e19705b1652e16d18302d6b8bae723",
+        "bytes": 3843,
+        "physical_lines": 119,
+        "nonblank_lines": 113
+      },
+      {
+        "path": "internal/review/review_final.go",
+        "sha256": "ab3130704a551022e33bd0ba7d2511ac0444e035b798001749a926a6625ece9b",
+        "bytes": 7126,
+        "physical_lines": 207,
+        "nonblank_lines": 199
+      },
+      {
+        "path": "internal/review/review_final_test.go",
+        "sha256": "074f77e39e7d1be48d73767466b2ca5553a6fbff23f1ca39d9a6b36b28d35542",
+        "bytes": 2571,
+        "physical_lines": 66,
+        "nonblank_lines": 63
+      },
+      {
+        "path": "internal/scheduler/resource_aware_test.go",
+        "sha256": "5890316649548bee77696bed0952f4df34f4fef8ceacc50935e1e41053383085",
+        "bytes": 2977,
+        "physical_lines": 86,
+        "nonblank_lines": 78
+      },
+      {
+        "path": "internal/scheduler/scheduler.go",
+        "sha256": "26216ba13b39d8942c8023dff4aa72e46a3ab3d5ba26e2cc426c828f89205e60",
+        "bytes": 14895,
+        "physical_lines": 411,
+        "nonblank_lines": 377
+      },
+      {
+        "path": "internal/scheduler/scheduler_resource_aware_test.go",
+        "sha256": "944a208533f9ccc0ea3e46f8dfb22a1e2d719a3a3725da4380a2878f52e19f0c",
+        "bytes": 5654,
+        "physical_lines": 180,
+        "nonblank_lines": 170
+      },
+      {
+        "path": "internal/scheduler/scheduler_test.go",
+        "sha256": "6bc87628e818974d834921046adf2b9c34849cc97191d9a53fb4596786c9689f",
+        "bytes": 2343,
+        "physical_lines": 80,
+        "nonblank_lines": 71
+      },
+      {
+        "path": "internal/supervisor/supervisor.go",
+        "sha256": "f91298b87479ba8153bec7734680561c95eb99badd93e4121c686b856f4c6282",
+        "bytes": 2316,
+        "physical_lines": 91,
+        "nonblank_lines": 80
+      },
+      {
+        "path": "internal/supervisor/supervisor_test.go",
+        "sha256": "d73c7105866f159dbf6850c43f43f9d48215dbc7c68a10c55e42a2e5eb5fabf5",
+        "bytes": 924,
+        "physical_lines": 39,
+        "nonblank_lines": 32
+      },
+      {
+        "path": "internal/syscall/gateway.go",
+        "sha256": "0cffa6cbafdecd32897bb1a84a10d98fdf5ce954eff6c7d572021d21909928e1",
+        "bytes": 23071,
+        "physical_lines": 802,
+        "nonblank_lines": 756
+      },
+      {
+        "path": "internal/syscall/gateway_test.go",
+        "sha256": "b52bce034c2e1228f1e8564283adcb29ec4537c046358f3fee111770fe44a456",
+        "bytes": 14812,
+        "physical_lines": 486,
+        "nonblank_lines": 440
+      },
+      {
+        "path": "internal/trace/recorder.go",
+        "sha256": "7df29770c44dc5b357e30f3af67721094d870161eaf96ca734e38035b7d07e78",
+        "bytes": 1886,
+        "physical_lines": 90,
+        "nonblank_lines": 80
+      },
+      {
+        "path": "internal/trace/recorder_test.go",
+        "sha256": "29754f8699df006ffbc759191da08e08df142c00b3aa5d24bd9d0c710a23cb12",
+        "bytes": 1734,
+        "physical_lines": 65,
+        "nonblank_lines": 60
+      },
+      {
+        "path": "internal/verify/competition_script_test.go",
+        "sha256": "37df431c1b3124c132f5f03bf7b7e6935d9d7acdd966a2146d35b495584b479d",
+        "bytes": 9927,
+        "physical_lines": 328,
+        "nonblank_lines": 311
+      },
+      {
+        "path": "internal/worker/launcher.go",
+        "sha256": "42f62d389d96af5ecd8b36507539d2d221d6cdbd4284d034e6edc1d08374e718",
+        "bytes": 739,
+        "physical_lines": 40,
+        "nonblank_lines": 36
+      },
+      {
+        "path": "internal/worker/protocol.go",
+        "sha256": "c3cafed88f5f64999a32d1cb5dc380bf7287ed49bdf8648750eda14a8931d0c7",
+        "bytes": 1072,
+        "physical_lines": 32,
+        "nonblank_lines": 29
+      },
+      {
+        "path": "internal/worker/registry.go",
+        "sha256": "a20e2ced3cda98d408d8552b2dcd382569237c6540a8e49f0a426932660b51cf",
+        "bytes": 6102,
+        "physical_lines": 246,
+        "nonblank_lines": 224
+      },
+      {
+        "path": "internal/worker/registry_test.go",
+        "sha256": "10915bb44ebb81164e19668975da81935b2ce67ac286a21e09b4d08d81e061bd",
+        "bytes": 2780,
+        "physical_lines": 112,
+        "nonblank_lines": 99
+      },
+      {
+        "path": "internal/worker/server.go",
+        "sha256": "e024418c98a452d08a9d84cbd62835524f3edf2a68f71e42bf985b61f82f544a",
+        "bytes": 2213,
+        "physical_lines": 114,
+        "nonblank_lines": 105
+      },
+      {
+        "path": "internal/worker/server_test.go",
+        "sha256": "53dcd0c0d5149fb63a11f3c3ec74cb3c47344c98294e0501d57d9c9863a8d14a",
+        "bytes": 3050,
+        "physical_lines": 123,
+        "nonblank_lines": 110
+      },
+      {
+        "path": "internal/workspace/manager.go",
+        "sha256": "0a267d98032fc17861ca8f435f1d5d92cd0c4751581f11554a7532308462d7c8",
+        "bytes": 28714,
+        "physical_lines": 976,
+        "nonblank_lines": 922
+      },
+      {
+        "path": "internal/workspace/manager_test.go",
+        "sha256": "00dd98cc03f8321803f82fdba1c67f444653997ccad88e4183503d2d8c7553ce",
+        "bytes": 2943,
+        "physical_lines": 105,
+        "nonblank_lines": 94
+      },
+      {
+        "path": "internal/workspace/workspace_isolation_test.go",
+        "sha256": "4af1e9ce22d67f5d8202fdd7d9baa0f667c8a073f65d50e8e4446d4020e73f66",
+        "bytes": 5023,
+        "physical_lines": 146,
+        "nonblank_lines": 134
+      }
+    ]
+  }
+}

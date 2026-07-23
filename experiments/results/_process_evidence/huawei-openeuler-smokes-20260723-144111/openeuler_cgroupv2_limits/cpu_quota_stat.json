@@ -1,0 +1,27 @@
+{
+  "evidence_mode": "real-cgroup-v2",
+  "cgroup_path": "/sys/fs/cgroup/aort.slice/aort-limit-cpu-268343",
+  "cpu.max": "10000 100000",
+  "cpu.stat_before": {
+    "usage_usec": 0,
+    "user_usec": 0,
+    "system_usec": 0,
+    "nr_periods": 0,
+    "nr_throttled": 0,
+    "throttled_usec": 0,
+    "nr_bursts": 0,
+    "burst_usec": 0
+  },
+  "cpu.stat_after": {
+    "usage_usec": 162609,
+    "user_usec": 162609,
+    "system_usec": 0,
+    "nr_periods": 16,
+    "nr_throttled": 15,
+    "throttled_usec": 1345238,
+    "nr_bursts": 0,
+    "burst_usec": 0
+  },
+  "usage_usec_delta": 162609,
+  "observable": true
+}

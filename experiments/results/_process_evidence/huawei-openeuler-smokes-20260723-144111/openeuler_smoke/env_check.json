@@ -1,0 +1,33 @@
+{
+  "evidence_mode": "real-cgroup-v2",
+  "cgroup_mode": "real-cgroup-v2",
+  "fallback_reason": "",
+  "os_release": "NAME=\"openEuler\"\nVERSION=\"24.03 (LTS)\"\nID=\"openEuler\"\nVERSION_ID=\"24.03\"\nPRETTY_NAME=\"openEuler 24.03 (LTS)\"\nANSI_COLOR=\"0;31\"",
+  "kernel": "Linux ecs-8937 6.6.0-112.0.0.104.oe2403.x86_64 #1 SMP Wed Oct 15 16:10:04 CST 2025 x86_64 x86_64 x86_64 GNU/Linux",
+  "id": "uid=0(root) gid=0(root) groups=0(root)",
+  "is_root": true,
+  "cgroup": {
+    "fs_type": "cgroup2fs",
+    "is_cgroup2fs": true,
+    "writable": true,
+    "aort_slice": "exists"
+  },
+  "overlayfs": {
+    "supported": true
+  },
+  "psi": {
+    "available": true,
+    "files": [
+      "cpu",
+      "io",
+      "irq",
+      "memory",
+      "stat"
+    ]
+  },
+  "go_version": "go version go1.22.0 linux/amd64",
+  "node_version": "v20.18.2",
+  "npm_version": "10.8.2",
+  "failures": 0,
+  "warnings": 0
+}

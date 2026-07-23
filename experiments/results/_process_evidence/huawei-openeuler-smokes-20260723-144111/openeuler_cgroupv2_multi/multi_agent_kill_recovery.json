@@ -1,0 +1,23 @@
+{
+  "evidence_mode": "real-cgroup-v2",
+  "killed_agent_id": "task-1784787333978527147-tester",
+  "kill_status": "200",
+  "killed_state": "KILLED",
+  "unaffected_agents": [
+    {
+      "agent_id": "task-1784787333978527147-reviewer",
+      "state": "COMPLETED",
+      "capsule_mode": "real",
+      "pids_current": 5,
+      "memory_current": 2109440
+    },
+    {
+      "agent_id": "task-1784787333978527147-coder",
+      "state": "COMPLETED",
+      "capsule_mode": "real",
+      "pids_current": 5,
+      "memory_current": 2109440
+    }
+  ],
+  "other_agents_unaffected": true
+}

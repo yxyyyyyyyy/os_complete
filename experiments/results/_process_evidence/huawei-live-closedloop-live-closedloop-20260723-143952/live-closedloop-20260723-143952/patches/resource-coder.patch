@@ -1,0 +1,10 @@
+diff --git a/internal/review/live_resource_hook.go b/internal/review/live_resource_hook.go
+--- a/internal/review/live_resource_hook.go
++++ b/internal/review/live_resource_hook.go
+@@ -1,5 +1,5 @@
+ package review
+ 
+ // LiveResourceHook is an allowlisted one-line edit target for codebase-dag live runs.
+ // Real DeepSeek patches should change only this constant to keep unified diffs small.
+-const LiveResourceHook = "resource-hook-v1"
++const LiveResourceHook = "hook-v2"

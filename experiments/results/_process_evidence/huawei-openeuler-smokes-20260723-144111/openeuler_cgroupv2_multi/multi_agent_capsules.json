@@ -1,0 +1,63 @@
+{
+  "evidence_mode": "real-cgroup-v2",
+  "cgroup_fs": "cgroup2fs",
+  "agent_count": 4,
+  "capsules": [
+    {
+      "agent_id": "task-1784787333978527147-planner",
+      "worker_pid": 268292,
+      "cgroup_path": "/sys/fs/cgroup/aort.slice/task-1784787333978527147-planner",
+      "capsule_mode": "real",
+      "real_cgroup_v2": true,
+      "memory.max": "268435456",
+      "memory.current": "2101248",
+      "pids.max": "64",
+      "pids.current": "5",
+      "cpu.max": "100000 100000",
+      "cpu.stat": "usage_usec 584\nuser_usec 584\nsystem_usec 0\nnr_periods 2\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0",
+      "cgroup.events": "populated 1\nfrozen 0"
+    },
+    {
+      "agent_id": "task-1784787333978527147-tester",
+      "worker_pid": 268307,
+      "cgroup_path": "/sys/fs/cgroup/aort.slice/task-1784787333978527147-tester",
+      "capsule_mode": "real",
+      "real_cgroup_v2": true,
+      "memory.max": "268435456",
+      "memory.current": "2101248",
+      "pids.max": "64",
+      "pids.current": "5",
+      "cpu.max": "100000 100000",
+      "cpu.stat": "usage_usec 516\nuser_usec 516\nsystem_usec 0\nnr_periods 2\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0",
+      "cgroup.events": "populated 1\nfrozen 0"
+    },
+    {
+      "agent_id": "task-1784787333978527147-reviewer",
+      "worker_pid": 268296,
+      "cgroup_path": "/sys/fs/cgroup/aort.slice/task-1784787333978527147-reviewer",
+      "capsule_mode": "real",
+      "real_cgroup_v2": true,
+      "memory.max": "268435456",
+      "memory.current": "2109440",
+      "pids.max": "64",
+      "pids.current": "5",
+      "cpu.max": "100000 100000",
+      "cpu.stat": "usage_usec 627\nuser_usec 311\nsystem_usec 316\nnr_periods 3\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0",
+      "cgroup.events": "populated 1\nfrozen 0"
+    },
+    {
+      "agent_id": "task-1784787333978527147-coder",
+      "worker_pid": 268279,
+      "cgroup_path": "/sys/fs/cgroup/aort.slice/task-1784787333978527147-coder",
+      "capsule_mode": "real",
+      "real_cgroup_v2": true,
+      "memory.max": "268435456",
+      "memory.current": "2109440",
+      "pids.max": "64",
+      "pids.current": "5",
+      "cpu.max": "100000 100000",
+      "cpu.stat": "usage_usec 744\nuser_usec 744\nsystem_usec 0\nnr_periods 2\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0",
+      "cgroup.events": "populated 1\nfrozen 0"
+    }
+  ]
+}

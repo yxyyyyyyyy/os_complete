@@ -1,0 +1,72 @@
+{
+  "evidence_mode": "real-cgroup-v2",
+  "cgroup_fs": "cgroup2fs",
+  "capsules": [
+    {
+      "agent_id": "software-real-1784787342500663467-planner",
+      "role": "planner",
+      "pid": 270177,
+      "capsule_mode": "real",
+      "capsule_evidence_mode": "real-cgroup-v2",
+      "cgroup_path": "/sys/fs/cgroup/aort.slice/software-real-1784787342500663467-planner",
+      "memory.current": 0,
+      "pids.current": 1,
+      "cpu.stat": "usage_usec 444\nuser_usec 444\nsystem_usec 0\nnr_periods 2\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0"
+    },
+    {
+      "agent_id": "software-real-1784787342500663467-coder",
+      "role": "coder",
+      "pid": 270187,
+      "capsule_mode": "real",
+      "capsule_evidence_mode": "real-cgroup-v2",
+      "cgroup_path": "/sys/fs/cgroup/aort.slice/software-real-1784787342500663467-coder",
+      "memory.current": 0,
+      "pids.current": 1,
+      "cpu.stat": "usage_usec 676\nuser_usec 0\nsystem_usec 676\nnr_periods 2\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0"
+    },
+    {
+      "agent_id": "software-real-1784787342500663467-tester",
+      "role": "tester",
+      "pid": 270197,
+      "capsule_mode": "real",
+      "capsule_evidence_mode": "real-cgroup-v2",
+      "cgroup_path": "/sys/fs/cgroup/aort.slice/software-real-1784787342500663467-tester",
+      "memory.current": 0,
+      "pids.current": 1,
+      "cpu.stat": "usage_usec 401\nuser_usec 401\nsystem_usec 0\nnr_periods 2\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0"
+    },
+    {
+      "agent_id": "software-real-1784787342500663467-reviewer",
+      "role": "reviewer",
+      "pid": 270207,
+      "capsule_mode": "real",
+      "capsule_evidence_mode": "real-cgroup-v2",
+      "cgroup_path": "/sys/fs/cgroup/aort.slice/software-real-1784787342500663467-reviewer",
+      "memory.current": 0,
+      "pids.current": 1,
+      "cpu.stat": "usage_usec 408\nuser_usec 408\nsystem_usec 0\nnr_periods 2\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0"
+    },
+    {
+      "agent_id": "software-real-1784787342500663467-fixer",
+      "role": "fixer",
+      "pid": 270217,
+      "capsule_mode": "real",
+      "capsule_evidence_mode": "real-cgroup-v2",
+      "cgroup_path": "/sys/fs/cgroup/aort.slice/software-real-1784787342500663467-fixer",
+      "memory.current": 0,
+      "pids.current": 1,
+      "cpu.stat": "usage_usec 388\nuser_usec 0\nsystem_usec 388\nnr_periods 2\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0"
+    },
+    {
+      "agent_id": "software-real-1784787342500663467-reporter",
+      "role": "reporter",
+      "pid": 270227,
+      "capsule_mode": "real",
+      "capsule_evidence_mode": "real-cgroup-v2",
+      "cgroup_path": "/sys/fs/cgroup/aort.slice/software-real-1784787342500663467-reporter",
+      "memory.current": 0,
+      "pids.current": 1,
+      "cpu.stat": "usage_usec 418\nuser_usec 418\nsystem_usec 0\nnr_periods 2\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0"
+    }
+  ]
+}

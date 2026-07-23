@@ -1,0 +1,243 @@
+[
+  {
+    "id": "task-1784787327379345642-llm-call",
+    "agent_id": "task-1784787327379345642-planner",
+    "name": "llm.call",
+    "start_time": 1784787327379,
+    "end_time": 1784787327379,
+    "duration_ms": 1,
+    "status": "OK",
+    "input_size": 18,
+    "output_size": 362,
+    "evidence": {
+      "duration_ms": 1,
+      "evidence_mode": "mock",
+      "fallback": false,
+      "fallback_reason": "",
+      "model": "mock",
+      "provider": "mock",
+      "requested_provider": "",
+      "tokens": 85
+    }
+  },
+  {
+    "id": "task-1784787327379345642-tool-exec",
+    "agent_id": "task-1784787327379345642-planner",
+    "name": "tool.exec",
+    "start_time": 1784787327379,
+    "end_time": 1784787327381,
+    "duration_ms": 2,
+    "status": "OK",
+    "input_size": 35,
+    "output_size": 214
+  },
+  {
+    "id": "task-1784787327379345642-ipc-publish",
+    "agent_id": "task-1784787327379345642-reviewer",
+    "name": "ipc.publish",
+    "start_time": 1784787327381,
+    "end_time": 1784787327381,
+    "duration_ms": 1,
+    "status": "OK",
+    "input_size": 120,
+    "output_size": 331
+  },
+  {
+    "id": "task-1784787327379345642-agent-spawn",
+    "agent_id": "task-1784787327379345642-reviewer",
+    "name": "agent.spawn",
+    "start_time": 1784787327381,
+    "end_time": 1784787327382,
+    "duration_ms": 1,
+    "status": "OK",
+    "input_size": 158,
+    "output_size": 115
+  },
+  {
+    "id": "task-1784787327379345642-ipc-poll",
+    "agent_id": "task-1784787327379345642-fixer",
+    "name": "ipc.poll",
+    "start_time": 1784787327382,
+    "end_time": 1784787327383,
+    "duration_ms": 1,
+    "status": "OK",
+    "input_size": 27,
+    "output_size": 185
+  },
+  {
+    "id": "task-1784787327379345642-tester-syscall-001",
+    "agent_id": "task-1784787327379345642-tester",
+    "name": "context.materialize",
+    "start_time": 1784787327725,
+    "end_time": 1784787327725,
+    "duration_ms": 1,
+    "status": "OK",
+    "input_size": 4,
+    "output_size": 522
+  },
+  {
+    "id": "task-1784787327379345642-tester-syscall-002",
+    "agent_id": "task-1784787327379345642-tester",
+    "name": "tool.exec",
+    "start_time": 1784787327728,
+    "end_time": 1784787327737,
+    "duration_ms": 8,
+    "status": "OK",
+    "input_size": 53,
+    "output_size": 182
+  },
+  {
+    "id": "task-1784787327379345642-tester-syscall-003",
+    "agent_id": "task-1784787327379345642-tester",
+    "name": "context.write_delta",
+    "start_time": 1784787327737,
+    "end_time": 1784787327737,
+    "duration_ms": 1,
+    "status": "OK",
+    "input_size": 77,
+    "output_size": 101
+  },
+  {
+    "id": "task-1784787327379345642-tester-syscall-004",
+    "agent_id": "task-1784787327379345642-tester",
+    "name": "agent.report",
+    "start_time": 1784787327737,
+    "end_time": 1784787327737,
+    "duration_ms": 1,
+    "status": "OK",
+    "input_size": 38,
+    "output_size": 22
+  },
+  {
+    "id": "task-1784787327379345642-planner-syscall-001",
+    "agent_id": "task-1784787327379345642-planner",
+    "name": "context.materialize",
+    "start_time": 1784787327784,
+    "end_time": 1784787327784,
+    "duration_ms": 1,
+    "status": "OK",
+    "input_size": 4,
+    "output_size": 523
+  },
+  {
+    "id": "task-1784787327379345642-coder-syscall-001",
+    "agent_id": "task-1784787327379345642-coder",
+    "name": "context.materialize",
+    "start_time": 1784787327788,
+    "end_time": 1784787327788,
+    "duration_ms": 1,
+    "status": "OK",
+    "input_size": 4,
+    "output_size": 521
+  },
+  {
+    "id": "task-1784787327379345642-planner-syscall-002",
+    "agent_id": "task-1784787327379345642-planner",
+    "name": "tool.exec",
+    "start_time": 1784787327785,
+    "end_time": 1784787327789,
+    "duration_ms": 3,
+    "status": "OK",
+    "input_size": 53,
+    "output_size": 183
+  },
+  {
+    "id": "task-1784787327379345642-planner-syscall-003",
+    "agent_id": "task-1784787327379345642-planner",
+    "name": "context.write_delta",
+    "start_time": 1784787327789,
+    "end_time": 1784787327789,
+    "duration_ms": 1,
+    "status": "OK",
+    "input_size": 78,
+    "output_size": 101
+  },
+  {
+    "id": "task-1784787327379345642-planner-syscall-004",
+    "agent_id": "task-1784787327379345642-planner",
+    "name": "agent.report",
+    "start_time": 1784787327789,
+    "end_time": 1784787327789,
+    "duration_ms": 1,
+    "status": "OK",
+    "input_size": 39,
+    "output_size": 22
+  },
+  {
+    "id": "task-1784787327379345642-coder-syscall-002",
+    "agent_id": "task-1784787327379345642-coder",
+    "name": "tool.exec",
+    "start_time": 1784787327788,
+    "end_time": 1784787327790,
+    "duration_ms": 1,
+    "status": "OK",
+    "input_size": 53,
+    "output_size": 181
+  },
+  {
+    "id": "task-1784787327379345642-coder-syscall-003",
+    "agent_id": "task-1784787327379345642-coder",
+    "name": "context.write_delta",
+    "start_time": 1784787327790,
+    "end_time": 1784787327790,
+    "duration_ms": 1,
+    "status": "OK",
+    "input_size": 76,
+    "output_size": 101
+  },
+  {
+    "id": "task-1784787327379345642-coder-syscall-004",
+    "agent_id": "task-1784787327379345642-coder",
+    "name": "agent.report",
+    "start_time": 1784787327790,
+    "end_time": 1784787327790,
+    "duration_ms": 1,
+    "status": "OK",
+    "input_size": 37,
+    "output_size": 22
+  },
+  {
+    "id": "task-1784787327379345642-reviewer-syscall-001",
+    "agent_id": "task-1784787327379345642-reviewer",
+    "name": "context.materialize",
+    "start_time": 1784787327791,
+    "end_time": 1784787327791,
+    "duration_ms": 1,
+    "status": "OK",
+    "input_size": 4,
+    "output_size": 619
+  },
+  {
+    "id": "task-1784787327379345642-reviewer-syscall-002",
+    "agent_id": "task-1784787327379345642-reviewer",
+    "name": "tool.exec",
+    "start_time": 1784787327791,
+    "end_time": 1784787327793,
+    "duration_ms": 1,
+    "status": "OK",
+    "input_size": 53,
+    "output_size": 184
+  },
+  {
+    "id": "task-1784787327379345642-reviewer-syscall-003",
+    "agent_id": "task-1784787327379345642-reviewer",
+    "name": "context.write_delta",
+    "start_time": 1784787327793,
+    "end_time": 1784787327793,
+    "duration_ms": 1,
+    "status": "OK",
+    "input_size": 79,
+    "output_size": 101
+  },
+  {
+    "id": "task-1784787327379345642-reviewer-syscall-004",
+    "agent_id": "task-1784787327379345642-reviewer",
+    "name": "agent.report",
+    "start_time": 1784787327793,
+    "end_time": 1784787327793,
+    "duration_ms": 1,
+    "status": "OK",
+    "input_size": 40,
+    "output_size": 22
+  }
+]

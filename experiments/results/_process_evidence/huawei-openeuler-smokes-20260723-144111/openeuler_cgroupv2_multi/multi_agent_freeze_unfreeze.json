@@ -1,0 +1,7 @@
+{
+  "evidence_mode": "real-cgroup-v2",
+  "agent_id": "task-1784787333978527147-planner",
+  "freeze_status": "200",
+  "unfreeze_status": "200",
+  "success": true
+}

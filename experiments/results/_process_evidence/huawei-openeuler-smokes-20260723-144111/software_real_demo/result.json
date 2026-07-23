@@ -1,0 +1,88 @@
+{
+  "demo_id": "software-real-1784787342500663467",
+  "task_id": "software-real-1784787342500663467",
+  "requirement": "实现一个小 Go module，实现字符串工具函数，并运行 go test ./...",
+  "evidence_mode": "real-runtime",
+  "final_status": "success",
+  "agents": [
+    {
+      "id": "software-real-1784787342500663467-planner",
+      "role": "planner",
+      "state": "COMPLETED",
+      "pid": 270177,
+      "last_seen": 1784787342512,
+      "capsule_mode": "real",
+      "capsule_evidence_mode": "real-cgroup-v2",
+      "cgroup_path": "/sys/fs/cgroup/aort.slice/software-real-1784787342500663467-planner"
+    },
+    {
+      "id": "software-real-1784787342500663467-coder",
+      "role": "coder",
+      "state": "COMPLETED",
+      "pid": 270187,
+      "last_seen": 1784787342536,
+      "capsule_mode": "real",
+      "capsule_evidence_mode": "real-cgroup-v2",
+      "cgroup_path": "/sys/fs/cgroup/aort.slice/software-real-1784787342500663467-coder"
+    },
+    {
+      "id": "software-real-1784787342500663467-tester",
+      "role": "tester",
+      "state": "COMPLETED",
+      "pid": 270197,
+      "last_seen": 1784787342560,
+      "capsule_mode": "real",
+      "capsule_evidence_mode": "real-cgroup-v2",
+      "cgroup_path": "/sys/fs/cgroup/aort.slice/software-real-1784787342500663467-tester"
+    },
+    {
+      "id": "software-real-1784787342500663467-reviewer",
+      "role": "reviewer",
+      "state": "COMPLETED",
+      "pid": 270207,
+      "last_seen": 1784787342591,
+      "capsule_mode": "real",
+      "capsule_evidence_mode": "real-cgroup-v2",
+      "cgroup_path": "/sys/fs/cgroup/aort.slice/software-real-1784787342500663467-reviewer"
+    },
+    {
+      "id": "software-real-1784787342500663467-fixer",
+      "role": "fixer",
+      "state": "COMPLETED",
+      "pid": 270217,
+      "last_seen": 1784787342613,
+      "capsule_mode": "real",
+      "capsule_evidence_mode": "real-cgroup-v2",
+      "cgroup_path": "/sys/fs/cgroup/aort.slice/software-real-1784787342500663467-fixer"
+    },
+    {
+      "id": "software-real-1784787342500663467-reporter",
+      "role": "reporter",
+      "state": "COMPLETED",
+      "pid": 270227,
+      "last_seen": 1784787342963,
+      "capsule_mode": "real",
+      "capsule_evidence_mode": "real-cgroup-v2",
+      "cgroup_path": "/sys/fs/cgroup/aort.slice/software-real-1784787342500663467-reporter"
+    }
+  ],
+  "dag_nodes": 6,
+  "syscall_count": 41,
+  "scheduler_decision_count": 6,
+  "context_pages": 13,
+  "shared_pages": 13,
+  "saved_tokens": 377,
+  "ipc_messages": 1,
+  "tool_exec_count": 10,
+  "fault_injected": true,
+  "fault_recovered": true,
+  "checkpoint_used": true,
+  "checkpoint_count": 1,
+  "checkpoint_mode": "runtime-state",
+  "first_test_status": "failed",
+  "second_test_status": "passed",
+  "first_test_output": "--- FAIL: TestNormalizeSpace (0.00s)\n    strings_test.go:8: NormalizeSpace() = \" alpha   beta \"\nFAIL\nFAIL\texample.com/aortstrings\t0.001s\nFAIL\n",
+  "second_test_output": "ok  \texample.com/aortstrings\t0.001s\n",
+  "started_at": 1784787342500,
+  "completed_at": 1784787342964
+}

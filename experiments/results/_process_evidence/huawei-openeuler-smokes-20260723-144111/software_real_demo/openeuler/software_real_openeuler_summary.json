@@ -1,0 +1,14 @@
+{
+  "evidence_mode": "real-runtime",
+  "capsule_evidence_mode": "real-cgroup-v2",
+  "cgroup_fs": "cgroup2fs",
+  "demo_id": "software-real-1784787342500663467",
+  "agent_count": 6,
+  "worker_cgroup_backed_agents": 6,
+  "final_status": "success",
+  "first_test_status": "failed",
+  "second_test_status": "passed",
+  "fault_recovered": true,
+  "checkpoint_used": true,
+  "success": true
+}

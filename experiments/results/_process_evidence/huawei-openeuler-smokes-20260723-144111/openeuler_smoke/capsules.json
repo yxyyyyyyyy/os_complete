@@ -1,0 +1,126 @@
+[
+  {
+    "agent_id": "task-1784787327379345642-planner",
+    "task_id": "task-1784787327379345642",
+    "role": "Planner",
+    "pid": 266415,
+    "evidence_mode": "real-cgroup-v2",
+    "real_cgroup_v2": true,
+    "capsule_mode": "real",
+    "cgroup_path": "/sys/fs/cgroup/aort.slice/task-1784787327379345642-planner",
+    "memory_current": 2101248,
+    "pids_current": 5,
+    "cpu_stat": {
+      "burst_usec": 0,
+      "nr_bursts": 0,
+      "nr_periods": 2,
+      "nr_throttled": 0,
+      "system_usec": 0,
+      "throttled_usec": 0,
+      "usage_usec": 628,
+      "user_usec": 628
+    },
+    "events": {
+      "frozen": 0,
+      "populated": 1
+    },
+    "frozen": false
+  },
+  {
+    "agent_id": "task-1784787327379345642-coder",
+    "task_id": "task-1784787327379345642",
+    "role": "Coder",
+    "pid": 266421,
+    "evidence_mode": "real-cgroup-v2",
+    "real_cgroup_v2": true,
+    "capsule_mode": "real",
+    "cgroup_path": "/sys/fs/cgroup/aort.slice/task-1784787327379345642-coder",
+    "memory_current": 2101248,
+    "pids_current": 5,
+    "cpu_stat": {
+      "burst_usec": 0,
+      "nr_bursts": 0,
+      "nr_periods": 4,
+      "nr_throttled": 0,
+      "system_usec": 0,
+      "throttled_usec": 0,
+      "usage_usec": 580,
+      "user_usec": 580
+    },
+    "events": {
+      "frozen": 0,
+      "populated": 1
+    },
+    "frozen": false
+  },
+  {
+    "agent_id": "task-1784787327379345642-tester",
+    "task_id": "task-1784787327379345642",
+    "role": "Tester",
+    "pid": 266401,
+    "evidence_mode": "real-cgroup-v2",
+    "real_cgroup_v2": true,
+    "capsule_mode": "real",
+    "cgroup_path": "/sys/fs/cgroup/aort.slice/task-1784787327379345642-tester",
+    "memory_current": 2101248,
+    "pids_current": 5,
+    "cpu_stat": {
+      "burst_usec": 0,
+      "nr_bursts": 0,
+      "nr_periods": 2,
+      "nr_throttled": 0,
+      "system_usec": 0,
+      "throttled_usec": 0,
+      "usage_usec": 695,
+      "user_usec": 695
+    },
+    "events": {
+      "frozen": 0,
+      "populated": 1
+    },
+    "frozen": false
+  },
+  {
+    "agent_id": "task-1784787327379345642-reviewer",
+    "task_id": "task-1784787327379345642",
+    "role": "Reviewer",
+    "pid": 266431,
+    "evidence_mode": "real-cgroup-v2",
+    "real_cgroup_v2": true,
+    "capsule_mode": "real",
+    "cgroup_path": "/sys/fs/cgroup/aort.slice/task-1784787327379345642-reviewer",
+    "memory_current": 4096,
+    "pids_current": 5,
+    "cpu_stat": {
+      "burst_usec": 0,
+      "nr_bursts": 0,
+      "nr_periods": 2,
+      "nr_throttled": 0,
+      "system_usec": 0,
+      "throttled_usec": 0,
+      "usage_usec": 355,
+      "user_usec": 355
+    },
+    "events": {
+      "frozen": 0,
+      "populated": 1
+    },
+    "frozen": false
+  },
+  {
+    "agent_id": "task-1784787327379345642-fixer",
+    "task_id": "task-1784787327379345642",
+    "role": "fixer",
+    "pid": 0,
+    "evidence_mode": "degraded",
+    "real_cgroup_v2": false,
+    "capsule_mode": "degraded",
+    "cgroup_path": "",
+    "memory_current": 0,
+    "pids_current": 0,
+    "cpu_stat": null,
+    "events": null,
+    "frozen": false,
+    "error": "capsule not prepared"
+  }
+]

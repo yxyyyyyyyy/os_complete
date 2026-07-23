@@ -1,0 +1,44 @@
+{
+  "schema_version": "codebase-dag/v1",
+  "node_id": "planner",
+  "tasks": [
+    {
+      "id": "review-remediation-context",
+      "owner": "developer",
+      "dependencies": [],
+      "files": [],
+      "acceptance": [
+        "bash internal/codebasedag/acceptance/context_real.sh"
+      ]
+    },
+    {
+      "id": "review-remediation-resource",
+      "owner": "developer",
+      "dependencies": [],
+      "files": [],
+      "acceptance": [
+        "bash internal/codebasedag/acceptance/resource_real.sh"
+      ]
+    },
+    {
+      "id": "review-remediation-final-strict",
+      "owner": "developer",
+      "dependencies": [],
+      "files": [],
+      "acceptance": [
+        "bash internal/codebasedag/acceptance/review_final_strict.sh"
+      ]
+    }
+  ],
+  "risks": [
+    "Changes may introduce compatibility issues with existing tests",
+    "Acceptance scripts may require specific environment setup"
+  ],
+  "commands": [
+    [
+      "go",
+      "test",
+      "./..."
+    ]
+  ]
+}

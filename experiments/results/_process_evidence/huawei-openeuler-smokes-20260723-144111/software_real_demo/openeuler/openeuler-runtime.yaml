@@ -1,0 +1,7 @@
+http_addr: 127.0.0.1:8080
+mode: openeuler
+data_dir: /root/aort-r-huawei-run/.cache/software-real-openeuler/data
+socket_path: /root/aort-r-huawei-run/.cache/software-real-openeuler/aortd.sock
+worker_command: /root/aort-r-huawei-run/.cache/software-real-openeuler/aort-worker
+heartbeat_timeout_ms: 6000
+cgroup_root: /sys/fs/cgroup/aort.slice

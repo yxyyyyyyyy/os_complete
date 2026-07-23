@@ -1,0 +1,17 @@
+{
+  "schema_version": "codebase-dag/v1",
+  "node_id": "resource-coder",
+  "summary": "Update LiveResourceHook constant to v2",
+  "patch": "diff --git a/internal/review/live_resource_hook.go b/internal/review/live_resource_hook.go\n--- a/internal/review/live_resource_hook.go\n+++ b/internal/review/live_resource_hook.go\n@@ -1,5 +1,5 @@\n package review\n \n // LiveResourceHook is an allowlisted one-line edit target for codebase-dag live runs.\n // Real DeepSeek patches should change only this constant to keep unified diffs small.\n-const LiveResourceHook = \"resource-hook-v1\"\n+const LiveResourceHook = \"hook-v2\"\n",
+  "replacement_value": "hook-v2",
+  "changed_files": [
+    "internal/review/live_resource_hook.go"
+  ],
+  "tests": [
+    [
+      "go",
+      "test",
+      "./internal/..."
+    ]
+  ]
+}

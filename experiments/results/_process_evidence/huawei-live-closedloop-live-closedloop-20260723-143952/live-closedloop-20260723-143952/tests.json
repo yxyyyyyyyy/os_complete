@@ -1,0 +1,75 @@
+[
+  {
+    "schema_version": "codebase-dag/v1",
+    "name": "tester-1-gofmt",
+    "command": [
+      "gofmt",
+      "-w",
+      "internal/review/live_context_hook.go",
+      "internal/review/live_evidence_hook.go",
+      "internal/review/live_resource_hook.go"
+    ],
+    "exit_code": 0,
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "started_at": "2026-07-23T14:40:18.079588962Z",
+    "finished_at": "2026-07-23T14:40:18.08075749Z"
+  },
+  {
+    "schema_version": "codebase-dag/v1",
+    "name": "tester-2-git",
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit_code": 0,
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "started_at": "2026-07-23T14:40:18.080765914Z",
+    "finished_at": "2026-07-23T14:40:18.092651413Z"
+  },
+  {
+    "schema_version": "codebase-dag/v1",
+    "name": "tester-3-go",
+    "command": [
+      "go",
+      "test",
+      "./..."
+    ],
+    "exit_code": 0,
+    "stdout_sha256": "48e705453023b8251be3c2043919caa2d63da71817470e90ad8c83c57e9e5c7f",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "started_at": "2026-07-23T14:40:18.092655707Z",
+    "finished_at": "2026-07-23T14:40:28.3959728Z"
+  },
+  {
+    "schema_version": "codebase-dag/v1",
+    "name": "tester-4-go",
+    "command": [
+      "go",
+      "test",
+      "-race",
+      "./internal/codebasedag/..."
+    ],
+    "exit_code": 0,
+    "stdout_sha256": "9a7f78d15c39395f42f58c81ac7f5a18c38faa18ec248b696bcbe1fb63178e65",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "started_at": "2026-07-23T14:40:28.396001676Z",
+    "finished_at": "2026-07-23T14:40:33.945061507Z"
+  },
+  {
+    "schema_version": "codebase-dag/v1",
+    "name": "tester-5-go",
+    "command": [
+      "go",
+      "vet",
+      "./..."
+    ],
+    "exit_code": 0,
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "started_at": "2026-07-23T14:40:33.945070427Z",
+    "finished_at": "2026-07-23T14:40:34.671906171Z"
+  }
+]

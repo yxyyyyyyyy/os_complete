@@ -1,0 +1,7 @@
+{
+  "action": "kill",
+  "evidence_mode": "real-cgroup-v2",
+  "fallback_reason": "",
+  "kill_method": "cgroup.kill",
+  "status": "ok"
+}

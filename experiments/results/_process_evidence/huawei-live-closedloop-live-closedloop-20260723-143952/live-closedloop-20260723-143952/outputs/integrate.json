@@ -1,0 +1,56 @@
+{
+  "schema_version": "codebase-dag/v1",
+  "node_id": "integrate",
+  "status": "merged",
+  "base_commit": "78fb2e9c8b1171553d70646034d64c8551a2c41c",
+  "base_tree_hash": "82362a4c8efdee0e3241960c420a6cf61e39bd30",
+  "final_tree_hash": "82362a4c8efdee0e3241960c420a6cf61e39bd30",
+  "final_diff_sha256": "6ccb852708057c3b331951cc2243db86033b9f3244192b16544f3eb82fdd10a9",
+  "applies": [
+    {
+      "node_id": "resource-coder",
+      "patch_sha256": "563b468aa57db98624a3740db8b6939650b39a04fb4f6f36f8cc750facbe20f8",
+      "declared_files": [
+        "internal/review/live_resource_hook.go"
+      ],
+      "actual_files": [
+        "internal/review/live_resource_hook.go"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "",
+      "tree_hash_after": "82362a4c8efdee0e3241960c420a6cf61e39bd30",
+      "duration_ms": 15
+    },
+    {
+      "node_id": "context-coder",
+      "patch_sha256": "83025bff4a3aece2a738acdfb4b1eb6dfeadb4eee6d2c7b7fa11335e7a1dbc92",
+      "declared_files": [
+        "internal/review/live_context_hook.go"
+      ],
+      "actual_files": [
+        "internal/review/live_context_hook.go"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "",
+      "tree_hash_after": "82362a4c8efdee0e3241960c420a6cf61e39bd30",
+      "duration_ms": 14
+    },
+    {
+      "node_id": "evidence-coder",
+      "patch_sha256": "455380b6eefee7091cecb0528781ec2938226b36ac0be4a5e38453f67007711b",
+      "declared_files": [
+        "internal/review/live_evidence_hook.go"
+      ],
+      "actual_files": [
+        "internal/review/live_evidence_hook.go"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "",
+      "tree_hash_after": "82362a4c8efdee0e3241960c420a6cf61e39bd30",
+      "duration_ms": 14
+    }
+  ]
+}

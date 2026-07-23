@@ -1,0 +1,30 @@
+diff --git a/internal/review/live_context_hook.go b/internal/review/live_context_hook.go
+index 2301d9f..f2b2069 100644
+--- a/internal/review/live_context_hook.go
++++ b/internal/review/live_context_hook.go
+@@ -1,4 +1,4 @@
+ package review
+ 
+ // LiveContextHook is an allowlisted one-line edit target for codebase-dag live runs.
+-const LiveContextHook = "context-hook-v1"
++const LiveContextHook = "hook-v2"
+diff --git a/internal/review/live_evidence_hook.go b/internal/review/live_evidence_hook.go
+index c99e8f2..b310307 100644
+--- a/internal/review/live_evidence_hook.go
++++ b/internal/review/live_evidence_hook.go
+@@ -1,4 +1,4 @@
+ package review
+ 
+ // LiveEvidenceHook is an allowlisted one-line edit target for codebase-dag live runs.
+-const LiveEvidenceHook = "evidence-hook-v1"
++const LiveEvidenceHook = "hook-v2"
+diff --git a/internal/review/live_resource_hook.go b/internal/review/live_resource_hook.go
+index 98de1c9..ab0c95d 100644
+--- a/internal/review/live_resource_hook.go
++++ b/internal/review/live_resource_hook.go
+@@ -2,4 +2,4 @@ package review
+ 
+ // LiveResourceHook is an allowlisted one-line edit target for codebase-dag live runs.
+ // Real DeepSeek patches should change only this constant to keep unified diffs small.
+-const LiveResourceHook = "resource-hook-v1"
++const LiveResourceHook = "hook-v2"

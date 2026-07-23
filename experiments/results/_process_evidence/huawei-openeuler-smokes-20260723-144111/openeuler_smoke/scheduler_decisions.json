@@ -1,0 +1,189 @@
+[
+  {
+    "id": "20260723141527.383471371",
+    "decision_id": "20260723141527.383471371",
+    "timestamp": "2026-07-23T06:15:27.383471371Z",
+    "task_id": "task-1784787327379345642",
+    "selected_task": "task-1784787327379345642",
+    "candidates": [
+      "task-1784787327379345642-planner",
+      "task-1784787327379345642-coder",
+      "task-1784787327379345642-tester",
+      "task-1784787327379345642-reviewer"
+    ],
+    "selected_agent": "task-1784787327379345642-planner",
+    "policy": "token-cfs-prefix-affinity",
+    "reason": "lowest vruntime; no previous prefix group",
+    "vruntime_before": {
+      "task-1784787327379345642-coder": 0,
+      "task-1784787327379345642-planner": 0,
+      "task-1784787327379345642-reviewer": 0,
+      "task-1784787327379345642-tester": 0
+    },
+    "vruntime_after": {
+      "task-1784787327379345642-coder": 0,
+      "task-1784787327379345642-planner": 0,
+      "task-1784787327379345642-reviewer": 0,
+      "task-1784787327379345642-tester": 0
+    },
+    "shared_pages": {},
+    "vruntime_score": 0,
+    "context_affinity_score": 0,
+    "memory_pressure": 0,
+    "pids_pressure": 0,
+    "cpu_throttle_pressure": 0,
+    "psi_pressure": 0,
+    "dependency_ready": true,
+    "dynamic_spawn_priority": 0,
+    "final_score": 0,
+    "evidence_mode": "degraded",
+    "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable",
+    "resource_pressure": {
+      "memory_pressure": 0,
+      "pids_pressure": 0,
+      "cpu_throttle_pressure": 0,
+      "psi_pressure": 0,
+      "evidence_mode": "degraded",
+      "fallback_reason": "resource pressure sampler not configured or local cgroup pressure files unavailable"
+    },
+    "created_at": 1784787327383
+  },
+  {
+    "id": "20260723141527.384524350",
+    "decision_id": "20260723141527.384524350",
+    "timestamp": "2026-07-23T06:15:27.38452435Z",
+    "task_id": "task-1784787327379345642",
+    "selected_task": "task-1784787327379345642",
+    "candidates": [
+      "task-1784787327379345642-coder",
+      "task-1784787327379345642-tester",
+      "task-1784787327379345642-reviewer"
+    ],
+    "selected_agent": "task-1784787327379345642-coder",
+    "policy": "token-cfs-prefix-affinity",
+    "reason": "lowest vruntime; no affinity candidate within threshold",
+    "vruntime_before": {
+      "task-1784787327379345642-coder": 0,
+      "task-1784787327379345642-reviewer": 0,
+      "task-1784787327379345642-tester": 0
+    },
+    "vruntime_after": {
+      "task-1784787327379345642-coder": 0,
+      "task-1784787327379345642-reviewer": 0,
+      "task-1784787327379345642-tester": 0
+    },
+    "shared_pages": {
+      "task-1784787327379345642-coder": 3,
+      "task-1784787327379345642-reviewer": 3,
+      "task-1784787327379345642-tester": 3
+    },
+    "vruntime_score": 0,
+    "context_affinity_score": 0,
+    "memory_pressure": 0,
+    "pids_pressure": 0,
+    "cpu_throttle_pressure": 0,
+    "psi_pressure": 0.484,
+    "dependency_ready": true,
+    "dynamic_spawn_priority": 0,
+    "final_score": 0,
+    "evidence_mode": "real-cgroup-v2",
+    "fallback_reason": "",
+    "resource_pressure": {
+      "memory_pressure": 0,
+      "pids_pressure": 0,
+      "cpu_throttle_pressure": 0,
+      "psi_pressure": 0.484,
+      "evidence_mode": "real-cgroup-v2",
+      "fallback_reason": ""
+    },
+    "created_at": 1784787327384
+  },
+  {
+    "id": "20260723141527.385859225",
+    "decision_id": "20260723141527.385859225",
+    "timestamp": "2026-07-23T06:15:27.385859225Z",
+    "task_id": "task-1784787327379345642",
+    "selected_task": "task-1784787327379345642",
+    "candidates": [
+      "task-1784787327379345642-tester",
+      "task-1784787327379345642-reviewer"
+    ],
+    "selected_agent": "task-1784787327379345642-tester",
+    "policy": "token-cfs-prefix-affinity",
+    "reason": "lowest vruntime; no affinity candidate within threshold",
+    "vruntime_before": {
+      "task-1784787327379345642-reviewer": 0,
+      "task-1784787327379345642-tester": 0
+    },
+    "vruntime_after": {
+      "task-1784787327379345642-reviewer": 0,
+      "task-1784787327379345642-tester": 0
+    },
+    "shared_pages": {
+      "task-1784787327379345642-reviewer": 3,
+      "task-1784787327379345642-tester": 3
+    },
+    "vruntime_score": 0,
+    "context_affinity_score": 0,
+    "memory_pressure": 0,
+    "pids_pressure": 0,
+    "cpu_throttle_pressure": 0,
+    "psi_pressure": 0.484,
+    "dependency_ready": true,
+    "dynamic_spawn_priority": 0,
+    "final_score": 0,
+    "evidence_mode": "real-cgroup-v2",
+    "fallback_reason": "",
+    "resource_pressure": {
+      "memory_pressure": 0,
+      "pids_pressure": 0,
+      "cpu_throttle_pressure": 0,
+      "psi_pressure": 0.484,
+      "evidence_mode": "real-cgroup-v2",
+      "fallback_reason": ""
+    },
+    "created_at": 1784787327385
+  },
+  {
+    "id": "20260723141527.388937685",
+    "decision_id": "20260723141527.388937685",
+    "timestamp": "2026-07-23T06:15:27.388937685Z",
+    "task_id": "task-1784787327379345642",
+    "selected_task": "task-1784787327379345642",
+    "candidates": [
+      "task-1784787327379345642-reviewer"
+    ],
+    "selected_agent": "task-1784787327379345642-reviewer",
+    "policy": "token-cfs-prefix-affinity",
+    "reason": "lowest vruntime; no affinity candidate within threshold",
+    "vruntime_before": {
+      "task-1784787327379345642-reviewer": 0
+    },
+    "vruntime_after": {
+      "task-1784787327379345642-reviewer": 0
+    },
+    "shared_pages": {
+      "task-1784787327379345642-reviewer": 3
+    },
+    "vruntime_score": 0,
+    "context_affinity_score": 0,
+    "memory_pressure": 0,
+    "pids_pressure": 0,
+    "cpu_throttle_pressure": 0,
+    "psi_pressure": 0.484,
+    "dependency_ready": true,
+    "dynamic_spawn_priority": 0,
+    "final_score": 0,
+    "evidence_mode": "real-cgroup-v2",
+    "fallback_reason": "",
+    "resource_pressure": {
+      "memory_pressure": 0,
+      "pids_pressure": 0,
+      "cpu_throttle_pressure": 0,
+      "psi_pressure": 0.484,
+      "evidence_mode": "real-cgroup-v2",
+      "fallback_reason": ""
+    },
+    "created_at": 1784787327388
+  }
+]
