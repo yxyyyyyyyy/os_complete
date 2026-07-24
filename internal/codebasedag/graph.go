@@ -29,7 +29,8 @@ func NewCodebaseGraph() CodebaseGraph {
 		"resource-coder": {"planner"},
 		"context-coder":  {"planner"},
 		"evidence-coder": {"planner"},
-		"integrate":      {"resource-coder", "context-coder", "evidence-coder"},
+		"fault-agent":    {"planner"},
+		"integrate":      {"resource-coder", "context-coder", "evidence-coder", "fault-agent"},
 		"tester":         {"integrate"},
 		"reviewer":       {"tester"},
 		"finalizer":      {"reviewer"},
@@ -90,7 +91,27 @@ func (g CodebaseGraph) Ready(completed map[string]bool) []string {
 	if g.graph == nil {
 		return nil
 	}
-	return g.graph.Ready(completed)
+	ready := g.graph.Ready(completed)
+	// Prefer resource-coder first so the ≥20k LOC restore runs even if a sibling coder fails later.
+	sort.SliceStable(ready, func(i, j int) bool {
+		return nodeReadyPriority(ready[i]) < nodeReadyPriority(ready[j])
+	})
+	return ready
+}
+
+func nodeReadyPriority(nodeID string) int {
+	switch nodeID {
+	case "resource-coder":
+		return 0
+	case "context-coder":
+		return 1
+	case "evidence-coder":
+		return 2
+	case "fault-agent":
+		return 3
+	default:
+		return 100
+	}
 }
 
 func (g CodebaseGraph) Dependencies(node string) []string {

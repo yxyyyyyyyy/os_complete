@@ -1,0 +1,32 @@
+diff --git a/internal/codebasedag/judge_resource.go b/internal/codebasedag/judge_resource.go
+--- a/internal/codebasedag/judge_resource.go
++++ b/internal/codebasedag/judge_resource.go
+@@ -3,3 +3,3 @@
+ // ResourceJudgeMarker is flipped by live DAG agents from seed-incomplete to complete.
+-const ResourceJudgeMarker = "seed-incomplete"
++const ResourceJudgeMarker = "judge-resource-complete"
+ 
+diff --git a/internal/codebasedag/resourceagent/chunk001/gen_audit_log_002.go b/internal/codebasedag/resourceagent/chunk001/gen_audit_log_002.go
+--- a/internal/codebasedag/resourceagent/chunk001/gen_audit_log_002.go
++++ b/internal/codebasedag/resourceagent/chunk001/gen_audit_log_002.go
+@@ -388,4 +388,2 @@
+ // hashing, redaction, validation, and test vectors.
+ 
+-// AORT_SEED_BROKEN: intentional compile break for live restore
+-var _ = __aort_seed_broken_undefined__
+diff --git a/internal/codebasedag/resourceagent/chunk008/gen_capsule_notes_012.go b/internal/codebasedag/resourceagent/chunk008/gen_capsule_notes_012.go
+--- a/internal/codebasedag/resourceagent/chunk008/gen_capsule_notes_012.go
++++ b/internal/codebasedag/resourceagent/chunk008/gen_capsule_notes_012.go
+@@ -360,4 +360,2 @@
+ }
+ 
+-// AORT_SEED_BROKEN: intentional compile break for live restore
+-var _ = __aort_seed_broken_undefined__
+diff --git a/internal/codebasedag/resourceagent/chunk015/gen_fault_memory_003.go b/internal/codebasedag/resourceagent/chunk015/gen_fault_memory_003.go
+--- a/internal/codebasedag/resourceagent/chunk015/gen_fault_memory_003.go
++++ b/internal/codebasedag/resourceagent/chunk015/gen_fault_memory_003.go
+@@ -460,4 +460,2 @@
+ }
+ 
+-// AORT_SEED_BROKEN: intentional compile break for live restore
+-var _ = __aort_seed_broken_undefined__

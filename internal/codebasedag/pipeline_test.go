@@ -7,10 +7,10 @@ import (
 
 func TestBuildIntegrationPlanOrdersCodersAndDetectsConflicts(t *testing.T) {
 	patches := []PatchRecord{
-		{NodeID: "evidence-coder", SourceCallID: "c3", SHA256: strings.Repeat("c", 64), ChangedFiles: []string{"internal/review/live_evidence_hook.go"}, Bytes: 3},
-		{NodeID: "resource-coder", SourceCallID: "c1", SHA256: strings.Repeat("a", 64), ChangedFiles: []string{"internal/review/live_resource_hook.go"}, Bytes: 1},
-		{NodeID: "context-coder", SourceCallID: "c2", SHA256: strings.Repeat("b", 64), ChangedFiles: []string{"internal/review/live_context_hook.go"}, Bytes: 2},
-		{NodeID: "fixer-1", SourceCallID: "c4", SHA256: strings.Repeat("d", 64), ChangedFiles: []string{"internal/review/live_resource_hook.go"}, Bytes: 4},
+		{NodeID: "evidence-coder", SourceCallID: "c3", SHA256: strings.Repeat("c", 64), ChangedFiles: []string{"internal/codebasedag/judge_evidence.go"}, Bytes: 3},
+		{NodeID: "resource-coder", SourceCallID: "c1", SHA256: strings.Repeat("a", 64), ChangedFiles: []string{"internal/codebasedag/judge_resource.go"}, Bytes: 1},
+		{NodeID: "context-coder", SourceCallID: "c2", SHA256: strings.Repeat("b", 64), ChangedFiles: []string{"internal/codebasedag/judge_context.go"}, Bytes: 2},
+		{NodeID: "fixer-1", SourceCallID: "c4", SHA256: strings.Repeat("d", 64), ChangedFiles: []string{"internal/codebasedag/judge_resource.go"}, Bytes: 4},
 	}
 	plan, err := BuildIntegrationPlan("run-1", patches)
 	if err != nil {

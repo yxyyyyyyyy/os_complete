@@ -1,0 +1,62 @@
+{
+  "schema_version": "codebase-dag/v1",
+  "node_id": "integrate",
+  "status": "merged",
+  "base_commit": "03d56685d791fa40b1134a1859c42ebe53b694c2",
+  "base_tree_hash": "d6fef933baec573b89b49b0f29ac9c0a2f7d85f8",
+  "final_tree_hash": "d6fef933baec573b89b49b0f29ac9c0a2f7d85f8",
+  "final_diff_sha256": "dd9c38824683f433215659adebdb76531804f044ebff0bc4344a62dee8d7915d",
+  "applies": [
+    {
+      "node_id": "resource-coder",
+      "patch_sha256": "0352dbed8b21706bab08189e0542f8295c5d49a8e7269815176ad24fb7916401",
+      "declared_files": [
+        "internal/codebasedag/judge_resource.go",
+        "internal/codebasedag/resourceagent/chunk001/gen_audit_log_002.go",
+        "internal/codebasedag/resourceagent/chunk008/gen_capsule_notes_012.go",
+        "internal/codebasedag/resourceagent/chunk015/gen_fault_memory_003.go"
+      ],
+      "actual_files": [
+        "internal/codebasedag/judge_resource.go",
+        "internal/codebasedag/resourceagent/chunk001/gen_audit_log_002.go",
+        "internal/codebasedag/resourceagent/chunk008/gen_capsule_notes_012.go",
+        "internal/codebasedag/resourceagent/chunk015/gen_fault_memory_003.go"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "",
+      "tree_hash_after": "d6fef933baec573b89b49b0f29ac9c0a2f7d85f8",
+      "duration_ms": 17
+    },
+    {
+      "node_id": "context-coder",
+      "patch_sha256": "6920516af65c43452ebf547f8d3d3d66d05476cbf382f0339b86850a35625d6c",
+      "declared_files": [
+        "internal/codebasedag/judge_context.go"
+      ],
+      "actual_files": [
+        "internal/codebasedag/judge_context.go"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "",
+      "tree_hash_after": "d6fef933baec573b89b49b0f29ac9c0a2f7d85f8",
+      "duration_ms": 17
+    },
+    {
+      "node_id": "evidence-coder",
+      "patch_sha256": "9ef84ec85f6f6d012c2171fb39fd2a6873d854e1c2210d481897228cf29252f4",
+      "declared_files": [
+        "internal/codebasedag/judge_evidence.go"
+      ],
+      "actual_files": [
+        "internal/codebasedag/judge_evidence.go"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "",
+      "tree_hash_after": "d6fef933baec573b89b49b0f29ac9c0a2f7d85f8",
+      "duration_ms": 17
+    }
+  ]
+}

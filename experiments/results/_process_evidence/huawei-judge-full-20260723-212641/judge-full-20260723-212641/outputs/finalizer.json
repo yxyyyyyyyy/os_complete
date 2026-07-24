@@ -1,0 +1,7 @@
+{
+  "schema_version": "codebase-dag/v1",
+  "node_id": "finalizer",
+  "status": "passed",
+  "summary": "Resource audit markers updated from seed-incomplete to judge-complete in judge_context.go, judge_evidence.go, judge_resource.go. CVM-related markers in judge_evidence.go reflect evidence completeness. Fault isolation markers in judge_resource.go and removal of intentional compile breaks (AORT_SEED_BROKEN) in gen_audit_log_002.go, gen_capsule_notes_012.go, gen_fault_memory_003.go restore build integrity. Machine gates: all tests (gofmt, git diff --check, go test, go test -race, go vet) pass. No new limitations introduced.",
+  "limitations": []
+}

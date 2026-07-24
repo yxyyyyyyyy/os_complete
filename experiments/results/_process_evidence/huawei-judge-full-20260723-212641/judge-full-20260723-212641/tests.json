@@ -1,0 +1,154 @@
+[
+  {
+    "schema_version": "codebase-dag/v1",
+    "name": "tester-1-gofmt",
+    "command": [
+      "gofmt",
+      "-w",
+      "internal/codebasedag/judge_context.go",
+      "internal/codebasedag/judge_evidence.go",
+      "internal/codebasedag/judge_resource.go",
+      "internal/codebasedag/resourceagent/chunk001/gen_audit_log_002.go",
+      "internal/codebasedag/resourceagent/chunk008/gen_capsule_notes_012.go",
+      "internal/codebasedag/resourceagent/chunk015/gen_fault_memory_003.go"
+    ],
+    "exit_code": 0,
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "started_at": "2026-07-23T21:27:29.874444505Z",
+    "finished_at": "2026-07-23T21:27:29.878745477Z"
+  },
+  {
+    "schema_version": "codebase-dag/v1",
+    "name": "tester-2-git",
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit_code": 0,
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "started_at": "2026-07-23T21:27:29.878751699Z",
+    "finished_at": "2026-07-23T21:27:29.894266137Z"
+  },
+  {
+    "schema_version": "codebase-dag/v1",
+    "name": "tester-3-go",
+    "command": [
+      "go",
+      "test",
+      "./..."
+    ],
+    "exit_code": 0,
+    "stdout_sha256": "ea6706468b8bffdae107b90f2353a8d68d731eb43f50b51a8d4e5522e4704473",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "started_at": "2026-07-23T21:27:29.894274036Z",
+    "finished_at": "2026-07-23T21:27:41.496807086Z"
+  },
+  {
+    "schema_version": "codebase-dag/v1",
+    "name": "tester-4-go",
+    "command": [
+      "go",
+      "test",
+      "-race",
+      "./internal/codebasedag/..."
+    ],
+    "exit_code": 0,
+    "stdout_sha256": "662e6e0ec059a4a01761ff7ccf390df430bc36ab667284436e84f28a77544d64",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "started_at": "2026-07-23T21:27:41.496831589Z",
+    "finished_at": "2026-07-23T21:27:47.520892281Z"
+  },
+  {
+    "schema_version": "codebase-dag/v1",
+    "name": "tester-5-go",
+    "command": [
+      "go",
+      "vet",
+      "./..."
+    ],
+    "exit_code": 0,
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "started_at": "2026-07-23T21:27:47.520909722Z",
+    "finished_at": "2026-07-23T21:27:48.43226226Z"
+  },
+  {
+    "schema_version": "codebase-dag/v1",
+    "name": "tester-1-gofmt",
+    "command": [
+      "gofmt",
+      "-w",
+      "internal/codebasedag/judge_context.go",
+      "internal/codebasedag/judge_evidence.go",
+      "internal/codebasedag/judge_resource.go",
+      "internal/codebasedag/resourceagent/chunk001/gen_audit_log_002.go",
+      "internal/codebasedag/resourceagent/chunk008/gen_capsule_notes_012.go",
+      "internal/codebasedag/resourceagent/chunk015/gen_fault_memory_003.go"
+    ],
+    "exit_code": 0,
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "started_at": "2026-07-23T21:29:14.321193858Z",
+    "finished_at": "2026-07-23T21:29:14.324961663Z"
+  },
+  {
+    "schema_version": "codebase-dag/v1",
+    "name": "tester-2-git",
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit_code": 0,
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "started_at": "2026-07-23T21:29:14.324967688Z",
+    "finished_at": "2026-07-23T21:29:14.327388701Z"
+  },
+  {
+    "schema_version": "codebase-dag/v1",
+    "name": "tester-3-go",
+    "command": [
+      "go",
+      "test",
+      "./..."
+    ],
+    "exit_code": 0,
+    "stdout_sha256": "73be691c7216863824e69b797ae88b37a29ba92bd5a7900928c4812c54b133b1",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "started_at": "2026-07-23T21:29:14.327396109Z",
+    "finished_at": "2026-07-23T21:29:20.419254024Z"
+  },
+  {
+    "schema_version": "codebase-dag/v1",
+    "name": "tester-4-go",
+    "command": [
+      "go",
+      "test",
+      "-race",
+      "./internal/codebasedag/..."
+    ],
+    "exit_code": 0,
+    "stdout_sha256": "18f76e3457d16875f7e3505fcaaf595187739013e90aa22156fed988cedf0491",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "started_at": "2026-07-23T21:29:20.419282581Z",
+    "finished_at": "2026-07-23T21:29:26.053483176Z"
+  },
+  {
+    "schema_version": "codebase-dag/v1",
+    "name": "tester-5-go",
+    "command": [
+      "go",
+      "vet",
+      "./..."
+    ],
+    "exit_code": 0,
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "started_at": "2026-07-23T21:29:26.053503353Z",
+    "finished_at": "2026-07-23T21:29:26.783926917Z"
+  }
+]

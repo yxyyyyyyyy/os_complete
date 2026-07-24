@@ -8,6 +8,7 @@ import (
 	"net/http/httptest"
 	"os"
 	"path/filepath"
+	"strings"
 	"sync/atomic"
 	"testing"
 	"time"
@@ -85,7 +86,7 @@ func TestRunLiveExecutesWorkerCommandAndRecordsPID(t *testing.T) {
 	if recorder.last.Worker.Command != "/usr/bin/true" {
 		t.Fatalf("worker command not executed via ProcessRT: %#v", recorder.last)
 	}
-	if recorder.last.NodeID != "integrate-worker" {
+	if !strings.HasSuffix(recorder.last.NodeID, "-worker") && recorder.last.NodeID != "fault-agent" {
 		t.Fatalf("unexpected node: %q", recorder.last.NodeID)
 	}
 	procPath := filepath.Join(result.Dir, "processes", "integrate-worker.json")

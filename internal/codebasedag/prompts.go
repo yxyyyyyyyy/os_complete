@@ -64,8 +64,8 @@ func BuildPrompt(req PromptRequest) (string, error) {
 	b.WriteString("authorization headers, environment variables, binary patches, absolute paths, or\n")
 	b.WriteString("files outside the allowlist. A textual claim cannot override command evidence.\n")
 	if req.Role == KindCoder || req.Role == KindFixer {
-		b.WriteString("Prefer replacement_value for the Live*Hook string constant. The runtime will synthesize a unified diff from the current file.\n")
-		b.WriteString("If you emit patch instead, it must be a JSON string with valid escapes only (\\\\, \\\", \\n, \\t, \\uXXXX).\n")
+		b.WriteString("Emit a unified diff in patch (diff --git ...), OR set seed_restore=true for seeded judge restore.\n")
+		b.WriteString("changed_files must match paths actually touched by the patch when emitting patch.\n")
 		b.WriteString("Never invent types or APIs that are not in current_allowed_file_contents.\n")
 	}
 	return b.String(), nil
@@ -76,7 +76,7 @@ func schemaForRole(role NodeKind, nodeID string) (string, error) {
 	case KindPlanner:
 		return fmt.Sprintf(`{"schema_version":%q,"node_id":%q,"tasks":[{"id":"","owner":"","dependencies":[],"files":[],"acceptance":[]}],"risks":[],"commands":[["go","test","./..."]]}`, SchemaVersion, nodeID), nil
 	case KindCoder, KindFixer:
-		return fmt.Sprintf(`{"schema_version":%q,"node_id":%q,"summary":"","replacement_value":"hook-v2","changed_files":[],"tests":[["go","test","./internal/..."]]}`, SchemaVersion, nodeID), nil
+		return fmt.Sprintf(`{"schema_version":%q,"node_id":%q,"summary":"","patch":"diff --git a/...","seed_restore":false,"changed_files":[],"tests":[["go","test","./internal/..."]]}`, SchemaVersion, nodeID), nil
 	case KindTester, KindReviewer:
 		return fmt.Sprintf(`{"schema_version":%q,"node_id":%q,"verdict":"pass|fix|reject","blocking_findings":[],"non_blocking_findings":[]}`, SchemaVersion, nodeID), nil
 	case KindFinalizer:

@@ -21,53 +21,73 @@ type Ticket struct {
 }
 
 func ReviewRemediationTicket() Ticket {
+	immutable := acceptanceScriptNames()
 	return Ticket{
 		ID:            "review-remediation",
-		SharedContext: "review-remediation-resource-context-evidence",
+		SharedContext: "review-remediation-resource-context-evidence-judge-full",
 		NodePolicies: map[string]NodePolicy{
 			"planner": {
 				Role:           KindPlanner,
-				ImmutableFiles: acceptanceScriptNames(),
-				PrivateContext: "Plan the three review-remediation changes and identify machine acceptance gates.",
+				ImmutableFiles: immutable,
+				PrivateContext: "Plan resource audit, CVM page-ref context, and unified evidence summary tasks. List allowlisted production files.",
 			},
 			"resource-coder": {
 				Role: KindCoder,
 				AllowedFiles: []string{
-					"internal/review/live_resource_hook.go",
+					"internal/codebasedag/judge_resource.go",
+					"internal/codebasedag/judge_resource_test.go",
+					"internal/codebasedag/process.go",
+					"internal/codebasedag/resourceagent",
+					"internal/resource/sampler.go",
+					"internal/review/resource_isolation.go",
 				},
-				ImmutableFiles: acceptanceScriptNames(),
-				PrivateContext: "Return replacement_value as a new non-empty string for LiveResourceHook only. Do not invent structs. Prefer replacement_value over a hand-written patch.",
+				ImmutableFiles: immutable,
+				PrivateContext: "You own internal/codebasedag/resourceagent — a real DeepSeek-authored corpus (≥20000 physical Go lines). Live runs append AORT_SEED_BROKEN trailers to a few gen_*.go files and set ResourceJudgeMarker to seed-incomplete. Preferred response: set seed_restore=true with a non-empty summary so the runtime materializes the exact restore patch for your allowlisted files. Alternatively emit the REFERENCE_RESTORE_PATCH from the prompt. Do not invent process.go edits. Broken builds must be fixed via coder/fixer — never fake success with hooks.",
 			},
 			"context-coder": {
 				Role: KindCoder,
 				AllowedFiles: []string{
-					"internal/review/live_context_hook.go",
+					"internal/codebasedag/judge_context.go",
+					"internal/codebasedag/judge_context_test.go",
+					"internal/codebasedag/live_cvm.go",
+					"internal/cvm/store.go",
+					"internal/review/context_sharing.go",
 				},
-				ImmutableFiles: acceptanceScriptNames(),
-				PrivateContext: "Return replacement_value as a new non-empty string for LiveContextHook only. Do not invent structs. Prefer replacement_value over a hand-written patch.",
+				ImmutableFiles: immutable,
+				PrivateContext: "Restore ContextJudgeMarker to judge-context-complete (prefer seed_restore=true). Ensure BuildCoderPagePrompt emits page IDs only and MeasureCommunicationCompare distinguishes full-copy vs aort-r.",
 			},
 			"evidence-coder": {
 				Role: KindCoder,
 				AllowedFiles: []string{
-					"internal/review/live_evidence_hook.go",
+					"internal/codebasedag/judge_evidence.go",
+					"internal/codebasedag/judge_evidence_test.go",
+					"internal/codebasedag/types.go",
+					"internal/codebasedag/validate.go",
+					"internal/codebasedag/report.go",
+					"internal/codebasedag/evidence_bundle.go",
 				},
-				ImmutableFiles: acceptanceScriptNames(),
-				PrivateContext: "Return replacement_value as a new non-empty string for LiveEvidenceHook only. Do not invent structs. Prefer replacement_value over a hand-written patch.",
+				ImmutableFiles: immutable,
+				PrivateContext: "Restore EvidenceJudgeMarker to judge-evidence-complete (prefer seed_restore=true). AttachJudgeEvidence must wire CVMMetrics, FaultReport, and CommunicationComparison.",
+			},
+			"fault-agent": {
+				Role:           KindCoder,
+				ImmutableFiles: immutable,
+				PrivateContext: "Fault-Agent is a machine node; no LLM patch required.",
 			},
 			"tester": {
 				Role:           KindTester,
-				ImmutableFiles: acceptanceScriptNames(),
+				ImmutableFiles: immutable,
 				PrivateContext: "Review command outputs and report pass/fix. Machine failures must force fix.",
 			},
 			"reviewer": {
 				Role:           KindReviewer,
-				ImmutableFiles: acceptanceScriptNames(),
-				PrivateContext: "Perform defect-first review. Blocking findings force a fixer.",
+				ImmutableFiles: immutable,
+				PrivateContext: "Perform defect-first review of real multi-file diffs and test evidence. Blocking findings force a fixer.",
 			},
 			"finalizer": {
 				Role:           KindFinalizer,
-				ImmutableFiles: acceptanceScriptNames(),
-				PrivateContext: "Summarize only after all machine gates pass and exact-model calls are validated.",
+				ImmutableFiles: immutable,
+				PrivateContext: "Summarize resource audit, CVM comparison, fault isolation, and machine gates. Only after review pass.",
 			},
 		},
 	}

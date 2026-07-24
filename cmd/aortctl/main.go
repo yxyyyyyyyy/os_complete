@@ -172,6 +172,9 @@ func runCodebaseDAGScenario(args []string) error {
 	allowDirty := fs.Bool("allow-dirty", false, "allow dirty workload git tree (recorded as risk)")
 	skipRace := fs.Bool("skip-race", false, "skip go test -race in machine tester")
 	gitPath := fs.String("git-path", "", "Git executable path for manifest construction")
+	judgeMode := fs.String("judge-mode", "standard", "validation mode: standard|strict (strict requires process/CVM/fault evidence)")
+	seedJudge := fs.Bool("seed-judge", false, "seed incomplete judge markers in worktree before coders (auto-on for strict)")
+	forceFixOnce := fs.Bool("force-fix-once", false, "force first reviewer pass into fixer loop (auto-on for strict)")
 	if err := fs.Parse(args); err != nil {
 		return err
 	}
@@ -231,6 +234,9 @@ func runCodebaseDAGScenario(args []string) error {
 		AllowDirty:    *allowDirty,
 		SkipRace:      *skipRace,
 		Cleanup:       true,
+		JudgeMode:     *judgeMode,
+		SeedJudge:     *seedJudge,
+		ForceFixOnce:  *forceFixOnce,
 	})
 	if err != nil {
 		return err

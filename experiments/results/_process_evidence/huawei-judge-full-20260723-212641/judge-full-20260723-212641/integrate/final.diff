@@ -1,0 +1,69 @@
+diff --git a/internal/codebasedag/judge_context.go b/internal/codebasedag/judge_context.go
+index fe5b9cf..e63467b 100644
+--- a/internal/codebasedag/judge_context.go
++++ b/internal/codebasedag/judge_context.go
+@@ -6,7 +6,7 @@ import (
+ )
+ 
+ // ContextJudgeMarker is flipped by live DAG agents from seed-incomplete to complete.
+-const ContextJudgeMarker = "seed-incomplete"
++const ContextJudgeMarker = "judge-context-complete"
+ 
+ // ContextPageRef is a CVM page reference passed to coders instead of full text.
+ type ContextPageRef struct {
+diff --git a/internal/codebasedag/judge_evidence.go b/internal/codebasedag/judge_evidence.go
+index 8d2dc34..934f117 100644
+--- a/internal/codebasedag/judge_evidence.go
++++ b/internal/codebasedag/judge_evidence.go
+@@ -3,7 +3,7 @@ package codebasedag
+ import "aort-r/internal/cvm"
+ 
+ // EvidenceJudgeMarker is flipped by live DAG agents from seed-incomplete to complete.
+-const EvidenceJudgeMarker = "seed-incomplete"
++const EvidenceJudgeMarker = "judge-evidence-complete"
+ 
+ // CVMMetrics is the evidence-facing projection of cvm.Stats.
+ type CVMMetrics struct {
+diff --git a/internal/codebasedag/judge_resource.go b/internal/codebasedag/judge_resource.go
+index 17d8e5d..fc93bf2 100644
+--- a/internal/codebasedag/judge_resource.go
++++ b/internal/codebasedag/judge_resource.go
+@@ -1,7 +1,7 @@
+ package codebasedag
+ 
+ // ResourceJudgeMarker is flipped by live DAG agents from seed-incomplete to complete.
+-const ResourceJudgeMarker = "seed-incomplete"
++const ResourceJudgeMarker = "judge-resource-complete"
+ 
+ // CommandAudit records the exact worker command that ran inside a cgroup.
+ type CommandAudit struct {
+diff --git a/internal/codebasedag/resourceagent/chunk001/gen_audit_log_002.go b/internal/codebasedag/resourceagent/chunk001/gen_audit_log_002.go
+index 7b5802b..f3fcf32 100644
+--- a/internal/codebasedag/resourceagent/chunk001/gen_audit_log_002.go
++++ b/internal/codebasedag/resourceagent/chunk001/gen_audit_log_002.go
+@@ -387,5 +387,3 @@ var _ = DefaultRedactionRules_002
+ // gen_audit_log_002.go – complete implementation of audit log structures,
+ // hashing, redaction, validation, and test vectors.
+ 
+-// AORT_SEED_BROKEN: intentional compile break for live restore
+-var _ = __aort_seed_broken_undefined__
+diff --git a/internal/codebasedag/resourceagent/chunk008/gen_capsule_notes_012.go b/internal/codebasedag/resourceagent/chunk008/gen_capsule_notes_012.go
+index 8a3f61a..3d159bf 100644
+--- a/internal/codebasedag/resourceagent/chunk008/gen_capsule_notes_012.go
++++ b/internal/codebasedag/resourceagent/chunk008/gen_capsule_notes_012.go
+@@ -359,5 +359,3 @@ func CheckCapsuleDegradation_012(rules []ResourceAgentDegradedRule, state interf
+ 	return triggered
+ }
+ 
+-// AORT_SEED_BROKEN: intentional compile break for live restore
+-var _ = __aort_seed_broken_undefined__
+diff --git a/internal/codebasedag/resourceagent/chunk015/gen_fault_memory_003.go b/internal/codebasedag/resourceagent/chunk015/gen_fault_memory_003.go
+index ffaa2ca..fcd735a 100644
+--- a/internal/codebasedag/resourceagent/chunk015/gen_fault_memory_003.go
++++ b/internal/codebasedag/resourceagent/chunk015/gen_fault_memory_003.go
+@@ -459,5 +459,3 @@ func RunDetectionOnScenarios_003(detector *ResourceAgentMemoryDetector_003, scen
+ 	return results, errs
+ }
+ 
+-// AORT_SEED_BROKEN: intentional compile break for live restore
+-var _ = __aort_seed_broken_undefined__

@@ -57,6 +57,7 @@ type WorkerResult struct {
 
 type ProcessResult struct {
 	PID                 int               `json:"pid"`
+	NodeID              string            `json:"node_id,omitempty"`
 	CgroupPath          string            `json:"cgroup_path"`
 	ProcessEvidenceMode string            `json:"process_evidence_mode"`
 	CgroupEvidenceMode  string            `json:"cgroup_evidence_mode"`
@@ -64,6 +65,8 @@ type ProcessResult struct {
 	ExitCode            int               `json:"exit_code"`
 	OutputSHA256        string            `json:"output_sha256"`
 	LLMCallID           string            `json:"llm_call_id"`
+	Limits              ResourceLimits    `json:"limits,omitempty"`
+	CommandAudit        CommandAudit      `json:"command_audit,omitempty"`
 	Metrics             map[string]string `json:"metrics,omitempty"`
 }
 
@@ -141,7 +144,7 @@ func (r InterfaceProcessRuntime) StartPrepared(ctx context.Context, cfg ProcessC
 		processMode = "degraded"
 		evidenceMode = "degraded"
 	}
-	return ProcessResult{
+	result = ProcessResult{
 		PID:                 worker.PID,
 		CgroupPath:          attachment.CgroupPath,
 		ProcessEvidenceMode: processMode,
@@ -151,7 +154,12 @@ func (r InterfaceProcessRuntime) StartPrepared(ctx context.Context, cfg ProcessC
 		OutputSHA256:        waitResult.OutputSHA256,
 		LLMCallID:           waitResult.LLMCallID,
 		Metrics:             waitResult.Metrics,
-	}, nil
+	}
+	EnrichProcessResult(&result, cfg)
+	if err = ValidateCommandAudit(result.CommandAudit); err != nil {
+		return ProcessResult{}, err
+	}
+	return result, nil
 }
 
 func validateProcessConfig(cfg ProcessConfig) error {

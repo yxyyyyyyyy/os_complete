@@ -14,6 +14,22 @@ import (
 	"time"
 )
 
+func sanitizePatchForApply(patch string) string {
+	lines := strings.Split(patch, "\n")
+	out := make([]string, 0, len(lines))
+	for _, line := range lines {
+		if strings.HasPrefix(line, "index ") {
+			continue // LLM placeholder index lines confuse nothing but are useless
+		}
+		out = append(out, line)
+	}
+	text := strings.Join(out, "\n")
+	if text != "" && !strings.HasSuffix(text, "\n") {
+		text += "\n"
+	}
+	return text
+}
+
 func CheckPatchApplies(ctx context.Context, gitPath, workDir, patchText string) error {
 	if strings.TrimSpace(gitPath) == "" {
 		gitPath = "git"
@@ -24,6 +40,7 @@ func CheckPatchApplies(ctx context.Context, gitPath, workDir, patchText string) 
 	if strings.TrimSpace(patchText) == "" {
 		return fmt.Errorf("patch is required")
 	}
+	patchText = sanitizePatchForApply(normalizePatchHunkCounts(patchText))
 	tmp, err := os.CreateTemp("", "aort-patch-check-*.diff")
 	if err != nil {
 		return err
@@ -147,6 +164,41 @@ func (w *WorktreeSession) Cleanup(ctx context.Context) error {
 	return nil
 }
 
+// CommitAll stages all changes and creates a commit. Used after judge seeding so
+// restore patches appear in git diff --name-only HEAD.
+func (w *WorktreeSession) CommitAll(ctx context.Context, message string) (string, error) {
+	if w == nil || w.WorkDir == "" {
+		return "", fmt.Errorf("worktree is required")
+	}
+	if w.GitPath == "" {
+		w.GitPath = "git"
+	}
+	if strings.TrimSpace(message) == "" {
+		message = "aort-seed"
+	}
+	if out, err := exec.CommandContext(ctx, w.GitPath, "-C", w.WorkDir, "add", "-A").CombinedOutput(); err != nil {
+		return "", fmt.Errorf("git add: %v (%s)", err, truncateEvidence(string(out), 512))
+	}
+	cmd := exec.CommandContext(ctx, w.GitPath, "-C", w.WorkDir,
+		"-c", "user.email=aort-seed@localhost",
+		"-c", "user.name=aort-seed",
+		"commit", "--allow-empty", "-m", message)
+	if out, err := cmd.CombinedOutput(); err != nil {
+		return "", fmt.Errorf("git commit: %v (%s)", err, truncateEvidence(string(out), 512))
+	}
+	commit, err := gitWorktreeOutput(ctx, w.GitPath, w.WorkDir, "rev-parse", "HEAD")
+	if err != nil {
+		return "", err
+	}
+	tree, err := gitWorktreeOutput(ctx, w.GitPath, w.WorkDir, "rev-parse", "HEAD^{tree}")
+	if err != nil {
+		return "", err
+	}
+	w.BaseCommit = strings.TrimSpace(commit)
+	w.BaseTreeHash = strings.TrimSpace(tree)
+	return w.BaseCommit, nil
+}
+
 func (w *WorktreeSession) TreeHash(ctx context.Context) (string, error) {
 	out, err := gitWorktreeOutput(ctx, w.GitPath, w.WorkDir, "write-tree")
 	if err != nil {
@@ -194,6 +246,7 @@ func (w *WorktreeSession) ChangedFiles(ctx context.Context) ([]string, error) {
 // ApplyValidatedPatch writes the patch and runs git apply --check then git apply.
 func (w *WorktreeSession) ApplyValidatedPatch(ctx context.Context, nodeID, patchText string, declared []string) (PatchApplyResult, error) {
 	start := time.Now()
+	patchText = sanitizePatchForApply(normalizePatchHunkCounts(patchText))
 	sum := sha256.Sum256([]byte(patchText))
 	result := PatchApplyResult{
 		NodeID:        nodeID,

@@ -18,8 +18,11 @@ func TestReviewRemediationTicketDefinesNodePolicies(t *testing.T) {
 			t.Fatalf("missing policy for %s", node)
 		}
 	}
-	if got := ticket.NodePolicies["resource-coder"].AllowedFiles; !containsString(got, "internal/review/live_resource_hook.go") {
+	if got := ticket.NodePolicies["resource-coder"].AllowedFiles; !containsString(got, "internal/codebasedag/resourceagent") {
 		t.Fatalf("resource allowlist = %#v", got)
+	}
+	if _, ok := ticket.NodePolicies["fault-agent"]; !ok {
+		t.Fatal("missing fault-agent policy")
 	}
 }
 

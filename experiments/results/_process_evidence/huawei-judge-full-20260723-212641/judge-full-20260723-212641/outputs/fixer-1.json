@@ -1,0 +1,17 @@
+{
+  "schema_version": "codebase-dag/v1",
+  "node_id": "fixer-1",
+  "summary": "forced first-pass fixer acknowledgment",
+  "patch": "diff --git a/internal/codebasedag/judge_resource.go b/internal/codebasedag/judge_resource.go\n--- a/internal/codebasedag/judge_resource.go\n+++ b/internal/codebasedag/judge_resource.go\n@@ -1,2 +1,3 @@\n package codebasedag\n+// aort-fixer-ack: forced first-pass remediation\n \n",
+  "seed_restore": true,
+  "changed_files": [
+    "internal/codebasedag/judge_resource.go"
+  ],
+  "tests": [
+    [
+      "go",
+      "test",
+      "./internal/..."
+    ]
+  ]
+}

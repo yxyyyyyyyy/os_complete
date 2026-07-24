@@ -95,12 +95,12 @@ func TestSynthesizeQuotedConstPatchApplies(t *testing.T) {
 	}
 }
 
-func TestValidatePatchRejectsIncompleteHunk(t *testing.T) {
+func TestValidatePatchRejectsCorruptHunkBody(t *testing.T) {
 	output := CoderOutput{
 		SchemaVersion: SchemaVersion,
 		NodeID:        "resource-coder",
 		Summary:       "truncated",
-		Patch:         "diff --git a/internal/review/live_resource_hook.go b/internal/review/live_resource_hook.go\n--- a/internal/review/live_resource_hook.go\n+++ b/internal/review/live_resource_hook.go\n@@ -1,3 +1,5 @@\n package review\n \n-const LiveResourceHook = \"resource-hook-v1\"\n",
+		Patch:         "diff --git a/internal/review/live_resource_hook.go b/internal/review/live_resource_hook.go\n--- a/internal/review/live_resource_hook.go\n+++ b/internal/review/live_resource_hook.go\n@@ -1,2 +1,2 @@\n package review\nbad-line-without-prefix\n",
 		ChangedFiles:  []string{"internal/review/live_resource_hook.go"},
 	}
 	_, err := ValidatePatch(PatchPolicy{
@@ -108,8 +108,40 @@ func TestValidatePatchRejectsIncompleteHunk(t *testing.T) {
 		AllowedFiles: map[string]struct{}{"internal/review/live_resource_hook.go": {}},
 		MaxBytes:     32 << 10,
 	}, output, "call")
-	if err == nil || !strings.Contains(err.Error(), "incomplete hunk") {
+	if err == nil || !strings.Contains(err.Error(), "corrupt hunk body") {
 		t.Fatalf("error = %v", err)
+	}
+}
+
+func TestValidatePatchNormalizesMiscountedHunkHeader(t *testing.T) {
+	// DeepSeek often emits @@ -3,7 +3,7 @@ while the body only has 6 lines.
+	output := CoderOutput{
+		SchemaVersion: SchemaVersion,
+		NodeID:        "evidence-coder",
+		Summary:       "restore evidence marker",
+		Patch: "diff --git a/internal/codebasedag/judge_evidence.go b/internal/codebasedag/judge_evidence.go\n" +
+			"--- a/internal/codebasedag/judge_evidence.go\n" +
+			"+++ b/internal/codebasedag/judge_evidence.go\n" +
+			"@@ -3,7 +3,7 @@ package codebasedag\n" +
+			" import \"aort-r/internal/cvm\"\n" +
+			" \n" +
+			" // EvidenceJudgeMarker is flipped by live DAG agents from seed-incomplete to complete.\n" +
+			"-const EvidenceJudgeMarker = \"seed-incomplete\"\n" +
+			"+const EvidenceJudgeMarker = \"judge-evidence-complete\"\n" +
+			" \n" +
+			" // CVMMetrics is the evidence-facing projection of cvm.Stats.\n",
+		ChangedFiles: []string{"internal/codebasedag/judge_evidence.go"},
+	}
+	rec, err := ValidatePatch(PatchPolicy{
+		NodeID:       "evidence-coder",
+		AllowedFiles: map[string]struct{}{"internal/codebasedag/judge_evidence.go": {}},
+		MaxBytes:     32 << 10,
+	}, output, "call")
+	if err != nil {
+		t.Fatalf("ValidatePatch: %v", err)
+	}
+	if rec.NodeID != "evidence-coder" || rec.Bytes == 0 {
+		t.Fatalf("unexpected record: %+v", rec)
 	}
 }
 

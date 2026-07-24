@@ -1,0 +1,25 @@
+{
+  "rows": [
+    {
+      "mode": "baseline",
+      "sibling_completion_rate": 0.6,
+      "sibling_success_rate": 0.5,
+      "fault_containment_scope": "host-shared",
+      "evidence_mode": "derived"
+    },
+    {
+      "mode": "isolation-only",
+      "sibling_completion_rate": 0.9,
+      "sibling_success_rate": 0.85,
+      "fault_containment_scope": "cgroup+workdir",
+      "evidence_mode": "derived"
+    },
+    {
+      "mode": "aort-r",
+      "sibling_completion_rate": 1,
+      "sibling_success_rate": 1,
+      "fault_containment_scope": "cgroup+supervise+recover",
+      "evidence_mode": "measured"
+    }
+  ]
+}

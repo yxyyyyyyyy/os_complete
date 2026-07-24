@@ -1,0 +1,41 @@
+[
+  {
+    "node_id": "resource-coder",
+    "sha256": "0352dbed8b21706bab08189e0542f8295c5d49a8e7269815176ad24fb7916401",
+    "bytes": 1721,
+    "changed_files": [
+      "internal/codebasedag/judge_resource.go",
+      "internal/codebasedag/resourceagent/chunk001/gen_audit_log_002.go",
+      "internal/codebasedag/resourceagent/chunk008/gen_capsule_notes_012.go",
+      "internal/codebasedag/resourceagent/chunk015/gen_fault_memory_003.go"
+    ],
+    "source_call_id": "c9a70c6e-d8e8-485b-b6a5-90b31227734b"
+  },
+  {
+    "node_id": "context-coder",
+    "sha256": "6920516af65c43452ebf547f8d3d3d66d05476cbf382f0339b86850a35625d6c",
+    "bytes": 383,
+    "changed_files": [
+      "internal/codebasedag/judge_context.go"
+    ],
+    "source_call_id": "02411884-751e-4b4c-8762-dbe909af834e"
+  },
+  {
+    "node_id": "evidence-coder",
+    "sha256": "9ef84ec85f6f6d012c2171fb39fd2a6873d854e1c2210d481897228cf29252f4",
+    "bytes": 391,
+    "changed_files": [
+      "internal/codebasedag/judge_evidence.go"
+    ],
+    "source_call_id": "b824e5a3-02a8-40e3-af9f-02628ed0be86"
+  },
+  {
+    "node_id": "fixer-1",
+    "sha256": "4f70fbe70cb4de5d6adb920736c2ba06a27dcbfa7aae3e749a97e572a6a221cd",
+    "bytes": 272,
+    "changed_files": [
+      "internal/codebasedag/judge_resource.go"
+    ],
+    "source_call_id": "1b4e9768-c4fa-48ae-a543-57d516c18c2c"
+  }
+]

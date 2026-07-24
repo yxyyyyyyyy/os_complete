@@ -1,0 +1,11 @@
+{
+  "schema_version": "codebase-dag/v1",
+  "node_id": "evidence-coder",
+  "summary": "Restore EvidenceJudgeMarker to judge-evidence-complete. No code changes needed for AttachJudgeEvidence — it already wires CVMMetrics, FaultReport, and CommunicationComparison when the marker is set.",
+  "patch": "diff --git a/internal/codebasedag/judge_evidence.go b/internal/codebasedag/judge_evidence.go\n--- a/internal/codebasedag/judge_evidence.go\n+++ b/internal/codebasedag/judge_evidence.go\n@@ -5,3 +5,3 @@\n // EvidenceJudgeMarker is flipped by live DAG agents from seed-incomplete to complete.\n-const EvidenceJudgeMarker = \"seed-incomplete\"\n+const EvidenceJudgeMarker = \"judge-evidence-complete\"\n \n",
+  "seed_restore": true,
+  "changed_files": [
+    "internal/codebasedag/judge_evidence.go"
+  ],
+  "tests": []
+}

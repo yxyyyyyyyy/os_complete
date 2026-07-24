@@ -1,0 +1,25 @@
+{"schema_version":"codebase-dag/v1","run_id":"judge-full-20260723-212641","type":"preflight","at":"2026-07-23T21:26:41.265326462Z","fields":{"gate.api_key_present":"true","gate.cgroup_v2_present":"true","gate.cgroup_writable":"true","gate.clean_worktree":"true","gate.git_available":"true","gate.git_commit_present":"true","gate.go_runtime":"true","gate.os_arch":"true","gate.provider_model":"true","gate.run_id_valid":"true","gate.source_manifest":"true","gate.tmpdir_writable":"true","gate.worker_command":"true","passed":"true"}}
+{"schema_version":"codebase-dag/v1","run_id":"judge-full-20260723-212641","node_id":"planner","type":"node.start","at":"2026-07-23T21:26:41.351691936Z","message":"dependencies complete"}
+{"schema_version":"codebase-dag/v1","run_id":"judge-full-20260723-212641","node_id":"planner","type":"node.end","at":"2026-07-23T21:26:51.870789177Z","message":"node completed"}
+{"schema_version":"codebase-dag/v1","run_id":"judge-full-20260723-212641","node_id":"resource-coder","type":"node.start","at":"2026-07-23T21:26:51.870803441Z","message":"dependencies complete"}
+{"schema_version":"codebase-dag/v1","run_id":"judge-full-20260723-212641","node_id":"resource-coder","type":"node.end","at":"2026-07-23T21:27:03.921268586Z","message":"node completed"}
+{"schema_version":"codebase-dag/v1","run_id":"judge-full-20260723-212641","node_id":"context-coder","type":"node.start","at":"2026-07-23T21:27:03.921839969Z","message":"dependencies complete"}
+{"schema_version":"codebase-dag/v1","run_id":"judge-full-20260723-212641","node_id":"context-coder","type":"node.end","at":"2026-07-23T21:27:11.328529842Z","message":"node completed"}
+{"schema_version":"codebase-dag/v1","run_id":"judge-full-20260723-212641","node_id":"evidence-coder","type":"node.start","at":"2026-07-23T21:27:11.328544336Z","message":"dependencies complete"}
+{"schema_version":"codebase-dag/v1","run_id":"judge-full-20260723-212641","node_id":"evidence-coder","type":"node.end","at":"2026-07-23T21:27:29.730514358Z","message":"node completed"}
+{"schema_version":"codebase-dag/v1","run_id":"judge-full-20260723-212641","node_id":"fault-agent","type":"node.start","at":"2026-07-23T21:27:29.73052961Z","message":"dependencies complete"}
+{"schema_version":"codebase-dag/v1","run_id":"judge-full-20260723-212641","node_id":"fault-agent","type":"node.end","at":"2026-07-23T21:27:29.736207684Z","message":"node completed"}
+{"schema_version":"codebase-dag/v1","run_id":"judge-full-20260723-212641","node_id":"integrate","type":"node.start","at":"2026-07-23T21:27:29.736220774Z","message":"dependencies complete"}
+{"schema_version":"codebase-dag/v1","run_id":"judge-full-20260723-212641","node_id":"integrate","type":"node.end","at":"2026-07-23T21:27:29.859011962Z","message":"node completed"}
+{"schema_version":"codebase-dag/v1","run_id":"judge-full-20260723-212641","node_id":"tester","type":"node.start","at":"2026-07-23T21:27:29.859035631Z","message":"dependencies complete"}
+{"schema_version":"codebase-dag/v1","run_id":"judge-full-20260723-212641","node_id":"tester","type":"node.end","at":"2026-07-23T21:27:53.132065232Z","message":"node completed"}
+{"schema_version":"codebase-dag/v1","run_id":"judge-full-20260723-212641","node_id":"reviewer","type":"node.start","at":"2026-07-23T21:27:53.13208331Z","message":"dependencies complete"}
+{"schema_version":"codebase-dag/v1","run_id":"judge-full-20260723-212641","node_id":"reviewer","type":"node.end","at":"2026-07-23T21:27:58.301850191Z","message":"node completed"}
+{"schema_version":"codebase-dag/v1","run_id":"judge-full-20260723-212641","node_id":"fixer-1","type":"node.start","at":"2026-07-23T21:27:58.301863839Z","message":"dependencies complete"}
+{"schema_version":"codebase-dag/v1","run_id":"judge-full-20260723-212641","node_id":"fixer-1","type":"node.end","at":"2026-07-23T21:29:14.319406699Z","message":"node completed"}
+{"schema_version":"codebase-dag/v1","run_id":"judge-full-20260723-212641","node_id":"tester-recheck-1","type":"node.start","at":"2026-07-23T21:29:14.319435272Z","message":"dependencies complete"}
+{"schema_version":"codebase-dag/v1","run_id":"judge-full-20260723-212641","node_id":"tester-recheck-1","type":"node.end","at":"2026-07-23T21:29:26.784180325Z","message":"node completed"}
+{"schema_version":"codebase-dag/v1","run_id":"judge-full-20260723-212641","node_id":"reviewer-recheck-1","type":"node.start","at":"2026-07-23T21:29:26.784205931Z","message":"dependencies complete"}
+{"schema_version":"codebase-dag/v1","run_id":"judge-full-20260723-212641","node_id":"reviewer-recheck-1","type":"node.end","at":"2026-07-23T21:29:33.865039994Z","message":"node completed"}
+{"schema_version":"codebase-dag/v1","run_id":"judge-full-20260723-212641","node_id":"finalizer","type":"node.start","at":"2026-07-23T21:29:33.865052022Z","message":"dependencies complete"}
+{"schema_version":"codebase-dag/v1","run_id":"judge-full-20260723-212641","node_id":"finalizer","type":"node.end","at":"2026-07-23T21:29:40.314456089Z","message":"node completed"}

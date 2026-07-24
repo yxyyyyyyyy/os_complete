@@ -36,7 +36,7 @@ func TestRunnerExecutesGraphWithFakeDependencies(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	wantOrder := []string{"preflight", "planner", "context-coder", "evidence-coder", "resource-coder", "integrate", "tester", "reviewer", "finalizer"}
+	wantOrder := []string{"preflight", "planner", "resource-coder", "context-coder", "evidence-coder", "fault-agent", "integrate", "tester", "reviewer", "finalizer"}
 	if !reflect.DeepEqual(order, wantOrder) {
 		t.Fatalf("order = %#v, want %#v", order, wantOrder)
 	}

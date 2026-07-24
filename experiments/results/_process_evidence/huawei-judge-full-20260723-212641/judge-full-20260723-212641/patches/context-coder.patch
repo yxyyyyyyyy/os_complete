@@ -1,0 +1,8 @@
+diff --git a/internal/codebasedag/judge_context.go b/internal/codebasedag/judge_context.go
+--- a/internal/codebasedag/judge_context.go
++++ b/internal/codebasedag/judge_context.go
+@@ -8,3 +8,3 @@
+ // ContextJudgeMarker is flipped by live DAG agents from seed-incomplete to complete.
+-const ContextJudgeMarker = "seed-incomplete"
++const ContextJudgeMarker = "judge-context-complete"
+ 

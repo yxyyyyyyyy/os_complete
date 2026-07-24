@@ -13,6 +13,7 @@ func TestNewCodebaseGraphHasExactBaseNodesAndDependencies(t *testing.T) {
 	wantNodes := []string{
 		"context-coder",
 		"evidence-coder",
+		"fault-agent",
 		"finalizer",
 		"integrate",
 		"planner",
@@ -29,7 +30,8 @@ func TestNewCodebaseGraphHasExactBaseNodesAndDependencies(t *testing.T) {
 	assertDeps(t, graph, "resource-coder", "planner")
 	assertDeps(t, graph, "context-coder", "planner")
 	assertDeps(t, graph, "evidence-coder", "planner")
-	assertDeps(t, graph, "integrate", "context-coder", "evidence-coder", "resource-coder")
+	assertDeps(t, graph, "fault-agent", "planner")
+	assertDeps(t, graph, "integrate", "context-coder", "evidence-coder", "fault-agent", "resource-coder")
 	assertDeps(t, graph, "tester", "integrate")
 	assertDeps(t, graph, "reviewer", "tester")
 	assertDeps(t, graph, "finalizer", "reviewer")
@@ -38,7 +40,7 @@ func TestNewCodebaseGraphHasExactBaseNodesAndDependencies(t *testing.T) {
 func TestCodebaseGraphReadyOrderAndFixerLoopPolicy(t *testing.T) {
 	graph := NewCodebaseGraph()
 	ready := graph.Ready(map[string]bool{"preflight": true, "planner": true})
-	wantReady := []string{"context-coder", "evidence-coder", "resource-coder"}
+	wantReady := []string{"resource-coder", "context-coder", "evidence-coder", "fault-agent"}
 	if !reflect.DeepEqual(ready, wantReady) {
 		t.Fatalf("ready = %#v, want %#v", ready, wantReady)
 	}

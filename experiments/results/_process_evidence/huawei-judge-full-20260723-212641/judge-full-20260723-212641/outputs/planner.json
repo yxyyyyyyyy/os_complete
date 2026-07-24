@@ -1,0 +1,46 @@
+{
+  "schema_version": "codebase-dag/v1",
+  "node_id": "planner",
+  "tasks": [
+    {
+      "id": "resource_audit",
+      "owner": "planner",
+      "dependencies": [],
+      "files": [],
+      "acceptance": [
+        "internal/codebasedag/acceptance/context_real.sh",
+        "internal/codebasedag/acceptance/resource_real.sh"
+      ]
+    },
+    {
+      "id": "cvm_page_ref_context",
+      "owner": "planner",
+      "dependencies": [
+        "resource_audit"
+      ],
+      "files": [],
+      "acceptance": []
+    },
+    {
+      "id": "unified_evidence_summary",
+      "owner": "planner",
+      "dependencies": [
+        "cvm_page_ref_context"
+      ],
+      "files": [],
+      "acceptance": [
+        "internal/codebasedag/acceptance/review_final_strict.sh"
+      ]
+    }
+  ],
+  "risks": [
+    "Allowlisted production files: none (allowed_files is \u003cnone\u003e). All context must be derived from acceptance tests and private_context."
+  ],
+  "commands": [
+    [
+      "go",
+      "test",
+      "./..."
+    ]
+  ]
+}

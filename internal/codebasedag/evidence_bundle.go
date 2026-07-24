@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 // BuildEvidenceSummary converts a finished live session into the canonical
@@ -37,24 +38,84 @@ func BuildEvidenceSummary(store *RunStore, runtime Summary, session *LiveSession
 		artifacts = data
 	}
 	summary := EvidenceSummary{
-		SchemaVersion:        SchemaVersion,
-		RunID:                runtime.RunID,
-		SourceManifest:       session.Manifest,
-		Nodes:                nodes,
-		Calls:                append([]CallRecord(nil), calls...),
-		Patches:              append([]PatchRecord(nil), session.PatchRecords...),
-		Tests:                append([]TestRecord(nil), session.Tests...),
-		Processes:            append([]ProcessResult(nil), session.Processes...),
-		Artifacts:            artifacts,
-		AllRequiredPassed:    runtime.AllRequiredPassed,
-		HumanFunctionalEdits: 0,
-		MinPhysicalLines:     session.MinPhysical,
-		MinNonblankLines:     session.MinNonblank,
+		SchemaVersion:           SchemaVersion,
+		RunID:                   runtime.RunID,
+		SourceManifest:          session.Manifest,
+		Nodes:                   nodes,
+		Calls:                   append([]CallRecord(nil), calls...),
+		Patches:                 append([]PatchRecord(nil), session.PatchRecords...),
+		Tests:                   append([]TestRecord(nil), session.Tests...),
+		Processes:               append([]ProcessResult(nil), session.Processes...),
+		PageIDs:                 append([]string(nil), session.PageIDs...),
+		CommunicationComparison: session.CommCompare,
+		FaultReport:             session.FaultReport,
+		BaselineVsAORTR:         session.BaselineCmp,
+		JudgeMode:               session.JudgeMode,
+		Artifacts:               artifacts,
+		AllRequiredPassed:       runtime.AllRequiredPassed,
+		HumanFunctionalEdits:    0,
+		MinPhysicalLines:        session.MinPhysical,
+		MinNonblankLines:        session.MinNonblank,
+	}
+	if session.CVM != nil && session.CVM.Store != nil {
+		m := CVMMetricsFromStats(session.CVM.Store.Stats())
+		summary.CVMMetrics = &m
+	}
+	AttachJudgeEvidence(&summary, summary.CVMMetrics, summary.FaultReport, summary.CommunicationComparison, summary.BaselineVsAORTR)
+	workDir := session.WorkloadDir
+	if session.Worktree != nil && session.Worktree.WorkDir != "" {
+		candidate := session.Worktree.WorkDir
+		if _, err := os.Stat(filepath.Join(candidate, "internal", "codebasedag", "resourceagent")); err == nil {
+			workDir = candidate
+		}
+	}
+	if workDir != "" {
+		if phys, _, err := CountResourceAgentPhysicalLines(workDir); err == nil && phys > 0 {
+			summary.ResourceAgentPhysicalLines = phys
+		}
+	}
+	if summary.ResourceAgentPhysicalLines == 0 {
+		if phys := resourceAgentLinesFromSeedJudge(store); phys > 0 {
+			summary.ResourceAgentPhysicalLines = phys
+		}
+	}
+	if summary.ResourceAgentPhysicalLines == 0 {
+		summary.ResourceAgentPhysicalLines = resourceAgentLinesFromManifest(summary.SourceManifest)
 	}
 	if summary.SourceManifest.SchemaVersion == "" {
 		summary.SourceManifest.SchemaVersion = SchemaVersion
 	}
 	return summary, nil
+}
+
+func resourceAgentLinesFromSeedJudge(store *RunStore) int {
+	if store == nil {
+		return 0
+	}
+	data, err := os.ReadFile(filepath.Join(store.Dir, "outputs", "seed_judge.json"))
+	if err != nil {
+		return 0
+	}
+	var payload struct {
+		Physical int `json:"resourceagent_physical"`
+	}
+	if json.Unmarshal(data, &payload) != nil {
+		return 0
+	}
+	return payload.Physical
+}
+
+func resourceAgentLinesFromManifest(manifest SourceManifest) int {
+	total := 0
+	for _, f := range manifest.Files {
+		if strings.Contains(f.Path, "/resourceagent/") || strings.HasPrefix(f.Path, "internal/codebasedag/resourceagent/") {
+			if strings.Contains(f.Path, "/_broken/") {
+				continue
+			}
+			total += f.PhysicalLines
+		}
+	}
+	return total
 }
 
 func kindForNodeID(nodeID string) NodeKind {
@@ -65,6 +126,8 @@ func kindForNodeID(nodeID string) NodeKind {
 		return KindPlanner
 	case nodeID == "integrate":
 		return KindIntegrate
+	case nodeID == "fault-agent":
+		return KindCoder
 	case nodeID == "tester" || hasPrefix(nodeID, "tester-recheck-"):
 		return KindTester
 	case nodeID == "reviewer" || hasPrefix(nodeID, "reviewer-recheck-"):

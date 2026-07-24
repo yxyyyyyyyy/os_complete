@@ -1,0 +1,8 @@
+diff --git a/internal/codebasedag/judge_evidence.go b/internal/codebasedag/judge_evidence.go
+--- a/internal/codebasedag/judge_evidence.go
++++ b/internal/codebasedag/judge_evidence.go
+@@ -5,3 +5,3 @@
+ // EvidenceJudgeMarker is flipped by live DAG agents from seed-incomplete to complete.
+-const EvidenceJudgeMarker = "seed-incomplete"
++const EvidenceJudgeMarker = "judge-evidence-complete"
+ 

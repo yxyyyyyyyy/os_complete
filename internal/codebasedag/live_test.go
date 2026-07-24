@@ -135,22 +135,6 @@ func TestRunLiveExecutesGraphAgainstFakeDeepSeek(t *testing.T) {
 
 func fakeLiveResponse(prompt string) string {
 	nodeID := "planner"
-	for _, key := range []string{"finalizer", "reviewer-recheck-", "reviewer", "tester-recheck-", "tester", "fixer-", "resource-coder", "context-coder", "evidence-coder", "planner"} {
-		if strings.Contains(prompt, "node_id: "+key) || (strings.HasSuffix(key, "-") && strings.Contains(prompt, "node_id: "+strings.TrimSuffix(key, "-"))) {
-			if strings.HasSuffix(key, "-") {
-				// extract actual node id line
-				for _, line := range strings.Split(prompt, "\n") {
-					if strings.HasPrefix(line, "node_id: ") {
-						nodeID = strings.TrimSpace(strings.TrimPrefix(line, "node_id: "))
-						break
-					}
-				}
-			} else {
-				nodeID = key
-			}
-			break
-		}
-	}
 	for _, line := range strings.Split(prompt, "\n") {
 		if strings.HasPrefix(line, "node_id: ") {
 			nodeID = strings.TrimSpace(strings.TrimPrefix(line, "node_id: "))
@@ -159,39 +143,68 @@ func fakeLiveResponse(prompt string) string {
 	}
 	switch {
 	case nodeID == "planner" || strings.Contains(prompt, "role: planner"):
-		return `{"schema_version":"codebase-dag/v1","node_id":"planner","tasks":[{"id":"t1","owner":"resource-coder","dependencies":[],"files":["internal/review/live_resource_hook.go"],"acceptance":["go test"]}],"risks":[],"commands":[["go","test","./"]]}`
+		return `{"schema_version":"codebase-dag/v1","node_id":"planner","tasks":[{"id":"t1","owner":"resource-coder","dependencies":[],"files":["internal/codebasedag/judge_resource.go"],"acceptance":["go test"]}],"risks":[],"commands":[["go","test","./"]]}`
+	case strings.HasPrefix(nodeID, "fixer-"):
+		// Markers are already restored by resource-coder; fixer must still emit an applying diff.
+		patch := `diff --git a/internal/codebasedag/judge_resource.go b/internal/codebasedag/judge_resource.go
+--- a/internal/codebasedag/judge_resource.go
++++ b/internal/codebasedag/judge_resource.go
+@@ -1,3 +1,4 @@
+ package codebasedag
+ 
+ const ResourceJudgeMarker = "judge-resource-complete"
++// fixer-restore-touch
+`
+		return coderPatchJSON(nodeID, patch, []string{"internal/codebasedag/judge_resource.go"})
 	case nodeID == "resource-coder":
-		return coderJSON("resource-coder", "internal/review/live_resource_hook.go", "LiveResourceHook", "resource-hook-v1", "resource-hook-v2")
+		patch, files, _ := CompleteJudgeMarkersPatch(nodeID)
+		return coderPatchJSON(nodeID, patch, files)
 	case nodeID == "context-coder":
-		return coderJSON("context-coder", "internal/review/live_context_hook.go", "LiveContextHook", "context-hook-v1", "context-hook-v2")
+		patch, files, _ := CompleteJudgeMarkersPatch("context-coder")
+		return coderPatchJSON(nodeID, patch, files)
 	case nodeID == "evidence-coder":
-		return coderJSON("evidence-coder", "internal/review/live_evidence_hook.go", "LiveEvidenceHook", "evidence-hook-v1", "evidence-hook-v2")
+		patch, files, _ := CompleteJudgeMarkersPatch("evidence-coder")
+		return coderPatchJSON(nodeID, patch, files)
 	case strings.HasPrefix(nodeID, "tester"):
 		return fmt.Sprintf(`{"schema_version":"codebase-dag/v1","node_id":%q,"verdict":"pass","blocking_findings":[],"non_blocking_findings":[]}`, nodeID)
 	case strings.HasPrefix(nodeID, "reviewer"):
 		return fmt.Sprintf(`{"schema_version":"codebase-dag/v1","node_id":%q,"verdict":"pass","blocking_findings":[],"non_blocking_findings":[]}`, nodeID)
 	case nodeID == "finalizer":
 		return `{"schema_version":"codebase-dag/v1","node_id":"finalizer","status":"passed","summary":"ok","limitations":[]}`
-	case strings.HasPrefix(nodeID, "fixer-"):
-		return coderJSON(nodeID, "internal/review/live_resource_hook.go", "LiveResourceHook", "resource-hook-v2", "resource-hook-v3")
 	default:
 		return `{"schema_version":"codebase-dag/v1","node_id":"planner","tasks":[{"id":"t1","owner":"resource-coder","dependencies":[],"files":[],"acceptance":[]}],"risks":[],"commands":[["go","test","./"]]}`
 	}
 }
 
-func coderJSON(node, file, constName, oldMark, newMark string) string {
-	return fmt.Sprintf(`{"schema_version":"codebase-dag/v1","node_id":%q,"summary":"update marker","replacement_value":%q,"changed_files":[%q],"tests":[["go","test","./"]]}`, node, newMark, file)
+func coderPatchJSON(node, patch string, files []string) string {
+	encPatch, _ := json.Marshal(patch)
+	encFiles, _ := json.Marshal(files)
+	return fmt.Sprintf(`{"schema_version":"codebase-dag/v1","node_id":%q,"summary":"restore judge marker","patch":%s,"changed_files":%s,"tests":[["go","test","./"]]}`, node, encPatch, encFiles)
 }
 
 func initReviewFixtureRepo(t *testing.T) string {
 	t.Helper()
 	dir := newTestGitRepo(t)
+	for _, args := range [][]string{
+		{"git", "init"},
+		{"git", "config", "user.email", "test@example.com"},
+		{"git", "config", "user.name", "test"},
+	} {
+		cmd := exec.Command(args[0], args[1:]...)
+		cmd.Dir = dir
+		if out, err := cmd.CombinedOutput(); err != nil {
+			t.Fatalf("%v: %v\n%s", args, err, out)
+		}
+	}
 	files := map[string]string{
-		"go.mod":                                "module example.com/reviewfix\n\ngo 1.22\n",
-		"internal/review/live_resource_hook.go": "package review\n\nconst LiveResourceHook = \"resource-hook-v1\"\n",
-		"internal/review/live_context_hook.go":  "package review\n\nconst LiveContextHook = \"context-hook-v1\"\n",
-		"internal/review/live_evidence_hook.go": "package review\n\nconst LiveEvidenceHook = \"evidence-hook-v1\"\n",
-		"internal/review/live_hooks_test.go":    "package review\n\nimport \"testing\"\n\nfunc TestLiveHooksPresent(t *testing.T) {\n\tif LiveResourceHook == \"\" || LiveContextHook == \"\" || LiveEvidenceHook == \"\" {\n\t\tt.Fatal(\"empty\")\n\t}\n}\n",
+		"go.mod":                                                 "module example.com/reviewfix\n\ngo 1.22\n",
+		"internal/codebasedag/judge_resource.go":                 "package codebasedag\n\nconst ResourceJudgeMarker = \"seed-incomplete\"\n",
+		"internal/codebasedag/judge_context.go":                  "package codebasedag\n\nconst ContextJudgeMarker = \"seed-incomplete\"\n",
+		"internal/codebasedag/judge_evidence.go":                 "package codebasedag\n\nconst EvidenceJudgeMarker = \"seed-incomplete\"\n",
+		"internal/codebasedag/judge_smoke_test.go":               "package codebasedag\n\nimport \"testing\"\n\nfunc TestJudgeMarkersPresent(t *testing.T) {\n\tif ResourceJudgeMarker == \"\" || ContextJudgeMarker == \"\" || EvidenceJudgeMarker == \"\" {\n\t\tt.Fatal(\"empty\")\n\t}\n}\n",
+		"internal/codebasedag/acceptance/context_real.sh":        "#!/bin/sh\nexit 2\n",
+		"internal/codebasedag/acceptance/resource_real.sh":       "#!/bin/sh\nexit 2\n",
+		"internal/codebasedag/acceptance/review_final_strict.sh": "#!/bin/sh\nexit 2\n",
 	}
 	for rel, body := range files {
 		path := filepath.Join(dir, rel)
@@ -203,9 +216,6 @@ func initReviewFixtureRepo(t *testing.T) string {
 		}
 	}
 	for _, args := range [][]string{
-		{"git", "init", "--template="},
-		{"git", "config", "user.email", "test@example.com"},
-		{"git", "config", "user.name", "test"},
 		{"git", "add", "."},
 		{"git", "commit", "-m", "init"},
 	} {

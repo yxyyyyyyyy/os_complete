@@ -1,0 +1,183 @@
+{
+  "schema_version": "codebase-dag/v1",
+  "node_id": "tester",
+  "status": "passed",
+  "commands": [
+    {
+      "schema_version": "codebase-dag/v1",
+      "name": "tester-1-gofmt",
+      "command": [
+        "gofmt",
+        "-w",
+        "internal/codebasedag/judge_context.go",
+        "internal/codebasedag/judge_evidence.go",
+        "internal/codebasedag/judge_resource.go",
+        "internal/codebasedag/resourceagent/chunk001/gen_audit_log_002.go",
+        "internal/codebasedag/resourceagent/chunk008/gen_capsule_notes_012.go",
+        "internal/codebasedag/resourceagent/chunk015/gen_fault_memory_003.go"
+      ],
+      "work_dir": "/root/aort-process-evidence/huawei-judge-full-20260723-212641/judge-full-20260723-212641/workspace/worktree-judge-full-20260723-212641",
+      "started_at": "2026-07-23T21:27:29.874444505Z",
+      "finished_at": "2026-07-23T21:27:29.878745477Z",
+      "duration_ms": 4,
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "timed_out": false,
+      "signal_killed": false
+    },
+    {
+      "schema_version": "codebase-dag/v1",
+      "name": "tester-2-git",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "work_dir": "/root/aort-process-evidence/huawei-judge-full-20260723-212641/judge-full-20260723-212641/workspace/worktree-judge-full-20260723-212641",
+      "started_at": "2026-07-23T21:27:29.878751699Z",
+      "finished_at": "2026-07-23T21:27:29.894266137Z",
+      "duration_ms": 15,
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "timed_out": false,
+      "signal_killed": false
+    },
+    {
+      "schema_version": "codebase-dag/v1",
+      "name": "tester-3-go",
+      "command": [
+        "go",
+        "test",
+        "./..."
+      ],
+      "work_dir": "/root/aort-process-evidence/huawei-judge-full-20260723-212641/judge-full-20260723-212641/workspace/worktree-judge-full-20260723-212641",
+      "started_at": "2026-07-23T21:27:29.894274036Z",
+      "finished_at": "2026-07-23T21:27:41.496807086Z",
+      "duration_ms": 11602,
+      "exit_code": 0,
+      "stdout_sha256": "ea6706468b8bffdae107b90f2353a8d68d731eb43f50b51a8d4e5522e4704473",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_excerpt": "ok  \taort-r/cmd/aort-code-worker\t0.001s\nok  \taort-r/cmd/aort-experiment\t0.097s\nok  \taort-r/cmd/aort-worker\t0.002s\n?   \taort-r/cmd/aortd\t[no test files]\nok  \taort-r/cmd/aortctl\t2.626s\nok  \taort-r/internal/api\t0.481s\nok  \taort-r/internal/avp\t0.001s\nok  \taort-r/internal/capsule\t1.054s\nok  \taort-r/internal/checkpoint\t0.002s\n?   \taort-r/internal/codebasedag/resourceagent/chunk001\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk002\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk003\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk004\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk005\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk006\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk007\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk008\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk009\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk010\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk011\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk012\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk013\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk014\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk015\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk016\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk017\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk018\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk019\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk020\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk021\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk022\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk023\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk024\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk025\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk026\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk027\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk028\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk029\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk030\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk031\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk032\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk033\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk034\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk035\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk037\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk038\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk039\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk040\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk041\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk103\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk105\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk107\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk108\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk110\t[no test files]\nok  \taort-r/internal/codebasedag\t3.378s\nok  \taort-r/internal/codebasedag/resourceagent\t0.003s\nok  \taort-r/internal/config\t0.001s\nok  \taort-r/internal/cvm\t0.001s\nok  \taort-r/internal/dag\t0.001s\nok  \taort-r/internal/demo\t0.002s\nok  \taort-r/internal/events\t0.002s\nok  \taort-r/internal/evidence\t0.002s\nok  \taort-r/internal/experiment\t0.131s\nok  \taort-r/internal/ipc\t0.001s\nok  \taort-r/internal/ipc/shm\t0.002s\nok  \taort-r/internal/kernel\t0.002s\nok  \taort-r/internal/llm\t0.003s\nok  \taort-r/internal/observer/ebpf\t0.014s\nok  \taort-r/internal",
+      "timed_out": false,
+      "signal_killed": false
+    },
+    {
+      "schema_version": "codebase-dag/v1",
+      "name": "tester-4-go",
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "./internal/codebasedag/..."
+      ],
+      "work_dir": "/root/aort-process-evidence/huawei-judge-full-20260723-212641/judge-full-20260723-212641/workspace/worktree-judge-full-20260723-212641",
+      "started_at": "2026-07-23T21:27:41.496831589Z",
+      "finished_at": "2026-07-23T21:27:47.520892281Z",
+      "duration_ms": 6024,
+      "exit_code": 0,
+      "stdout_sha256": "662e6e0ec059a4a01761ff7ccf390df430bc36ab667284436e84f28a77544d64",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_excerpt": "?   \taort-r/internal/codebasedag/resourceagent/chunk001\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk002\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk003\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk004\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk005\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk006\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk007\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk008\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk009\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk010\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk011\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk012\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk013\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk014\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk015\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk016\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk017\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk018\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk019\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk020\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk021\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk022\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk023\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk024\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk025\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk026\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk027\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk028\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk029\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk030\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk031\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk032\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk033\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk034\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk035\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk037\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk038\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk039\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk040\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk041\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk103\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk105\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk107\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk108\t[no test files]\n?   \taort-r/internal/codebasedag/resourceagent/chunk110\t[no test files]\nok  \taort-r/internal/codebasedag\t4.035s\nok  \taort-r/internal/codebasedag/resourceagent\t1.013s\n",
+      "timed_out": false,
+      "signal_killed": false
+    },
+    {
+      "schema_version": "codebase-dag/v1",
+      "name": "tester-5-go",
+      "command": [
+        "go",
+        "vet",
+        "./..."
+      ],
+      "work_dir": "/root/aort-process-evidence/huawei-judge-full-20260723-212641/judge-full-20260723-212641/workspace/worktree-judge-full-20260723-212641",
+      "started_at": "2026-07-23T21:27:47.520909722Z",
+      "finished_at": "2026-07-23T21:27:48.43226226Z",
+      "duration_ms": 911,
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "timed_out": false,
+      "signal_killed": false
+    }
+  ],
+  "tests": [
+    {
+      "schema_version": "codebase-dag/v1",
+      "name": "tester-1-gofmt",
+      "command": [
+        "gofmt",
+        "-w",
+        "internal/codebasedag/judge_context.go",
+        "internal/codebasedag/judge_evidence.go",
+        "internal/codebasedag/judge_resource.go",
+        "internal/codebasedag/resourceagent/chunk001/gen_audit_log_002.go",
+        "internal/codebasedag/resourceagent/chunk008/gen_capsule_notes_012.go",
+        "internal/codebasedag/resourceagent/chunk015/gen_fault_memory_003.go"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "started_at": "2026-07-23T21:27:29.874444505Z",
+      "finished_at": "2026-07-23T21:27:29.878745477Z"
+    },
+    {
+      "schema_version": "codebase-dag/v1",
+      "name": "tester-2-git",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "started_at": "2026-07-23T21:27:29.878751699Z",
+      "finished_at": "2026-07-23T21:27:29.894266137Z"
+    },
+    {
+      "schema_version": "codebase-dag/v1",
+      "name": "tester-3-go",
+      "command": [
+        "go",
+        "test",
+        "./..."
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "ea6706468b8bffdae107b90f2353a8d68d731eb43f50b51a8d4e5522e4704473",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "started_at": "2026-07-23T21:27:29.894274036Z",
+      "finished_at": "2026-07-23T21:27:41.496807086Z"
+    },
+    {
+      "schema_version": "codebase-dag/v1",
+      "name": "tester-4-go",
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "./internal/codebasedag/..."
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "662e6e0ec059a4a01761ff7ccf390df430bc36ab667284436e84f28a77544d64",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "started_at": "2026-07-23T21:27:41.496831589Z",
+      "finished_at": "2026-07-23T21:27:47.520892281Z"
+    },
+    {
+      "schema_version": "codebase-dag/v1",
+      "name": "tester-5-go",
+      "command": [
+        "go",
+        "vet",
+        "./..."
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "started_at": "2026-07-23T21:27:47.520909722Z",
+      "finished_at": "2026-07-23T21:27:48.43226226Z"
+    }
+  ]
+}

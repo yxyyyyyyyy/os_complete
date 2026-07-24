@@ -71,6 +71,21 @@ func (s *RunStore) WriteBytes(rel string, data []byte, mode os.FileMode) error {
 	return err
 }
 
+// WriteBytesReplace overwrites an existing evidence file (schema-repair iterations).
+func (s *RunStore) WriteBytesReplace(rel string, data []byte, mode os.FileMode) error {
+	path, err := s.safePath(rel)
+	if err != nil {
+		return err
+	}
+	if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
+		return err
+	}
+	if err := s.rejectSymlinkAncestors(path); err != nil {
+		return err
+	}
+	return os.WriteFile(path, data, mode.Perm())
+}
+
 func (s *RunStore) AppendJSONL(rel string, value any) error {
 	data, err := json.Marshal(value)
 	if err != nil {

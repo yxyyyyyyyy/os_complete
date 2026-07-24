@@ -196,7 +196,7 @@ func TestAortctlCodebaseDAGScenarioAndEvidenceStubs(t *testing.T) {
 		Artifacts:         map[string]string{"summary.json": strings.Repeat("c", 64)},
 		Tests:             []codebasedag.TestRecord{{SchemaVersion: codebasedag.SchemaVersion, Name: "go test", ExitCode: 0}},
 	}
-	for _, node := range []string{"preflight", "planner", "resource-coder", "context-coder", "evidence-coder", "integrate", "tester", "reviewer", "finalizer"} {
+	for _, node := range []string{"preflight", "planner", "resource-coder", "context-coder", "evidence-coder", "fault-agent", "integrate", "tester", "reviewer", "finalizer"} {
 		strict.Nodes = append(strict.Nodes, codebasedag.NodeRecord{SchemaVersion: codebasedag.SchemaVersion, NodeID: node, Status: codebasedag.NodeSucceeded})
 	}
 	strict.Patches = []codebasedag.PatchRecord{

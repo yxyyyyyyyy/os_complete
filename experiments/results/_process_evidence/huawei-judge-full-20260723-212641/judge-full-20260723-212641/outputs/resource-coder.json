@@ -1,0 +1,20 @@
+{
+  "schema_version": "codebase-dag/v1",
+  "node_id": "resource-coder",
+  "summary": "Restore seed markers and remove AORT_SEED_BROKEN trailers from allowlisted seeded files. Sets ResourceJudgeMarker to judge-resource-complete and removes broken compile breaks from gen_*.go files.",
+  "patch": "diff --git a/internal/codebasedag/judge_resource.go b/internal/codebasedag/judge_resource.go\n--- a/internal/codebasedag/judge_resource.go\n+++ b/internal/codebasedag/judge_resource.go\n@@ -3,3 +3,3 @@\n // ResourceJudgeMarker is flipped by live DAG agents from seed-incomplete to complete.\n-const ResourceJudgeMarker = \"seed-incomplete\"\n+const ResourceJudgeMarker = \"judge-resource-complete\"\n \ndiff --git a/internal/codebasedag/resourceagent/chunk001/gen_audit_log_002.go b/internal/codebasedag/resourceagent/chunk001/gen_audit_log_002.go\n--- a/internal/codebasedag/resourceagent/chunk001/gen_audit_log_002.go\n+++ b/internal/codebasedag/resourceagent/chunk001/gen_audit_log_002.go\n@@ -388,4 +388,2 @@\n // hashing, redaction, validation, and test vectors.\n \n-// AORT_SEED_BROKEN: intentional compile break for live restore\n-var _ = __aort_seed_broken_undefined__\ndiff --git a/internal/codebasedag/resourceagent/chunk008/gen_capsule_notes_012.go b/internal/codebasedag/resourceagent/chunk008/gen_capsule_notes_012.go\n--- a/internal/codebasedag/resourceagent/chunk008/gen_capsule_notes_012.go\n+++ b/internal/codebasedag/resourceagent/chunk008/gen_capsule_notes_012.go\n@@ -360,4 +360,2 @@\n }\n \n-// AORT_SEED_BROKEN: intentional compile break for live restore\n-var _ = __aort_seed_broken_undefined__\ndiff --git a/internal/codebasedag/resourceagent/chunk015/gen_fault_memory_003.go b/internal/codebasedag/resourceagent/chunk015/gen_fault_memory_003.go\n--- a/internal/codebasedag/resourceagent/chunk015/gen_fault_memory_003.go\n+++ b/internal/codebasedag/resourceagent/chunk015/gen_fault_memory_003.go\n@@ -460,4 +460,2 @@\n }\n \n-// AORT_SEED_BROKEN: intentional compile break for live restore\n-var _ = __aort_seed_broken_undefined__\n",
+  "seed_restore": true,
+  "changed_files": [
+    "internal/codebasedag/judge_resource.go",
+    "internal/codebasedag/resourceagent/chunk001/gen_audit_log_002.go",
+    "internal/codebasedag/resourceagent/chunk008/gen_capsule_notes_012.go",
+    "internal/codebasedag/resourceagent/chunk015/gen_fault_memory_003.go"
+  ],
+  "tests": [
+    [
+      "go",
+      "test",
+      "./internal/..."
+    ]
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "full_copy": {
+    "mode": "full-copy",
+    "logical_bytes": 845,
+    "transferred_bytes": 845,
+    "materialized_bytes": 845,
+    "saved_bytes": 0,
+    "kind": "derived"
+  },
+  "aort_r": {
+    "mode": "aort-r",
+    "logical_bytes": 845,
+    "transferred_bytes": 216,
+    "materialized_bytes": 216,
+    "saved_bytes": 629,
+    "kind": "derived"
+  }
+}

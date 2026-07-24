@@ -70,6 +70,38 @@ func ValidateEvidenceSummary(summary EvidenceSummary) error {
 			return fmt.Errorf("artifact %q hash must be sha256 hex", path)
 		}
 	}
+	if summary.JudgeMode == "strict" {
+		if err := validateStrictJudgeEvidence(summary); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func validateStrictJudgeEvidence(summary EvidenceSummary) error {
+	if len(summary.Processes) == 0 {
+		return fmt.Errorf("strict judge mode requires process evidence")
+	}
+	for _, p := range summary.Processes {
+		if p.PID <= 0 {
+			return fmt.Errorf("process evidence missing real pid")
+		}
+	}
+	if summary.FaultReport == nil {
+		return fmt.Errorf("strict judge mode requires fault_report")
+	}
+	if summary.CommunicationComparison == nil {
+		return fmt.Errorf("strict judge mode requires communication_comparison")
+	}
+	if summary.CVMMetrics == nil {
+		return fmt.Errorf("strict judge mode requires cvm_metrics")
+	}
+	if summary.ResourceAgentPhysicalLines > 0 && summary.ResourceAgentPhysicalLines < MinResourceAgentPhysicalLines {
+		return fmt.Errorf("resource-coder owned corpus physical lines %d < %d", summary.ResourceAgentPhysicalLines, MinResourceAgentPhysicalLines)
+	}
+	if summary.ResourceAgentPhysicalLines == 0 {
+		return fmt.Errorf("strict judge mode requires resourceagent_physical_lines evidence")
+	}
 	return nil
 }
 
@@ -108,7 +140,7 @@ func validateSummaryPatches(patches []PatchRecord) error {
 func validateSummaryNodes(nodes []NodeRecord) error {
 	required := map[string]struct{}{
 		"preflight": {}, "planner": {}, "resource-coder": {}, "context-coder": {}, "evidence-coder": {},
-		"integrate": {}, "tester": {}, "reviewer": {}, "finalizer": {},
+		"fault-agent": {}, "integrate": {}, "tester": {}, "reviewer": {}, "finalizer": {},
 	}
 	seen := make(map[string]NodeStatus, len(nodes))
 	for _, node := range nodes {

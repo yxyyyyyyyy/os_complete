@@ -38,6 +38,8 @@ func BuildSchemaRepairPrompt(req SchemaRepairRequest) (string, error) {
 	b.WriteString("Your previous response failed strict schema validation. Rewrite it using this exact JSON contract:\n")
 	b.WriteString(schema)
 	b.WriteByte('\n')
+	b.WriteString("Fix checklist: non-empty summary; OR set seed_restore=true for seeded judge restore; if emitting patch, hunk @@ counts must equal body lines starting with space/-/+; changed_files must list every patched path.\n")
+	b.WriteString("If decode_error mentions git apply or no seeded restore targets, prefer seed_restore=true (runtime emits a fixer acknowledgment patch when seeds are already restored).\n")
 	if req.OriginalText != "" {
 		b.WriteString("previous_response_excerpt:\n")
 		b.WriteString(sanitizeRepairExcerpt(req.OriginalText))

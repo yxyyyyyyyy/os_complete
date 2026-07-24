@@ -1,0 +1,17 @@
+{
+  "schema_version": "codebase-dag/v1",
+  "node_id": "context-coder",
+  "summary": "Restore ContextJudgeMarker to judge-context-complete via seed restore.",
+  "patch": "diff --git a/internal/codebasedag/judge_context.go b/internal/codebasedag/judge_context.go\n--- a/internal/codebasedag/judge_context.go\n+++ b/internal/codebasedag/judge_context.go\n@@ -8,3 +8,3 @@\n // ContextJudgeMarker is flipped by live DAG agents from seed-incomplete to complete.\n-const ContextJudgeMarker = \"seed-incomplete\"\n+const ContextJudgeMarker = \"judge-context-complete\"\n \n",
+  "seed_restore": true,
+  "changed_files": [
+    "internal/codebasedag/judge_context.go"
+  ],
+  "tests": [
+    [
+      "go",
+      "test",
+      "./internal/..."
+    ]
+  ]
+}

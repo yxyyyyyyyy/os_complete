@@ -221,8 +221,15 @@ func TestRunLiveRecordsPIDThatExistedDuringExecution(t *testing.T) {
 	if !rt.seenAlive || rt.pid <= 1 {
 		t.Fatalf("expected live kernel pid observed while running, got pid=%d alive=%v", rt.pid, rt.seenAlive)
 	}
-	if len(result.Evidence.Processes) == 0 || result.Evidence.Processes[0].PID != rt.pid {
-		t.Fatalf("evidence pid mismatch: %#v", result.Evidence.Nodes)
+	found := false
+	for _, p := range result.Evidence.Processes {
+		if p.PID == rt.pid {
+			found = true
+			break
+		}
+	}
+	if !found {
+		t.Fatalf("evidence missing observed pid %d: %#v", rt.pid, result.Evidence.Processes)
 	}
 }
 

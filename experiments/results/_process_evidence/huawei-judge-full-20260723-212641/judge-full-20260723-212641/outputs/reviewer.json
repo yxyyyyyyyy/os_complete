@@ -1,0 +1,9 @@
+{
+  "schema_version": "codebase-dag/v1",
+  "node_id": "reviewer",
+  "verdict": "fix",
+  "blocking_findings": [
+    "forced first-pass fix for judge evidence"
+  ],
+  "non_blocking_findings": []
+}

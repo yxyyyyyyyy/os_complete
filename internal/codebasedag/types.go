@@ -112,18 +112,25 @@ type TestRecord struct {
 }
 
 type EvidenceSummary struct {
-	SchemaVersion        string             `json:"schema_version"`
-	RunID                string             `json:"run_id"`
-	SourceManifest       SourceManifest     `json:"source_manifest"`
-	Nodes                []NodeRecord       `json:"nodes"`
-	Calls                []CallRecord       `json:"calls"`
-	Patches              []PatchRecord      `json:"patches,omitempty"`
-	Tests                []TestRecord       `json:"tests"`
-	Acceptance           []AcceptanceScript `json:"acceptance_scripts,omitempty"`
-	Processes            []ProcessResult    `json:"processes,omitempty"`
-	Artifacts            map[string]string  `json:"artifacts_sha256"`
-	AllRequiredPassed    bool               `json:"all_required_passed"`
-	HumanFunctionalEdits int                `json:"human_functional_edits"`
-	MinPhysicalLines     int                `json:"min_physical_go_lines,omitempty"`
-	MinNonblankLines     int                `json:"min_nonblank_go_lines,omitempty"`
+	SchemaVersion              string                   `json:"schema_version"`
+	RunID                      string                   `json:"run_id"`
+	SourceManifest             SourceManifest           `json:"source_manifest"`
+	Nodes                      []NodeRecord             `json:"nodes"`
+	Calls                      []CallRecord             `json:"calls"`
+	Patches                    []PatchRecord            `json:"patches,omitempty"`
+	Tests                      []TestRecord             `json:"tests"`
+	Acceptance                 []AcceptanceScript       `json:"acceptance_scripts,omitempty"`
+	Processes                  []ProcessResult          `json:"processes,omitempty"`
+	PageIDs                    []string                 `json:"page_ids,omitempty"`
+	CVMMetrics                 *CVMMetrics              `json:"cvm_metrics,omitempty"`
+	FaultReport                *FaultReport             `json:"fault_report,omitempty"`
+	CommunicationComparison    *CommunicationComparison `json:"communication_comparison,omitempty"`
+	BaselineVsAORTR            *BaselineVsAORTR         `json:"baseline_vs_aort_r,omitempty"`
+	JudgeMode                  string                   `json:"judge_mode,omitempty"`
+	ResourceAgentPhysicalLines int                      `json:"resourceagent_physical_lines"`
+	Artifacts                  map[string]string        `json:"artifacts_sha256"`
+	AllRequiredPassed          bool                     `json:"all_required_passed"`
+	HumanFunctionalEdits       int                      `json:"human_functional_edits"`
+	MinPhysicalLines           int                      `json:"min_physical_go_lines,omitempty"`
+	MinNonblankLines           int                      `json:"min_nonblank_go_lines,omitempty"`
 }

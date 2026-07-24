@@ -42,7 +42,7 @@ func TestSchemaRepairRecoversInvalidCoderJSON(t *testing.T) {
 		text := fakeLiveResponse(prompt)
 		if nodeID == "evidence-coder" && !strings.Contains(prompt, "decode_error:") {
 			// Invalid escape that previously killed the Huawei live run.
-			text = `{"schema_version":"codebase-dag/v1","node_id":"evidence-coder","summary":"bad","patch":"diff --git a/x b/x\n--- a/x\n+++ b/x\n@@ -1 +1 @@\n-\)\n+ok\n","changed_files":["internal/review/live_evidence_hook.go"],"tests":[["go","test","./internal/review/"]]}`
+			text = `{"schema_version":"codebase-dag/v1","node_id":"evidence-coder","summary":"bad","patch":"diff --git a/x b/x\n--- a/x\n+++ b/x\n@@ -1 +1 @@\n-\)\n+ok\n","changed_files":["internal/codebasedag/judge_evidence.go"],"tests":[["go","test","./internal/codebasedag/"]]}`
 		}
 		id := callSeq.Add(1)
 		_ = json.NewEncoder(w).Encode(map[string]any{

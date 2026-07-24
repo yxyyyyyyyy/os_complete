@@ -1,0 +1,15 @@
+{
+  "fault_type": "nonzero-exit",
+  "fault_agent_node": "fault-agent",
+  "affected_agents": 1,
+  "sibling_completion_rate": 1,
+  "sibling_success_rate": 1,
+  "sibling_p95_latency_ms": 5,
+  "detection_ms": 0,
+  "terminate_ms": 5,
+  "cleanup_ms": 0,
+  "recovery_ms": 5,
+  "workspace_pollution": 0,
+  "lowerdir_unchanged": true,
+  "evidence_mode": "measured"
+}

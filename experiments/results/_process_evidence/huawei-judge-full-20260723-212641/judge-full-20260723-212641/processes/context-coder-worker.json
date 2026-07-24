@@ -1,0 +1,42 @@
+{
+  "pid": 418925,
+  "node_id": "context-coder-worker",
+  "cgroup_path": "/sys/fs/cgroup/aort.slice/codebase-dag/node-418925",
+  "process_evidence_mode": "real-process",
+  "cgroup_evidence_mode": "real-cgroup-v2",
+  "evidence_mode": "real-process",
+  "exit_code": 0,
+  "output_sha256": "3ac5723ea46d5352dc213f0e432c9bcfe1bc73e7880020b592c717031557d9ed",
+  "llm_call_id": "",
+  "limits": {
+    "memory_max": "67108864",
+    "memory_high": "33554432",
+    "pids_max": "8",
+    "cpu_max": "100000 100000"
+  },
+  "command_audit": {
+    "command": "/tmp/aort-code-worker",
+    "args": [
+      "--mode",
+      "sidecar",
+      "--run-id",
+      "judge-full-20260723-212641",
+      "--agent-id",
+      "context-coder-worker",
+      "--node-id",
+      "context-coder-worker",
+      "--role",
+      "context-coder-worker"
+    ],
+    "working_dir": "/root/aort-process-evidence/huawei-judge-full-20260723-212641/judge-full-20260723-212641/workspace/worktree-judge-full-20260723-212641",
+    "node_id": "context-coder-worker",
+    "run_id": "judge-full-20260723-212641"
+  },
+  "metrics": {
+    "cpu.stat": "usage_usec 975\nuser_usec 975\nsystem_usec 0\nnr_periods 0\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0",
+    "memory.current": "131072",
+    "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0",
+    "memory.peak": "2359296",
+    "pids.current": "0"
+  }
+}
